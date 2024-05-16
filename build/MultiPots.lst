@@ -1,0 +1,2848 @@
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"MultiPots.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN10kiwi_synth9MultiPotsD2Ev,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN10kiwi_synth9MultiPotsD2Ev
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN10kiwi_synth9MultiPotsD2Ev:
+  27              	.LVL0:
+  28              	.LFB2565:
+  29              		.file 1 "KiwiSynth/Controls/MultiPots.cpp"
+   1:KiwiSynth/Controls/MultiPots.cpp **** #include <algorithm>
+   2:KiwiSynth/Controls/MultiPots.cpp **** #include "MultiPots.h"
+   3:KiwiSynth/Controls/MultiPots.cpp **** 
+   4:KiwiSynth/Controls/MultiPots.cpp **** namespace kiwi_synth
+   5:KiwiSynth/Controls/MultiPots.cpp **** {
+   6:KiwiSynth/Controls/MultiPots.cpp **** 
+   7:KiwiSynth/Controls/MultiPots.cpp ****     void ProcessTimer(void* multiPots)
+   8:KiwiSynth/Controls/MultiPots.cpp ****     {
+   9:KiwiSynth/Controls/MultiPots.cpp ****         ((MultiPots*)multiPots)->Process();
+  10:KiwiSynth/Controls/MultiPots.cpp ****     }
+  11:KiwiSynth/Controls/MultiPots.cpp **** 
+  12:KiwiSynth/Controls/MultiPots.cpp ****     MultiPots::MultiPots(DaisySeed *hw, MultiPotsConfig *multiPotsConfig) : hw(hw)
+  13:KiwiSynth/Controls/MultiPots.cpp ****     {
+  14:KiwiSynth/Controls/MultiPots.cpp ****         numMps = multiPotsConfig->numMps;
+  15:KiwiSynth/Controls/MultiPots.cpp ****         numChannels = multiPotsConfig->numChannels;
+  16:KiwiSynth/Controls/MultiPots.cpp ****         numDirectPots = multiPotsConfig->numDirectPots;
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsSignal = new Pin[numMps];
+  18:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+  19:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+  20:KiwiSynth/Controls/MultiPots.cpp **** 
+  21:KiwiSynth/Controls/MultiPots.cpp ****         mpValueBuffer = new float*[numMps];
+  22:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+  23:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+  24:KiwiSynth/Controls/MultiPots.cpp ****         }
+  25:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = 0;
+  26:KiwiSynth/Controls/MultiPots.cpp **** 
+  27:KiwiSynth/Controls/MultiPots.cpp ****         directValueBuffer = new float[numDirectPots];
+  28:KiwiSynth/Controls/MultiPots.cpp **** 
+  29:KiwiSynth/Controls/MultiPots.cpp ****         if (multiPotsConfig->useTimer) {
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 2
+
+
+  30:KiwiSynth/Controls/MultiPots.cpp ****             InitTimer(multiPotsConfig->refreshRateMs);
+  31:KiwiSynth/Controls/MultiPots.cpp ****         }
+  32:KiwiSynth/Controls/MultiPots.cpp ****     }
+  33:KiwiSynth/Controls/MultiPots.cpp **** 
+  34:KiwiSynth/Controls/MultiPots.cpp ****     MultiPots::~MultiPots()
+  30              		.loc 1 34 5 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LBB76:
+  35:KiwiSynth/Controls/MultiPots.cpp ****     {
+  36:KiwiSynth/Controls/MultiPots.cpp ****         if (pinsSignal) {
+  35              		.loc 1 36 9 view .LVU1
+  36              	.LBE76:
+  34:KiwiSynth/Controls/MultiPots.cpp ****     {
+  37              		.loc 1 34 5 is_stmt 0 view .LVU2
+  38 0000 38B5     		push	{r3, r4, r5, lr}
+  39              		.cfi_def_cfa_offset 16
+  40              		.cfi_offset 3, -16
+  41              		.cfi_offset 4, -12
+  42              		.cfi_offset 5, -8
+  43              		.cfi_offset 14, -4
+  34:KiwiSynth/Controls/MultiPots.cpp ****     {
+  44              		.loc 1 34 5 view .LVU3
+  45 0002 0546     		mov	r5, r0
+  46              	.LBB80:
+  47              		.loc 1 36 13 view .LVU4
+  48 0004 006E     		ldr	r0, [r0, #96]
+  49              	.LVL1:
+  50              		.loc 1 36 9 view .LVU5
+  51 0006 08B1     		cbz	r0, .L2
+  37:KiwiSynth/Controls/MultiPots.cpp ****             free(pinsSignal);
+  52              		.loc 1 37 13 is_stmt 1 view .LVU6
+  53              		.loc 1 37 17 is_stmt 0 view .LVU7
+  54 0008 FFF7FEFF 		bl	free
+  55              	.LVL2:
+  56              	.L2:
+  57              	.LBB77:
+  38:KiwiSynth/Controls/MultiPots.cpp ****         }
+  39:KiwiSynth/Controls/MultiPots.cpp **** 
+  40:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+  58              		.loc 1 40 27 is_stmt 1 discriminator 1 view .LVU8
+  59 000c 2A68     		ldr	r2, [r5]
+  60              	.LBE77:
+  41:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  42:KiwiSynth/Controls/MultiPots.cpp ****                 free(mpValueBuffer[i]);
+  43:KiwiSynth/Controls/MultiPots.cpp ****             }
+  44:KiwiSynth/Controls/MultiPots.cpp ****         }
+  45:KiwiSynth/Controls/MultiPots.cpp ****         if (mpValueBuffer) {
+  61              		.loc 1 45 13 is_stmt 0 discriminator 1 view .LVU9
+  62 000e EB6E     		ldr	r3, [r5, #108]
+  63              	.LBB78:
+  40:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  64              		.loc 1 40 27 discriminator 1 view .LVU10
+  65 0010 002A     		cmp	r2, #0
+  66 0012 0ADD     		ble	.L5
+  41:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 3
+
+
+  67              		.loc 1 41 17 view .LVU11
+  68 0014 0024     		movs	r4, #0
+  69              	.LVL3:
+  70              	.L6:
+  41:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  71              		.loc 1 41 13 is_stmt 1 view .LVU12
+  42:KiwiSynth/Controls/MultiPots.cpp ****             }
+  72              		.loc 1 42 17 view .LVU13
+  41:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  73              		.loc 1 41 32 is_stmt 0 view .LVU14
+  74 0016 53F82400 		ldr	r0, [r3, r4, lsl #2]
+  40:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  75              		.loc 1 40 9 view .LVU15
+  76 001a 0134     		adds	r4, r4, #1
+  77              	.LVL4:
+  41:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  78              		.loc 1 41 13 view .LVU16
+  79 001c 18B1     		cbz	r0, .L4
+  42:KiwiSynth/Controls/MultiPots.cpp ****             }
+  80              		.loc 1 42 21 view .LVU17
+  81 001e FFF7FEFF 		bl	free
+  82              	.LVL5:
+  83 0022 2A68     		ldr	r2, [r5]
+  84              	.LBE78:
+  85              		.loc 1 45 13 view .LVU18
+  86 0024 EB6E     		ldr	r3, [r5, #108]
+  87              	.L4:
+  88              	.LBB79:
+  40:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  89              		.loc 1 40 9 is_stmt 1 discriminator 2 view .LVU19
+  90              	.LVL6:
+  40:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  91              		.loc 1 40 27 discriminator 2 view .LVU20
+  92 0026 A242     		cmp	r2, r4
+  93 0028 F5DC     		bgt	.L6
+  94              	.LVL7:
+  95              	.L5:
+  40:KiwiSynth/Controls/MultiPots.cpp ****             if (mpValueBuffer[i]) {
+  96              		.loc 1 40 27 is_stmt 0 discriminator 2 view .LVU21
+  97              	.LBE79:
+  98              		.loc 1 45 9 is_stmt 1 view .LVU22
+  99 002a 13B1     		cbz	r3, .L7
+  46:KiwiSynth/Controls/MultiPots.cpp ****             free(mpValueBuffer);
+ 100              		.loc 1 46 13 view .LVU23
+ 101              		.loc 1 46 17 is_stmt 0 view .LVU24
+ 102 002c 1846     		mov	r0, r3
+ 103 002e FFF7FEFF 		bl	free
+ 104              	.LVL8:
+ 105              	.L7:
+  47:KiwiSynth/Controls/MultiPots.cpp ****         }
+  48:KiwiSynth/Controls/MultiPots.cpp **** 
+  49:KiwiSynth/Controls/MultiPots.cpp ****         if (directValueBuffer) {
+ 106              		.loc 1 49 9 is_stmt 1 view .LVU25
+ 107              		.loc 1 49 13 is_stmt 0 view .LVU26
+ 108 0032 286F     		ldr	r0, [r5, #112]
+ 109              		.loc 1 49 9 view .LVU27
+ 110 0034 08B1     		cbz	r0, .L8
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 4
+
+
+  50:KiwiSynth/Controls/MultiPots.cpp ****             free(directValueBuffer);
+ 111              		.loc 1 50 13 is_stmt 1 view .LVU28
+ 112              		.loc 1 50 17 is_stmt 0 view .LVU29
+ 113 0036 FFF7FEFF 		bl	free
+ 114              	.LVL9:
+ 115              	.L8:
+ 116              		.loc 1 50 17 view .LVU30
+ 117              	.LBE80:
+ 118              	.LBB81:
+ 119              	.LBI81:
+ 120              		.file 2 "../../libDaisy//src/per/tim.h"
+   1:../../libDaisy//src/per/tim.h **** #pragma once
+   2:../../libDaisy//src/per/tim.h **** #ifndef DSY_TIM_H
+   3:../../libDaisy//src/per/tim.h **** #define DSY_TIM_H
+   4:../../libDaisy//src/per/tim.h **** 
+   5:../../libDaisy//src/per/tim.h **** #include <cstdint>
+   6:../../libDaisy//src/per/tim.h **** 
+   7:../../libDaisy//src/per/tim.h **** namespace daisy
+   8:../../libDaisy//src/per/tim.h **** {
+   9:../../libDaisy//src/per/tim.h **** /** @brief Hardare timer peripheral support.
+  10:../../libDaisy//src/per/tim.h ****  ** 
+  11:../../libDaisy//src/per/tim.h ****  ** Supports general-function TIM peripherals:
+  12:../../libDaisy//src/per/tim.h ****  ** - TIM2, TIM3, TIM4, TIM5
+  13:../../libDaisy//src/per/tim.h ****  **
+  14:../../libDaisy//src/per/tim.h ****  ** DaisySeed, and many internal peripherals utilize TIM2 for timing/delay purposes.
+  15:../../libDaisy//src/per/tim.h ****  ** It is configured to be at the maximum frequency: typically 200MHz or 240MHz (boost) 
+  16:../../libDaisy//src/per/tim.h ****  ** for measuring/delaying for very short periods. 
+  17:../../libDaisy//src/per/tim.h ****  **
+  18:../../libDaisy//src/per/tim.h ****  ** The GetUs/GetMs functions are available for convenience (and backwards compatibility),
+  19:../../libDaisy//src/per/tim.h ****  ** but to avoid wrapping errors on math when doing time-delta calculations, using ticks is 
+  20:../../libDaisy//src/per/tim.h ****  ** recommended. The data can be converted to the final time-base after getting the difference in t
+  21:../../libDaisy//src/per/tim.h ****  ** (Using GetFreq() can be used for these time-base calculations).
+  22:../../libDaisy//src/per/tim.h ****  **
+  23:../../libDaisy//src/per/tim.h ****  ** User callbacks can be set, and changed at any point during operation. However,
+  24:../../libDaisy//src/per/tim.h ****  ** the Config::enable_irq must be set to true when initializing for the interrupts
+  25:../../libDaisy//src/per/tim.h ****  ** to turn on and function.
+  26:../../libDaisy//src/per/tim.h ****  **
+  27:../../libDaisy//src/per/tim.h ****  ** @todo Fix issues with realtime getters, and wrapping of the timer(s).
+  28:../../libDaisy//src/per/tim.h ****  **     - This very noticeable with default settings for the 16-bit counters.
+  29:../../libDaisy//src/per/tim.h ****  ** @todo Other General purpose timers
+  30:../../libDaisy//src/per/tim.h ****  ** @todo Non-internal clock sources
+  31:../../libDaisy//src/per/tim.h ****  ** @todo Use of the four-tim channels per tim
+  32:../../libDaisy//src/per/tim.h ****  **     - PWM, etc.
+  33:../../libDaisy//src/per/tim.h ****  **     - InputCapture/OutputCompare, etc.
+  34:../../libDaisy//src/per/tim.h ****  ** @todo HRTIM
+  35:../../libDaisy//src/per/tim.h ****  ** @todo Advanced timers (TIM1/TIM8)
+  36:../../libDaisy//src/per/tim.h ****  ** */
+  37:../../libDaisy//src/per/tim.h **** class TimerHandle
+  38:../../libDaisy//src/per/tim.h **** {
+  39:../../libDaisy//src/per/tim.h ****   public:
+  40:../../libDaisy//src/per/tim.h ****     /** @brief Configuration struct for the Peripheral
+  41:../../libDaisy//src/per/tim.h ****      *  @note These settings are used during initialization
+  42:../../libDaisy//src/per/tim.h ****      *   and changing them afterwards may not have the desired effect.
+  43:../../libDaisy//src/per/tim.h ****      */
+  44:../../libDaisy//src/per/tim.h ****     struct Config
+  45:../../libDaisy//src/per/tim.h ****     {
+  46:../../libDaisy//src/per/tim.h ****         /** @brief Hardware Timer to configure, and use. */
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 5
+
+
+  47:../../libDaisy//src/per/tim.h ****         enum class Peripheral
+  48:../../libDaisy//src/per/tim.h ****         {
+  49:../../libDaisy//src/per/tim.h ****             TIM_2 = 0, /**< 32-bit counter */
+  50:../../libDaisy//src/per/tim.h ****             TIM_3,     /**< 16-bit counter */
+  51:../../libDaisy//src/per/tim.h ****             TIM_4,     /**< 16-bit counter */
+  52:../../libDaisy//src/per/tim.h ****             TIM_5,     /**< 32-bit counter*/
+  53:../../libDaisy//src/per/tim.h ****         };
+  54:../../libDaisy//src/per/tim.h **** 
+  55:../../libDaisy//src/per/tim.h ****         /** @brief Direction of the auto-reload counter. 
+  56:../../libDaisy//src/per/tim.h ****          ** @todo Add support for the various  
+  57:../../libDaisy//src/per/tim.h ****          ** versions of Up/Down counters.
+  58:../../libDaisy//src/per/tim.h ****          ** */
+  59:../../libDaisy//src/per/tim.h ****         enum class CounterDir
+  60:../../libDaisy//src/per/tim.h ****         {
+  61:../../libDaisy//src/per/tim.h ****             UP = 0,
+  62:../../libDaisy//src/per/tim.h ****             DOWN,
+  63:../../libDaisy//src/per/tim.h ****         };
+  64:../../libDaisy//src/per/tim.h **** 
+  65:../../libDaisy//src/per/tim.h ****         Peripheral periph; /**< Hardware Peripheral */
+  66:../../libDaisy//src/per/tim.h ****         CounterDir dir;    /**< Counter direction */
+  67:../../libDaisy//src/per/tim.h **** 
+  68:../../libDaisy//src/per/tim.h ****         /** @brief period in ticks at TIM frequency that counter will reset based on dir
+  69:../../libDaisy//src/per/tim.h ****          *  @note TIM3 and TIM4 are both 16-bit timers. So the period maximum is 0xffff.
+  70:../../libDaisy//src/per/tim.h ****         */
+  71:../../libDaisy//src/per/tim.h ****         uint32_t period;
+  72:../../libDaisy//src/per/tim.h ****         bool     enable_irq; /**< Enable interrupt for user based callback */
+  73:../../libDaisy//src/per/tim.h **** 
+  74:../../libDaisy//src/per/tim.h ****         /* @brief Constructor for default states */
+  75:../../libDaisy//src/per/tim.h ****         Config()
+  76:../../libDaisy//src/per/tim.h ****         : periph(Peripheral::TIM_2),
+  77:../../libDaisy//src/per/tim.h ****           dir(CounterDir::UP),
+  78:../../libDaisy//src/per/tim.h ****           period(0xffffffff),
+  79:../../libDaisy//src/per/tim.h ****           enable_irq(false)
+  80:../../libDaisy//src/per/tim.h ****         {
+  81:../../libDaisy//src/per/tim.h ****         }
+  82:../../libDaisy//src/per/tim.h ****     };
+  83:../../libDaisy//src/per/tim.h **** 
+  84:../../libDaisy//src/per/tim.h ****     /** @brief Return values for TIM funcitons. */
+  85:../../libDaisy//src/per/tim.h ****     enum class Result
+  86:../../libDaisy//src/per/tim.h ****     {
+  87:../../libDaisy//src/per/tim.h ****         OK,
+  88:../../libDaisy//src/per/tim.h ****         ERR,
+  89:../../libDaisy//src/per/tim.h ****     };
+  90:../../libDaisy//src/per/tim.h **** 
+  91:../../libDaisy//src/per/tim.h ****     /** @brief User Callback type that will fire at the end of each timer 
+  92:../../libDaisy//src/per/tim.h ****      *   period. This requires that Config::enable_irq is true before Init
+  93:../../libDaisy//src/per/tim.h ****      *  @param data pointer to arbitrary user-provided data
+  94:../../libDaisy//src/per/tim.h ****     */
+  95:../../libDaisy//src/per/tim.h ****     typedef void (*PeriodElapsedCallback)(void* data);
+  96:../../libDaisy//src/per/tim.h **** 
+  97:../../libDaisy//src/per/tim.h ****     TimerHandle() : pimpl_(nullptr) {}
+  98:../../libDaisy//src/per/tim.h ****     TimerHandle(const TimerHandle& other) = default;
+  99:../../libDaisy//src/per/tim.h ****     TimerHandle& operator=(const TimerHandle& other) = default;
+ 100:../../libDaisy//src/per/tim.h ****     ~TimerHandle() {}
+ 121              		.loc 2 100 5 is_stmt 1 view .LVU31
+ 122              		.loc 2 100 5 is_stmt 0 view .LVU32
+ 123              	.LBE81:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 6
+
+
+  51:KiwiSynth/Controls/MultiPots.cpp ****         }
+  52:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 124              		.loc 1 52 5 view .LVU33
+ 125 003a 2846     		mov	r0, r5
+ 126 003c 38BD     		pop	{r3, r4, r5, pc}
+ 127              		.loc 1 52 5 view .LVU34
+ 128              		.cfi_endproc
+ 129              	.LFE2565:
+ 131              		.global	_ZN10kiwi_synth9MultiPotsD1Ev
+ 132              		.thumb_set _ZN10kiwi_synth9MultiPotsD1Ev,_ZN10kiwi_synth9MultiPotsD2Ev
+ 133 003e 00BF     		.section	.text._ZN10kiwi_synth9MultiPots10StartTimerEv,"ax",%progbits
+ 134              		.align	1
+ 135              		.p2align 2,,3
+ 136              		.global	_ZN10kiwi_synth9MultiPots10StartTimerEv
+ 137              		.syntax unified
+ 138              		.thumb
+ 139              		.thumb_func
+ 140              		.fpu fpv5-d16
+ 142              	_ZN10kiwi_synth9MultiPots10StartTimerEv:
+ 143              	.LVL10:
+ 144              	.LFB2567:
+  53:KiwiSynth/Controls/MultiPots.cpp **** 
+  54:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::StartTimer()
+  55:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 145              		.loc 1 55 5 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+  56:KiwiSynth/Controls/MultiPots.cpp ****         timer.Start();
+ 150              		.loc 1 56 9 view .LVU36
+ 151              		.loc 1 56 20 is_stmt 0 view .LVU37
+ 152 0000 7430     		adds	r0, r0, #116
+ 153              	.LVL11:
+ 154              		.loc 1 56 20 view .LVU38
+ 155 0002 FFF7FEBF 		b	_ZN5daisy11TimerHandle5StartEv
+ 156              	.LVL12:
+ 157              		.loc 1 56 20 view .LVU39
+ 158              		.cfi_endproc
+ 159              	.LFE2567:
+ 161 0006 00BF     		.section	.text._ZN10kiwi_synth9MultiPots10GetMpValueEii,"ax",%progbits
+ 162              		.align	1
+ 163              		.p2align 2,,3
+ 164              		.global	_ZN10kiwi_synth9MultiPots10GetMpValueEii
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 168              		.fpu fpv5-d16
+ 170              	_ZN10kiwi_synth9MultiPots10GetMpValueEii:
+ 171              	.LVL13:
+ 172              	.LFB2569:
+  57:KiwiSynth/Controls/MultiPots.cpp ****     }
+  58:KiwiSynth/Controls/MultiPots.cpp **** 
+  59:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::Process()
+  60:KiwiSynth/Controls/MultiPots.cpp ****     {
+  61:KiwiSynth/Controls/MultiPots.cpp ****         // We read before selecting because reading will not use the new pin if we only just select
+  62:KiwiSynth/Controls/MultiPots.cpp ****         ReadPots();
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 7
+
+
+  63:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+  64:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+  65:KiwiSynth/Controls/MultiPots.cpp ****         SelectMpChannel(currentPot);
+  66:KiwiSynth/Controls/MultiPots.cpp ****     }
+  67:KiwiSynth/Controls/MultiPots.cpp **** 
+  68:KiwiSynth/Controls/MultiPots.cpp ****     float MultiPots::GetMpValue(int boardNumber, int channelNumber)
+  69:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 173              		.loc 1 69 5 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177              		@ link register save eliminated.
+  70:KiwiSynth/Controls/MultiPots.cpp ****         return mpValueBuffer[boardNumber][channelNumber];
+ 178              		.loc 1 70 9 view .LVU41
+ 179              		.loc 1 70 41 is_stmt 0 view .LVU42
+ 180 0000 C36E     		ldr	r3, [r0, #108]
+ 181              		.loc 1 70 56 view .LVU43
+ 182 0002 53F82130 		ldr	r3, [r3, r1, lsl #2]
+ 183 0006 03EB8202 		add	r2, r3, r2, lsl #2
+ 184              	.LVL14:
+  71:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 185              		.loc 1 71 5 view .LVU44
+ 186 000a 92ED000A 		vldr.32	s0, [r2]
+ 187 000e 7047     		bx	lr
+ 188              		.cfi_endproc
+ 189              	.LFE2569:
+ 191              		.section	.text._ZN10kiwi_synth9MultiPots14GetDirectValueEi,"ax",%progbits
+ 192              		.align	1
+ 193              		.p2align 2,,3
+ 194              		.global	_ZN10kiwi_synth9MultiPots14GetDirectValueEi
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 198              		.fpu fpv5-d16
+ 200              	_ZN10kiwi_synth9MultiPots14GetDirectValueEi:
+ 201              	.LVL15:
+ 202              	.LFB2570:
+  72:KiwiSynth/Controls/MultiPots.cpp **** 
+  73:KiwiSynth/Controls/MultiPots.cpp ****     float MultiPots::GetDirectValue(int potNumber)
+  74:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 203              		.loc 1 74 5 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		@ link register save eliminated.
+  75:KiwiSynth/Controls/MultiPots.cpp ****         return directValueBuffer[potNumber];
+ 208              		.loc 1 75 9 view .LVU46
+ 209              		.loc 1 75 43 is_stmt 0 view .LVU47
+ 210 0000 036F     		ldr	r3, [r0, #112]
+ 211 0002 03EB8101 		add	r1, r3, r1, lsl #2
+ 212              	.LVL16:
+  76:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 213              		.loc 1 76 5 view .LVU48
+ 214 0006 91ED000A 		vldr.32	s0, [r1]
+ 215 000a 7047     		bx	lr
+ 216              		.cfi_endproc
+ 217              	.LFE2570:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 8
+
+
+ 219              		.section	.text._ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE,"ax",%progbits
+ 220              		.align	1
+ 221              		.p2align 2,,3
+ 222              		.global	_ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE
+ 223              		.syntax unified
+ 224              		.thumb
+ 225              		.thumb_func
+ 226              		.fpu fpv5-d16
+ 228              	_ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE:
+ 229              	.LVL17:
+ 230              	.LFB2571:
+  77:KiwiSynth/Controls/MultiPots.cpp **** 
+  78:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::InitMulti(MultiPotsConfig *multiPotsConfig)
+  79:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 231              		.loc 1 79 5 is_stmt 1 view -0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 8
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+  80:KiwiSynth/Controls/MultiPots.cpp ****         a0.Init(multiPotsConfig->pinA0, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 235              		.loc 1 80 9 view .LVU50
+  79:KiwiSynth/Controls/MultiPots.cpp ****         a0.Init(multiPotsConfig->pinA0, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 236              		.loc 1 79 5 is_stmt 0 view .LVU51
+ 237 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 238              		.cfi_def_cfa_offset 24
+ 239              		.cfi_offset 4, -24
+ 240              		.cfi_offset 5, -20
+ 241              		.cfi_offset 6, -16
+ 242              		.cfi_offset 7, -12
+ 243              		.cfi_offset 8, -8
+ 244              		.cfi_offset 14, -4
+ 245              		.loc 1 80 16 view .LVU52
+ 246 0004 0024     		movs	r4, #0
+  79:KiwiSynth/Controls/MultiPots.cpp ****         a0.Init(multiPotsConfig->pinA0, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 247              		.loc 1 79 5 view .LVU53
+ 248 0006 84B0     		sub	sp, sp, #16
+ 249              		.cfi_def_cfa_offset 40
+  79:KiwiSynth/Controls/MultiPots.cpp ****         a0.Init(multiPotsConfig->pinA0, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 250              		.loc 1 79 5 view .LVU54
+ 251 0008 0546     		mov	r5, r0
+ 252 000a 0E46     		mov	r6, r1
+ 253              		.loc 1 80 16 view .LVU55
+ 254 000c 0122     		movs	r2, #1
+ 255 000e 2346     		mov	r3, r4
+ 256 0010 1030     		adds	r0, r0, #16
+ 257              	.LVL18:
+ 258              		.loc 1 80 16 view .LVU56
+ 259 0012 0094     		str	r4, [sp]
+ 260 0014 C968     		ldr	r1, [r1, #12]
+ 261              	.LVL19:
+ 262              		.loc 1 80 16 view .LVU57
+ 263 0016 FFF7FEFF 		bl	_ZN5daisy4GPIO4InitENS_3PinENS0_4ModeENS0_4PullENS0_5SpeedE
+ 264              	.LVL20:
+  81:KiwiSynth/Controls/MultiPots.cpp ****         a1.Init(multiPotsConfig->pinA1, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 265              		.loc 1 81 9 is_stmt 1 view .LVU58
+ 266              		.loc 1 81 16 is_stmt 0 view .LVU59
+ 267 001a 2346     		mov	r3, r4
+ 268 001c 0122     		movs	r2, #1
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 9
+
+
+ 269 001e 05F12400 		add	r0, r5, #36
+ 270 0022 0094     		str	r4, [sp]
+ 271 0024 F189     		ldrh	r1, [r6, #14]
+ 272 0026 FFF7FEFF 		bl	_ZN5daisy4GPIO4InitENS_3PinENS0_4ModeENS0_4PullENS0_5SpeedE
+ 273              	.LVL21:
+  82:KiwiSynth/Controls/MultiPots.cpp ****         a2.Init(multiPotsConfig->pinA2, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+ 274              		.loc 1 82 9 is_stmt 1 view .LVU60
+ 275              		.loc 1 82 16 is_stmt 0 view .LVU61
+ 276 002a 2346     		mov	r3, r4
+ 277 002c 0094     		str	r4, [sp]
+ 278 002e 0122     		movs	r2, #1
+ 279 0030 3169     		ldr	r1, [r6, #16]
+ 280 0032 05F13800 		add	r0, r5, #56
+ 281 0036 FFF7FEFF 		bl	_ZN5daisy4GPIO4InitENS_3PinENS0_4ModeENS0_4PullENS0_5SpeedE
+ 282              	.LVL22:
+  83:KiwiSynth/Controls/MultiPots.cpp ****         if (numChannels > 8) {
+ 283              		.loc 1 83 9 is_stmt 1 view .LVU62
+ 284 003a 6B68     		ldr	r3, [r5, #4]
+ 285 003c 082B     		cmp	r3, #8
+ 286 003e 5BDC     		bgt	.L37
+ 287              	.L27:
+  84:KiwiSynth/Controls/MultiPots.cpp ****         a3.Init(multiPotsConfig->pinA3, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
+  85:KiwiSynth/Controls/MultiPots.cpp ****         }
+  86:KiwiSynth/Controls/MultiPots.cpp **** 
+  87:KiwiSynth/Controls/MultiPots.cpp ****         AdcChannelConfig *adcConfig = new AdcChannelConfig[numMps];
+ 288              		.loc 1 87 9 view .LVU63
+ 289              		.loc 1 87 60 is_stmt 0 view .LVU64
+ 290 0040 2868     		ldr	r0, [r5]
+ 291              		.loc 1 87 66 view .LVU65
+ 292 0042 324B     		ldr	r3, .L38
+ 293 0044 9842     		cmp	r0, r3
+ 294 0046 54D8     		bhi	.L35
+ 295              		.loc 1 87 66 discriminator 1 view .LVU66
+ 296 0048 00EBC000 		add	r0, r0, r0, lsl #3
+ 297 004c 4000     		lsls	r0, r0, #1
+ 298              	.L28:
+ 299              		.loc 1 87 66 discriminator 4 view .LVU67
+ 300 004e FFF7FEFF 		bl	_Znaj
+ 301              	.LVL23:
+ 302              	.LBB82:
+  88:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++)
+ 303              		.loc 1 88 29 discriminator 4 view .LVU68
+ 304 0052 2A68     		ldr	r2, [r5]
+ 305              	.LBE82:
+  87:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++)
+ 306              		.loc 1 87 66 discriminator 4 view .LVU69
+ 307 0054 0746     		mov	r7, r0
+ 308              	.LVL24:
+ 309              		.loc 1 88 9 is_stmt 1 discriminator 4 view .LVU70
+ 310              	.LBB87:
+ 311              		.loc 1 88 27 discriminator 4 view .LVU71
+ 312 0056 002A     		cmp	r2, #0
+ 313 0058 1CDD     		ble	.L32
+ 314 005a 8046     		mov	r8, r0
+ 315              		.loc 1 88 18 is_stmt 0 view .LVU72
+ 316 005c 0024     		movs	r4, #0
+ 317              	.LVL25:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 10
+
+
+ 318              	.L33:
+  89:KiwiSynth/Controls/MultiPots.cpp ****         {
+  90:KiwiSynth/Controls/MultiPots.cpp ****             pinsSignal[i] = multiPotsConfig->pinsSignal[i];
+ 319              		.loc 1 90 13 is_stmt 1 discriminator 2 view .LVU73
+ 320              		.loc 1 90 27 is_stmt 0 discriminator 2 view .LVU74
+ 321 005e 2B6E     		ldr	r3, [r5, #96]
+  91:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+  92:KiwiSynth/Controls/MultiPots.cpp ****             adcConfig[i].InitSingle(pinsSignal[i]);
+ 322              		.loc 1 92 36 discriminator 2 view .LVU75
+ 323 0060 4046     		mov	r0, r8
+  90:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 324              		.loc 1 90 27 discriminator 2 view .LVU76
+ 325 0062 7169     		ldr	r1, [r6, #20]
+ 326              		.loc 1 92 36 discriminator 2 view .LVU77
+ 327 0064 0222     		movs	r2, #2
+  90:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 328              		.loc 1 90 27 discriminator 2 view .LVU78
+ 329 0066 03EB440C 		add	ip, r3, r4, lsl #1
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 330              		.loc 1 88 27 discriminator 2 view .LVU79
+ 331 006a 08F11208 		add	r8, r8, #18
+  90:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 332              		.loc 1 90 27 discriminator 2 view .LVU80
+ 333 006e 31F81410 		ldrh	r1, [r1, r4, lsl #1]	@ unaligned
+ 334 0072 23F81410 		strh	r1, [r3, r4, lsl #1]	@ unaligned
+ 335              		.loc 1 92 13 is_stmt 1 discriminator 2 view .LVU81
+ 336              	.LVL26:
+ 337              	.LBB83:
+ 338              	.LBI83:
+ 339              		.file 3 "../../libDaisy//src/daisy_core.h"
+   1:../../libDaisy//src/daisy_core.h **** #pragma once
+   2:../../libDaisy//src/daisy_core.h **** #ifndef DSY_CORE_HW_H
+   3:../../libDaisy//src/daisy_core.h **** #define DSY_CORE_HW_H /**< & */
+   4:../../libDaisy//src/daisy_core.h **** #include <stdint.h>
+   5:../../libDaisy//src/daisy_core.h **** #include <stdlib.h>
+   6:../../libDaisy//src/daisy_core.h **** 
+   7:../../libDaisy//src/daisy_core.h **** #if defined(_MSC_VER)
+   8:../../libDaisy//src/daisy_core.h **** #define FORCE_INLINE __forceinline /**< & */
+   9:../../libDaisy//src/daisy_core.h **** #elif defined(__clang__)
+  10:../../libDaisy//src/daisy_core.h **** #define FORCE_INLINE inline __attribute__((always_inline)) /**< & */
+  11:../../libDaisy//src/daisy_core.h **** #pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
+  12:../../libDaisy//src/daisy_core.h **** #elif defined(__GNUC__)
+  13:../../libDaisy//src/daisy_core.h **** #define FORCE_INLINE inline __attribute__((always_inline)) /**< & */
+  14:../../libDaisy//src/daisy_core.h **** #else
+  15:../../libDaisy//src/daisy_core.h **** #error unknown compiler
+  16:../../libDaisy//src/daisy_core.h **** #endif
+  17:../../libDaisy//src/daisy_core.h **** 
+  18:../../libDaisy//src/daisy_core.h **** /** @addtogroup utility
+  19:../../libDaisy//src/daisy_core.h ****     @{
+  20:../../libDaisy//src/daisy_core.h **** */
+  21:../../libDaisy//src/daisy_core.h **** 
+  22:../../libDaisy//src/daisy_core.h **** /** Macro for area of memory that is configured as cacheless
+  23:../../libDaisy//src/daisy_core.h **** This should be used primarily for DMA buffers, and the like.
+  24:../../libDaisy//src/daisy_core.h **** */
+  25:../../libDaisy//src/daisy_core.h **** #define DMA_BUFFER_MEM_SECTION __attribute__((section(".sram1_bss")))
+  26:../../libDaisy//src/daisy_core.h **** /** 
+  27:../../libDaisy//src/daisy_core.h **** THE DTCM RAM section is also non-cached. However, is not suitable 
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 11
+
+
+  28:../../libDaisy//src/daisy_core.h **** for DMA transfers. Performance is on par with internal SRAM w/ 
+  29:../../libDaisy//src/daisy_core.h **** cache enabled.
+  30:../../libDaisy//src/daisy_core.h **** */
+  31:../../libDaisy//src/daisy_core.h **** #define DTCM_MEM_SECTION __attribute__((section(".dtcmram_bss")))
+  32:../../libDaisy//src/daisy_core.h **** 
+  33:../../libDaisy//src/daisy_core.h **** #define FBIPMAX 0.999985f             /**< close to 1.0f-LSB at 16 bit */
+  34:../../libDaisy//src/daisy_core.h **** #define FBIPMIN (-FBIPMAX)            /**< - (1 - LSB) */
+  35:../../libDaisy//src/daisy_core.h **** #define U82F_SCALE 0.0078740f         /**< 1 / 127 */
+  36:../../libDaisy//src/daisy_core.h **** #define F2U8_SCALE 127.0f             /**< 128 - 1 */
+  37:../../libDaisy//src/daisy_core.h **** #define S82F_SCALE 0.0078125f         /**< 1 / (2**7) */
+  38:../../libDaisy//src/daisy_core.h **** #define F2S8_SCALE 127.0f             /**< (2 ** 7) - 1 */
+  39:../../libDaisy//src/daisy_core.h **** #define S162F_SCALE 3.0517578125e-05f /**< 1 / (2** 15) */
+  40:../../libDaisy//src/daisy_core.h **** #define F2S16_SCALE 32767.0f          /**< (2 ** 15) - 1 */
+  41:../../libDaisy//src/daisy_core.h **** #define F2S24_SCALE 8388608.0f        /**< 2 ** 23 */
+  42:../../libDaisy//src/daisy_core.h **** #define S242F_SCALE 1.192092896e-07f  /**< 1 / (2 ** 23) */
+  43:../../libDaisy//src/daisy_core.h **** #define S24SIGN 0x800000              /**< 2 ** 23 */
+  44:../../libDaisy//src/daisy_core.h **** #define S322F_SCALE 4.6566129e-10f    /**< 1 / (2** 31) */
+  45:../../libDaisy//src/daisy_core.h **** #define F2S32_SCALE 2147483647.f      /**< (2 ** 31) - 1 */
+  46:../../libDaisy//src/daisy_core.h **** 
+  47:../../libDaisy//src/daisy_core.h **** 
+  48:../../libDaisy//src/daisy_core.h **** /** shorthand macro for simplifying the reading of the left 
+  49:../../libDaisy//src/daisy_core.h ****  *  channel of a non-interleaved output buffer named out */
+  50:../../libDaisy//src/daisy_core.h **** #define OUT_L out[0]
+  51:../../libDaisy//src/daisy_core.h **** 
+  52:../../libDaisy//src/daisy_core.h **** /** shorthand macro for simplifying the reading of the right 
+  53:../../libDaisy//src/daisy_core.h ****  *  channel of a non-interleaved output buffer named out */
+  54:../../libDaisy//src/daisy_core.h **** #define OUT_R out[1]
+  55:../../libDaisy//src/daisy_core.h **** 
+  56:../../libDaisy//src/daisy_core.h **** /** shorthand macro for simplifying the reading of the left 
+  57:../../libDaisy//src/daisy_core.h ****  *  channel of a non-interleaved input buffer named in */
+  58:../../libDaisy//src/daisy_core.h **** #define IN_L in[0]
+  59:../../libDaisy//src/daisy_core.h **** 
+  60:../../libDaisy//src/daisy_core.h **** /** shorthand macro for simplifying the reading of the right 
+  61:../../libDaisy//src/daisy_core.h ****  *  channel of a non-interleaved input buffer named in */
+  62:../../libDaisy//src/daisy_core.h **** #define IN_R in[1]
+  63:../../libDaisy//src/daisy_core.h **** 
+  64:../../libDaisy//src/daisy_core.h **** /** 
+  65:../../libDaisy//src/daisy_core.h ****     Computes cube.
+  66:../../libDaisy//src/daisy_core.h ****     \param x Number to be cubed
+  67:../../libDaisy//src/daisy_core.h ****     \return x ^ 3
+  68:../../libDaisy//src/daisy_core.h **** */
+  69:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float cube(float x)
+  70:../../libDaisy//src/daisy_core.h **** {
+  71:../../libDaisy//src/daisy_core.h ****     return (x * x) * x;
+  72:../../libDaisy//src/daisy_core.h **** }
+  73:../../libDaisy//src/daisy_core.h **** 
+  74:../../libDaisy//src/daisy_core.h **** /** 
+  75:../../libDaisy//src/daisy_core.h ****     Converts unsigned 8-bit to float
+  76:../../libDaisy//src/daisy_core.h ****     \param x Number to be scaled.
+  77:../../libDaisy//src/daisy_core.h ****     \return Scaled number.
+  78:../../libDaisy//src/daisy_core.h **** */
+  79:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float u82f(uint8_t x)
+  80:../../libDaisy//src/daisy_core.h **** {
+  81:../../libDaisy//src/daisy_core.h ****     return ((float)x - 127.f) * U82F_SCALE;
+  82:../../libDaisy//src/daisy_core.h **** }
+  83:../../libDaisy//src/daisy_core.h **** 
+  84:../../libDaisy//src/daisy_core.h **** /**
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 12
+
+
+  85:../../libDaisy//src/daisy_core.h ****     Converts float to unsigned 8-bit
+  86:../../libDaisy//src/daisy_core.h **** */
+  87:../../libDaisy//src/daisy_core.h **** FORCE_INLINE uint8_t f2u8(float x)
+  88:../../libDaisy//src/daisy_core.h **** {
+  89:../../libDaisy//src/daisy_core.h ****     x = x <= FBIPMIN ? FBIPMIN : x;
+  90:../../libDaisy//src/daisy_core.h ****     x = x >= FBIPMAX ? FBIPMAX : x;
+  91:../../libDaisy//src/daisy_core.h ****     return (uint8_t)((x * F2U8_SCALE) + F2U8_SCALE);
+  92:../../libDaisy//src/daisy_core.h **** }
+  93:../../libDaisy//src/daisy_core.h **** 
+  94:../../libDaisy//src/daisy_core.h **** 
+  95:../../libDaisy//src/daisy_core.h **** /** 
+  96:../../libDaisy//src/daisy_core.h ****     Converts Signed 8-bit to float
+  97:../../libDaisy//src/daisy_core.h ****     \param x Number to be scaled.
+  98:../../libDaisy//src/daisy_core.h ****     \return Scaled number.
+  99:../../libDaisy//src/daisy_core.h **** */
+ 100:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float s82f(int8_t x)
+ 101:../../libDaisy//src/daisy_core.h **** {
+ 102:../../libDaisy//src/daisy_core.h ****     return (float)x * S82F_SCALE;
+ 103:../../libDaisy//src/daisy_core.h **** }
+ 104:../../libDaisy//src/daisy_core.h **** 
+ 105:../../libDaisy//src/daisy_core.h **** /**
+ 106:../../libDaisy//src/daisy_core.h ****     Converts float to Signed 8-bit
+ 107:../../libDaisy//src/daisy_core.h **** */
+ 108:../../libDaisy//src/daisy_core.h **** FORCE_INLINE int8_t f2s8(float x)
+ 109:../../libDaisy//src/daisy_core.h **** {
+ 110:../../libDaisy//src/daisy_core.h ****     x = x <= FBIPMIN ? FBIPMIN : x;
+ 111:../../libDaisy//src/daisy_core.h ****     x = x >= FBIPMAX ? FBIPMAX : x;
+ 112:../../libDaisy//src/daisy_core.h ****     return (int32_t)(x * F2S8_SCALE);
+ 113:../../libDaisy//src/daisy_core.h **** }
+ 114:../../libDaisy//src/daisy_core.h **** 
+ 115:../../libDaisy//src/daisy_core.h **** /** 
+ 116:../../libDaisy//src/daisy_core.h ****     Converts Signed 16-bit to float
+ 117:../../libDaisy//src/daisy_core.h ****     \param x Number to be scaled.
+ 118:../../libDaisy//src/daisy_core.h ****     \return Scaled number.
+ 119:../../libDaisy//src/daisy_core.h **** */
+ 120:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float s162f(int16_t x)
+ 121:../../libDaisy//src/daisy_core.h **** {
+ 122:../../libDaisy//src/daisy_core.h ****     return (float)x * S162F_SCALE;
+ 123:../../libDaisy//src/daisy_core.h **** }
+ 124:../../libDaisy//src/daisy_core.h **** 
+ 125:../../libDaisy//src/daisy_core.h **** /**
+ 126:../../libDaisy//src/daisy_core.h ****     Converts float to Signed 16-bit
+ 127:../../libDaisy//src/daisy_core.h **** */
+ 128:../../libDaisy//src/daisy_core.h **** FORCE_INLINE int16_t f2s16(float x)
+ 129:../../libDaisy//src/daisy_core.h **** {
+ 130:../../libDaisy//src/daisy_core.h ****     x = x <= FBIPMIN ? FBIPMIN : x;
+ 131:../../libDaisy//src/daisy_core.h ****     x = x >= FBIPMAX ? FBIPMAX : x;
+ 132:../../libDaisy//src/daisy_core.h ****     return (int32_t)(x * F2S16_SCALE);
+ 133:../../libDaisy//src/daisy_core.h **** }
+ 134:../../libDaisy//src/daisy_core.h **** 
+ 135:../../libDaisy//src/daisy_core.h **** /**
+ 136:../../libDaisy//src/daisy_core.h ****     Converts Signed 24-bit to float
+ 137:../../libDaisy//src/daisy_core.h ****  */
+ 138:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float s242f(int32_t x)
+ 139:../../libDaisy//src/daisy_core.h **** {
+ 140:../../libDaisy//src/daisy_core.h ****     x = (x ^ S24SIGN) - S24SIGN; //sign extend aka ((x<<8)>>8)
+ 141:../../libDaisy//src/daisy_core.h ****     return (float)x * S242F_SCALE;
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 13
+
+
+ 142:../../libDaisy//src/daisy_core.h **** }
+ 143:../../libDaisy//src/daisy_core.h **** /**
+ 144:../../libDaisy//src/daisy_core.h ****     Converts float to Signed 24-bit
+ 145:../../libDaisy//src/daisy_core.h ****  */
+ 146:../../libDaisy//src/daisy_core.h **** FORCE_INLINE int32_t f2s24(float x)
+ 147:../../libDaisy//src/daisy_core.h **** {
+ 148:../../libDaisy//src/daisy_core.h ****     x = x <= FBIPMIN ? FBIPMIN : x;
+ 149:../../libDaisy//src/daisy_core.h ****     x = x >= FBIPMAX ? FBIPMAX : x;
+ 150:../../libDaisy//src/daisy_core.h ****     return (int32_t)(x * F2S24_SCALE);
+ 151:../../libDaisy//src/daisy_core.h **** }
+ 152:../../libDaisy//src/daisy_core.h **** 
+ 153:../../libDaisy//src/daisy_core.h **** /**
+ 154:../../libDaisy//src/daisy_core.h ****     Converts Signed 32-bit to float
+ 155:../../libDaisy//src/daisy_core.h ****  */
+ 156:../../libDaisy//src/daisy_core.h **** FORCE_INLINE float s322f(int32_t x)
+ 157:../../libDaisy//src/daisy_core.h **** {
+ 158:../../libDaisy//src/daisy_core.h ****     return (float)x * S322F_SCALE;
+ 159:../../libDaisy//src/daisy_core.h **** }
+ 160:../../libDaisy//src/daisy_core.h **** /**
+ 161:../../libDaisy//src/daisy_core.h ****     Converts float to Signed 24-bit
+ 162:../../libDaisy//src/daisy_core.h ****  */
+ 163:../../libDaisy//src/daisy_core.h **** FORCE_INLINE int32_t f2s32(float x)
+ 164:../../libDaisy//src/daisy_core.h **** {
+ 165:../../libDaisy//src/daisy_core.h ****     x = x <= FBIPMIN ? FBIPMIN : x;
+ 166:../../libDaisy//src/daisy_core.h ****     x = x >= FBIPMAX ? FBIPMAX : x;
+ 167:../../libDaisy//src/daisy_core.h ****     return (int32_t)(x * F2S32_SCALE);
+ 168:../../libDaisy//src/daisy_core.h **** }
+ 169:../../libDaisy//src/daisy_core.h **** 
+ 170:../../libDaisy//src/daisy_core.h **** 
+ 171:../../libDaisy//src/daisy_core.h **** /** Enums and a simple struct for defining a hardware pin on the MCU
+ 172:../../libDaisy//src/daisy_core.h ****  *  These correlate with the stm32 datasheet, and are used to configure
+ 173:../../libDaisy//src/daisy_core.h ****  *  the hardware.
+ 174:../../libDaisy//src/daisy_core.h ****  * 
+ 175:../../libDaisy//src/daisy_core.h ****  *  This along with the dsy_gpio_pin class should no longer be used.
+ 176:../../libDaisy//src/daisy_core.h ****  *  They are available for backwards compatability. 
+ 177:../../libDaisy//src/daisy_core.h ****  * 
+ 178:../../libDaisy//src/daisy_core.h ****  *  Please use GPIOPort enum and the Pin struct instead.
+ 179:../../libDaisy//src/daisy_core.h ****  */
+ 180:../../libDaisy//src/daisy_core.h **** typedef enum
+ 181:../../libDaisy//src/daisy_core.h **** {
+ 182:../../libDaisy//src/daisy_core.h ****     DSY_GPIOA, /**< & */
+ 183:../../libDaisy//src/daisy_core.h ****     DSY_GPIOB, /**< & */
+ 184:../../libDaisy//src/daisy_core.h ****     DSY_GPIOC, /**< & */
+ 185:../../libDaisy//src/daisy_core.h ****     DSY_GPIOD, /**< & */
+ 186:../../libDaisy//src/daisy_core.h ****     DSY_GPIOE, /**< & */
+ 187:../../libDaisy//src/daisy_core.h ****     DSY_GPIOF, /**< & */
+ 188:../../libDaisy//src/daisy_core.h ****     DSY_GPIOG, /**< & */
+ 189:../../libDaisy//src/daisy_core.h ****     DSY_GPIOH, /**< & */
+ 190:../../libDaisy//src/daisy_core.h ****     DSY_GPIOI, /**< & */
+ 191:../../libDaisy//src/daisy_core.h ****     DSY_GPIOJ, /**< & */
+ 192:../../libDaisy//src/daisy_core.h ****     DSY_GPIOK, /**< & */
+ 193:../../libDaisy//src/daisy_core.h ****     DSY_GPIOX, /** This is a non-existant port for unsupported bits of hardware. */
+ 194:../../libDaisy//src/daisy_core.h ****     DSY_GPIO_LAST, /** Final enum member */
+ 195:../../libDaisy//src/daisy_core.h **** } dsy_gpio_port;
+ 196:../../libDaisy//src/daisy_core.h **** 
+ 197:../../libDaisy//src/daisy_core.h **** /** Hardware define pins 
+ 198:../../libDaisy//src/daisy_core.h ****  *  
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 14
+
+
+ 199:../../libDaisy//src/daisy_core.h ****  *  The dsy_gpio_pin struct should no longer be used, and is only available for
+ 200:../../libDaisy//src/daisy_core.h ****  *  backwards compatability.
+ 201:../../libDaisy//src/daisy_core.h ****  * 
+ 202:../../libDaisy//src/daisy_core.h ****  *  Please use Pin struct instead.
+ 203:../../libDaisy//src/daisy_core.h ****  */
+ 204:../../libDaisy//src/daisy_core.h **** typedef struct
+ 205:../../libDaisy//src/daisy_core.h **** {
+ 206:../../libDaisy//src/daisy_core.h ****     dsy_gpio_port port; /**< & */
+ 207:../../libDaisy//src/daisy_core.h ****     uint8_t       pin;  /**< number 0-15 */
+ 208:../../libDaisy//src/daisy_core.h **** } dsy_gpio_pin;
+ 209:../../libDaisy//src/daisy_core.h **** 
+ 210:../../libDaisy//src/daisy_core.h **** /** Helper for creating pins from port/pin combos easily
+ 211:../../libDaisy//src/daisy_core.h ****  * 
+ 212:../../libDaisy//src/daisy_core.h ****  *  The dsy_gpio_pin struct should no longer be used, and is only available for
+ 213:../../libDaisy//src/daisy_core.h ****  *  backwards compatability.
+ 214:../../libDaisy//src/daisy_core.h ****  * 
+ 215:../../libDaisy//src/daisy_core.h ****  *  Please use Pin struct instead.
+ 216:../../libDaisy//src/daisy_core.h **** */
+ 217:../../libDaisy//src/daisy_core.h **** FORCE_INLINE dsy_gpio_pin dsy_pin(dsy_gpio_port port, uint8_t pin)
+ 218:../../libDaisy//src/daisy_core.h **** {
+ 219:../../libDaisy//src/daisy_core.h ****     dsy_gpio_pin p;
+ 220:../../libDaisy//src/daisy_core.h ****     p.port = port;
+ 221:../../libDaisy//src/daisy_core.h ****     p.pin  = pin;
+ 222:../../libDaisy//src/daisy_core.h ****     return p;
+ 223:../../libDaisy//src/daisy_core.h **** }
+ 224:../../libDaisy//src/daisy_core.h **** 
+ 225:../../libDaisy//src/daisy_core.h **** /** Helper for testing sameness of two dsy_gpio_pins
+ 226:../../libDaisy//src/daisy_core.h ****  *  \return    1 if same, 0 if different
+ 227:../../libDaisy//src/daisy_core.h ****  * 
+ 228:../../libDaisy//src/daisy_core.h ****  *  The dsy_gpio_pin struct should no longer be used, and is only available for
+ 229:../../libDaisy//src/daisy_core.h ****  *  backwards compatability.
+ 230:../../libDaisy//src/daisy_core.h ****  * 
+ 231:../../libDaisy//src/daisy_core.h ****  *  Please use Pin struct instead.
+ 232:../../libDaisy//src/daisy_core.h ****  */
+ 233:../../libDaisy//src/daisy_core.h **** FORCE_INLINE uint8_t dsy_pin_cmp(dsy_gpio_pin *a, dsy_gpio_pin *b)
+ 234:../../libDaisy//src/daisy_core.h **** {
+ 235:../../libDaisy//src/daisy_core.h ****     return ((a->port == b->port) && (a->pin == b->pin));
+ 236:../../libDaisy//src/daisy_core.h **** }
+ 237:../../libDaisy//src/daisy_core.h **** 
+ 238:../../libDaisy//src/daisy_core.h **** #ifdef __cplusplus
+ 239:../../libDaisy//src/daisy_core.h **** 
+ 240:../../libDaisy//src/daisy_core.h **** namespace daisy
+ 241:../../libDaisy//src/daisy_core.h **** {
+ 242:../../libDaisy//src/daisy_core.h **** /** @brief GPIO Port names */
+ 243:../../libDaisy//src/daisy_core.h **** enum GPIOPort
+ 244:../../libDaisy//src/daisy_core.h **** {
+ 245:../../libDaisy//src/daisy_core.h ****     PORTA, /**< Port A */
+ 246:../../libDaisy//src/daisy_core.h ****     PORTB, /**< Port B */
+ 247:../../libDaisy//src/daisy_core.h ****     PORTC, /**< Port C */
+ 248:../../libDaisy//src/daisy_core.h ****     PORTD, /**< Port D */
+ 249:../../libDaisy//src/daisy_core.h ****     PORTE, /**< Port E */
+ 250:../../libDaisy//src/daisy_core.h ****     PORTF, /**< Port F */
+ 251:../../libDaisy//src/daisy_core.h ****     PORTG, /**< Port G */
+ 252:../../libDaisy//src/daisy_core.h ****     PORTH, /**< Port H */
+ 253:../../libDaisy//src/daisy_core.h ****     PORTI, /**< Port I */
+ 254:../../libDaisy//src/daisy_core.h ****     PORTJ, /**< Port J */
+ 255:../../libDaisy//src/daisy_core.h ****     PORTK, /**< Port K */
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 15
+
+
+ 256:../../libDaisy//src/daisy_core.h ****     PORTX, /**< Used as a dummy port to signal an invalid pin. */
+ 257:../../libDaisy//src/daisy_core.h **** };
+ 258:../../libDaisy//src/daisy_core.h **** 
+ 259:../../libDaisy//src/daisy_core.h **** /** @brief representation of hardware port/pin combination */
+ 260:../../libDaisy//src/daisy_core.h **** struct Pin
+ 261:../../libDaisy//src/daisy_core.h **** {
+ 262:../../libDaisy//src/daisy_core.h ****     GPIOPort port;
+ 263:../../libDaisy//src/daisy_core.h ****     uint8_t  pin;
+ 264:../../libDaisy//src/daisy_core.h **** 
+ 265:../../libDaisy//src/daisy_core.h ****     /** @brief Constructor creates a valid pin. 
+ 266:../../libDaisy//src/daisy_core.h ****      *  @param pt GPIOPort between PA, and PK corresponding to STM32 Port.
+ 267:../../libDaisy//src/daisy_core.h ****      *  @param pn pin number in range of 0-15
+ 268:../../libDaisy//src/daisy_core.h ****     */
+ 269:../../libDaisy//src/daisy_core.h ****     constexpr Pin(const GPIOPort pt, const uint8_t pn) : port(pt), pin(pn) {}
+ 270:../../libDaisy//src/daisy_core.h **** 
+ 271:../../libDaisy//src/daisy_core.h ****     /** @brief Basic Constructor creates an invalid Pin object */
+ 272:../../libDaisy//src/daisy_core.h ****     constexpr Pin() : port(PORTX), pin(255) {}
+ 273:../../libDaisy//src/daisy_core.h **** 
+ 274:../../libDaisy//src/daisy_core.h ****     /** @brief checks validity of a Pin 
+ 275:../../libDaisy//src/daisy_core.h ****      *  @retval returns true if the port is a valid hardware pin, otherwise false.
+ 276:../../libDaisy//src/daisy_core.h ****     */
+ 277:../../libDaisy//src/daisy_core.h ****     constexpr bool IsValid() const { return port != PORTX && pin < 16; }
+ 278:../../libDaisy//src/daisy_core.h **** 
+ 279:../../libDaisy//src/daisy_core.h ****     /** @brief comparison operator for checking equality between Pin objects */
+ 280:../../libDaisy//src/daisy_core.h ****     constexpr bool operator==(const Pin &rhs) const
+ 281:../../libDaisy//src/daisy_core.h ****     {
+ 282:../../libDaisy//src/daisy_core.h ****         return (rhs.port == port) && (rhs.pin == pin);
+ 283:../../libDaisy//src/daisy_core.h ****     }
+ 284:../../libDaisy//src/daisy_core.h **** 
+ 285:../../libDaisy//src/daisy_core.h ****     /** @brief comparison operator for checking inequality between Pin objects */
+ 286:../../libDaisy//src/daisy_core.h ****     constexpr bool operator!=(const Pin &rhs) const { return !operator==(rhs); }
+ 287:../../libDaisy//src/daisy_core.h **** 
+ 288:../../libDaisy//src/daisy_core.h ****     /** @brief conversion operation for converting to the old-style representation
+ 289:../../libDaisy//src/daisy_core.h ****      *         of a pin.
+ 290:../../libDaisy//src/daisy_core.h ****      * 
+ 291:../../libDaisy//src/daisy_core.h ****      *  This allows the new Pin type to be used in place of the older, dsy_gpio_pin
+ 292:../../libDaisy//src/daisy_core.h ****      *  type.
+ 293:../../libDaisy//src/daisy_core.h ****      */
+ 294:../../libDaisy//src/daisy_core.h ****     constexpr operator dsy_gpio_pin() const
+ 340              		.loc 3 294 15 discriminator 2 view .LVU82
+ 341              	.LBB84:
+ 295:../../libDaisy//src/daisy_core.h ****     {
+ 296:../../libDaisy//src/daisy_core.h ****         return dsy_gpio_pin{.port = static_cast<dsy_gpio_port>(port),
+ 342              		.loc 3 296 9 discriminator 2 view .LVU83
+ 343 0076 13F81410 		ldrb	r1, [r3, r4, lsl #1]	@ zero_extendqisi2
+ 344              	.LBE84:
+ 345              	.LBE83:
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 346              		.loc 1 88 9 is_stmt 0 discriminator 2 view .LVU84
+ 347 007a 0134     		adds	r4, r4, #1
+ 348              	.LVL27:
+ 349              	.LBB86:
+ 350              	.LBB85:
+ 297:../../libDaisy//src/daisy_core.h ****                             .pin  = pin};
+ 351              		.loc 3 297 37 discriminator 2 view .LVU85
+ 352 007c 9CF80130 		ldrb	r3, [ip, #1]	@ zero_extendqisi2
+ 353 0080 8DF80810 		strb	r1, [sp, #8]
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 16
+
+
+ 354 0084 8DF80930 		strb	r3, [sp, #9]
+ 355              	.LVL28:
+ 356              		.loc 3 297 37 discriminator 2 view .LVU86
+ 357              	.LBE85:
+ 358              	.LBE86:
+ 359              		.loc 1 92 36 discriminator 2 view .LVU87
+ 360 0088 0299     		ldr	r1, [sp, #8]
+ 361 008a FFF7FEFF 		bl	_ZN5daisy16AdcChannelConfig10InitSingleE12dsy_gpio_pinNS0_15ConversionSpeedE
+ 362              	.LVL29:
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 363              		.loc 1 88 9 is_stmt 1 discriminator 2 view .LVU88
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 364              		.loc 1 88 27 discriminator 2 view .LVU89
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 365              		.loc 1 88 29 is_stmt 0 discriminator 2 view .LVU90
+ 366 008e 2A68     		ldr	r2, [r5]
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 367              		.loc 1 88 27 discriminator 2 view .LVU91
+ 368 0090 A242     		cmp	r2, r4
+ 369 0092 E4DC     		bgt	.L33
+ 370              	.LVL30:
+ 371              	.L32:
+  88:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 372              		.loc 1 88 27 discriminator 2 view .LVU92
+ 373              	.LBE87:
+ 374              	.LBB88:
+  93:KiwiSynth/Controls/MultiPots.cpp ****         }
+  94:KiwiSynth/Controls/MultiPots.cpp **** 
+  95:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numDirectPots; i++)
+ 375              		.loc 1 95 27 is_stmt 1 view .LVU93
+ 376              		.loc 1 95 29 is_stmt 0 view .LVU94
+ 377 0094 A968     		ldr	r1, [r5, #8]
+ 378              		.loc 1 95 27 view .LVU95
+ 379 0096 0029     		cmp	r1, #0
+ 380 0098 1EDD     		ble	.L30
+ 381              		.loc 1 95 18 view .LVU96
+ 382 009a 0024     		movs	r4, #0
+ 383              	.LVL31:
+ 384              	.L31:
+  96:KiwiSynth/Controls/MultiPots.cpp ****         {
+  97:KiwiSynth/Controls/MultiPots.cpp ****             pinsDirect[i] = multiPotsConfig->pinsDirect[i];
+ 385              		.loc 1 97 13 is_stmt 1 discriminator 2 view .LVU97
+ 386              		.loc 1 97 27 is_stmt 0 discriminator 2 view .LVU98
+ 387 009c 686E     		ldr	r0, [r5, #100]
+  98:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+  99:KiwiSynth/Controls/MultiPots.cpp ****             adcConfig[i + numMps].InitSingle(pinsDirect[i]);
+ 388              		.loc 1 99 25 discriminator 2 view .LVU99
+ 389 009e A318     		adds	r3, r4, r2
+  97:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 390              		.loc 1 97 27 discriminator 2 view .LVU100
+ 391 00a0 B169     		ldr	r1, [r6, #24]
+ 392              		.loc 1 99 45 discriminator 2 view .LVU101
+ 393 00a2 0222     		movs	r2, #2
+  97:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 394              		.loc 1 97 27 discriminator 2 view .LVU102
+ 395 00a4 00EB440E 		add	lr, r0, r4, lsl #1
+ 396 00a8 31F81410 		ldrh	r1, [r1, r4, lsl #1]	@ unaligned
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 17
+
+
+ 397              		.loc 1 99 33 discriminator 2 view .LVU103
+ 398 00ac 03EBC303 		add	r3, r3, r3, lsl #3
+  97:KiwiSynth/Controls/MultiPots.cpp ****             //Configure the signal pins as ADC inputs. This is where we'll read the knob values fro
+ 399              		.loc 1 97 27 discriminator 2 view .LVU104
+ 400 00b0 20F81410 		strh	r1, [r0, r4, lsl #1]	@ unaligned
+ 401              		.loc 1 99 13 is_stmt 1 discriminator 2 view .LVU105
+ 402              	.LVL32:
+ 403              	.LBB89:
+ 404              	.LBI89:
+ 294:../../libDaisy//src/daisy_core.h ****     {
+ 405              		.loc 3 294 15 discriminator 2 view .LVU106
+ 406              	.LBB90:
+ 296:../../libDaisy//src/daisy_core.h ****                             .pin  = pin};
+ 407              		.loc 3 296 9 discriminator 2 view .LVU107
+ 408 00b4 10F814C0 		ldrb	ip, [r0, r4, lsl #1]	@ zero_extendqisi2
+ 409              	.LBE90:
+ 410              	.LBE89:
+ 411              		.loc 1 99 45 is_stmt 0 discriminator 2 view .LVU108
+ 412 00b8 07EB4300 		add	r0, r7, r3, lsl #1
+ 413              	.LBB92:
+ 414              	.LBB91:
+ 415              		.loc 3 297 37 discriminator 2 view .LVU109
+ 416 00bc 9EF80110 		ldrb	r1, [lr, #1]	@ zero_extendqisi2
+ 417              	.LBE91:
+ 418              	.LBE92:
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 419              		.loc 1 95 9 discriminator 2 view .LVU110
+ 420 00c0 0134     		adds	r4, r4, #1
+ 421              	.LVL33:
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 422              		.loc 1 95 9 discriminator 2 view .LVU111
+ 423 00c2 8DF80CC0 		strb	ip, [sp, #12]
+ 424 00c6 8DF80D10 		strb	r1, [sp, #13]
+ 425              	.LVL34:
+ 426              		.loc 1 99 45 discriminator 2 view .LVU112
+ 427 00ca 0399     		ldr	r1, [sp, #12]
+ 428 00cc FFF7FEFF 		bl	_ZN5daisy16AdcChannelConfig10InitSingleE12dsy_gpio_pinNS0_15ConversionSpeedE
+ 429              	.LVL35:
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 430              		.loc 1 95 9 is_stmt 1 discriminator 2 view .LVU113
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 431              		.loc 1 95 27 discriminator 2 view .LVU114
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 432              		.loc 1 95 29 is_stmt 0 discriminator 2 view .LVU115
+ 433 00d0 A968     		ldr	r1, [r5, #8]
+ 434              	.LBE88:
+ 100:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 101:KiwiSynth/Controls/MultiPots.cpp **** 
+ 102:KiwiSynth/Controls/MultiPots.cpp ****         hw->adc.Init(adcConfig, numMps + numDirectPots);
+ 435              		.loc 1 102 33 discriminator 2 view .LVU116
+ 436 00d2 2A68     		ldr	r2, [r5]
+ 437              	.LBB93:
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 438              		.loc 1 95 27 discriminator 2 view .LVU117
+ 439 00d4 A142     		cmp	r1, r4
+ 440 00d6 E1DC     		bgt	.L31
+ 441              	.LVL36:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 18
+
+
+ 442              	.L30:
+  95:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 443              		.loc 1 95 27 discriminator 2 view .LVU118
+ 444              	.LBE93:
+ 445              		.loc 1 102 9 is_stmt 1 view .LVU119
+ 446              		.loc 1 102 21 is_stmt 0 view .LVU120
+ 447 00d8 A86E     		ldr	r0, [r5, #104]
+ 448 00da 0A44     		add	r2, r2, r1
+ 449 00dc 0423     		movs	r3, #4
+ 450 00de 3946     		mov	r1, r7
+ 451 00e0 1830     		adds	r0, r0, #24
+ 452 00e2 FFF7FEFF 		bl	_ZN5daisy9AdcHandle4InitEPNS_16AdcChannelConfigEjNS0_12OverSamplingE
+ 453              	.LVL37:
+ 103:KiwiSynth/Controls/MultiPots.cpp ****         free(adcConfig);
+ 454              		.loc 1 103 9 is_stmt 1 view .LVU121
+ 455              		.loc 1 103 13 is_stmt 0 view .LVU122
+ 456 00e6 3846     		mov	r0, r7
+ 104:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 457              		.loc 1 104 5 view .LVU123
+ 458 00e8 04B0     		add	sp, sp, #16
+ 459              		.cfi_remember_state
+ 460              		.cfi_def_cfa_offset 24
+ 461              		@ sp needed
+ 462 00ea BDE8F041 		pop	{r4, r5, r6, r7, r8, lr}
+ 463              		.cfi_restore 14
+ 464              		.cfi_restore 8
+ 465              		.cfi_restore 7
+ 466              		.cfi_restore 6
+ 467              		.cfi_restore 5
+ 468              		.cfi_restore 4
+ 469              		.cfi_def_cfa_offset 0
+ 470              	.LVL38:
+ 103:KiwiSynth/Controls/MultiPots.cpp ****         free(adcConfig);
+ 471              		.loc 1 103 13 view .LVU124
+ 472 00ee FFF7FEBF 		b	free
+ 473              	.LVL39:
+ 474              	.L35:
+ 475              		.cfi_restore_state
+  87:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++)
+ 476              		.loc 1 87 66 view .LVU125
+ 477 00f2 4FF0FF30 		mov	r0, #-1
+ 478 00f6 AAE7     		b	.L28
+ 479              	.L37:
+  84:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 480              		.loc 1 84 9 is_stmt 1 view .LVU126
+  84:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 481              		.loc 1 84 16 is_stmt 0 view .LVU127
+ 482 00f8 0094     		str	r4, [sp]
+ 483 00fa 2346     		mov	r3, r4
+ 484 00fc 0122     		movs	r2, #1
+ 485 00fe 718A     		ldrh	r1, [r6, #18]
+ 486 0100 05F14C00 		add	r0, r5, #76
+ 487 0104 FFF7FEFF 		bl	_ZN5daisy4GPIO4InitENS_3PinENS0_4ModeENS0_4PullENS0_5SpeedE
+ 488              	.LVL40:
+ 489 0108 9AE7     		b	.L27
+ 490              	.L39:
+ 491 010a 00BF     		.align	2
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 19
+
+
+ 492              	.L38:
+ 493 010c C6711C07 		.word	119304646
+ 494              		.cfi_endproc
+ 495              	.LFE2571:
+ 497              		.section	.text._ZN10kiwi_synth9MultiPots9InitTimerEf,"ax",%progbits
+ 498              		.align	1
+ 499              		.p2align 2,,3
+ 500              		.global	_ZN10kiwi_synth9MultiPots9InitTimerEf
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 504              		.fpu fpv5-d16
+ 506              	_ZN10kiwi_synth9MultiPots9InitTimerEf:
+ 507              	.LVL41:
+ 508              	.LFB2572:
+ 105:KiwiSynth/Controls/MultiPots.cpp **** 
+ 106:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::InitTimer(float refreshRateMs)
+ 107:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 509              		.loc 1 107 5 is_stmt 1 view -0
+ 510              		.cfi_startproc
+ 511              		@ args = 0, pretend = 0, frame = 16
+ 512              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108:KiwiSynth/Controls/MultiPots.cpp ****         TimerHandle::Config config;
+ 513              		.loc 1 108 9 view .LVU129
+ 109:KiwiSynth/Controls/MultiPots.cpp ****         config.dir = TimerHandle::Config::CounterDir::UP;
+ 110:KiwiSynth/Controls/MultiPots.cpp ****         config.enable_irq = true;
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.period = std::min((int)(refreshRateMs * 20), 9999);
+ 514              		.loc 1 111 54 is_stmt 0 view .LVU130
+ 515 0000 F3EE047A 		vmov.f32	s15, #2.0e+1
+ 110:KiwiSynth/Controls/MultiPots.cpp ****         config.period = std::min((int)(refreshRateMs * 20), 9999);
+ 516              		.loc 1 110 27 view .LVU131
+ 517 0004 0123     		movs	r3, #1
+ 518              	.LBB94:
+ 519              	.LBB95:
+ 520              	.LBB96:
+  79:../../libDaisy//src/per/tim.h ****         {
+ 521              		.loc 2 79 27 view .LVU132
+ 522 0006 0022     		movs	r2, #0
+ 523              	.LBE96:
+ 524              	.LBE95:
+ 525              	.LBE94:
+ 526              		.loc 1 111 54 view .LVU133
+ 527 0008 20EE270A 		vmul.f32	s0, s0, s15
+ 528              	.LVL42:
+ 107:KiwiSynth/Controls/MultiPots.cpp ****         TimerHandle::Config config;
+ 529              		.loc 1 107 5 view .LVU134
+ 530 000c 70B5     		push	{r4, r5, r6, lr}
+ 531              		.cfi_def_cfa_offset 16
+ 532              		.cfi_offset 4, -16
+ 533              		.cfi_offset 5, -12
+ 534              		.cfi_offset 6, -8
+ 535              		.cfi_offset 14, -4
+ 536              		.loc 1 111 34 view .LVU135
+ 537 000e FDEEC07A 		vcvt.s32.f32	s15, s0
+ 107:KiwiSynth/Controls/MultiPots.cpp ****         TimerHandle::Config config;
+ 538              		.loc 1 107 5 view .LVU136
+ 539 0012 84B0     		sub	sp, sp, #16
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 20
+
+
+ 540              		.cfi_def_cfa_offset 32
+ 541              	.LVL43:
+ 542              	.LBB99:
+ 543              	.LBI94:
+  75:../../libDaisy//src/per/tim.h ****         : periph(Peripheral::TIM_2),
+ 544              		.loc 2 75 9 is_stmt 1 view .LVU137
+ 545              	.LBE99:
+ 546              		.loc 1 111 33 is_stmt 0 view .LVU138
+ 547 0014 42F20F76 		movw	r6, #9999
+ 112:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 113:KiwiSynth/Controls/MultiPots.cpp **** 
+ 114:KiwiSynth/Controls/MultiPots.cpp ****         timer.Init(config);
+ 548              		.loc 1 114 19 view .LVU139
+ 549 0018 00F17405 		add	r5, r0, #116
+ 110:KiwiSynth/Controls/MultiPots.cpp ****         config.period = std::min((int)(refreshRateMs * 20), 9999);
+ 550              		.loc 1 110 27 view .LVU140
+ 551 001c 8DF80C30 		strb	r3, [sp, #12]
+ 107:KiwiSynth/Controls/MultiPots.cpp ****         TimerHandle::Config config;
+ 552              		.loc 1 107 5 view .LVU141
+ 553 0020 0446     		mov	r4, r0
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 554              		.loc 1 111 34 view .LVU142
+ 555 0022 17EE903A 		vmov	r3, s15	@ int
+ 556              	.LBB100:
+ 557              	.LBB98:
+ 558              	.LBB97:
+  79:../../libDaisy//src/per/tim.h ****         {
+ 559              		.loc 2 79 27 view .LVU143
+ 560 0026 0192     		str	r2, [sp, #4]
+ 561              	.LVL44:
+  79:../../libDaisy//src/per/tim.h ****         {
+ 562              		.loc 2 79 27 view .LVU144
+ 563              	.LBE97:
+ 564              	.LBE98:
+ 565              	.LBE100:
+ 109:KiwiSynth/Controls/MultiPots.cpp ****         config.enable_irq = true;
+ 566              		.loc 1 109 9 is_stmt 1 view .LVU145
+ 110:KiwiSynth/Controls/MultiPots.cpp ****         config.period = std::min((int)(refreshRateMs * 20), 9999);
+ 567              		.loc 1 110 9 view .LVU146
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 568              		.loc 1 111 9 view .LVU147
+ 112:KiwiSynth/Controls/MultiPots.cpp **** 
+ 569              		.loc 1 112 23 is_stmt 0 view .LVU148
+ 570 0028 0322     		movs	r2, #3
+ 571              		.loc 1 114 19 view .LVU149
+ 572 002a 6946     		mov	r1, sp
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 573              		.loc 1 111 33 view .LVU150
+ 574 002c B342     		cmp	r3, r6
+ 575              		.loc 1 114 19 view .LVU151
+ 576 002e 2846     		mov	r0, r5
+ 577              	.LVL45:
+ 112:KiwiSynth/Controls/MultiPots.cpp **** 
+ 578              		.loc 1 112 23 view .LVU152
+ 579 0030 0092     		str	r2, [sp]
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 580              		.loc 1 111 33 view .LVU153
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 21
+
+
+ 581 0032 A8BF     		it	ge
+ 582 0034 3346     		movge	r3, r6
+ 111:KiwiSynth/Controls/MultiPots.cpp ****         config.periph = TimerHandle::Config::Peripheral::TIM_5;
+ 583              		.loc 1 111 23 view .LVU154
+ 584 0036 0293     		str	r3, [sp, #8]
+ 112:KiwiSynth/Controls/MultiPots.cpp **** 
+ 585              		.loc 1 112 9 is_stmt 1 view .LVU155
+ 586              		.loc 1 114 9 view .LVU156
+ 587              		.loc 1 114 19 is_stmt 0 view .LVU157
+ 588 0038 FFF7FEFF 		bl	_ZN5daisy11TimerHandle4InitERKNS0_6ConfigE
+ 589              	.LVL46:
+ 115:KiwiSynth/Controls/MultiPots.cpp ****         timer.SetPrescaler(9999);
+ 590              		.loc 1 115 9 is_stmt 1 view .LVU158
+ 591              		.loc 1 115 27 is_stmt 0 view .LVU159
+ 592 003c 3146     		mov	r1, r6
+ 593 003e 2846     		mov	r0, r5
+ 594 0040 FFF7FEFF 		bl	_ZN5daisy11TimerHandle12SetPrescalerEm
+ 595              	.LVL47:
+ 116:KiwiSynth/Controls/MultiPots.cpp ****         timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessTimer, (void *)(this))
+ 596              		.loc 1 116 9 is_stmt 1 view .LVU160
+ 597              		.loc 1 116 26 is_stmt 0 view .LVU161
+ 598 0044 2246     		mov	r2, r4
+ 599 0046 0349     		ldr	r1, .L42
+ 600 0048 2846     		mov	r0, r5
+ 601 004a FFF7FEFF 		bl	_ZN5daisy11TimerHandle11SetCallbackEPFvPvES1_
+ 602              	.LVL48:
+ 117:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 603              		.loc 1 117 5 view .LVU162
+ 604 004e 04B0     		add	sp, sp, #16
+ 605              		.cfi_def_cfa_offset 16
+ 606              		@ sp needed
+ 607 0050 70BD     		pop	{r4, r5, r6, pc}
+ 608              	.LVL49:
+ 609              	.L43:
+ 610              		.loc 1 117 5 view .LVU163
+ 611 0052 00BF     		.align	2
+ 612              	.L42:
+ 613 0054 00000000 		.word	_ZN10kiwi_synth12ProcessTimerEPv
+ 614              		.cfi_endproc
+ 615              	.LFE2572:
+ 617              		.section	.text._ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE,"ax",%progbit
+ 618              		.align	1
+ 619              		.p2align 2,,3
+ 620              		.global	_ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE
+ 621              		.syntax unified
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.fpu fpv5-d16
+ 626              	_ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE:
+ 627              	.LVL50:
+ 628              	.LFB2562:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 629              		.loc 1 12 5 is_stmt 1 view -0
+ 630              		.cfi_startproc
+ 631              		@ args = 0, pretend = 0, frame = 0
+ 632              		@ frame_needed = 0, uses_anonymous_args = 0
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 22
+
+
+ 633              		.loc 1 12 5 is_stmt 0 view .LVU165
+ 634 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 635              		.cfi_def_cfa_offset 24
+ 636              		.cfi_offset 3, -24
+ 637              		.cfi_offset 4, -20
+ 638              		.cfi_offset 5, -16
+ 639              		.cfi_offset 6, -12
+ 640              		.cfi_offset 7, -8
+ 641              		.cfi_offset 14, -4
+ 642              	.LBB101:
+ 643              	.LBB102:
+ 644              	.LBB103:
+ 645              	.LBB104:
+ 646              	.LBB105:
+ 647              	.LBB106:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 648              		.loc 3 272 43 view .LVU166
+ 649 0002 FF25     		movs	r5, #255
+ 650              	.LBE106:
+ 651              	.LBE105:
+ 652              	.LBE104:
+ 653              	.LBE103:
+ 654              	.LBE102:
+ 655              	.LBB120:
+ 656              	.LBB121:
+ 657              	.LBB122:
+ 658              	.LBB123:
+ 659              	.LBB124:
+ 660 0004 4FF60B77 		movw	r7, #65291
+ 661              	.LBE124:
+ 662              	.LBE123:
+ 663              	.LBE122:
+ 664              	.LBE121:
+ 665              	.LBE120:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 666              		.loc 1 12 82 view .LVU167
+ 667 0008 0023     		movs	r3, #0
+ 668              	.LBE101:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 669              		.loc 1 12 5 view .LVU168
+ 670 000a 1646     		mov	r6, r2
+ 671              	.LBB203:
+ 672              	.LBB136:
+ 673              	.LBB132:
+ 674              	.LBB128:
+ 675              	.LBB126:
+ 676              	.LBB125:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 677              		.loc 3 272 43 view .LVU169
+ 678 000c 0782     		strh	r7, [r0, #16]	@ movhi
+ 679              	.LBE125:
+ 680              	.LBE126:
+ 681              	.LBE128:
+ 682              	.LBE132:
+ 683              	.LBE136:
+ 684              	.LBE203:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 23
+
+
+ 685              		.loc 1 12 5 view .LVU170
+ 686 000e 0446     		mov	r4, r0
+ 687              	.LVL51:
+ 688              	.LBB204:
+ 689              	.LBB137:
+ 690              	.LBI120:
+ 691              		.file 4 "../../libDaisy//src/per/gpio.h"
+   1:../../libDaisy//src/per/gpio.h **** #pragma once
+   2:../../libDaisy//src/per/gpio.h **** #ifndef DSY_GPIO_H
+   3:../../libDaisy//src/per/gpio.h **** #define DSY_GPIO_H
+   4:../../libDaisy//src/per/gpio.h **** #include "daisy_core.h"
+   5:../../libDaisy//src/per/gpio.h **** 
+   6:../../libDaisy//src/per/gpio.h **** #ifdef __cplusplus
+   7:../../libDaisy//src/per/gpio.h **** 
+   8:../../libDaisy//src/per/gpio.h **** namespace daisy
+   9:../../libDaisy//src/per/gpio.h **** {
+  10:../../libDaisy//src/per/gpio.h **** /** @brief General Purpose I/O control 
+  11:../../libDaisy//src/per/gpio.h ****  *  @details peripheral control over a single GPIO
+  12:../../libDaisy//src/per/gpio.h ****  *  @ingroup peripheral
+  13:../../libDaisy//src/per/gpio.h ****  *   
+  14:../../libDaisy//src/per/gpio.h ****  *  Button Input (with internal Pullup resistor)
+  15:../../libDaisy//src/per/gpio.h ****  *  @include GPIO_Input.cpp 
+  16:../../libDaisy//src/per/gpio.h ****  * 
+  17:../../libDaisy//src/per/gpio.h ****  *  Output Example (perfect for blinking an LED)
+  18:../../libDaisy//src/per/gpio.h ****  *  @include GPIO_Output.cpp
+  19:../../libDaisy//src/per/gpio.h ****  * 
+  20:../../libDaisy//src/per/gpio.h **** */
+  21:../../libDaisy//src/per/gpio.h **** class GPIO
+  22:../../libDaisy//src/per/gpio.h **** {
+  23:../../libDaisy//src/per/gpio.h ****   public:
+  24:../../libDaisy//src/per/gpio.h ****     /** @brief Mode of operation for the specified GPIO */
+  25:../../libDaisy//src/per/gpio.h ****     enum class Mode
+  26:../../libDaisy//src/per/gpio.h ****     {
+  27:../../libDaisy//src/per/gpio.h ****         INPUT,     /**< Input for reading state of pin */
+  28:../../libDaisy//src/per/gpio.h ****         OUTPUT,    /**< Output w/ push-pull configuration */
+  29:../../libDaisy//src/per/gpio.h ****         OUTPUT_OD, /**< Output w/ open-drain configuration */
+  30:../../libDaisy//src/per/gpio.h ****         ANALOG,    /**< Analog for connection to ADC or DAC peripheral */
+  31:../../libDaisy//src/per/gpio.h ****     };
+  32:../../libDaisy//src/per/gpio.h **** 
+  33:../../libDaisy//src/per/gpio.h ****     /** @brief Configures whether an internal Pull up or Pull down resistor is used. 
+  34:../../libDaisy//src/per/gpio.h ****      *  
+  35:../../libDaisy//src/per/gpio.h ****      * Internal Pull up/down resistors are typically 40k ohms, and will be between
+  36:../../libDaisy//src/per/gpio.h ****      * 30k and 50k
+  37:../../libDaisy//src/per/gpio.h ****      * 
+  38:../../libDaisy//src/per/gpio.h ****      * When the Pin is configured in Analog mode, the pull up/down resistors are
+  39:../../libDaisy//src/per/gpio.h ****      * disabled by hardware. 
+  40:../../libDaisy//src/per/gpio.h ****      */
+  41:../../libDaisy//src/per/gpio.h ****     enum class Pull
+  42:../../libDaisy//src/per/gpio.h ****     {
+  43:../../libDaisy//src/per/gpio.h ****         NOPULL,   /**< No pull up resistor */
+  44:../../libDaisy//src/per/gpio.h ****         PULLUP,   /**< Internal pull up enabled */
+  45:../../libDaisy//src/per/gpio.h ****         PULLDOWN, /**< Internal pull down enabled*/
+  46:../../libDaisy//src/per/gpio.h ****     };
+  47:../../libDaisy//src/per/gpio.h **** 
+  48:../../libDaisy//src/per/gpio.h ****     /** @brief Output speed controls the drive strength, and slew rate of the pin */
+  49:../../libDaisy//src/per/gpio.h ****     enum class Speed
+  50:../../libDaisy//src/per/gpio.h ****     {
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 24
+
+
+  51:../../libDaisy//src/per/gpio.h ****         LOW,
+  52:../../libDaisy//src/per/gpio.h ****         MEDIUM,
+  53:../../libDaisy//src/per/gpio.h ****         HIGH,
+  54:../../libDaisy//src/per/gpio.h ****         VERY_HIGH,
+  55:../../libDaisy//src/per/gpio.h ****     };
+  56:../../libDaisy//src/per/gpio.h **** 
+  57:../../libDaisy//src/per/gpio.h ****     /** @brief Configuration for a given GPIO */
+  58:../../libDaisy//src/per/gpio.h ****     struct Config
+  59:../../libDaisy//src/per/gpio.h ****     {
+  60:../../libDaisy//src/per/gpio.h ****         Pin   pin;
+  61:../../libDaisy//src/per/gpio.h ****         Mode  mode;
+  62:../../libDaisy//src/per/gpio.h ****         Pull  pull;
+  63:../../libDaisy//src/per/gpio.h ****         Speed speed;
+  64:../../libDaisy//src/per/gpio.h **** 
+  65:../../libDaisy//src/per/gpio.h ****         /** Constructor with no arguments will prepare an invalid GPIO set as
+  66:../../libDaisy//src/per/gpio.h ****          *  an input, with no pullup. 
+  67:../../libDaisy//src/per/gpio.h ****          */
+  68:../../libDaisy//src/per/gpio.h ****         Config()
+  69:../../libDaisy//src/per/gpio.h ****         : pin(), mode(Mode::INPUT), pull(Pull::NOPULL), speed(Speed::LOW)
+  70:../../libDaisy//src/per/gpio.h ****         {
+  71:../../libDaisy//src/per/gpio.h ****         }
+  72:../../libDaisy//src/per/gpio.h ****     };
+  73:../../libDaisy//src/per/gpio.h **** 
+  74:../../libDaisy//src/per/gpio.h ****     GPIO() {}
+ 692              		.loc 4 74 5 is_stmt 1 view .LVU171
+ 693              	.LBB133:
+ 694              	.LBI121:
+  68:../../libDaisy//src/per/gpio.h ****         : pin(), mode(Mode::INPUT), pull(Pull::NOPULL), speed(Speed::LOW)
+ 695              		.loc 4 68 9 view .LVU172
+ 696              	.LBB129:
+ 697              	.LBB127:
+ 698              	.LBI123:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 699              		.loc 3 272 15 view .LVU173
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 700              		.loc 3 272 15 is_stmt 0 view .LVU174
+ 701              	.LBE127:
+ 702              	.LBE129:
+ 703              	.LBE133:
+ 704              	.LBE137:
+ 705              	.LBB138:
+ 706              	.LBB116:
+ 707              	.LBB112:
+ 708              	.LBB109:
+ 709              	.LBB107:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 710              		.loc 3 272 43 view .LVU175
+ 711 0010 80F82550 		strb	r5, [r0, #37]
+ 712              	.LBE107:
+ 713              	.LBE109:
+ 714              	.LBE112:
+ 715              	.LBE116:
+ 716              	.LBE138:
+ 717              	.LBB139:
+ 718              	.LBB140:
+ 719              	.LBB141:
+ 720              	.LBB142:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 25
+
+
+ 721              	.LBB143:
+ 722 0014 80F83950 		strb	r5, [r0, #57]
+ 723              	.LBE143:
+ 724              	.LBE142:
+ 725              	.LBE141:
+ 726              	.LBE140:
+ 727              	.LBE139:
+ 728              	.LBB153:
+ 729              	.LBB154:
+ 730              	.LBB155:
+ 731              	.LBB156:
+ 732              	.LBB157:
+ 733 0018 80F84D50 		strb	r5, [r0, #77]
+ 734              	.LBE157:
+ 735              	.LBE156:
+ 736              	.LBE155:
+ 737              	.LBE154:
+ 738              	.LBE153:
+ 739              	.LBB167:
+  14:KiwiSynth/Controls/MultiPots.cpp ****         numChannels = multiPotsConfig->numChannels;
+ 740              		.loc 1 14 35 view .LVU176
+ 741 001c 1568     		ldr	r5, [r2]
+  15:KiwiSynth/Controls/MultiPots.cpp ****         numDirectPots = multiPotsConfig->numDirectPots;
+ 742              		.loc 1 15 21 view .LVU177
+ 743 001e 5268     		ldr	r2, [r2, #4]
+ 744              	.LVL52:
+  15:KiwiSynth/Controls/MultiPots.cpp ****         numDirectPots = multiPotsConfig->numDirectPots;
+ 745              		.loc 1 15 21 view .LVU178
+ 746              	.LBE167:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 747              		.loc 1 12 82 view .LVU179
+ 748 0020 C360     		str	r3, [r0, #12]
+ 749              	.LBB186:
+ 750              	.LBB134:
+ 751              	.LBB130:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 752              		.loc 4 69 73 view .LVU180
+ 753 0022 C361     		str	r3, [r0, #28]
+ 754              	.LVL53:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 755              		.loc 4 69 73 view .LVU181
+ 756              	.LBE130:
+ 757              	.LBE134:
+ 758              	.LBE186:
+ 759              	.LBB187:
+ 760              	.LBI102:
+ 761              		.loc 4 74 5 is_stmt 1 view .LVU182
+ 762              	.LBB117:
+ 763              	.LBI103:
+  68:../../libDaisy//src/per/gpio.h ****         : pin(), mode(Mode::INPUT), pull(Pull::NOPULL), speed(Speed::LOW)
+ 764              		.loc 4 68 9 view .LVU183
+ 765              	.LBB113:
+ 766              	.LBB110:
+ 767              	.LBI105:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 768              		.loc 3 272 15 view .LVU184
+ 272:../../libDaisy//src/daisy_core.h **** 
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 26
+
+
+ 769              		.loc 3 272 15 is_stmt 0 view .LVU185
+ 770              	.LBE110:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 771              		.loc 4 69 73 view .LVU186
+ 772 0024 0363     		str	r3, [r0, #48]
+ 773              	.LVL54:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 774              		.loc 4 69 73 view .LVU187
+ 775              	.LBE113:
+ 776              	.LBE117:
+ 777              	.LBE187:
+ 778              	.LBB188:
+ 779              	.LBI139:
+ 780              		.loc 4 74 5 is_stmt 1 view .LVU188
+ 781              	.LBB150:
+ 782              	.LBI140:
+  68:../../libDaisy//src/per/gpio.h ****         : pin(), mode(Mode::INPUT), pull(Pull::NOPULL), speed(Speed::LOW)
+ 783              		.loc 4 68 9 view .LVU189
+ 784              	.LBB147:
+ 785              	.LBB145:
+ 786              	.LBI142:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 787              		.loc 3 272 15 view .LVU190
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 788              		.loc 3 272 15 is_stmt 0 view .LVU191
+ 789              	.LBE145:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 790              		.loc 4 69 73 view .LVU192
+ 791 0026 4364     		str	r3, [r0, #68]
+ 792              	.LVL55:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 793              		.loc 4 69 73 view .LVU193
+ 794              	.LBE147:
+ 795              	.LBE150:
+ 796              	.LBE188:
+ 797              	.LBB189:
+ 798              	.LBI153:
+ 799              		.loc 4 74 5 is_stmt 1 view .LVU194
+ 800              	.LBB164:
+ 801              	.LBI154:
+  68:../../libDaisy//src/per/gpio.h ****         : pin(), mode(Mode::INPUT), pull(Pull::NOPULL), speed(Speed::LOW)
+ 802              		.loc 4 68 9 view .LVU195
+ 803              	.LBB161:
+ 804              	.LBB159:
+ 805              	.LBI156:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 806              		.loc 3 272 15 view .LVU196
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 807              		.loc 3 272 15 is_stmt 0 view .LVU197
+ 808              	.LBE159:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 809              		.loc 4 69 73 view .LVU198
+ 810 0028 8365     		str	r3, [r0, #88]
+ 811              	.LVL56:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 812              		.loc 4 69 73 view .LVU199
+ 813              	.LBE161:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 27
+
+
+ 814              	.LBE164:
+ 815              	.LBE189:
+ 816              	.LBB190:
+  15:KiwiSynth/Controls/MultiPots.cpp ****         numDirectPots = multiPotsConfig->numDirectPots;
+ 817              		.loc 1 15 21 view .LVU200
+ 818 002a C0E90052 		strd	r5, r2, [r0]
+ 819              	.LBE190:
+ 820              	.LBB191:
+ 821              	.LBB135:
+ 822              	.LBB131:
+  69:../../libDaisy//src/per/gpio.h ****         {
+ 823              		.loc 4 69 73 view .LVU201
+ 824 002e C0E90533 		strd	r3, r3, [r0, #20]
+ 825              	.LBE131:
+ 826              	.LBE135:
+ 827              	.LBE191:
+ 828              	.LBB192:
+ 829              	.LBB118:
+ 830              	.LBB114:
+ 831 0032 C0E90A33 		strd	r3, r3, [r0, #40]
+ 832              	.LBE114:
+ 833              	.LBE118:
+ 834              	.LBE192:
+ 835              	.LBB193:
+ 836              	.LBB151:
+ 837              	.LBB148:
+ 838 0036 C0E90F33 		strd	r3, r3, [r0, #60]
+ 839              	.LBE148:
+ 840              	.LBE151:
+ 841              	.LBE193:
+ 842              	.LBB194:
+ 843              	.LBB165:
+ 844              	.LBB162:
+ 845 003a C0E91433 		strd	r3, r3, [r0, #80]
+ 846              	.LBE162:
+ 847              	.LBE165:
+ 848              	.LBE194:
+  12:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 849              		.loc 1 12 82 view .LVU202
+ 850 003e C0E91833 		strd	r3, r3, [r0, #96]
+ 851 0042 C0E91A13 		strd	r1, r3, [r0, #104]
+ 852              	.LBB195:
+ 853              	.LBB196:
+  97:../../libDaisy//src/per/tim.h ****     TimerHandle(const TimerHandle& other) = default;
+ 854              		.loc 2 97 35 view .LVU203
+ 855 0046 C0E91C33 		strd	r3, r3, [r0, #112]
+ 856              	.LBE196:
+ 857              	.LBE195:
+ 858              	.LBB197:
+  14:KiwiSynth/Controls/MultiPots.cpp ****         numChannels = multiPotsConfig->numChannels;
+ 859              		.loc 1 14 9 is_stmt 1 view .LVU204
+  16:KiwiSynth/Controls/MultiPots.cpp ****         pinsSignal = new Pin[numMps];
+ 860              		.loc 1 16 9 view .LVU205
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 861              		.loc 1 17 36 is_stmt 0 view .LVU206
+ 862 004a 3C4A     		ldr	r2, .L78
+  16:KiwiSynth/Controls/MultiPots.cpp ****         pinsSignal = new Pin[numMps];
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 28
+
+
+ 863              		.loc 1 16 23 view .LVU207
+ 864 004c B368     		ldr	r3, [r6, #8]
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 865              		.loc 1 17 36 view .LVU208
+ 866 004e 9542     		cmp	r5, r2
+  16:KiwiSynth/Controls/MultiPots.cpp ****         pinsSignal = new Pin[numMps];
+ 867              		.loc 1 16 23 view .LVU209
+ 868 0050 8360     		str	r3, [r0, #8]
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 869              		.loc 1 17 9 is_stmt 1 view .LVU210
+ 870              	.LBE197:
+ 871              	.LBB198:
+ 872              	.LBB119:
+ 873              	.LBB115:
+ 874              	.LBB111:
+ 875              	.LBB108:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 876              		.loc 3 272 43 is_stmt 0 view .LVU211
+ 877 0052 4FF00B03 		mov	r3, #11
+ 878 0056 80F82430 		strb	r3, [r0, #36]
+ 879              	.LBE108:
+ 880              	.LBE111:
+ 881              	.LBE115:
+ 882              	.LBE119:
+ 883              	.LBE198:
+ 884              	.LBB199:
+ 885              	.LBB152:
+ 886              	.LBB149:
+ 887              	.LBB146:
+ 888              	.LBB144:
+ 889 005a 80F83830 		strb	r3, [r0, #56]
+ 890              	.LBE144:
+ 891              	.LBE146:
+ 892              	.LBE149:
+ 893              	.LBE152:
+ 894              	.LBE199:
+ 895              	.LBB200:
+ 896              	.LBB166:
+ 897              	.LBB163:
+ 898              	.LBB160:
+ 899              	.LBB158:
+ 900 005e 80F84C30 		strb	r3, [r0, #76]
+ 901              	.LBE158:
+ 902              	.LBE160:
+ 903              	.LBE163:
+ 904              	.LBE166:
+ 905              	.LBE200:
+ 906              	.LBB201:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 907              		.loc 1 17 36 view .LVU212
+ 908 0062 94BF     		ite	ls
+ 909 0064 6800     		lslls	r0, r5, #1
+ 910              	.LVL57:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 911              		.loc 1 17 36 view .LVU213
+ 912 0066 4FF0FF30 		movhi	r0, #-1
+ 913 006a FFF7FEFF 		bl	_Znaj
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 29
+
+
+ 914              	.LVL58:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 915              		.loc 1 17 36 is_stmt 1 view .LVU214
+ 916 006e 013D     		subs	r5, r5, #1
+ 917 0070 0AD4     		bmi	.L49
+ 918 0072 0346     		mov	r3, r0
+ 919              	.L50:
+ 920              	.LVL59:
+ 921              	.LBB168:
+ 922              	.LBI168:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 923              		.loc 3 272 15 view .LVU215
+ 924              	.LBB169:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 925              		.loc 3 272 43 is_stmt 0 view .LVU216
+ 926 0074 0B21     		movs	r1, #11
+ 927              	.LBE169:
+ 928              	.LBE168:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 929              		.loc 1 17 36 view .LVU217
+ 930 0076 013D     		subs	r5, r5, #1
+ 931              	.LBB173:
+ 932              	.LBB170:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 933              		.loc 3 272 43 view .LVU218
+ 934 0078 FF22     		movs	r2, #255
+ 935              	.LBE170:
+ 936              	.LBE173:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 937              		.loc 1 17 36 view .LVU219
+ 938 007a 0233     		adds	r3, r3, #2
+ 939              	.LVL60:
+ 940              	.LBB174:
+ 941              	.LBB171:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 942              		.loc 3 272 43 view .LVU220
+ 943 007c 03F8021C 		strb	r1, [r3, #-2]
+ 944              	.LBE171:
+ 945              	.LBE174:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 946              		.loc 1 17 36 view .LVU221
+ 947 0080 691C     		adds	r1, r5, #1
+ 948              	.LBB175:
+ 949              	.LBB172:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 950              		.loc 3 272 43 view .LVU222
+ 951 0082 03F8012C 		strb	r2, [r3, #-1]
+ 952              	.LVL61:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 953              		.loc 3 272 43 view .LVU223
+ 954              	.LBE172:
+ 955              	.LBE175:
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 956              		.loc 1 17 36 is_stmt 1 view .LVU224
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 957              		.loc 1 17 36 view .LVU225
+ 958 0086 F5D1     		bne	.L50
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 30
+
+
+ 959              	.L49:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 960              		.loc 1 18 30 is_stmt 0 view .LVU226
+ 961 0088 A568     		ldr	r5, [r4, #8]
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 962              		.loc 1 18 43 view .LVU227
+ 963 008a 2C4B     		ldr	r3, .L78
+  17:KiwiSynth/Controls/MultiPots.cpp ****         pinsDirect = new Pin[numDirectPots];
+ 964              		.loc 1 17 20 view .LVU228
+ 965 008c 2066     		str	r0, [r4, #96]
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 966              		.loc 1 18 9 is_stmt 1 view .LVU229
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 967              		.loc 1 18 43 is_stmt 0 view .LVU230
+ 968 008e 9D42     		cmp	r5, r3
+ 969 0090 4AD9     		bls	.L47
+ 970 0092 4FF0FF30 		mov	r0, #-1
+ 971              	.L48:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 972              		.loc 1 18 43 discriminator 4 view .LVU231
+ 973 0096 FFF7FEFF 		bl	_Znaj
+ 974              	.LVL62:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 975              		.loc 1 18 43 is_stmt 1 discriminator 4 view .LVU232
+ 976 009a 013D     		subs	r5, r5, #1
+ 977 009c 0746     		mov	r7, r0
+ 978 009e 0AD4     		bmi	.L54
+ 979 00a0 0346     		mov	r3, r0
+ 980              	.L55:
+ 981              	.LVL63:
+ 982              	.LBB176:
+ 983              	.LBI176:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 984              		.loc 3 272 15 view .LVU233
+ 985              	.LBB177:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 986              		.loc 3 272 43 is_stmt 0 view .LVU234
+ 987 00a2 FF22     		movs	r2, #255
+ 988              	.LBE177:
+ 989              	.LBE176:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 990              		.loc 1 18 43 view .LVU235
+ 991 00a4 013D     		subs	r5, r5, #1
+ 992              	.LBB181:
+ 993              	.LBB178:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 994              		.loc 3 272 43 view .LVU236
+ 995 00a6 0B21     		movs	r1, #11
+ 996              	.LBE178:
+ 997              	.LBE181:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 998              		.loc 1 18 43 view .LVU237
+ 999 00a8 0233     		adds	r3, r3, #2
+ 1000              	.LVL64:
+ 1001              	.LBB182:
+ 1002              	.LBB179:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 31
+
+
+ 1003              		.loc 3 272 43 view .LVU238
+ 1004 00aa 03F8012C 		strb	r2, [r3, #-1]
+ 1005              	.LVL65:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 1006              		.loc 3 272 43 view .LVU239
+ 1007              	.LBE179:
+ 1008              	.LBE182:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 1009              		.loc 1 18 43 is_stmt 1 view .LVU240
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 1010              		.loc 1 18 43 view .LVU241
+ 1011 00ae 6A1C     		adds	r2, r5, #1
+ 1012              	.LBB183:
+ 1013              	.LBB180:
+ 272:../../libDaisy//src/daisy_core.h **** 
+ 1014              		.loc 3 272 43 is_stmt 0 view .LVU242
+ 1015 00b0 03F8021C 		strb	r1, [r3, #-2]
+ 1016              	.LBE180:
+ 1017              	.LBE183:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 1018              		.loc 1 18 43 view .LVU243
+ 1019 00b4 F5D1     		bne	.L55
+ 1020              	.L54:
+  19:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1021              		.loc 1 19 18 view .LVU244
+ 1022 00b6 2046     		mov	r0, r4
+ 1023 00b8 3146     		mov	r1, r6
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 1024              		.loc 1 18 20 view .LVU245
+ 1025 00ba 6766     		str	r7, [r4, #100]
+  19:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1026              		.loc 1 19 9 is_stmt 1 view .LVU246
+  19:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1027              		.loc 1 19 18 is_stmt 0 view .LVU247
+ 1028 00bc FFF7FEFF 		bl	_ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE
+ 1029              	.LVL66:
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1030              		.loc 1 21 9 is_stmt 1 view .LVU248
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1031              		.loc 1 21 36 is_stmt 0 view .LVU249
+ 1032 00c0 2068     		ldr	r0, [r4]
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1033              		.loc 1 21 42 view .LVU250
+ 1034 00c2 6FF06043 		mvn	r3, #-536870912
+ 1035 00c6 9842     		cmp	r0, r3
+ 1036 00c8 2CD3     		bcc	.L52
+ 1037 00ca 4FF0FF30 		mov	r0, #-1
+ 1038              	.L53:
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1039              		.loc 1 21 42 discriminator 4 view .LVU251
+ 1040 00ce FFF7FEFF 		bl	_Znaj
+ 1041              	.LVL67:
+ 1042              	.LBB184:
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1043              		.loc 1 22 27 discriminator 4 view .LVU252
+ 1044 00d2 2368     		ldr	r3, [r4]
+ 1045              	.LBE184:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 32
+
+
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1046              		.loc 1 21 42 discriminator 4 view .LVU253
+ 1047 00d4 0746     		mov	r7, r0
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1048              		.loc 1 21 23 discriminator 4 view .LVU254
+ 1049 00d6 E066     		str	r0, [r4, #108]
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1050              		.loc 1 22 9 is_stmt 1 discriminator 4 view .LVU255
+ 1051              	.LVL68:
+ 1052              	.LBB185:
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1053              		.loc 1 22 27 discriminator 4 view .LVU256
+ 1054 00d8 002B     		cmp	r3, #0
+ 1055 00da 12DD     		ble	.L56
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1056              		.loc 1 22 18 is_stmt 0 view .LVU257
+ 1057 00dc 0025     		movs	r5, #0
+ 1058 00de 00E0     		b	.L58
+ 1059              	.LVL69:
+ 1060              	.L76:
+  23:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1061              		.loc 1 23 13 view .LVU258
+ 1062 00e0 E76E     		ldr	r7, [r4, #108]
+ 1063              	.LVL70:
+ 1064              	.L58:
+  23:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1065              		.loc 1 23 13 is_stmt 1 view .LVU259
+  23:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1066              		.loc 1 23 42 is_stmt 0 view .LVU260
+ 1067 00e2 6368     		ldr	r3, [r4, #4]
+  23:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1068              		.loc 1 23 53 view .LVU261
+ 1069 00e4 6FF06042 		mvn	r2, #-536870912
+ 1070 00e8 4FF0FF30 		mov	r0, #-1
+ 1071 00ec 9342     		cmp	r3, r2
+ 1072 00ee 38BF     		it	cc
+ 1073 00f0 9800     		lslcc	r0, r3, #2
+ 1074 00f2 FFF7FEFF 		bl	_Znaj
+ 1075              	.LVL71:
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1076              		.loc 1 22 27 view .LVU262
+ 1077 00f6 2368     		ldr	r3, [r4]
+  23:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1078              		.loc 1 23 30 view .LVU263
+ 1079 00f8 47F82500 		str	r0, [r7, r5, lsl #2]
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1080              		.loc 1 22 9 is_stmt 1 view .LVU264
+ 1081 00fc 0135     		adds	r5, r5, #1
+ 1082              	.LVL72:
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1083              		.loc 1 22 27 view .LVU265
+ 1084 00fe AB42     		cmp	r3, r5
+ 1085 0100 EEDC     		bgt	.L76
+ 1086              	.LVL73:
+ 1087              	.L56:
+  22:KiwiSynth/Controls/MultiPots.cpp ****             mpValueBuffer[i] = new float[numChannels];
+ 1088              		.loc 1 22 27 is_stmt 0 view .LVU266
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 33
+
+
+ 1089              	.LBE185:
+  25:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1090              		.loc 1 25 9 is_stmt 1 view .LVU267
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1091              		.loc 1 27 39 is_stmt 0 view .LVU268
+ 1092 0102 A068     		ldr	r0, [r4, #8]
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1093              		.loc 1 27 52 view .LVU269
+ 1094 0104 6FF06043 		mvn	r3, #-536870912
+  25:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1095              		.loc 1 25 20 view .LVU270
+ 1096 0108 0022     		movs	r2, #0
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1097              		.loc 1 27 52 view .LVU271
+ 1098 010a 9842     		cmp	r0, r3
+  25:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1099              		.loc 1 25 20 view .LVU272
+ 1100 010c E260     		str	r2, [r4, #12]
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1101              		.loc 1 27 9 is_stmt 1 view .LVU273
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1102              		.loc 1 27 52 is_stmt 0 view .LVU274
+ 1103 010e 34BF     		ite	cc
+ 1104 0110 8000     		lslcc	r0, r0, #2
+ 1105 0112 4FF0FF30 		movcs	r0, #-1
+ 1106 0116 FFF7FEFF 		bl	_Znaj
+ 1107              	.LVL74:
+  29:KiwiSynth/Controls/MultiPots.cpp ****             InitTimer(multiPotsConfig->refreshRateMs);
+ 1108              		.loc 1 29 9 view .LVU275
+ 1109 011a 337F     		ldrb	r3, [r6, #28]	@ zero_extendqisi2
+  27:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1110              		.loc 1 27 27 view .LVU276
+ 1111 011c 2067     		str	r0, [r4, #112]
+  29:KiwiSynth/Controls/MultiPots.cpp ****             InitTimer(multiPotsConfig->refreshRateMs);
+ 1112              		.loc 1 29 9 is_stmt 1 view .LVU277
+ 1113 011e 2BB9     		cbnz	r3, .L77
+ 1114              	.LBE201:
+ 1115              	.LBE204:
+  32:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1116              		.loc 1 32 5 is_stmt 0 view .LVU278
+ 1117 0120 2046     		mov	r0, r4
+ 1118 0122 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1119              	.LVL75:
+ 1120              	.L52:
+ 1121              	.LBB205:
+ 1122              	.LBB202:
+  21:KiwiSynth/Controls/MultiPots.cpp ****         for (int i = 0; i < numMps; i++) {
+ 1123              		.loc 1 21 42 discriminator 1 view .LVU279
+ 1124 0124 8000     		lsls	r0, r0, #2
+ 1125 0126 D2E7     		b	.L53
+ 1126              	.L47:
+  18:KiwiSynth/Controls/MultiPots.cpp ****         InitMulti(multiPotsConfig);
+ 1127              		.loc 1 18 43 discriminator 1 view .LVU280
+ 1128 0128 6800     		lsls	r0, r5, #1
+ 1129 012a B4E7     		b	.L48
+ 1130              	.L77:
+  30:KiwiSynth/Controls/MultiPots.cpp ****         }
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 34
+
+
+ 1131              		.loc 1 30 13 is_stmt 1 view .LVU281
+  30:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1132              		.loc 1 30 22 is_stmt 0 view .LVU282
+ 1133 012c 2046     		mov	r0, r4
+ 1134 012e 96ED080A 		vldr.32	s0, [r6, #32]
+ 1135 0132 FFF7FEFF 		bl	_ZN10kiwi_synth9MultiPots9InitTimerEf
+ 1136              	.LVL76:
+ 1137              	.LBE202:
+ 1138              	.LBE205:
+  32:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1139              		.loc 1 32 5 view .LVU283
+ 1140 0136 2046     		mov	r0, r4
+ 1141 0138 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1142              	.LVL77:
+ 1143              	.L79:
+  32:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1144              		.loc 1 32 5 view .LVU284
+ 1145 013a 00BF     		.align	2
+ 1146              	.L78:
+ 1147 013c FCFFFF3F 		.word	1073741820
+ 1148              		.cfi_endproc
+ 1149              	.LFE2562:
+ 1151              		.global	_ZN10kiwi_synth9MultiPotsC1EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE
+ 1152              		.thumb_set _ZN10kiwi_synth9MultiPotsC1EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE,_ZN10kiwi_synth9M
+ 1153              		.section	.text._ZN10kiwi_synth9MultiPots15SelectMpChannelEi,"ax",%progbits
+ 1154              		.align	1
+ 1155              		.p2align 2,,3
+ 1156              		.global	_ZN10kiwi_synth9MultiPots15SelectMpChannelEi
+ 1157              		.syntax unified
+ 1158              		.thumb
+ 1159              		.thumb_func
+ 1160              		.fpu fpv5-d16
+ 1162              	_ZN10kiwi_synth9MultiPots15SelectMpChannelEi:
+ 1163              	.LVL78:
+ 1164              	.LFB2574:
+ 118:KiwiSynth/Controls/MultiPots.cpp **** 
+ 119:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::SelectMpChannel(int channelNumber)
+ 120:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 1165              		.loc 1 120 5 is_stmt 1 view -0
+ 1166              		.cfi_startproc
+ 1167              		@ args = 0, pretend = 0, frame = 0
+ 1168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = channelNumber;
+ 1169              		.loc 1 121 9 view .LVU286
+ 120:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = channelNumber;
+ 1170              		.loc 1 120 5 is_stmt 0 view .LVU287
+ 1171 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1172              		.cfi_def_cfa_offset 24
+ 1173              		.cfi_offset 3, -24
+ 1174              		.cfi_offset 4, -20
+ 1175              		.cfi_offset 5, -16
+ 1176              		.cfi_offset 6, -12
+ 1177              		.cfi_offset 7, -8
+ 1178              		.cfi_offset 14, -4
+ 122:KiwiSynth/Controls/MultiPots.cpp **** 
+ 123:KiwiSynth/Controls/MultiPots.cpp ****         int a3Value = channelNumber / 8;
+ 124:KiwiSynth/Controls/MultiPots.cpp ****         int a2Value = channelNumber % 8 / 4;
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 35
+
+
+ 1179              		.loc 1 124 37 view .LVU288
+ 1180 0002 4B42     		rsbs	r3, r1, #0
+ 1181 0004 01F00707 		and	r7, r1, #7
+ 125:KiwiSynth/Controls/MultiPots.cpp ****         int a1Value = channelNumber % 4 / 2;
+ 1182              		.loc 1 125 37 view .LVU289
+ 1183 0008 01F00306 		and	r6, r1, #3
+ 120:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = channelNumber;
+ 1184              		.loc 1 120 5 view .LVU290
+ 1185 000c 0C46     		mov	r4, r1
+ 124:KiwiSynth/Controls/MultiPots.cpp ****         int a1Value = channelNumber % 4 / 2;
+ 1186              		.loc 1 124 37 view .LVU291
+ 1187 000e 03F00702 		and	r2, r3, #7
+ 1188              		.loc 1 125 37 view .LVU292
+ 1189 0012 03F00303 		and	r3, r3, #3
+ 120:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = channelNumber;
+ 1190              		.loc 1 120 5 view .LVU293
+ 1191 0016 0546     		mov	r5, r0
+ 121:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1192              		.loc 1 121 20 view .LVU294
+ 1193 0018 C160     		str	r1, [r0, #12]
+ 123:KiwiSynth/Controls/MultiPots.cpp ****         int a2Value = channelNumber % 8 / 4;
+ 1194              		.loc 1 123 9 is_stmt 1 view .LVU295
+ 1195              	.LVL79:
+ 124:KiwiSynth/Controls/MultiPots.cpp ****         int a1Value = channelNumber % 4 / 2;
+ 1196              		.loc 1 124 9 view .LVU296
+ 124:KiwiSynth/Controls/MultiPots.cpp ****         int a1Value = channelNumber % 4 / 2;
+ 1197              		.loc 1 124 37 is_stmt 0 view .LVU297
+ 1198 001a 58BF     		it	pl
+ 1199 001c 5742     		rsbpl	r7, r2, #0
+ 1200              	.LVL80:
+ 1201              		.loc 1 125 9 is_stmt 1 view .LVU298
+ 1202              		.loc 1 125 37 is_stmt 0 view .LVU299
+ 1203 001e 4A42     		rsbs	r2, r1, #0
+ 1204 0020 58BF     		it	pl
+ 1205 0022 5E42     		rsbpl	r6, r3, #0
+ 1206              	.LVL81:
+ 126:KiwiSynth/Controls/MultiPots.cpp ****         int a0Value = channelNumber % 2;
+ 1207              		.loc 1 126 9 is_stmt 1 view .LVU300
+ 127:KiwiSynth/Controls/MultiPots.cpp **** 
+ 128:KiwiSynth/Controls/MultiPots.cpp ****         if (numChannels > 8) {
+ 1208              		.loc 1 128 9 view .LVU301
+ 1209 0024 4368     		ldr	r3, [r0, #4]
+ 1210 0026 082B     		cmp	r3, #8
+ 1211 0028 19DC     		bgt	.L83
+ 1212              	.LVL82:
+ 1213              	.L81:
+ 129:KiwiSynth/Controls/MultiPots.cpp ****             a3.Write(a3Value);
+ 130:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 131:KiwiSynth/Controls/MultiPots.cpp ****         a2.Write(a2Value);
+ 1214              		.loc 1 131 9 view .LVU302
+ 1215              		.loc 1 131 17 is_stmt 0 view .LVU303
+ 1216 002a F91C     		adds	r1, r7, #3
+ 1217 002c 05F13800 		add	r0, r5, #56
+ 1218 0030 0629     		cmp	r1, #6
+ 1219 0032 94BF     		ite	ls
+ 1220 0034 0021     		movls	r1, #0
+ 1221 0036 0121     		movhi	r1, #1
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 36
+
+
+ 1222 0038 FFF7FEFF 		bl	_ZN5daisy4GPIO5WriteEb
+ 1223              	.LVL83:
+ 132:KiwiSynth/Controls/MultiPots.cpp ****         a1.Write(a1Value);
+ 1224              		.loc 1 132 9 is_stmt 1 view .LVU304
+ 1225              		.loc 1 132 17 is_stmt 0 view .LVU305
+ 1226 003c 711C     		adds	r1, r6, #1
+ 1227 003e 05F12400 		add	r0, r5, #36
+ 1228 0042 0229     		cmp	r1, #2
+ 1229 0044 94BF     		ite	ls
+ 1230 0046 0021     		movls	r1, #0
+ 1231 0048 0121     		movhi	r1, #1
+ 1232 004a FFF7FEFF 		bl	_ZN5daisy4GPIO5WriteEb
+ 1233              	.LVL84:
+ 133:KiwiSynth/Controls/MultiPots.cpp ****         a0.Write(a0Value);
+ 1234              		.loc 1 133 9 is_stmt 1 view .LVU306
+ 1235              		.loc 1 133 17 is_stmt 0 view .LVU307
+ 1236 004e 04F00101 		and	r1, r4, #1
+ 1237 0052 05F11000 		add	r0, r5, #16
+ 134:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1238              		.loc 1 134 5 view .LVU308
+ 1239 0056 BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 1240              		.cfi_remember_state
+ 1241              		.cfi_restore 14
+ 1242              		.cfi_restore 7
+ 1243              		.cfi_restore 6
+ 1244              		.cfi_restore 5
+ 1245              		.cfi_restore 4
+ 1246              		.cfi_restore 3
+ 1247              		.cfi_def_cfa_offset 0
+ 1248              	.LVL85:
+ 133:KiwiSynth/Controls/MultiPots.cpp ****         a0.Write(a0Value);
+ 1249              		.loc 1 133 17 view .LVU309
+ 1250 005a FFF7FEBF 		b	_ZN5daisy4GPIO5WriteEb
+ 1251              	.LVL86:
+ 1252              	.L83:
+ 1253              		.cfi_restore_state
+ 129:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1254              		.loc 1 129 13 is_stmt 1 view .LVU310
+ 129:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1255              		.loc 1 129 21 is_stmt 0 view .LVU311
+ 1256 005e 0731     		adds	r1, r1, #7
+ 1257              	.LVL87:
+ 129:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1258              		.loc 1 129 21 view .LVU312
+ 1259 0060 4C30     		adds	r0, r0, #76
+ 1260              	.LVL88:
+ 129:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 1261              		.loc 1 129 21 view .LVU313
+ 1262 0062 0E29     		cmp	r1, #14
+ 1263 0064 94BF     		ite	ls
+ 1264 0066 0021     		movls	r1, #0
+ 1265 0068 0121     		movhi	r1, #1
+ 1266 006a FFF7FEFF 		bl	_ZN5daisy4GPIO5WriteEb
+ 1267              	.LVL89:
+ 1268 006e DCE7     		b	.L81
+ 1269              		.cfi_endproc
+ 1270              	.LFE2574:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 37
+
+
+ 1272              		.section	.text._ZN10kiwi_synth9MultiPots8ReadPotsEv,"ax",%progbits
+ 1273              		.align	1
+ 1274              		.p2align 2,,3
+ 1275              		.global	_ZN10kiwi_synth9MultiPots8ReadPotsEv
+ 1276              		.syntax unified
+ 1277              		.thumb
+ 1278              		.thumb_func
+ 1279              		.fpu fpv5-d16
+ 1281              	_ZN10kiwi_synth9MultiPots8ReadPotsEv:
+ 1282              	.LVL90:
+ 1283              	.LFB2575:
+ 135:KiwiSynth/Controls/MultiPots.cpp **** 
+ 136:KiwiSynth/Controls/MultiPots.cpp ****     void MultiPots::ReadPots()
+ 137:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 1284              		.loc 1 137 5 is_stmt 1 view -0
+ 1285              		.cfi_startproc
+ 1286              		@ args = 0, pretend = 0, frame = 0
+ 1287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138:KiwiSynth/Controls/MultiPots.cpp ****         if (currentPot < numChannels)
+ 1288              		.loc 1 138 9 view .LVU315
+ 1289              	.LBB206:
+ 1290              		.loc 1 138 13 is_stmt 0 view .LVU316
+ 1291 0000 C368     		ldr	r3, [r0, #12]
+ 1292              		.loc 1 138 9 view .LVU317
+ 1293 0002 4268     		ldr	r2, [r0, #4]
+ 1294 0004 9342     		cmp	r3, r2
+ 1295              	.LBE206:
+ 137:KiwiSynth/Controls/MultiPots.cpp ****         if (currentPot < numChannels)
+ 1296              		.loc 1 137 5 view .LVU318
+ 1297 0006 70B5     		push	{r4, r5, r6, lr}
+ 1298              		.cfi_def_cfa_offset 16
+ 1299              		.cfi_offset 4, -16
+ 1300              		.cfi_offset 5, -12
+ 1301              		.cfi_offset 6, -8
+ 1302              		.cfi_offset 14, -4
+ 137:KiwiSynth/Controls/MultiPots.cpp ****         if (currentPot < numChannels)
+ 1303              		.loc 1 137 5 view .LVU319
+ 1304 0008 0446     		mov	r4, r0
+ 1305              	.LBB209:
+ 1306              		.loc 1 138 9 view .LVU320
+ 1307 000a 14DA     		bge	.L85
+ 1308              	.LVL91:
+ 1309              	.LBB207:
+ 139:KiwiSynth/Controls/MultiPots.cpp ****         {
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             for (int i = 0; i < numMps; i++)
+ 1310              		.loc 1 140 31 is_stmt 1 view .LVU321
+ 1311 000c 0268     		ldr	r2, [r0]
+ 1312 000e 002A     		cmp	r2, #0
+ 1313 0010 11DD     		ble	.L85
+ 1314              		.loc 1 140 22 is_stmt 0 view .LVU322
+ 1315 0012 0025     		movs	r5, #0
+ 1316              	.LVL92:
+ 1317              	.L87:
+ 141:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 142:KiwiSynth/Controls/MultiPots.cpp ****                 mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
+ 1318              		.loc 1 142 17 is_stmt 1 discriminator 2 view .LVU323
+ 1319              		.loc 1 142 64 is_stmt 0 discriminator 2 view .LVU324
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 38
+
+
+ 1320 0014 E9B2     		uxtb	r1, r5
+ 1321 0016 D4E91A02 		ldrd	r0, r2, [r4, #104]
+ 1322              		.loc 1 142 44 discriminator 2 view .LVU325
+ 1323 001a 52F82560 		ldr	r6, [r2, r5, lsl #2]
+ 1324              		.loc 1 142 64 discriminator 2 view .LVU326
+ 1325 001e 1830     		adds	r0, r0, #24
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1326              		.loc 1 140 13 discriminator 2 view .LVU327
+ 1327 0020 0135     		adds	r5, r5, #1
+ 1328              	.LVL93:
+ 1329              		.loc 1 142 44 discriminator 2 view .LVU328
+ 1330 0022 06EB8306 		add	r6, r6, r3, lsl #2
+ 1331              		.loc 1 142 64 discriminator 2 view .LVU329
+ 1332 0026 FFF7FEFF 		bl	_ZNK5daisy9AdcHandle8GetFloatEh
+ 1333              	.LVL94:
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1334              		.loc 1 140 31 discriminator 2 view .LVU330
+ 1335 002a 2368     		ldr	r3, [r4]
+ 1336              		.loc 1 142 46 discriminator 2 view .LVU331
+ 1337 002c 86ED000A 		vstr.32	s0, [r6]
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1338              		.loc 1 140 13 is_stmt 1 discriminator 2 view .LVU332
+ 1339              	.LVL95:
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1340              		.loc 1 140 31 discriminator 2 view .LVU333
+ 1341 0030 AB42     		cmp	r3, r5
+ 1342              	.LBE207:
+ 1343              	.LBE209:
+ 143:KiwiSynth/Controls/MultiPots.cpp ****             }
+ 144:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 145:KiwiSynth/Controls/MultiPots.cpp **** 
+ 146:KiwiSynth/Controls/MultiPots.cpp ****         if (currentPot < numDirectPots) {
+ 1344              		.loc 1 146 13 is_stmt 0 discriminator 2 view .LVU334
+ 1345 0032 E368     		ldr	r3, [r4, #12]
+ 1346              	.LBB210:
+ 1347              	.LBB208:
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1348              		.loc 1 140 31 discriminator 2 view .LVU335
+ 1349 0034 EEDC     		bgt	.L87
+ 1350              	.LVL96:
+ 1351              	.L85:
+ 140:KiwiSynth/Controls/MultiPots.cpp ****             {
+ 1352              		.loc 1 140 31 discriminator 2 view .LVU336
+ 1353              	.LBE208:
+ 1354              	.LBE210:
+ 1355              		.loc 1 146 9 is_stmt 1 view .LVU337
+ 1356 0036 A268     		ldr	r2, [r4, #8]
+ 1357 0038 9A42     		cmp	r2, r3
+ 1358 003a 00DC     		bgt	.L90
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 148:KiwiSynth/Controls/MultiPots.cpp ****         }
+ 149:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1359              		.loc 1 149 5 is_stmt 0 view .LVU338
+ 1360 003c 70BD     		pop	{r4, r5, r6, pc}
+ 1361              	.LVL97:
+ 1362              	.L90:
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 39
+
+
+ 1363              		.loc 1 147 13 is_stmt 1 view .LVU339
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1364              		.loc 1 147 61 is_stmt 0 view .LVU340
+ 1365 003e 2168     		ldr	r1, [r4]
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1366              		.loc 1 147 41 view .LVU341
+ 1367 0040 266F     		ldr	r6, [r4, #112]
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1368              		.loc 1 147 61 view .LVU342
+ 1369 0042 A06E     		ldr	r0, [r4, #104]
+ 1370 0044 1944     		add	r1, r1, r3
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1371              		.loc 1 147 41 view .LVU343
+ 1372 0046 06EB8306 		add	r6, r6, r3, lsl #2
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1373              		.loc 1 147 61 view .LVU344
+ 1374 004a 1830     		adds	r0, r0, #24
+ 1375 004c C9B2     		uxtb	r1, r1
+ 1376 004e FFF7FEFF 		bl	_ZNK5daisy9AdcHandle8GetFloatEh
+ 1377              	.LVL98:
+ 147:KiwiSynth/Controls/MultiPots.cpp ****             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+ 1378              		.loc 1 147 43 view .LVU345
+ 1379 0052 86ED000A 		vstr.32	s0, [r6]
+ 1380              		.loc 1 149 5 view .LVU346
+ 1381 0056 70BD     		pop	{r4, r5, r6, pc}
+ 1382              		.loc 1 149 5 view .LVU347
+ 1383              		.cfi_endproc
+ 1384              	.LFE2575:
+ 1386              		.section	.text._ZN10kiwi_synth9MultiPots7ProcessEv,"ax",%progbits
+ 1387              		.align	1
+ 1388              		.p2align 2,,3
+ 1389              		.global	_ZN10kiwi_synth9MultiPots7ProcessEv
+ 1390              		.syntax unified
+ 1391              		.thumb
+ 1392              		.thumb_func
+ 1393              		.fpu fpv5-d16
+ 1395              	_ZN10kiwi_synth9MultiPots7ProcessEv:
+ 1396              	.LVL99:
+ 1397              	.LFB2568:
+  60:KiwiSynth/Controls/MultiPots.cpp ****         // We read before selecting because reading will not use the new pin if we only just select
+ 1398              		.loc 1 60 5 is_stmt 1 view -0
+ 1399              		.cfi_startproc
+ 1400              		@ args = 0, pretend = 0, frame = 0
+ 1401              		@ frame_needed = 0, uses_anonymous_args = 0
+  62:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+ 1402              		.loc 1 62 9 view .LVU349
+  60:KiwiSynth/Controls/MultiPots.cpp ****         // We read before selecting because reading will not use the new pin if we only just select
+ 1403              		.loc 1 60 5 is_stmt 0 view .LVU350
+ 1404 0000 10B5     		push	{r4, lr}
+ 1405              		.cfi_def_cfa_offset 8
+ 1406              		.cfi_offset 4, -8
+ 1407              		.cfi_offset 14, -4
+  60:KiwiSynth/Controls/MultiPots.cpp ****         // We read before selecting because reading will not use the new pin if we only just select
+ 1408              		.loc 1 60 5 view .LVU351
+ 1409 0002 0446     		mov	r4, r0
+  62:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+ 1410              		.loc 1 62 17 view .LVU352
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 40
+
+
+ 1411 0004 FFF7FEFF 		bl	_ZN10kiwi_synth9MultiPots8ReadPotsEv
+ 1412              	.LVL100:
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1413              		.loc 1 63 9 is_stmt 1 view .LVU353
+ 1414              	.LBB213:
+ 1415              	.LBI213:
+ 1416              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_algobas
+   1:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // Core algorithmic facilities -*- C++ -*-
+   2:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+   3:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // Copyright (C) 2001-2020 Free Software Foundation, Inc.
+   4:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** //
+   5:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // This file is part of the GNU ISO C++ Library.  This library is free
+   6:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // software; you can redistribute it and/or modify it under the
+   7:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // terms of the GNU General Public License as published by the
+   8:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // Free Software Foundation; either version 3, or (at your option)
+   9:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // any later version.
+  10:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  11:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // This library is distributed in the hope that it will be useful,
+  12:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // GNU General Public License for more details.
+  15:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  16:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // Under Section 7 of GPL version 3, you are granted additional
+  17:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // permissions described in the GCC Runtime Library Exception, version
+  18:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // 3.1, as published by the Free Software Foundation.
+  19:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  20:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // You should have received a copy of the GNU General Public License and
+  21:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // a copy of the GCC Runtime Library Exception along with this program;
+  22:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+  23:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** // <http://www.gnu.org/licenses/>.
+  24:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  25:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** /*
+  26:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *
+  27:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Copyright (c) 1994
+  28:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Hewlett-Packard Company
+  29:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *
+  30:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Permission to use, copy, modify, distribute and sell this software
+  31:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * and its documentation for any purpose is hereby granted without fee,
+  32:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * provided that the above copyright notice appear in all copies and
+  33:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * that both that copyright notice and this permission notice appear
+  34:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * in supporting documentation.  Hewlett-Packard Company makes no
+  35:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * representations about the suitability of this software for any
+  36:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * purpose.  It is provided "as is" without express or implied warranty.
+  37:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *
+  38:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *
+  39:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Copyright (c) 1996-1998
+  40:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Silicon Graphics Computer Systems, Inc.
+  41:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *
+  42:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * Permission to use, copy, modify, distribute and sell this software
+  43:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * and its documentation for any purpose is hereby granted without fee,
+  44:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * provided that the above copyright notice appear in all copies and
+  45:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * that both that copyright notice and this permission notice appear
+  46:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * in supporting documentation.  Silicon Graphics makes no
+  47:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * representations about the suitability of this software for any
+  48:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  * purpose.  It is provided "as is" without express or implied warranty.
+  49:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  */
+  50:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 41
+
+
+  51:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** /** @file bits/stl_algobase.h
+  52:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *  This is an internal header file, included by other library headers.
+  53:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  *  Do not attempt to use it directly. @headername{algorithm}
+  54:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****  */
+  55:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  56:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #ifndef _STL_ALGOBASE_H
+  57:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #define _STL_ALGOBASE_H 1
+  58:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  59:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/c++config.h>
+  60:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/functexcept.h>
+  61:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/cpp_type_traits.h>
+  62:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <ext/type_traits.h>
+  63:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <ext/numeric_traits.h>
+  64:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/stl_pair.h>
+  65:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/stl_iterator_base_types.h>
+  66:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/stl_iterator_base_funcs.h>
+  67:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/stl_iterator.h>
+  68:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/concept_check.h>
+  69:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <debug/debug.h>
+  70:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/move.h> // For std::swap
+  71:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #include <bits/predefined_ops.h>
+  72:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #if __cplusplus >= 201103L
+  73:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** # include <type_traits>
+  74:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif
+  75:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #if __cplusplus > 201703L
+  76:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** # include <compare>
+  77:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif
+  78:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  79:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** namespace std _GLIBCXX_VISIBILITY(default)
+  80:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** {
+  81:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** _GLIBCXX_BEGIN_NAMESPACE_VERSION
+  82:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+  83:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   /*
+  84:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    * A constexpr wrapper for __builtin_memcmp.
+  85:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    * @param __num The number of elements of type _Tp (not bytes).
+  86:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    */
+  87:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<typename _Tp, typename _Up>
+  88:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _GLIBCXX14_CONSTEXPR
+  89:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     inline int
+  90:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     __memcmp(const _Tp* __first1, const _Up* __first2, size_t __num)
+  91:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+  92:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #if __cplusplus >= 201103L
+  93:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       static_assert(sizeof(_Tp) == sizeof(_Up), "can be compared with memcmp");
+  94:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif
+  95:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #ifdef __cpp_lib_is_constant_evaluated
+  96:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       if (std::is_constant_evaluated())
+  97:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	{
+  98:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  for(; __num > 0; ++__first1, ++__first2, --__num)
+  99:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	    if (*__first1 != *__first2)
+ 100:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	      return *__first1 < *__first2 ? -1 : 1;
+ 101:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  return 0;
+ 102:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	}
+ 103:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       else
+ 104:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif
+ 105:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	return __builtin_memcmp(__first1, __first2, sizeof(_Tp) * __num);
+ 106:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     }
+ 107:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 42
+
+
+ 108:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #if __cplusplus < 201103L
+ 109:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   // See http://gcc.gnu.org/ml/libstdc++/2004-08/msg00167.html: in a
+ 110:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   // nutshell, we are partially implementing the resolution of DR 187,
+ 111:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   // when it's safe, i.e., the value_types are equal.
+ 112:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<bool _BoolType>
+ 113:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     struct __iter_swap
+ 114:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+ 115:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       template<typename _ForwardIterator1, typename _ForwardIterator2>
+ 116:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	static void
+ 117:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	iter_swap(_ForwardIterator1 __a, _ForwardIterator2 __b)
+ 118:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	{
+ 119:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  typedef typename iterator_traits<_ForwardIterator1>::value_type
+ 120:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	    _ValueType1;
+ 121:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  _ValueType1 __tmp = *__a;
+ 122:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  *__a = *__b;
+ 123:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  *__b = __tmp;
+ 124:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	}
+ 125:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     };
+ 126:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 127:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<>
+ 128:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     struct __iter_swap<true>
+ 129:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+ 130:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       template<typename _ForwardIterator1, typename _ForwardIterator2>
+ 131:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	static void
+ 132:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	iter_swap(_ForwardIterator1 __a, _ForwardIterator2 __b)
+ 133:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	{
+ 134:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	  swap(*__a, *__b);
+ 135:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	}
+ 136:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     };
+ 137:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif // C++03
+ 138:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 139:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   /**
+ 140:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @brief Swaps the contents of two iterators.
+ 141:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @ingroup mutating_algorithms
+ 142:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __a  An iterator.
+ 143:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __b  Another iterator.
+ 144:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @return   Nothing.
+ 145:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *
+ 146:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  This function swaps the values pointed to by two iterators, not the
+ 147:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  iterators themselves.
+ 148:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   */
+ 149:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<typename _ForwardIterator1, typename _ForwardIterator2>
+ 150:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _GLIBCXX20_CONSTEXPR
+ 151:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     inline void
+ 152:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     iter_swap(_ForwardIterator1 __a, _ForwardIterator2 __b)
+ 153:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+ 154:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       // concept requirements
+ 155:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_Mutable_ForwardIteratorConcept<
+ 156:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ForwardIterator1>)
+ 157:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_Mutable_ForwardIteratorConcept<
+ 158:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ForwardIterator2>)
+ 159:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 160:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #if __cplusplus < 201103L
+ 161:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       typedef typename iterator_traits<_ForwardIterator1>::value_type
+ 162:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	_ValueType1;
+ 163:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       typedef typename iterator_traits<_ForwardIterator2>::value_type
+ 164:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	_ValueType2;
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 43
+
+
+ 165:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 166:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_ConvertibleConcept<_ValueType1,
+ 167:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ValueType2>)
+ 168:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_ConvertibleConcept<_ValueType2,
+ 169:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ValueType1>)
+ 170:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 171:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       typedef typename iterator_traits<_ForwardIterator1>::reference
+ 172:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	_ReferenceType1;
+ 173:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       typedef typename iterator_traits<_ForwardIterator2>::reference
+ 174:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	_ReferenceType2;
+ 175:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       std::__iter_swap<__are_same<_ValueType1, _ValueType2>::__value
+ 176:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	&& __are_same<_ValueType1&, _ReferenceType1>::__value
+ 177:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	&& __are_same<_ValueType2&, _ReferenceType2>::__value>::
+ 178:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	iter_swap(__a, __b);
+ 179:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #else
+ 180:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+ 181:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       // 187. iter_swap underspecified
+ 182:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       swap(*__a, *__b);
+ 183:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** #endif
+ 184:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     }
+ 185:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 186:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   /**
+ 187:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @brief Swap the elements of two sequences.
+ 188:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @ingroup mutating_algorithms
+ 189:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __first1  A forward iterator.
+ 190:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __last1   A forward iterator.
+ 191:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __first2  A forward iterator.
+ 192:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @return   An iterator equal to @p first2+(last1-first1).
+ 193:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *
+ 194:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  Swaps each element in the range @p [first1,last1) with the
+ 195:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  corresponding element in the range @p [first2,(last1-first1)).
+ 196:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  The ranges must not overlap.
+ 197:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   */
+ 198:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<typename _ForwardIterator1, typename _ForwardIterator2>
+ 199:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _GLIBCXX20_CONSTEXPR
+ 200:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _ForwardIterator2
+ 201:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     swap_ranges(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
+ 202:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 		_ForwardIterator2 __first2)
+ 203:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+ 204:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       // concept requirements
+ 205:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_Mutable_ForwardIteratorConcept<
+ 206:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ForwardIterator1>)
+ 207:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_Mutable_ForwardIteratorConcept<
+ 208:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 				  _ForwardIterator2>)
+ 209:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_requires_valid_range(__first1, __last1);
+ 210:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 211:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       for (; __first1 != __last1; ++__first1, (void)++__first2)
+ 212:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	std::iter_swap(__first1, __first2);
+ 213:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       return __first2;
+ 214:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     }
+ 215:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 216:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   /**
+ 217:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @brief This does what you think it does.
+ 218:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @ingroup sorting_algorithms
+ 219:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __a  A thing of arbitrary type.
+ 220:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __b  Another thing of arbitrary type.
+ 221:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @return   The lesser of the parameters.
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 44
+
+
+ 222:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *
+ 223:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  This is the simple classic generic implementation.  It will work on
+ 224:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  temporary expressions, since they are only evaluated once, unlike a
+ 225:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  preprocessor macro.
+ 226:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   */
+ 227:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<typename _Tp>
+ 228:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _GLIBCXX14_CONSTEXPR
+ 229:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     inline const _Tp&
+ 230:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     min(const _Tp& __a, const _Tp& __b)
+ 231:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     {
+ 232:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       // concept requirements
+ 233:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
+ 234:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       //return __b < __a ? __b : __a;
+ 235:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       if (__b < __a)
+ 236:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 	return __b;
+ 237:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****       return __a;
+ 238:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     }
+ 239:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h **** 
+ 240:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   /**
+ 241:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @brief This does what you think it does.
+ 242:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @ingroup sorting_algorithms
+ 243:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __a  A thing of arbitrary type.
+ 244:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @param  __b  Another thing of arbitrary type.
+ 245:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  @return   The greater of the parameters.
+ 246:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *
+ 247:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  This is the simple classic generic implementation.  It will work on
+ 248:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  temporary expressions, since they are only evaluated once, unlike a
+ 249:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****    *  preprocessor macro.
+ 250:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   */
+ 251:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****   template<typename _Tp>
+ 252:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     _GLIBCXX14_CONSTEXPR
+ 253:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     inline const _Tp&
+ 254:c:\program files\daisytoolchain\arm-none-eabi\include\c++\10.2.1\bits\stl_algobase.h ****     max(const _Tp& __a, const _Tp& __b)
+ 1417              		.loc 5 254 5 view .LVU354
+ 1418              		.loc 5 254 5 is_stmt 0 view .LVU355
+ 1419              	.LBE213:
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1420              		.loc 1 63 39 view .LVU356
+ 1421 0008 211D     		adds	r1, r4, #4
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1422              		.loc 1 65 24 view .LVU357
+ 1423 000a 2046     		mov	r0, r4
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1424              		.loc 1 63 39 view .LVU358
+ 1425 000c 0EC9     		ldm	r1, {r1, r2, r3}
+ 1426 000e 9142     		cmp	r1, r2
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1427              		.loc 1 63 34 view .LVU359
+ 1428 0010 03F10103 		add	r3, r3, #1
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1429              		.loc 1 63 39 view .LVU360
+ 1430 0014 B8BF     		it	lt
+ 1431 0016 1146     		movlt	r1, r2
+ 1432 0018 93FBF1F2 		sdiv	r2, r3, r1
+ 1433 001c 01FB1231 		mls	r1, r1, r2, r3
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1434              		.loc 1 63 20 view .LVU361
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 45
+
+
+ 1435 0020 E160     		str	r1, [r4, #12]
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1436              		.loc 1 65 9 is_stmt 1 view .LVU362
+  66:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1437              		.loc 1 66 5 is_stmt 0 view .LVU363
+ 1438 0022 BDE81040 		pop	{r4, lr}
+ 1439              		.cfi_restore 14
+ 1440              		.cfi_restore 4
+ 1441              		.cfi_def_cfa_offset 0
+ 1442              	.LVL101:
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1443              		.loc 1 65 24 view .LVU364
+ 1444 0026 FFF7FEBF 		b	_ZN10kiwi_synth9MultiPots15SelectMpChannelEi
+ 1445              	.LVL102:
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1446              		.loc 1 65 24 view .LVU365
+ 1447              		.cfi_endproc
+ 1448              	.LFE2568:
+ 1450 002a 00BF     		.section	.text._ZN10kiwi_synth12ProcessTimerEPv,"ax",%progbits
+ 1451              		.align	1
+ 1452              		.p2align 2,,3
+ 1453              		.global	_ZN10kiwi_synth12ProcessTimerEPv
+ 1454              		.syntax unified
+ 1455              		.thumb
+ 1456              		.thumb_func
+ 1457              		.fpu fpv5-d16
+ 1459              	_ZN10kiwi_synth12ProcessTimerEPv:
+ 1460              	.LVL103:
+ 1461              	.LFB2560:
+   8:KiwiSynth/Controls/MultiPots.cpp ****         ((MultiPots*)multiPots)->Process();
+ 1462              		.loc 1 8 5 is_stmt 1 view -0
+ 1463              		.cfi_startproc
+ 1464              		@ args = 0, pretend = 0, frame = 0
+ 1465              		@ frame_needed = 0, uses_anonymous_args = 0
+   9:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1466              		.loc 1 9 9 view .LVU367
+   8:KiwiSynth/Controls/MultiPots.cpp ****         ((MultiPots*)multiPots)->Process();
+ 1467              		.loc 1 8 5 is_stmt 0 view .LVU368
+ 1468 0000 10B5     		push	{r4, lr}
+ 1469              		.cfi_def_cfa_offset 8
+ 1470              		.cfi_offset 4, -8
+ 1471              		.cfi_offset 14, -4
+   8:KiwiSynth/Controls/MultiPots.cpp ****         ((MultiPots*)multiPots)->Process();
+ 1472              		.loc 1 8 5 view .LVU369
+ 1473 0002 0446     		mov	r4, r0
+ 1474              	.LVL104:
+ 1475              	.LBB218:
+ 1476              	.LBI218:
+  59:KiwiSynth/Controls/MultiPots.cpp ****     {
+ 1477              		.loc 1 59 10 is_stmt 1 view .LVU370
+ 1478              	.LBB219:
+  62:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+ 1479              		.loc 1 62 9 view .LVU371
+  62:KiwiSynth/Controls/MultiPots.cpp ****         currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+ 1480              		.loc 1 62 17 is_stmt 0 view .LVU372
+ 1481 0004 FFF7FEFF 		bl	_ZN10kiwi_synth9MultiPots8ReadPotsEv
+ 1482              	.LVL105:
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 46
+
+
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1483              		.loc 1 63 9 is_stmt 1 view .LVU373
+ 1484              	.LBB220:
+ 1485              	.LBI220:
+ 1486              		.loc 5 254 5 view .LVU374
+ 1487              		.loc 5 254 5 is_stmt 0 view .LVU375
+ 1488              	.LBE220:
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1489              		.loc 1 63 39 view .LVU376
+ 1490 0008 211D     		adds	r1, r4, #4
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1491              		.loc 1 65 24 view .LVU377
+ 1492 000a 2046     		mov	r0, r4
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1493              		.loc 1 63 39 view .LVU378
+ 1494 000c 0EC9     		ldm	r1, {r1, r2, r3}
+ 1495 000e 9142     		cmp	r1, r2
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1496              		.loc 1 63 34 view .LVU379
+ 1497 0010 03F10103 		add	r3, r3, #1
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1498              		.loc 1 63 39 view .LVU380
+ 1499 0014 B8BF     		it	lt
+ 1500 0016 1146     		movlt	r1, r2
+ 1501 0018 93FBF1F2 		sdiv	r2, r3, r1
+ 1502 001c 01FB1231 		mls	r1, r1, r2, r3
+  63:KiwiSynth/Controls/MultiPots.cpp ****         // We are setting the pin for the *next* call of Process.
+ 1503              		.loc 1 63 20 view .LVU381
+ 1504 0020 E160     		str	r1, [r4, #12]
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1505              		.loc 1 65 9 is_stmt 1 view .LVU382
+ 1506              	.LBE219:
+ 1507              	.LBE218:
+  10:KiwiSynth/Controls/MultiPots.cpp **** 
+ 1508              		.loc 1 10 5 is_stmt 0 view .LVU383
+ 1509 0022 BDE81040 		pop	{r4, lr}
+ 1510              		.cfi_restore 14
+ 1511              		.cfi_restore 4
+ 1512              		.cfi_def_cfa_offset 0
+ 1513              	.LVL106:
+ 1514              	.LBB222:
+ 1515              	.LBB221:
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1516              		.loc 1 65 24 view .LVU384
+ 1517 0026 FFF7FEBF 		b	_ZN10kiwi_synth9MultiPots15SelectMpChannelEi
+ 1518              	.LVL107:
+  65:KiwiSynth/Controls/MultiPots.cpp ****     }
+ 1519              		.loc 1 65 24 view .LVU385
+ 1520              	.LBE221:
+ 1521              	.LBE222:
+ 1522              		.cfi_endproc
+ 1523              	.LFE2560:
+ 1525 002a 00BF     		.text
+ 1526              	.Letext0:
+ 1527              		.file 6 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1528              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1529              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 47
+
+
+ 1530              		.file 9 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 1531              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 1532              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 1533              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 1534              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 1535              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 1536              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 1537              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 1538              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 1539              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 1540              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 1541              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 1542              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 1543              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 1544              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 1545              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1546              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1547              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1548              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1549              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1550              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 1551              		.file 30 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1552              		.file 31 "../../libDaisy//src/sys/system.h"
+ 1553              		.file 32 "../../libDaisy//src/per/qspi.h"
+ 1554              		.file 33 "../../libDaisy//src/per/dac.h"
+ 1555              		.file 34 "../../libDaisy//src/per/sai.h"
+ 1556              		.file 35 "../../libDaisy//src/hid/audio.h"
+ 1557              		.file 36 "../../libDaisy//src/per/adc.h"
+ 1558              		.file 37 "../../libDaisy//src/hid/usb.h"
+ 1559              		.file 38 "../../libDaisy//src/util/wav_format.h"
+ 1560              		.file 39 "../../libDaisy//src/dev/max11300.h"
+ 1561              		.file 40 "../../libDaisy//src/daisy_seed.h"
+ 1562              		.file 41 "../../libDaisy//src/dev/sdram.h"
+ 1563              		.file 42 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 1564              		.file 43 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 1565              		.file 44 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 1566              		.file 45 "KiwiSynth/Controls/MultiPots.h"
+ 1567              		.file 46 "../../libDaisy//src/dev/sr_595.h"
+ 1568              		.file 47 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
+ 1569              		.file 48 "<built-in>"
+ARM GAS  C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s 			page 48
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 MultiPots.cpp
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:17     .text._ZN10kiwi_synth9MultiPotsD2Ev:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:26     .text._ZN10kiwi_synth9MultiPotsD2Ev:00000000 _ZN10kiwi_synth9MultiPotsD2Ev
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:26     .text._ZN10kiwi_synth9MultiPotsD2Ev:00000000 _ZN10kiwi_synth9MultiPotsD1Ev
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:134    .text._ZN10kiwi_synth9MultiPots10StartTimerEv:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:142    .text._ZN10kiwi_synth9MultiPots10StartTimerEv:00000000 _ZN10kiwi_synth9MultiPots10StartTimerEv
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:162    .text._ZN10kiwi_synth9MultiPots10GetMpValueEii:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:170    .text._ZN10kiwi_synth9MultiPots10GetMpValueEii:00000000 _ZN10kiwi_synth9MultiPots10GetMpValueEii
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:192    .text._ZN10kiwi_synth9MultiPots14GetDirectValueEi:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:200    .text._ZN10kiwi_synth9MultiPots14GetDirectValueEi:00000000 _ZN10kiwi_synth9MultiPots14GetDirectValueEi
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:220    .text._ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:228    .text._ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE:00000000 _ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:493    .text._ZN10kiwi_synth9MultiPots9InitMultiEPNS_15MultiPotsConfigE:0000010c $d
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:498    .text._ZN10kiwi_synth9MultiPots9InitTimerEf:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:506    .text._ZN10kiwi_synth9MultiPots9InitTimerEf:00000000 _ZN10kiwi_synth9MultiPots9InitTimerEf
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:613    .text._ZN10kiwi_synth9MultiPots9InitTimerEf:00000054 $d
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1459   .text._ZN10kiwi_synth12ProcessTimerEPv:00000000 _ZN10kiwi_synth12ProcessTimerEPv
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:618    .text._ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:626    .text._ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE:00000000 _ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1147   .text._ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE:0000013c $d
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:626    .text._ZN10kiwi_synth9MultiPotsC2EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE:00000000 _ZN10kiwi_synth9MultiPotsC1EPN5daisy9DaisySeedEPNS_15MultiPotsConfigE
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1154   .text._ZN10kiwi_synth9MultiPots15SelectMpChannelEi:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1162   .text._ZN10kiwi_synth9MultiPots15SelectMpChannelEi:00000000 _ZN10kiwi_synth9MultiPots15SelectMpChannelEi
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1273   .text._ZN10kiwi_synth9MultiPots8ReadPotsEv:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1281   .text._ZN10kiwi_synth9MultiPots8ReadPotsEv:00000000 _ZN10kiwi_synth9MultiPots8ReadPotsEv
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1387   .text._ZN10kiwi_synth9MultiPots7ProcessEv:00000000 $t
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1395   .text._ZN10kiwi_synth9MultiPots7ProcessEv:00000000 _ZN10kiwi_synth9MultiPots7ProcessEv
+C:\Users\kenji\AppData\Local\Temp\ccRyCwEm.s:1451   .text._ZN10kiwi_synth12ProcessTimerEPv:00000000 $t
+
+UNDEFINED SYMBOLS
+free
+_ZN5daisy11TimerHandle5StartEv
+_ZN5daisy4GPIO4InitENS_3PinENS0_4ModeENS0_4PullENS0_5SpeedE
+_Znaj
+_ZN5daisy16AdcChannelConfig10InitSingleE12dsy_gpio_pinNS0_15ConversionSpeedE
+_ZN5daisy9AdcHandle4InitEPNS_16AdcChannelConfigEjNS0_12OverSamplingE
+_ZN5daisy11TimerHandle4InitERKNS0_6ConfigE
+_ZN5daisy11TimerHandle12SetPrescalerEm
+_ZN5daisy11TimerHandle11SetCallbackEPFvPvES1_
+_ZN5daisy4GPIO5WriteEb
+_ZNK5daisy9AdcHandle8GetFloatEh
