@@ -34,7 +34,7 @@ namespace kiwi_synth
         multiPotsConfig.pinsSignal = mpPins;
         multiPotsConfig.pinsDirect = directPins;
         multiPotsConfig.useTimer = true;
-        multiPotsConfig.refreshRateMs = 2.5f;
+        multiPotsConfig.refreshRate = 25; // One quarter of a ms, which means 4ms for all pots to refresh
 
         multiPots = new MultiPots(hw, &multiPotsConfig);
         multiPots->StartTimer();

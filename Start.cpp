@@ -20,7 +20,7 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
 int main(void)
 {
 	hw.Configure();
-	hw.Init();
+	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400,000MHz
 	hw.StartLog(false);
 
 	kiwiSynth = new KiwiSynth(&hw);
@@ -32,6 +32,6 @@ int main(void)
     while(1)
 	{
 		kiwiSynth->Process();
-		hw.DelayMs(700);
+		hw.DelayMs(1000);
 	}
 }

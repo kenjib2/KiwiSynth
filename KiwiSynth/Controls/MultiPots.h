@@ -31,9 +31,7 @@ namespace kiwi_synth
     * pinsDirect: An array of Pins to which potentiometers are directly connected to ADC inputs.
     * useTimer: If true, a timer interrupt will be used to automatically refresh the potentiometers. If set to false, Process()
     *     will need to be called manually to continue updating the potentiometers.
-    * refreshRateMs: If useTimer = true, this will be how often the data is refreshed in milliseconds. For imperceptible response
-    *     it will probably need to be 1.0f or lower. Due to only one channel per multiplexer being refreshed per interval, it
-    *     could take as long as max(numChannels, numPinsDirect) * refreshRateMs for all pots to be read.
+    * refreshRate: If useTimer = true, this will be how often the data is refreshed measured in hundredths of a millisecond.
     */
     struct MultiPotsConfig
     {
@@ -47,7 +45,7 @@ namespace kiwi_synth
         Pin* pinsSignal;
         Pin* pinsDirect;
         bool useTimer;
-        float refreshRateMs;
+        int refreshRate;
     };
 
     /*
@@ -86,7 +84,7 @@ namespace kiwi_synth
             TimerHandle timer;
 
             void InitMulti(MultiPotsConfig *multiPotsConfig);
-            void InitTimer(float refreshRateMs);
+            void InitTimer(int refreshRate);
             void SelectMpChannel(int channelNumber);
             void ReadPots();
 

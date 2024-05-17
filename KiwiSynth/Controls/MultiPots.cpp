@@ -27,7 +27,7 @@ namespace kiwi_synth
         directValueBuffer = new float[numDirectPots];
 
         if (multiPotsConfig->useTimer) {
-            InitTimer(multiPotsConfig->refreshRateMs);
+            InitTimer(multiPotsConfig->refreshRate);
         }
     }
 
@@ -103,16 +103,36 @@ namespace kiwi_synth
         free(adcConfig);
     }
 
-    void MultiPots::InitTimer(float refreshRateMs)
+    /*
+     * (timer speed (Hz)) = (Arduino clock speed (16MHz)) / prescaler
+     * interrupt frequency (Hz) = (Arduino clock speed 480,000,000Hz) / (prescaler * (compare match register + 1))
+     * compare match register = [ 480,000,000/ (prescaler * desired interrupt frequency) ] - 1
+     * 
+     * The clock runs at 480MHz when boosted. TM_5 is a 32-bit timer with a max value of 4,294,967,295. For some
+     * reason the prescalar works against 240MHz instead of 480MHz.
+     * 
+     * A prescalar of 2,400 means:
+     * timer speed = 240,000,000 / 2,400 = 100,000 = 100KHz timer speed.
+     * 
+     * For a 1ms interrupt frequency
+     * Compare match register = (240,000,000Hz / (2,400 * 1000Hz)) = 100
+     * 
+     * This means that with a prescalar of 2,400, the refreshRate will be measured in hundreths of a millisecond.
+     * 
+     * 
+     * 10000 = @.25 seconds
+     */
+    void MultiPots::InitTimer(int refreshRate)
     {
         TimerHandle::Config config;
         config.dir = TimerHandle::Config::CounterDir::UP;
         config.enable_irq = true;
-        config.period = std::min((int)(refreshRateMs * 20), 9999);
+        //config.period = 50000;
+        config.period = refreshRate;
         config.periph = TimerHandle::Config::Peripheral::TIM_5;
 
         timer.Init(config);
-        timer.SetPrescaler(9999);
+        timer.SetPrescaler(2400);
         timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessTimer, (void *)(this));
     }
 
