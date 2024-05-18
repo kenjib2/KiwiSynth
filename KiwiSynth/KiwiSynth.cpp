@@ -2,11 +2,25 @@
 
 namespace kiwi_synth
 {
-    KiwiSynth::KiwiSynth(DaisySeed* hw)
+    KiwiSynth::KiwiSynth(DaisySeed* hw) : hw(hw)
     {
-        this->hw = hw;
         ConfigureMultiPots();
         patchSettings = new PatchSettings(multiPots);
+        for (int i = 0; i < NUM_VCOS; i++)
+        {
+            vcos[i] = new VCO(patchSettings);
+        }
+        multiPots->RegisterControlListener(patchSettings, ControlId::MULTIPOTS);
+    }
+
+    KiwiSynth::~KiwiSynth()
+    {
+        for (int i = 0; i < NUM_VCOS; i++)
+        {
+            if (vcos[i]) {
+                delete vcos[i];
+            }
+        }
     }
 
     void KiwiSynth::ConfigureMultiPots()
@@ -34,7 +48,7 @@ namespace kiwi_synth
         multiPotsConfig.pinsSignal = mpPins;
         multiPotsConfig.pinsDirect = directPins;
         multiPotsConfig.useTimer = true;
-        multiPotsConfig.refreshRate = 25; // One quarter of a ms, which means 4ms for all pots to refresh
+        multiPotsConfig.refreshRate = 50; // One half of a ms, which means 8ms for all pots to refresh. Shorter can cause timing problems.
 
         multiPots = new MultiPots(hw, &multiPotsConfig);
         multiPots->StartTimer();
@@ -43,11 +57,27 @@ namespace kiwi_synth
         free(directPins);
     }
 
-    void KiwiSynth::Process()
+    void KiwiSynth::Process(AudioHandle::OutputBuffer out, size_t size)
     {
-		patchSettings->updatePotValues();
+        float vcoBuffer[NUM_VCOS][size];
+        for (int i = 0; i < NUM_VCOS; i++)
+        {
+            vcos[i]->Process(vcoBuffer[i], size);
+        }
+        for (size_t i = 0; i < size; i++)
+        {
+            // FOR NOW: Just use the first VCO outputting to the left output
+            out[0][i] = vcoBuffer[0][i];
+            //out[0][i] = 0.0f;
+            out[1][i] = 0.0f;
+        }
+    }
 
+    void KiwiSynth::TestOutput()
+    {
     	char buff[256];
+        sprintf(buff, "----------------------");
+		hw->PrintLine(buff);
 
 		float val0 = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE);
 		sprintf(buff, "Pot 0-0 value: %.3f", val0);

@@ -5,9 +5,12 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    PatchSettings::PatchSettings(MultiPots* multiPots)
+    PatchSettings::PatchSettings(MultiPots* multiPots) : multiPots(multiPots)
     {
-        this->multiPots = multiPots;
+    }
+
+    PatchSettings::~PatchSettings()
+    {
     }
 
     void PatchSettings::setValue(PatchSetting setting, int value)
@@ -401,120 +404,203 @@ namespace kiwi_synth
         }
     }
 
-    float PatchSettings::getFloatValue(PatchSetting setting)
+    float PatchSettings::getFloatValue(PatchSetting setting, float min, float max, Scale scale)
     {
+        float value;
+
         switch(setting) {
             case VCO_MASTER_TUNE:
-                return floatValues[0];
+                value = floatValues[0];
+                break;
             case VCO_PORTAMENTO_SPEED:
-                return floatValues[1];
+                value = floatValues[1];
+                break;
             case VCO_1_PULSE_WIDTH:
-                return floatValues[2];
+                value = floatValues[2];
+                break;
             case VCO_1_LEVEL:
-                return floatValues[3];
+                value = floatValues[3];
+                break;
             case VCO_2_PULSE_WIDTH:
-                return floatValues[4];
+                value = floatValues[4];
+                break;
             case VCO_2_LEVEL:
-                return floatValues[5];
+                value = floatValues[5];
+                break;
             case VCO_2_FINE_TUNE:
-                return floatValues[6];
+                value = floatValues[6];
+                break;
             case VCO_3_PULSE_WIDTH:
-                return floatValues[7];
+                value = floatValues[7];
+                break;
             case VCO_3_LEVEL:
-                return floatValues[8];
+                value = floatValues[8];
+                break;
             case VCO_3_FINE_TUNE:
-                return floatValues[9];
+                value = floatValues[9];
+                break;
             case VCO_NOISE_LEVEL:
-                return floatValues[10];
+                value = floatValues[10];
+                break;
             case VCO_EXT_TRIGGER_GATE:
-                return floatValues[11];
+                value = floatValues[11];
+                break;
             case VCO_EXT_LEVEL:
-                return floatValues[12];
+                value = floatValues[12];
+                break;
             case VCF_CUTOFF:
-                return floatValues[13];
+                value = floatValues[13];
+                break;
             case VCF_RESONANCE:
-                return floatValues[14];
+                value = floatValues[14];
+                break;
             case VCF_TRACKING:
-                return floatValues[15];
+                value = floatValues[15];
+                break;
             case VCF_ENV_1_DEPTH:
-                return floatValues[16];
+                value = floatValues[16];
+                break;
             case VCF_ENV_2_DEPTH:
-                return floatValues[17];
+                value = floatValues[17];
+                break;
             case VCA_LEVEL:
-                return floatValues[18];
+                value = floatValues[18];
+                break;
             case VCA_ENV_1_DEPTH:
-                return floatValues[19];
+                value = floatValues[19];
+                break;
             case ENV_1_ATTACK:
-                return floatValues[20];
+                value = floatValues[20];
+                break;
             case ENV_1_DECAY:
-                return floatValues[21];
+                value = floatValues[21];
+                break;
             case ENV_1_SUSTAIN:
-                return floatValues[22];
+                value = floatValues[22];
+                break;
             case ENV_1_RELEASE:
-                return floatValues[23];
+                value = floatValues[23];
+                break;
             case ENV_2_ATTACK:
-                return floatValues[24];
+                value = floatValues[24];
+                break;
             case ENV_2_DECAY:
-                return floatValues[25];
+                value = floatValues[25];
+                break;
             case ENV_2_SUSTAIN:
-                return floatValues[26];
+                value = floatValues[26];
+                break;
             case ENV_2_RELEASE:
-                return floatValues[27];
+                value = floatValues[27];
+                break;
             case LFO_1_PULSE_WIDTH:
-                return floatValues[28];
+                value = floatValues[28];
+                break;
             case LFO_1_RATE:
-                return floatValues[29];
+                value = floatValues[29];
+                break;
             case LFO_1_TRIGGER_PHASE:
-                return floatValues[30];
+                value = floatValues[30];
+                break;
             case LFO_1_TO_MASTER_TUNE:
-                return floatValues[31];
+                value = floatValues[31];
+                break;
             case LFO_2_PULSE_WIDTH:
-                return floatValues[32];
+                value = floatValues[32];
+                break;
             case LFO_2_RATE:
-                return floatValues[33];
+                value = floatValues[33];
+                break;
             case LFO_2_TRIGGER_PHASE:
-                return floatValues[34];
+                value = floatValues[34];
+                break;
             case LFO_2_TO_VCF_CUTOFF:
-                return floatValues[35];
+                value = floatValues[35];
+                break;
             case SH_LEVEL:
-                return floatValues[36];
+                value = floatValues[36];
+                break;
             case SH_RATE:
-                return floatValues[37];
+                value = floatValues[37];
+                break;
             case MOD_1_DEPTH:
-                return floatValues[38];
+                value = floatValues[38];
+                break;
             case MOD_2_DEPTH:
-                return floatValues[39];
+                value = floatValues[39];
+                break;
             case MOD_3_DEPTH:
-                return floatValues[40];
+                value = floatValues[40];
+                break;
             case MOD_4_DEPTH:
-                return floatValues[41];
+                value = floatValues[41];
+                break;
             case MOD_5_DEPTH:
-                return floatValues[42];
+                value = floatValues[42];
+                break;
             case MOD_6_DEPTH:
-                return floatValues[43];
+                value = floatValues[43];
+                break;
             case MOD_7_DEPTH:
-                return floatValues[44];
+                value = floatValues[44];
+                break;
             case MOD_8_DEPTH:
-                return floatValues[45];
+                value = floatValues[45];
+                break;
             case FX_1:
-                return floatValues[46];
+                value = floatValues[46];
+                break;
             case FX_2:
-                return floatValues[47];
+                value = floatValues[47];
+                break;
             case FX_3:
-                return floatValues[48];
+                value = floatValues[48];
+                break;
             case FX_4:
-                return floatValues[49];
+                value = floatValues[49];
+                break;
             case FX_5:
-                return floatValues[50];
+                value = floatValues[50];
+                break;
             case FX_REVERB:
-                return floatValues[51];
+                value = floatValues[51];
+                break;
             case GEN_BALANCE:
-                return floatValues[52];
+                value = floatValues[52];
+                break;
             case GEN_REVERB_DECAY:
-                return floatValues[53];
+                value = floatValues[53];
+                break;
             default:
-                return 0.0f;
+                value = 0.0f;
+                break;
         }
+
+        switch(scale)
+        {
+            case EXPONENTIAL:
+                value = value * value * (max - min) + min;
+                break;
+            case OCTAVE:
+                {
+                    float range = max - min;
+                    // For plus or minus one octave we want 2^(2x-1)
+                    // More generally it's 2^(rangex - range/2)
+                    // This only works if max + min = 0
+                    value = pow(2, range * value - range / 2);
+
+                    break;
+                }
+            case LOGARHITHMIC:
+                value = expf(value * (max - min) + min);
+                break;
+            case LINEAR:
+            default:
+                value = value * (max - min) + min;
+                break;
+        }
+
+        return value;
     }
 
     bool PatchSettings::getBoolValue(PatchSetting setting)
@@ -550,6 +636,19 @@ namespace kiwi_synth
                 return std::string(name);
             default:
                 return "";
+        }
+    }
+
+    void PatchSettings::controlUpdate(int controlNumber, int controlId)
+    {
+        //updatePotValues();
+        switch (controlId)
+        {
+            case ControlId::MULTIPOTS:
+                updatePotValues();
+                break;
+            default:
+                break;
         }
     }
 
@@ -608,6 +707,11 @@ namespace kiwi_synth
         setValue(PatchSetting::FX_REVERB, multiPots->GetMpValue(2, 15));
         // Direct ADC Pin
         setValue(PatchSetting::GEN_BALANCE, multiPots->GetDirectValue(0));
+
+        /*char buff[256];
+        sprintf(buff, "Value: %.3f", floatValues[0]);
+        //sprintf(buff, "Value: %.3f", getFloatValue(PatchSetting::GEN_BALANCE));
+        hw->PrintLine(buff);*/
     }
 
 } // namespace kiwi_synth

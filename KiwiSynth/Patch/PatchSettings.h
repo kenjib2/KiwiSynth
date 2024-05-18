@@ -1,10 +1,11 @@
-#ifndef __PATCH_SETTINGS_H__
-#define __PATCH_SETTINGS_H__
+#ifndef __KIWI_SYNTH_PATCH_SETTINGS_H__
+#define __KIWI_SYNTH_PATCH_SETTINGS_H__
 
 
 #include <string>
 #include "daisy_seed.h"
 #include "../Controls/MultiPots.h"
+#include "../Controls/ControlListener.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -12,6 +13,10 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
+
+    typedef enum {
+        MULTIPOTS
+    } ControlId;
 
     /*
      * All controls for the Kiwi Synth.
@@ -139,6 +144,14 @@ namespace kiwi_synth
         // Power switch is analog only
     } PatchSetting;
 
+    typedef enum
+    {
+        LINEAR,
+        EXPONENTIAL,
+        LOGARHITHMIC,
+        OCTAVE
+    } Scale;
+
     /*
      * Manages update and access to all of the settings for the Kiwi Synth. PatchSettings maintains its own value buffers independent
      * of MultiPots. This is done to support saving and loading of patches. When a patch is loaded, it's state will be different from that
@@ -148,9 +161,11 @@ namespace kiwi_synth
      * When the synth first starts up, before a patch is loaded, all values will be constantly updated from the controls. The synth can also
      * be initialized to use all live control settings at any time via the menu.
      */
-    class PatchSettings
+    class PatchSettings : public ControlListener
     {
         private:
+            static constexpr float minValue = 0.0f;
+            static constexpr float maxValue = 1.0f;
             char name[MAX_PATCH_NAME_LENGTH + 1];
             float floatValues[54];
             int intValues[31];
@@ -159,6 +174,12 @@ namespace kiwi_synth
 
         public:
             PatchSettings(MultiPots* multiPots);
+            ~PatchSettings();
+
+            /*
+             * From ControlListener: Callback to update controls.
+             */
+            void controlUpdate(int controlNumber, int controlId);
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.
              */
@@ -183,7 +204,7 @@ namespace kiwi_synth
             /*
              * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValue(PatchSetting setting);
+            float getFloatValue(PatchSetting setting, float min = 0.0f, float max = 1.0f, Scale scale = LINEAR);
             /*
              * Gets a bool setting value. If a non-float setting is attempted, false will be returned.
              */

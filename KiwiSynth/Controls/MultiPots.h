@@ -1,8 +1,10 @@
-#ifndef __MULTIPOTS_H__
-#define __MULTIPOTS_H__
+#ifndef __KIWI_SYNTH_MULTIPOTS_H__
+#define __KIWI_SYNTH_MULTIPOTS_H__
 
 
 #include "daisy_seed.h"
+#include "Control.h"
+#include "ControlListener.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -15,7 +17,7 @@ namespace kiwi_synth
      */
     void ProcessTimer(void* data);
 
-    /*
+   /*
     * Used to initialize a MultiPots object.
     *
     * numMps: The number of multiplexers attached.
@@ -65,7 +67,7 @@ namespace kiwi_synth
     * are called, the value is read from the buffer, so the value therein could be as many as max(numChannels, numDirectPots)
     * iterations old. The refresh rate should be set with this in mind.
     */
-    class MultiPots
+    class MultiPots : public Control
     {
         private:
             int numMps = 0;
@@ -82,6 +84,8 @@ namespace kiwi_synth
             float **mpValueBuffer = nullptr;
             float *directValueBuffer = nullptr;
             TimerHandle timer;
+            ControlListener* controlListener = nullptr;
+            int controlId;
 
             void InitMulti(MultiPotsConfig *multiPotsConfig);
             void InitTimer(int refreshRate);
@@ -92,6 +96,7 @@ namespace kiwi_synth
             MultiPots(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
             ~MultiPots();
 
+            void RegisterControlListener(ControlListener* controlListener, int controlId);
             /*
             * Starts the input read timer running.
             */

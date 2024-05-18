@@ -9,12 +9,12 @@ KiwiSynth* kiwiSynth;
 
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
-	//kiwiSynth->Process();
-	for (size_t i = 0; i < size; i++)
+	kiwiSynth->Process(out, size);
+	/*for (size_t i = 0; i < size; i++)
 	{
-		out[0][i] = in[0][i];
-		out[1][i] = in[1][i];
-	}
+		//out[0][i] = in[0][i];
+		//out[1][i] = in[1][i];
+	}*/
 }
 
 int main(void)
@@ -31,7 +31,7 @@ int main(void)
 
     while(1)
 	{
-		kiwiSynth->Process();
-		hw.DelayMs(1000);
+		hw.DelayMs(500);
+		kiwiSynth->TestOutput();
 	}
 }

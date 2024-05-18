@@ -51,6 +51,13 @@ namespace kiwi_synth
         }
     }
 
+
+    void MultiPots::RegisterControlListener(ControlListener* controlListener, int controlId)
+    {
+        this->controlListener = controlListener;
+        this->controlId = controlId;
+    }
+
     void MultiPots::StartTimer()
     {
         timer.Start();
@@ -127,7 +134,6 @@ namespace kiwi_synth
         TimerHandle::Config config;
         config.dir = TimerHandle::Config::CounterDir::UP;
         config.enable_irq = true;
-        //config.period = 50000;
         config.period = refreshRate;
         config.periph = TimerHandle::Config::Peripheral::TIM_5;
 
@@ -165,6 +171,10 @@ namespace kiwi_synth
 
         if (currentPot < numDirectPots) {
             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+        }
+
+        if (controlListener) {
+            controlListener->controlUpdate(currentPot, controlId);
         }
     }
 
