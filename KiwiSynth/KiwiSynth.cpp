@@ -68,7 +68,6 @@ namespace kiwi_synth
         {
             // FOR NOW: Just use the first VCO outputting to the left output
             out[0][i] = vcoBuffer[0][i];
-            //out[0][i] = 0.0f;
             out[1][i] = 0.0f;
         }
     }

@@ -217,7 +217,7 @@ namespace kiwi_synth
             /*
              * Updates all potentiometer based settings with the current values in the MultiPots buffer.
              */
-            void updatePotValues();
+            void updatePotValues(int controlNumber);
     }; // class PatchSettings
 } // namespace kiwi_synth
 
