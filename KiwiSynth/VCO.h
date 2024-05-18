@@ -22,14 +22,11 @@ namespace kiwi_synth
             void CalculateBaseFreq();
 
         public:
-
             VCO(PatchSettings* patchSettings);
             ~VCO() {}
-            void Init(float sampleRate);
-            void Reset();
             void Process(float *, size_t size);
     };
 }
 
 
-#endif
+#endif // __KIWI_SYNTH_VCO_H__

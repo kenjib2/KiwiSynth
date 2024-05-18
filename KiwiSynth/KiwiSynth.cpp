@@ -6,19 +6,19 @@ namespace kiwi_synth
     {
         ConfigureMultiPots();
         patchSettings = new PatchSettings(multiPots);
-        for (int i = 0; i < NUM_VCOS; i++)
+        for (int i = 0; i < NUM_VOICES; i++)
         {
-            vcos[i] = new VCO(patchSettings);
+            voices[i] = new Voice(NUM_VOICES, patchSettings);
         }
         multiPots->RegisterControlListener(patchSettings, ControlId::MULTIPOTS);
     }
 
     KiwiSynth::~KiwiSynth()
     {
-        for (int i = 0; i < NUM_VCOS; i++)
+        for (int i = 0; i < NUM_VOICES; i++)
         {
-            if (vcos[i]) {
-                delete vcos[i];
+            if (voices[i]) {
+                delete voices[i];
             }
         }
     }
@@ -59,17 +59,8 @@ namespace kiwi_synth
 
     void KiwiSynth::Process(AudioHandle::OutputBuffer out, size_t size)
     {
-        float vcoBuffer[NUM_VCOS][size];
-        for (int i = 0; i < NUM_VCOS; i++)
-        {
-            vcos[i]->Process(vcoBuffer[i], size);
-        }
-        for (size_t i = 0; i < size; i++)
-        {
-            // FOR NOW: Just use the first VCO outputting to the left output
-            out[0][i] = vcoBuffer[0][i];
-            out[1][i] = 0.0f;
-        }
+        // FOR NOW JUST TAKE THE OUTPUT OF THE FIRST VOICE
+        voices[0]->Process(out, size);
     }
 
     void KiwiSynth::TestOutput()

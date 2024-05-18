@@ -4,7 +4,6 @@ namespace kiwi_synth
 {
     VCO::VCO(PatchSettings* patchSettings) : patchSettings(patchSettings)
     {
-        this->patchSettings = patchSettings;
     }
 
     void VCO::CalculateBaseFreq()

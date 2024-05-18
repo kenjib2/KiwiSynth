@@ -5,7 +5,7 @@
 #include "daisy_seed.h"
 #include "Controls/MultiPots.h"
 #include "Patch/PatchSettings.h"
-#include "VCO.h"
+#include "Voice.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -16,11 +16,12 @@ namespace kiwi_synth
     {
         private:
             static const int NUM_VCOS = 3;
+            static const int NUM_VOICES = 4;
             DaisySeed* hw;
             MultiPots* multiPots;
             PatchSettings* patchSettings;
 
-            VCO* vcos[NUM_VCOS];
+            Voice* voices[NUM_VOICES];
 
         public:
             KiwiSynth(DaisySeed* hw);
