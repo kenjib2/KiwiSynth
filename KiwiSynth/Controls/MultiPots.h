@@ -1,6 +1,7 @@
 #ifndef __KIWI_SYNTH_MULTIPOTS_H__
 #define __KIWI_SYNTH_MULTIPOTS_H__
 
+#include <vector>
 
 #include "daisy_seed.h"
 #include "Control.h"
@@ -44,8 +45,8 @@ namespace kiwi_synth
         Pin pinA1;
         Pin pinA2;
         Pin pinA3;
-        Pin* pinsSignal;
-        Pin* pinsDirect;
+        std::vector<Pin> pinsSignal;
+        std::vector<Pin> pinsDirect;
         bool useTimer;
         int refreshRate;
     };
@@ -78,8 +79,8 @@ namespace kiwi_synth
             GPIO a1;
             GPIO a2;
             GPIO a3;
-            Pin *pinsSignal = nullptr;
-            Pin *pinsDirect = nullptr;
+            std::vector<Pin> pinsSignal;
+            std::vector<Pin> pinsDirect;
             DaisySeed *hw;
             float **mpValueBuffer = nullptr;
             float *directValueBuffer = nullptr;

@@ -17,6 +17,8 @@ namespace kiwi_synth
     KiwiSynth::~KiwiSynth()
     {
         delete voiceBank;
+        delete patchSettings;
+        delete multiPots;
     }
         
     void KiwiSynth::ConfigureMultiPots()
@@ -25,13 +27,13 @@ namespace kiwi_synth
         int numChannels = 16;
         int numDirectPots = 1;
 
-        Pin *mpPins = new Pin[numMps];
-        mpPins[0] = A0;
-        mpPins[1] = A1;
-        mpPins[2] = A2;
+        std::vector<Pin> mpPins;
+        mpPins.push_back(A0);
+        mpPins.push_back(A1);
+        mpPins.push_back(A2);
 
-        Pin *directPins = new Pin[numDirectPots];
-        directPins[0] = A4;
+        std::vector<Pin> directPins;
+        directPins.push_back(A4);
 
         MultiPotsConfig multiPotsConfig;
         multiPotsConfig.numMps = numMps;
@@ -48,9 +50,6 @@ namespace kiwi_synth
 
         multiPots = new MultiPots(hw, &multiPotsConfig);
         multiPots->StartTimer();
-
-        free(mpPins);
-        free(directPins);
     }
 
     void KiwiSynth::InitMidi()

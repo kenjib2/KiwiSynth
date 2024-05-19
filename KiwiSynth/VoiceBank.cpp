@@ -13,8 +13,8 @@ namespace kiwi_synth
 
     VoiceBank::~VoiceBank()
     {
-        while(voices.size() > 0) {
-            voices.pop_back();
+        for (const Voice* nextVoice : voices) {
+            delete nextVoice;
         }
     }
 

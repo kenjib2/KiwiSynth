@@ -14,8 +14,6 @@ namespace kiwi_synth
         numMps = multiPotsConfig->numMps;
         numChannels = multiPotsConfig->numChannels;
         numDirectPots = multiPotsConfig->numDirectPots;
-        pinsSignal = new Pin[numMps];
-        pinsDirect = new Pin[numDirectPots];
         InitMulti(multiPotsConfig);
 
         mpValueBuffer = new float*[numMps];
@@ -33,10 +31,6 @@ namespace kiwi_synth
 
     MultiPots::~MultiPots()
     {
-        if (pinsSignal) {
-            free(pinsSignal);
-        }
-
         for (int i = 0; i < numMps; i++) {
             if (mpValueBuffer[i]) {
                 free(mpValueBuffer[i]);
@@ -94,14 +88,14 @@ namespace kiwi_synth
         AdcChannelConfig *adcConfig = new AdcChannelConfig[numMps];
         for (int i = 0; i < numMps; i++)
         {
-            pinsSignal[i] = multiPotsConfig->pinsSignal[i];
+            pinsSignal.push_back(multiPotsConfig->pinsSignal[i]);
             //Configure the signal pins as ADC inputs. This is where we'll read the knob values from each multiplexer.
             adcConfig[i].InitSingle(pinsSignal[i]);
         }
 
         for (int i = 0; i < numDirectPots; i++)
         {
-            pinsDirect[i] = multiPotsConfig->pinsDirect[i];
+            pinsDirect.push_back(multiPotsConfig->pinsDirect[i]);
             //Configure the signal pins as ADC inputs. This is where we'll read the knob values from each direct ADC pot.
             adcConfig[i + numMps].InitSingle(pinsDirect[i]);
         }
