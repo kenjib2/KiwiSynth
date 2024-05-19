@@ -3,7 +3,7 @@
 
 
 #include "daisysp.h"
-#include "Patch/PatchSettings.h"
+#include "../Patch/PatchSettings.h"
 
 using namespace daisysp;
 
@@ -22,7 +22,7 @@ namespace kiwi_synth
             void CalculateBaseFreq();
 
         public:
-            VCO(PatchSettings* patchSettings);
+            VCO(PatchSettings* patchSettings, float sampleRate);
             ~VCO() {}
             void Process(float *, size_t size);
     };

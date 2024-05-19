@@ -32,7 +32,7 @@ namespace kiwi_synth
             void HandleMidiMessage(MidiEvent* midiEvent);
 
         public:
-            KiwiSynth(DaisySeed* hw);
+            KiwiSynth(DaisySeed* hw, float sampleRate);
             ~KiwiSynth();
 
             void ConfigureMultiPots();

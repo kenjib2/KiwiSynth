@@ -25,7 +25,7 @@ namespace kiwi_synth
             void RemovePlayingVoice(int index);
  
         public:
-            VoiceBank(int numVoices, PatchSettings* patchSettings);
+            VoiceBank(int numVoices, PatchSettings* patchSettings, float sampleRate);
             ~VoiceBank();
             void Process(AudioHandle::OutputBuffer out, size_t size);
 

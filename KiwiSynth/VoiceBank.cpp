@@ -2,11 +2,11 @@
 
 namespace kiwi_synth
 {
-    VoiceBank::VoiceBank(int numVoices, PatchSettings* patchSettings) : numVoices(numVoices), patchSettings(patchSettings)
+    VoiceBank::VoiceBank(int numVoices, PatchSettings* patchSettings, float sampleRate) : numVoices(numVoices), patchSettings(patchSettings)
     {
         for (int i = 0; i < numVoices; i++)
         {
-            Voice* nextVoice = new Voice(numVoices, patchSettings);
+            Voice* nextVoice = new Voice(numVoices, patchSettings, sampleRate);
             voices.push_back(nextVoice);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace kiwi_synth
 {
-    KiwiSynth::KiwiSynth(DaisySeed* hw) : hw(hw)
+    KiwiSynth::KiwiSynth(DaisySeed* hw, float sampleRate) : hw(hw)
     {
         numVoices = DEFAULT_NUM_VOICES;
         SetMidiChannel(0);
@@ -11,7 +11,7 @@ namespace kiwi_synth
         patchSettings = new PatchSettings(multiPots);
         multiPots->RegisterControlListener(patchSettings, ControlId::MULTIPOTS);
 
-        voiceBank = new VoiceBank(numVoices, patchSettings);
+        voiceBank = new VoiceBank(numVoices, patchSettings, sampleRate);
     }
 
     KiwiSynth::~KiwiSynth()

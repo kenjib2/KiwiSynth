@@ -2,7 +2,7 @@
 
 namespace kiwi_synth
 {
-    VCO::VCO(PatchSettings* patchSettings) : patchSettings(patchSettings)
+    VCO::VCO(PatchSettings* patchSettings, float sampleRate) : patchSettings(patchSettings)
     {
     }
 

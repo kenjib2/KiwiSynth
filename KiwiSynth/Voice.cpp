@@ -2,17 +2,23 @@
 
 namespace kiwi_synth
 {
-    Voice::Voice(int numVCOs, PatchSettings* patchSettings) : numVCOs(numVCOs), patchSettings(patchSettings)
+    Voice::Voice(int numVCOs, PatchSettings* patchSettings, float sampleRate) : numVCOs(numVCOs), patchSettings(patchSettings)
     {
-        vcos = (VCO**)malloc(numVCOs * sizeof(VCO));
         for (int i = 0; i < numVCOs; i++) {
-            vcos[i] = new VCO(patchSettings);
+            VCO* nextVco = new VCO(patchSettings, sampleRate);
+            vcos.push_back(nextVco);
         }
+        vcf = new VCF(patchSettings, sampleRate);
+        vca = new VCA(patchSettings, sampleRate);
     }
 
     Voice::~Voice()
     {
-        free(vcos);
+        for (const VCO* nextVco : vcos) {
+            delete nextVco;
+        }
+        delete vcf;
+        delete vca;
     }
 
     void Voice::Process(AudioHandle::OutputBuffer out, size_t size)
@@ -32,14 +38,12 @@ namespace kiwi_synth
 
     bool Voice::IsAvailable()
     {
-        //return !vca.IsPlaying();
-        return true;
+        return !vca->IsPlaying();
     }
 
 
     bool Voice::IsReleasing()
     {
-        //return vca.IsReleasing();
-        return false;
+        return vca->IsReleasing();
     }
 }

@@ -5,7 +5,7 @@ LDFLAGS = -u _printf_float
 TARGET = HardwareTest
 
 # Sources
-CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp)
+CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Modules/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp)
 
 # Library Locations
 LIBDAISY_DIR = ../../libDaisy/
