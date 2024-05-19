@@ -4,25 +4,21 @@ namespace kiwi_synth
 {
     KiwiSynth::KiwiSynth(DaisySeed* hw) : hw(hw)
     {
+        numVoices = DEFAULT_NUM_VOICES;
+        SetMidiChannel(0);
+
         ConfigureMultiPots();
         patchSettings = new PatchSettings(multiPots);
-        for (int i = 0; i < NUM_VOICES; i++)
-        {
-            voices[i] = new Voice(NUM_VOICES, patchSettings);
-        }
         multiPots->RegisterControlListener(patchSettings, ControlId::MULTIPOTS);
+
+        voiceBank = new VoiceBank(numVoices, patchSettings);
     }
 
     KiwiSynth::~KiwiSynth()
     {
-        for (int i = 0; i < NUM_VOICES; i++)
-        {
-            if (voices[i]) {
-                delete voices[i];
-            }
-        }
+        delete voiceBank;
     }
-
+        
     void KiwiSynth::ConfigureMultiPots()
     {
         int numMps = 3;
@@ -57,10 +53,88 @@ namespace kiwi_synth
         free(directPins);
     }
 
+    void KiwiSynth::InitMidi()
+    {
+        MidiUartHandler::Config midi_config;
+        midi_config.transport_config.tx = D13;
+        midi_config.transport_config.rx = D14;
+        midi.Init(midi_config);
+        midi.StartReceive();
+    }
+
+    void KiwiSynth::SetMidiChannel(int midiChannel)
+    {
+        this->midiChannel = midiChannel;
+    }
+
     void KiwiSynth::Process(AudioHandle::OutputBuffer out, size_t size)
     {
-        // FOR NOW JUST TAKE THE OUTPUT OF THE FIRST VOICE
-        voices[0]->Process(out, size);
+        ProcessMidi();
+        voiceBank->Process(out, size);
+    }
+
+    void KiwiSynth::ProcessMidi()
+    {
+        midi.Listen();
+        while(midi.HasEvents())
+        {
+            MidiEvent event = midi.PopEvent();
+            HandleMidiMessage(&event);
+        }
+    }
+
+    void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)
+    {
+        if (midiChannel == midiEvent->channel) {
+            NoteOnEvent on;
+            NoteOffEvent off;
+            //ControlChangeEvent controlChange;
+            switch(midiEvent->type)
+            {
+                case NoteOn:
+                    on = midiEvent->AsNoteOn();
+                    if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
+                    {
+                        voiceBank->NoteOn(on.note, on.velocity);
+                        break;
+                    }
+                    break;
+
+                case NoteOff:
+                    off = midiEvent->AsNoteOff();
+                    voiceBank->NoteOff(off.note, off.velocity);
+                    /*for (size_t i = 0; i < voices.size(); i++) {
+                        Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
+                        if (voice) {
+                            voice->NoteOff(off.note, off.velocity);
+                            voiceBank->RemovePlayingVoice(voice);
+                            break;
+                        }
+                    }*/
+                    break;
+
+                // Unimplemented message types
+                case ChannelPressure:
+                case PolyphonicKeyPressure:
+                case ProgramChange:
+                case PitchBend:
+                case SystemCommon:
+                case SystemRealTime:
+                case ChannelMode:
+                case MessageLast:
+                    break;
+
+                case ControlChange:
+                    /*controlChange = midiEvent->AsControlChange();
+                    intVals[0] = controlChange.control_number;
+                    intVals[1] = controlChange.value;
+                    midiListeners[i]->Trigger(TriggerMidiControlChange, intVals, NULL);*/
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     void KiwiSynth::TestOutput()
