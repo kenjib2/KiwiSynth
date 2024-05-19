@@ -19,9 +19,14 @@ namespace kiwi_synth
             PatchSettings* patchSettings;
 
         public:
+            int currentMidiNote;
+
             Voice(int numVCOs, PatchSettings* patchSettings);
             ~Voice();
+
             void Process(AudioHandle::OutputBuffer out, size_t size);
+            bool IsAvailable();
+            bool IsReleasing();
     };
 }
 

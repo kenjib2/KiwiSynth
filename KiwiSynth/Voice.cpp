@@ -29,4 +29,17 @@ namespace kiwi_synth
             out[1][i] = 0.0f;
         }
     }
+
+    bool Voice::IsAvailable()
+    {
+        //return !vca.IsPlaying();
+        return true;
+    }
+
+
+    bool Voice::IsReleasing()
+    {
+        //return vca.IsReleasing();
+        return false;
+    }
 }

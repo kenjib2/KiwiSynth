@@ -17,7 +17,13 @@ namespace kiwi_synth
             int numVoices;
             std::vector<Voice*> voices;
             PatchSettings* patchSettings;
+            std::vector<int>     playingIndices;
+            std::vector<int>     playingNotes;
 
+            Voice* RequestVoice(int midiNote);
+            void AddPlayingVoice(int index, int midiNote);
+            void RemovePlayingVoice(int index);
+ 
         public:
             VoiceBank(int numVoices, PatchSettings* patchSettings);
             ~VoiceBank();
