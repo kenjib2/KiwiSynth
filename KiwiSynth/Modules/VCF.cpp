@@ -2,8 +2,9 @@
 
 namespace kiwi_synth
 {
-    VCF::VCF(PatchSettings* patchSettings, float sampleRate) : patchSettings(patchSettings)
+    void VCF::Init(PatchSettings* patchSettings, float sampleRate)
     {
+        this->patchSettings = patchSettings;
         filter.Init(sampleRate);
     }
 

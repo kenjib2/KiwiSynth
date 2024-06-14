@@ -2,8 +2,9 @@
 
 namespace kiwi_synth
 {
-    VCA::VCA(PatchSettings* patchSettings, float sampleRate) : patchSettings(patchSettings)
+    void VCA::Init(PatchSettings* patchSettings, float sampleRate)
     {
+        this->patchSettings = patchSettings;
         noteTriggered = false;
     }
 

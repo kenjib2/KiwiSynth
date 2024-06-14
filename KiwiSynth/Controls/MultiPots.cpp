@@ -9,7 +9,7 @@ namespace kiwi_synth
         ((MultiPots*)multiPots)->Process();
     }
 
-    MultiPots::MultiPots(DaisySeed *hw, MultiPotsConfig *multiPotsConfig) : hw(hw)
+    void MultiPots::Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig)
     {
         numMps = multiPotsConfig->numMps;
         numChannels = multiPotsConfig->numChannels;
@@ -146,11 +146,11 @@ namespace kiwi_synth
         int a0Value = channelNumber % 2;
 
         if (numChannels > 8) {
-            a3.Write(a3Value);
+            a3.Write(a3Value); // channelNumber & 0b1000
         }
-        a2.Write(a2Value);
-        a1.Write(a1Value);
-        a0.Write(a0Value);
+        a2.Write(a2Value); // channelNumber & 0b0100
+        a1.Write(a1Value); // channelNumber & 0b0010
+        a0.Write(a0Value); // channelNumber & 0b0001
     }
 
     void MultiPots::ReadPots()

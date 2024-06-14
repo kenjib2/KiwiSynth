@@ -15,7 +15,7 @@ namespace kiwi_synth
     {
         private:
             int numVoices;
-            std::vector<Voice*> voices;
+            std::vector<Voice> voices;
             PatchSettings* patchSettings;
             std::vector<int>     playingIndices;
             std::vector<int>     playingNotes;
@@ -25,8 +25,9 @@ namespace kiwi_synth
             void RemovePlayingVoice(int index);
  
         public:
-            VoiceBank(int numVoices, PatchSettings* patchSettings, float sampleRate);
-            ~VoiceBank();
+            VoiceBank() {}
+            ~VoiceBank() {}
+            void Init(int numVoices, PatchSettings* patchSettings, float sampleRate);
             void Process(AudioHandle::OutputBuffer out, size_t size);
 
             void NoteOn(int note, int velocity);

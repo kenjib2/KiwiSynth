@@ -173,8 +173,9 @@ namespace kiwi_synth
             MultiPots* multiPots;
 
         public:
-            PatchSettings(MultiPots* multiPots);
-            ~PatchSettings();
+            PatchSettings() {}
+            ~PatchSettings() {}
+            void Init(MultiPots* multiPots);
 
             /*
              * From ControlListener: Callback to update controls.

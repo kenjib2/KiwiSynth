@@ -5,12 +5,9 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    PatchSettings::PatchSettings(MultiPots* multiPots) : multiPots(multiPots)
+    void PatchSettings::Init(MultiPots* multiPots)
     {
-    }
-
-    PatchSettings::~PatchSettings()
-    {
+        this->multiPots = multiPots;
     }
 
     void PatchSettings::setValue(PatchSetting setting, int value)
@@ -641,7 +638,6 @@ namespace kiwi_synth
 
     void PatchSettings::controlUpdate(int controlNumber, int controlId)
     {
-        //updatePotValues();
         switch (controlId)
         {
             case ControlId::MULTIPOTS:
@@ -657,85 +653,85 @@ namespace kiwi_synth
         switch(controlNumber)
         {
             case 0:
-                setValue(PatchSetting::VCO_MASTER_TUNE, multiPots->GetMpValue(0, 0));
-                setValue(PatchSetting::VCF_ENV_1_DEPTH, multiPots->GetMpValue(1, 0));
-                setValue(PatchSetting::LFO_2_PULSE_WIDTH, multiPots->GetMpValue(2, 0));
-                setValue(PatchSetting::GEN_BALANCE, multiPots->GetDirectValue(0));
+                setValue(PatchSetting::VCF_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_3_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_2_DECAY, multiPots->GetMpValue(2, controlNumber));
+                setValue(PatchSetting::VCO_PORTAMENTO_SPEED, multiPots->GetDirectValue(0));
                 break;
             case 1:
-                setValue(PatchSetting::VCO_PORTAMENTO_SPEED, multiPots->GetMpValue(0, 1));
-                setValue(PatchSetting::VCF_ENV_2_DEPTH, multiPots->GetMpValue(1, 1));
-                setValue(PatchSetting::LFO_2_RATE, multiPots->GetMpValue(2, 1));
+                setValue(PatchSetting::SH_RATE, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_3_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_2_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 2:
-                setValue(PatchSetting::VCO_1_PULSE_WIDTH, multiPots->GetMpValue(0, 2));
-                setValue(PatchSetting::VCA_LEVEL, multiPots->GetMpValue(1, 2));
-                setValue(PatchSetting::LFO_2_TRIGGER_PHASE, multiPots->GetMpValue(2, 2));
+                setValue(PatchSetting::MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 3:
-                setValue(PatchSetting::VCO_1_LEVEL, multiPots->GetMpValue(0, 3));
-                setValue(PatchSetting::VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, 3));
-                setValue(PatchSetting::LFO_2_TO_VCF_CUTOFF, multiPots->GetMpValue(2, 3));
+                setValue(PatchSetting::MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_2_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_1_DECAY, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 4:
-                setValue(PatchSetting::VCO_2_PULSE_WIDTH, multiPots->GetMpValue(0, 4));
-                setValue(PatchSetting::ENV_1_ATTACK, multiPots->GetMpValue(1, 4));
-                setValue(PatchSetting::SH_LEVEL, multiPots->GetMpValue(2, 4));
+                setValue(PatchSetting::MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCA_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_1_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 5:
-                setValue(PatchSetting::VCO_2_LEVEL, multiPots->GetMpValue(0, 5));
-                setValue(PatchSetting::ENV_1_DECAY, multiPots->GetMpValue(1, 5));
-                setValue(PatchSetting::SH_RATE, multiPots->GetMpValue(2, 5));
+                setValue(PatchSetting::MOD_1_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_2_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_1_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 6:
-                setValue(PatchSetting::VCO_2_FINE_TUNE, multiPots->GetMpValue(0, 6));
-                setValue(PatchSetting::ENV_1_SUSTAIN, multiPots->GetMpValue(1, 6));
-                setValue(PatchSetting::MOD_1_DEPTH, multiPots->GetMpValue(2, 6));
+                setValue(PatchSetting::FX_REVERB, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_MASTER_TUNE, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::VCF_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 7:
-                setValue(PatchSetting::VCO_3_PULSE_WIDTH, multiPots->GetMpValue(0, 7));
-                setValue(PatchSetting::ENV_1_RELEASE, multiPots->GetMpValue(1, 7));
-                setValue(PatchSetting::MOD_2_DEPTH, multiPots->GetMpValue(2, 7));
+                setValue(PatchSetting::FX_5, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_1_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::VCF_TRACKING, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 8:
-                setValue(PatchSetting::VCO_3_LEVEL, multiPots->GetMpValue(0, 8));
-                setValue(PatchSetting::ENV_2_ATTACK, multiPots->GetMpValue(1, 8));
-                setValue(PatchSetting::MOD_3_DEPTH, multiPots->GetMpValue(2, 8));
+                setValue(PatchSetting::FX_4, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_1_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::VCO_EXT_LEVEL, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 9:
-                setValue(PatchSetting::VCO_3_FINE_TUNE, multiPots->GetMpValue(0, 9));
-                setValue(PatchSetting::ENV_2_DECAY, multiPots->GetMpValue(1, 9));
-                setValue(PatchSetting::MOD_4_DEPTH, multiPots->GetMpValue(2, 9));
+                setValue(PatchSetting::GEN_BALANCE, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_2_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::VCO_EXT_TRIGGER_GATE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 10:
-                setValue(PatchSetting::VCO_NOISE_LEVEL, multiPots->GetMpValue(0, 10));
-                setValue(PatchSetting::ENV_2_SUSTAIN, multiPots->GetMpValue(1, 10));
-                setValue(PatchSetting::FX_1, multiPots->GetMpValue(2, 10));
+                setValue(PatchSetting::FX_3, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::LFO_1_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::LFO_1_TRIGGER_PHASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 11:
-                setValue(PatchSetting::VCO_EXT_TRIGGER_GATE, multiPots->GetMpValue(0, 11));
-                setValue(PatchSetting::ENV_2_RELEASE, multiPots->GetMpValue(1, 11));
-                setValue(PatchSetting::FX_2, multiPots->GetMpValue(2, 11));
+                setValue(PatchSetting::FX_2, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::LFO_2_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::LFO_2_TRIGGER_PHASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 12:
-                setValue(PatchSetting::VCO_EXT_LEVEL, multiPots->GetMpValue(0, 12));
-                setValue(PatchSetting::LFO_1_PULSE_WIDTH, multiPots->GetMpValue(1, 12));
-                setValue(PatchSetting::FX_3, multiPots->GetMpValue(2, 12));
+                setValue(PatchSetting::FX_1, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::LFO_2_RATE, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::LFO_1_TO_MASTER_TUNE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 13:
-                setValue(PatchSetting::VCF_CUTOFF, multiPots->GetMpValue(0, 13));
-                setValue(PatchSetting::LFO_1_RATE, multiPots->GetMpValue(1, 13));
-                setValue(PatchSetting::FX_4, multiPots->GetMpValue(2, 13));
+                setValue(PatchSetting::VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::LFO_1_RATE, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::LFO_2_TO_VCF_CUTOFF, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 14:
-                setValue(PatchSetting::VCF_RESONANCE, multiPots->GetMpValue(0, 14));
-                setValue(PatchSetting::LFO_1_TRIGGER_PHASE, multiPots->GetMpValue(1, 14));
-                setValue(PatchSetting::FX_5, multiPots->GetMpValue(2, 14));
+                setValue(PatchSetting::VCF_RESONANCE, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_NOISE_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_2_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 15:
-                setValue(PatchSetting::VCF_TRACKING, multiPots->GetMpValue(0, 15));
-                setValue(PatchSetting::LFO_1_TO_MASTER_TUNE, multiPots->GetMpValue(1, 15));
-                setValue(PatchSetting::FX_REVERB, multiPots->GetMpValue(2, 15));
+                setValue(PatchSetting::SH_LEVEL, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::VCO_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(PatchSetting::ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
         }
     }

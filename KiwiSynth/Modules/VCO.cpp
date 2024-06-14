@@ -2,8 +2,13 @@
 
 namespace kiwi_synth
 {
-    VCO::VCO(PatchSettings* patchSettings, float sampleRate) : patchSettings(patchSettings)
+    void VCO::Init(PatchSettings* patchSettings, float sampleRate)
     {
+        this->patchSettings = patchSettings;
+        midiNote = 60;
+    	osc.Init(sampleRate);
+        osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
+        osc.SetFreq(220);
     }
 
     void VCO::CalculateBaseFreq()
@@ -16,12 +21,12 @@ namespace kiwi_synth
 
     void VCO::Process(float * out, size_t size)
     {
-        CalculateBaseFreq();
-        osc.SetFreq(baseFreq);
+        //CalculateBaseFreq();
+        //osc.SetFreq(baseFreq);
 
         float result;
         for (size_t i = 0; i < size; i++) {
-            result = osc.Process();
+            result = osc.Process() * 0.05f;
             out[i] = result;
         }
     }

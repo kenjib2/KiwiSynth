@@ -20,20 +20,21 @@ namespace kiwi_synth
             static const int NUM_VCOS = 3;
             static const int DEFAULT_NUM_VOICES = 4;
             DaisySeed* hw;
-            MultiPots* multiPots;
-            PatchSettings* patchSettings;
+            MultiPots multiPots;
+            PatchSettings patchSettings;
             int numVoices;
             int midiChannel;
 
             MidiUartHandler midi;
-            VoiceBank* voiceBank;
+            VoiceBank voiceBank;
 
             void ProcessMidi();
             void HandleMidiMessage(MidiEvent* midiEvent);
 
         public:
-            KiwiSynth(DaisySeed* hw, float sampleRate);
-            ~KiwiSynth();
+            KiwiSynth() {}
+            ~KiwiSynth() {}
+            void Init(DaisySeed* hw, float sampleRate);
 
             void ConfigureMultiPots();
 

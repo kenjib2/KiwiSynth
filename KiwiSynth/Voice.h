@@ -18,16 +18,17 @@ namespace kiwi_synth
     {
         private:
             int numVCOs;
-            std::vector<VCO*> vcos;
-            VCA* vca;
-            VCF* vcf;
+            std::vector<VCO> vcos;
+            VCA vca;
+            VCF vcf;
             PatchSettings* patchSettings;
 
         public:
             int currentMidiNote;
 
-            Voice(int numVCOs, PatchSettings* patchSettings, float sampleRate);
-            ~Voice();
+            Voice() {}
+            ~Voice() {}
+            void Init(int numVCOs, PatchSettings* patchSettings, float sampleRate);
 
             void Process(AudioHandle::OutputBuffer out, size_t size);
             bool IsAvailable();

@@ -17,8 +17,9 @@ namespace kiwi_synth
             PatchSettings*          patchSettings;
 
         public:
-            VCA(PatchSettings* patchSettings, float sampleRate);
+            VCA() {}
             ~VCA() {}
+            void Init(PatchSettings* patchSettings, float sampleRate);
             void Process(const float* in, float* out, size_t size);
             bool IsPlaying();
             bool IsReleasing();

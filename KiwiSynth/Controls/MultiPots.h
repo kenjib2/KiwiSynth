@@ -94,8 +94,9 @@ namespace kiwi_synth
             void ReadPots();
 
         public:
-            MultiPots(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
+            MultiPots() {};
             ~MultiPots();
+            void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
             void RegisterControlListener(ControlListener* controlListener, int controlId);
             /*

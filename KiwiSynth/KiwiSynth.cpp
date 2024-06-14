@@ -2,25 +2,20 @@
 
 namespace kiwi_synth
 {
-    KiwiSynth::KiwiSynth(DaisySeed* hw, float sampleRate) : hw(hw)
+    void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
+        this->hw = hw;
+
         numVoices = DEFAULT_NUM_VOICES;
         SetMidiChannel(0);
 
         ConfigureMultiPots();
-        patchSettings = new PatchSettings(multiPots);
-        multiPots->RegisterControlListener(patchSettings, ControlId::MULTIPOTS);
+        patchSettings.Init(&multiPots);
+        multiPots.RegisterControlListener(&patchSettings, ControlId::MULTIPOTS);
 
-        voiceBank = new VoiceBank(numVoices, patchSettings, sampleRate);
+        voiceBank.Init(numVoices, &patchSettings, sampleRate);
     }
 
-    KiwiSynth::~KiwiSynth()
-    {
-        delete voiceBank;
-        delete patchSettings;
-        delete multiPots;
-    }
-        
     void KiwiSynth::ConfigureMultiPots()
     {
         int numMps = 3;
@@ -47,9 +42,10 @@ namespace kiwi_synth
         multiPotsConfig.pinsDirect = directPins;
         multiPotsConfig.useTimer = true;
         multiPotsConfig.refreshRate = 50; // One half of a ms, which means 8ms for all pots to refresh. Shorter can cause timing problems.
+        // Look into refresh rate. Faster should be possible. Could be either pins left floating or not using the E pin.
 
-        multiPots = new MultiPots(hw, &multiPotsConfig);
-        multiPots->StartTimer();
+        multiPots.Init(hw, &multiPotsConfig);
+        multiPots.StartTimer();
     }
 
     void KiwiSynth::InitMidi()
@@ -69,7 +65,7 @@ namespace kiwi_synth
     void KiwiSynth::Process(AudioHandle::OutputBuffer out, size_t size)
     {
         ProcessMidi();
-        voiceBank->Process(out, size);
+        voiceBank.Process(out, size);
     }
 
     void KiwiSynth::ProcessMidi()
@@ -94,14 +90,14 @@ namespace kiwi_synth
                     on = midiEvent->AsNoteOn();
                     if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
                     {
-                        voiceBank->NoteOn(on.note, on.velocity);
+                        voiceBank.NoteOn(on.note, on.velocity);
                         break;
                     }
                     break;
 
                 case NoteOff:
                     off = midiEvent->AsNoteOff();
-                    voiceBank->NoteOff(off.note, off.velocity);
+                    voiceBank.NoteOff(off.note, off.velocity);
                     /*for (size_t i = 0; i < voices.size(); i++) {
                         Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
                         if (voice) {
@@ -142,15 +138,15 @@ namespace kiwi_synth
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-		float val0 = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE);
+		float val0 = patchSettings.getFloatValue(PatchSetting::VCO_MASTER_TUNE);
 		sprintf(buff, "Pot 0-0 value: %.3f", val0);
 		hw->PrintLine(buff);
 
-		float val1 = patchSettings->getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED);
+		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED);
 		sprintf(buff, "Pot 0-1 value: %.3f", val1);
 		hw->PrintLine(buff);
 
-		float valD0 = patchSettings->getFloatValue(PatchSetting::GEN_BALANCE);
+		float valD0 = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE);
 		sprintf(buff, "Pot D0 value: %.3f", valD0);
 		hw->PrintLine(buff);
     }
