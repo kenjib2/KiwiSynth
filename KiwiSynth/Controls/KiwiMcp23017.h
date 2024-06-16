@@ -107,7 +107,6 @@ namespace kiwi_synth
         struct Config
         {
             I2CHandle::Config i2c_config;
-            uint8_t           i2c_address;
             void              Defaults()
             {
                 i2c_config.periph         = I2CHandle::Config::Peripheral::I2C_1;
@@ -115,7 +114,7 @@ namespace kiwi_synth
                 i2c_config.mode           = I2CHandle::Config::Mode::I2C_MASTER;
                 i2c_config.pin_config.scl = {DSY_GPIOB, 8}; // Pin 12 I2C1_SCL
                 i2c_config.pin_config.sda = {DSY_GPIOB, 9}; // Pin 13 I2C1_SDA
-                i2c_address               = 0x27;
+                i2c_config.address        = 0x27;
             }
         };
 
@@ -128,7 +127,7 @@ namespace kiwi_synth
 
         void Init(const Config& config)
         {
-            i2c_address_ = config.i2c_address << 1;
+            i2c_address_ = config.i2c_config.address << 1;
             i2c_.Init(config.i2c_config);
         };
 

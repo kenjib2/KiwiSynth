@@ -121,4 +121,4 @@ namespace kiwi_synth
 } // namespace kiwi_synth
 
 
-#endif // __MULTIPOTS_H__
+#endif // __KIWI_SYNTH_MULTIPOTS_H__
