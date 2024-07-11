@@ -7,9 +7,7 @@ using namespace daisy;
 
 namespace kiwi_synth
 {
-    // Based on DaisyLib mcp23x17.h and interrupt code from:
-    // https://github.com/blemasle/arduino-mcp23017/blob/master/src/MCP23017.cpp
-    // mcp23x17.h originally dapted from https://github.com/blemasle/arduino-mcp23017
+    // Adapted from https://github.com/blemasle/arduino-mcp23017
 
     /**
      * Registers addresses.
@@ -74,6 +72,9 @@ namespace kiwi_synth
      * Controls if the two interrupt pins mirror each other.
      * See "3.6 Interrupt Logic".
      * 
+     * Based on DaisyLib mcp23x17.h and interrupt code from:
+     * https://github.com/blemasle/arduino-mcp23017/blob/master/src/MCP23017.cpp
+     * 
      */
     enum class MCP23017InterruptMode : uint8_t
     {
@@ -87,7 +88,6 @@ namespace kiwi_synth
         FALLING,
         RISING
     };
-
 
     /**
      * Barebones driver for MCP23017 I2C 16-Bit I/O Expander
@@ -106,15 +106,16 @@ namespace kiwi_synth
     public:
         struct Config
         {
-            I2CHandle::Config i2c_config;
+            daisy::I2CHandle::Config i2c_config;
+            uint8_t           i2c_address;
             void              Defaults()
             {
-                i2c_config.periph         = I2CHandle::Config::Peripheral::I2C_1;
-                i2c_config.speed          = I2CHandle::Config::Speed::I2C_1MHZ;
-                i2c_config.mode           = I2CHandle::Config::Mode::I2C_MASTER;
+                i2c_config.periph         = daisy::I2CHandle::Config::Peripheral::I2C_1;
+                i2c_config.speed          = daisy::I2CHandle::Config::Speed::I2C_1MHZ;
+                i2c_config.mode           = daisy::I2CHandle::Config::Mode::I2C_MASTER;
                 i2c_config.pin_config.scl = {DSY_GPIOB, 8}; // Pin 12 I2C1_SCL
                 i2c_config.pin_config.sda = {DSY_GPIOB, 9}; // Pin 13 I2C1_SDA
-                i2c_config.address        = 0x27;
+                i2c_address               = 0x20;
             }
         };
 
@@ -127,18 +128,18 @@ namespace kiwi_synth
 
         void Init(const Config& config)
         {
-            i2c_address_ = config.i2c_config.address << 1;
+            i2c_address_ = config.i2c_address << 1;
             i2c_.Init(config.i2c_config);
         };
 
-        I2CHandle::Result WriteReg(MCPRegister reg, uint8_t val)
+        daisy::I2CHandle::Result WriteReg(MCPRegister reg, uint8_t val)
         {
             uint8_t data[1] = {val};
             return i2c_.WriteDataAtAddress(
                 i2c_address_, static_cast<uint8_t>(reg), 1, data, 1, timeout);
         }
 
-        I2CHandle::Result WriteReg(MCPRegister reg, uint8_t portA, uint8_t portB)
+        daisy::I2CHandle::Result WriteReg(MCPRegister reg, uint8_t portA, uint8_t portB)
         {
             uint8_t data[2] = {portA, portB};
             return i2c_.WriteDataAtAddress(
@@ -189,13 +190,14 @@ namespace kiwi_synth
                 transport.Init(config.transport_config);
 
                 //BANK = 	0 : sequential register addresses
-                //MIRROR = 	1 : mirror interrupts to both A and B
+                //MIRROR = 	0 : use configureInterrupt
                 //SEQOP = 	1 : sequential operation disabled, address pointer does not increment
                 //DISSLW = 	0 : slew rate enabled
                 //HAEN = 	0 : hardware address pin is always enabled on 23017
                 //ODR = 	0 : open drain output
-                //INTPOL = 	1 : interrupt active high
-                transport.WriteReg(MCPRegister::IOCON, 0b01100010); // originally 0b00100000
+                //INTPOL = 	0 : interrupt active low
+                transport.WriteReg(MCPRegister::IOCON, 0b01100010);
+                //transport.WriteReg(MCPRegister::IOCON, 0b00100000);
 
                 //enable all pull up resistors (will be effective for input pins only)
                 transport.WriteReg(MCPRegister::GPPU_A, 0xFF, 0xFF);
@@ -467,13 +469,13 @@ namespace kiwi_synth
             {
                 return data & (1 << pos) ? 0xff : 0x00;
             }
- 
+
             uint8_t LowByte(uint16_t val) { return val & 0xFF; }
             uint8_t HighByte(uint16_t val) { return (val >> 8) & 0xff; }
 
             uint16_t  pin_data;
             Transport transport;
-   };
+    };
 
     using KiwiMcp23017 = KiwiMcp23X17<KiwiMcp23017Transport>;
 }

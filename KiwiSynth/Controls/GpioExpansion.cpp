@@ -2,23 +2,33 @@
 
 namespace kiwi_synth
 {
+//    KiwiMcp23017 mcp;
+	uint16_t pinRead = 0;
 
-    void IntCallback(Pin pin)
+    bool gpioReadRequired = false;
+    uint32_t gpioLastInterruptTime = 0;
+    char tempBuffer[256];
+
+    void GpioExpansionInterruptCallback(Pin pin)
     {
         uint32_t now = System::GetUs();
-        if (now - interruptTime > 500 || interruptTime > now) {
-            lastInterruptTime = interruptTime;
-            interruptTime = now;
-            readRequired = true;
+        if (now - gpioLastInterruptTime > 1000 || gpioLastInterruptTime > now) {
+            gpioLastInterruptTime = now;
+            gpioReadRequired = true;
         }
     }
 
-    void ProcessTimer(void* gpioExpansion)
+    void ProcessGpioExpansionTimer(void* gpioExpansion)
     {
-        if (readRequired) {
-            readRequired = false;
+        pinRead = ((GpioExpansion*)gpioExpansion)->mcps.at(0).Read() & 0b0000000000000001;
+        ((GpioExpansion*)gpioExpansion)->mcps.at(0).clearInterrupts();
+        //pinRead = mcp.Read() & 0b0000000000000001;
+        //mcp.clearInterrupts();
+        gpioReadRequired = false;
+        /*if (gpioReadRequired) {
+            gpioReadRequired = false;
             ((GpioExpansion*)gpioExpansion)->Process();
-        }
+        }*/
     }
 
     GpioExpansion::~GpioExpansion()
@@ -29,16 +39,27 @@ namespace kiwi_synth
 
     void GpioExpansion::Init(GpioExpansionConfig *gpioExpansionConfig)
     {
-        numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
-        numPins = gpioExpansionConfig->numPins;
-        pinValues = (uint16_t*)malloc(numPins * sizeof(uint16_t));
-        readRequired = true;
+        KiwiMcp23017 mcp;
+        mcp.Init();
+        mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF); // Inputs
+        mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF); // Inputs
+        mcp.PinMode(0, kiwi_synth::MCPMode::INPUT, false);
+
+        mcp.interruptMode(MCP23017InterruptMode::Or);
+        mcp.interrupt(kiwi_synth::MCPPort::A, CHANGE);
+        mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE);
+
+        mcps.push_back(mcp);
+        /*numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
+        pinValues = (uint16_t*)malloc(sizeof(uint16_t) * 16);
+        gpioReadRequired = true;
+        sprintf(tempBuffer, "Initialized");
 
         for (int i = 0; i < numGpioExpansions; i++) {
             KiwiMcp23017 mcp;
             KiwiMcp23017::Config cfg;
             cfg.transport_config.Defaults();
-            cfg.transport_config.i2c_config.address = i;
+            cfg.transport_config.i2c_config.address = 0x20 + i;
             cfg.transport_config.i2c_config.pin_config.sda = gpioExpansionConfig->sdaPin;
             cfg.transport_config.i2c_config.pin_config.scl = gpioExpansionConfig->sclPin;
 
@@ -63,7 +84,7 @@ namespace kiwi_synth
         if (gpioExpansionConfig->useTimer) {
             InitTimer(gpioExpansionConfig->refreshRate);
         }
-        interrupt.Init(gpioExpansionConfig->interruptPin, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, IntCallback);
+        interrupt.Init(gpioExpansionConfig->interruptPin, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);*/
 
     }
 
@@ -102,7 +123,7 @@ namespace kiwi_synth
 
         timer.Init(config);
         timer.SetPrescaler(2400);
-        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessTimer, (void *)(this));
+        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessGpioExpansionTimer, (void *)(this));
     }
 
     void GpioExpansion::StartTimer()
@@ -115,11 +136,17 @@ namespace kiwi_synth
         // Read all mcps and write to pinValues
         for (int i = 0; i < numGpioExpansions; i++) {
             pinValues[i] = mcps.at(i).Read();
+            mcps.at(i).clearInterrupts();
         }
 
         for (size_t i = 0; i < controlListeners.size(); i++) {
             controlListeners.at(i)->controlUpdate(0, controlIds.at(i));
         }
+    }
+
+    uint16_t GpioExpansion::getPinValues(int expansionNumber)
+    {
+        return pinValues[expansionNumber];
     }
 
 } // namespace kiwi_synth

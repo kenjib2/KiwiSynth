@@ -4,7 +4,7 @@
 namespace kiwi_synth
 {
 
-    void ProcessTimer(void* multiPots)
+    void ProcessMultiPotsTimer(void* multiPots)
     {
         ((MultiPots*)multiPots)->Process();
     }
@@ -133,7 +133,7 @@ namespace kiwi_synth
 
         timer.Init(config);
         timer.SetPrescaler(2400);
-        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessTimer, (void *)(this));
+        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessMultiPotsTimer, (void *)(this));
     }
 
     void MultiPots::SelectMpChannel(int channelNumber)

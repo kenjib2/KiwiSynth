@@ -16,7 +16,7 @@ namespace kiwi_synth
     /*
      * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.
      */
-    void ProcessTimer(void* data);
+    void ProcessMultiPotsTimer(void* data);
 
    /*
     * Used to initialize a MultiPots object.

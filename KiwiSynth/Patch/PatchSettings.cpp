@@ -664,12 +664,12 @@ namespace kiwi_synth
                 setValue(PatchSetting::ENV_2_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 2:
-                setValue(PatchSetting::MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber));
                 setValue(PatchSetting::VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(PatchSetting::ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 3:
-                setValue(PatchSetting::MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber));
                 setValue(PatchSetting::VCO_2_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
                 setValue(PatchSetting::ENV_1_DECAY, multiPots->GetMpValue(2, controlNumber));
                 break;

@@ -13,19 +13,23 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    bool readRequired = false;
-    uint32_t interruptTime = 0;
-    uint32_t lastInterruptTime = 0;
+    //extern KiwiMcp23017 mcp;
+	extern uint16_t pin0Value;
+	extern uint16_t pinRead;
+
+    extern bool gpioReadRequired;
+    extern uint32_t gpioLastInterruptTime;
+    extern char tempBuffer[256];
 
     /*
      * Internal function for interrupt callbacks.
      */
-    void IntCallback(Pin pin);
+    void GpioExpansionInterruptCallback(Pin pin);
 
     /*
      * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.
      */
-    void ProcessTimer(void* data);
+    void ProcessGpioExpansionTimer(void* data);
 
    /*
     * Used to initialize a MultiPots object.
@@ -45,13 +49,29 @@ namespace kiwi_synth
     struct GpioExpansionConfig
     {
         int numGpioExpansions;
-        int numPins;
         Pin interruptPin;
         Pin sdaPin;
         Pin sclPin;
         bool useTimer;
         int refreshRate;
         uint16_t* pullupMap;
+
+        void Defaults()
+        {
+            uint16_t map[4];
+            map[0] = 0xFFFF;
+            map[1] = 0xFFFF;
+            map[2] = 0xFFFF;
+            map[3] = 0xFFFF;
+
+            numGpioExpansions   = 4;
+            interruptPin        = seed::D18;
+            sdaPin              = seed::D11; // Pin 12 I2C1_SCL
+            sclPin              = seed::D12; // Pin 13 I2C1_SDA
+            useTimer            = true;
+            refreshRate         = 50;
+            pullupMap           = map;
+        }
     };
 
     class GpioExpansion : public Control
@@ -59,15 +79,15 @@ namespace kiwi_synth
         private:
             int numGpioExpansions = 4;
             int numPins = 16;
-            GPIO interrupt;
             TimerHandle timer;
             std::vector<ControlListener*> controlListeners;
             std::vector<int> controlIds;
-            std::vector<KiwiMcp23017> mcps;
             uint16_t* pinValues;
 
             void InitTimer(int refreshRate);
         public:
+            std::vector<KiwiMcp23017> mcps;
+            GPIO interrupt;
             GpioExpansion() {}
             ~GpioExpansion();
             void Init(GpioExpansionConfig *gpioExpansionConfig);
@@ -81,6 +101,8 @@ namespace kiwi_synth
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              */
             void Process();
+
+            uint16_t getPinValues(int expansionNumber);
     }; // class MultiPots
 
 } // namespace kiwi_synth

@@ -134,20 +134,96 @@ namespace kiwi_synth
 
     void KiwiSynth::TestOutput()
     {
-    	char buff[256];
+    	char buff[4096];
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-		float val0 = patchSettings.getFloatValue(PatchSetting::VCO_MASTER_TUNE);
-		sprintf(buff, "Pot 0-0 value: %.3f", val0);
+/*		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);
+		float val2 = patchSettings.getFloatValue(PatchSetting::VCO_1_LEVEL);
+		float val3 = patchSettings.getFloatValue(PatchSetting::VCO_MASTER_TUNE);
+		float val4 = patchSettings.getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED);
+        float val5;
+        float val6;
+		sprintf(buff, "VCO 1 Pulse Width: %.3f   VCO 1 Level: %.3f   VCO Master Tune: %.3f   Port Speed: %.3f", val1, val2, val3, val4);
 		hw->PrintLine(buff);
 
-		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED);
-		sprintf(buff, "Pot 0-1 value: %.3f", val1);
+		val1 = patchSettings.getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH);
+		val2 = patchSettings.getFloatValue(PatchSetting::VCO_2_LEVEL);
+		val3 = patchSettings.getFloatValue(PatchSetting::VCO_2_FINE_TUNE);
+		sprintf(buff, "VCO 2 Pulse Width: %.3f   VCO 2 Level: %.3f   VCO 2 Fine Tune: %.3f", val1, val2, val3);
 		hw->PrintLine(buff);
 
-		float valD0 = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE);
-		sprintf(buff, "Pot D0 value: %.3f", valD0);
+		val1 = patchSettings.getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH);
+		val2 = patchSettings.getFloatValue(PatchSetting::VCO_3_LEVEL);
+		val3 = patchSettings.getFloatValue(PatchSetting::VCO_3_FINE_TUNE);
+		sprintf(buff, "VCO 3 Pulse Width: %.3f   VCO 3 Level: %.3f   VCO 3 Fine Tune: %.3f", val1, val2, val3);
 		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::VCO_NOISE_LEVEL);
+		val2 = patchSettings.getFloatValue(PatchSetting::VCO_EXT_TRIGGER_GATE);
+		val3 = patchSettings.getFloatValue(PatchSetting::VCO_EXT_LEVEL);
+		sprintf(buff, "VCO Noise Level: %.3f   VCO Trigger Gate: %.3f   VCO External Level: %.3f", val1, val2, val3);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::VCF_CUTOFF);
+		val2 = patchSettings.getFloatValue(PatchSetting::VCF_RESONANCE);
+		val3 = patchSettings.getFloatValue(PatchSetting::VCF_TRACKING);
+		val4 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
+		val5 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
+		sprintf(buff, "VCF Cutoff: %.3f   VCF Resonance: %.3f   VCF Tracking: %.3f   VCF Env 1 Depth: %.3f   VCF Env 2 Depth: %.3f", val1, val2, val3, val4, val5);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::VCA_LEVEL);
+		val2 = patchSettings.getFloatValue(PatchSetting::VCA_ENV_1_DEPTH);
+		val3 = patchSettings.getFloatValue(PatchSetting::SH_LEVEL);
+		val4 = patchSettings.getFloatValue(PatchSetting::SH_RATE);
+		val5 = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE);
+		sprintf(buff, "VCA Level: %.3f   VCA Env 1 Depth: %.3f   S&H Level: %.3f   S&H Rate: %.3f   Balance: %.3f", val1, val2, val3, val4, val5);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::FX_1);
+		val2 = patchSettings.getFloatValue(PatchSetting::FX_2);
+		val3 = patchSettings.getFloatValue(PatchSetting::FX_3);
+		val4 = patchSettings.getFloatValue(PatchSetting::FX_4);
+		val5 = patchSettings.getFloatValue(PatchSetting::FX_5);
+		val6 = patchSettings.getFloatValue(PatchSetting::FX_REVERB);
+		sprintf(buff, "FX 1: %.3f   FX 2: %.3f   FX 3: %.3f   FX 4: %.3f   FX 5: %.3f   Reverb Level: %.3f", val1, val2, val3, val4, val5, val6);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::MOD_1_DEPTH);
+		val2 = patchSettings.getFloatValue(PatchSetting::MOD_2_DEPTH);
+		val3 = patchSettings.getFloatValue(PatchSetting::MOD_3_DEPTH);
+		val4 = patchSettings.getFloatValue(PatchSetting::MOD_4_DEPTH);
+		sprintf(buff, "Mod 1 Depth: %.3f   Mod 2 Depth: %.3f   Mod 3 Depth: %.3f   Mod 4 Depth: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::LFO_1_PULSE_WIDTH);
+		val2 = patchSettings.getFloatValue(PatchSetting::LFO_1_RATE);
+		val3 = patchSettings.getFloatValue(PatchSetting::LFO_1_TRIGGER_PHASE);
+		val4 = patchSettings.getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE);
+		sprintf(buff, "LFO 1 PW: %.3f   LFO 1 Rate: %.3f   LFO 1 Trigger Phase: %.3f   LFO 1 to Master Tune: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::LFO_2_PULSE_WIDTH);
+		val2 = patchSettings.getFloatValue(PatchSetting::LFO_2_RATE);
+		val3 = patchSettings.getFloatValue(PatchSetting::LFO_2_TRIGGER_PHASE);
+		val4 = patchSettings.getFloatValue(PatchSetting::LFO_2_TO_VCF_CUTOFF);
+		sprintf(buff, "LFO 2 PW: %.3f   LFO 2 Rate: %.3f   LFO 2 Trigger Phase: %.3f   LFO 2 to Master Tune: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::ENV_1_ATTACK);
+		val2 = patchSettings.getFloatValue(PatchSetting::ENV_1_DECAY);
+		val3 = patchSettings.getFloatValue(PatchSetting::ENV_1_SUSTAIN);
+		val4 = patchSettings.getFloatValue(PatchSetting::ENV_1_RELEASE);
+		sprintf(buff, "Env 1 Attack: %.3f   Env 1 Decay: %.3f   Env 1 Sustain: %.3f   Env 1 Release: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::ENV_2_ATTACK);
+		val2 = patchSettings.getFloatValue(PatchSetting::ENV_2_DECAY);
+		val3 = patchSettings.getFloatValue(PatchSetting::ENV_2_SUSTAIN);
+		val4 = patchSettings.getFloatValue(PatchSetting::ENV_2_RELEASE);
+		sprintf(buff, "Env 2 Attack: %.3f   Env 2 Decay: %.3f   Env 2 Sustain: %.3f   Env 2 Release: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+        */
     }
 } // namespace kiwi_synth
