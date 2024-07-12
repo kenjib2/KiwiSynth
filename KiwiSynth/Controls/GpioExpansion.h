@@ -55,14 +55,21 @@ namespace kiwi_synth
         bool useTimer;
         int refreshRate;
         uint16_t* pullupMap;
+        uint16_t* activeMap;
 
         void Defaults()
         {
-            uint16_t map[4];
-            map[0] = 0xFFFF;
-            map[1] = 0xFFFF;
-            map[2] = 0xFFFF;
-            map[3] = 0xFFFF;
+            uint16_t pullups[4];
+            pullups[0] = 0xFFFF;
+            pullups[1] = 0xFFFF;
+            pullups[2] = 0xFFFF;
+            pullups[3] = 0xFFFF;
+
+            uint16_t actives[4];
+            actives[0] = 0b1111111011111110;
+            actives[1] = 0b1111110001111111;
+            actives[2] = 0b1111111011111110;
+            actives[3] = 0b1111110011111000;
 
             numGpioExpansions   = 4;
             interruptPin        = seed::D18;
@@ -70,26 +77,28 @@ namespace kiwi_synth
             sclPin              = seed::D12; // Pin 13 I2C1_SDA
             useTimer            = true;
             refreshRate         = 50;
-            pullupMap           = map;
+            pullupMap           = pullups;
+            activeMap           = actives;
         }
     };
 
     class GpioExpansion : public Control
     {
         private:
-            int numGpioExpansions = 4;
             int numPins = 16;
             TimerHandle timer;
-            std::vector<ControlListener*> controlListeners;
-            std::vector<int> controlIds;
-            uint16_t* pinValues;
+            ControlListener* controlListener = nullptr;
+            int controlId;
 
             void InitTimer(int refreshRate);
         public:
+            int numGpioExpansions = 4;
+            uint16_t* pinValues;
             std::vector<KiwiMcp23017> mcps;
             GPIO interrupt;
             GpioExpansion() {}
             ~GpioExpansion();
+            void Init();
             void Init(GpioExpansionConfig *gpioExpansionConfig);
 
             void RegisterControlListener(ControlListener* controlListener, int controlId);
@@ -101,6 +110,10 @@ namespace kiwi_synth
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              */
             void Process();
+            /*
+             * Clears all interrupt flags.
+             */
+            void ClearInterrupts();
 
             uint16_t getPinValues(int expansionNumber);
     }; // class MultiPots

@@ -5,9 +5,10 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    void PatchSettings::Init(MultiPots* multiPots)
+    void PatchSettings::Init(MultiPots* multiPots, GpioExpansion* ge)
     {
         this->multiPots = multiPots;
+        this->ge = ge;
     }
 
     void PatchSettings::setValue(PatchSetting setting, int value)
@@ -643,6 +644,8 @@ namespace kiwi_synth
             case ControlId::MULTIPOTS:
                 updatePotValues(controlNumber);
                 break;
+            case ControlId::GPIO_EXPANSION:
+                updateGpioExpansionValues(controlNumber);
             default:
                 break;
         }
@@ -732,6 +735,21 @@ namespace kiwi_synth
                 setValue(PatchSetting::SH_LEVEL, multiPots->GetMpValue(0, controlNumber));
                 setValue(PatchSetting::VCO_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(PatchSetting::ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
+                break;
+        }
+    }
+
+    void PatchSettings::updateGpioExpansionValues(int controlNumber)
+    {
+        switch(controlNumber)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 4:
                 break;
         }
     }

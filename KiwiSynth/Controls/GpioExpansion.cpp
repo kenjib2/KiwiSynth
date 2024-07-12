@@ -7,7 +7,6 @@ namespace kiwi_synth
 
     bool gpioReadRequired = false;
     uint32_t gpioLastInterruptTime = 0;
-    char tempBuffer[256];
 
     void GpioExpansionInterruptCallback(Pin pin)
     {
@@ -20,11 +19,15 @@ namespace kiwi_synth
 
     void ProcessGpioExpansionTimer(void* gpioExpansion)
     {
-        pinRead = ((GpioExpansion*)gpioExpansion)->mcps.at(0).Read() & 0b0000000000000001;
-        ((GpioExpansion*)gpioExpansion)->mcps.at(0).clearInterrupts();
+        GpioExpansion * ge = (GpioExpansion*)gpioExpansion;
+        for (int i = 0; i < ge->numGpioExpansions; i++) {
+            KiwiMcp23017 mcp = ge->mcps.at(i);
+            ge->pinValues[i] = mcp.Read();
+            mcp.clearInterrupts();
+        }
+        gpioReadRequired = false;
         //pinRead = mcp.Read() & 0b0000000000000001;
         //mcp.clearInterrupts();
-        gpioReadRequired = false;
         /*if (gpioReadRequired) {
             gpioReadRequired = false;
             ((GpioExpansion*)gpioExpansion)->Process();
@@ -36,20 +39,58 @@ namespace kiwi_synth
         free(pinValues);
     }
 
+    void GpioExpansion::Init()
+    {
+        GpioExpansionConfig cfg;
+        cfg.Defaults();
+        Init(&cfg);
+    }
 
     void GpioExpansion::Init(GpioExpansionConfig *gpioExpansionConfig)
     {
-        KiwiMcp23017 mcp;
-        mcp.Init();
-        mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF); // Inputs
-        mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF); // Inputs
-        mcp.PinMode(0, kiwi_synth::MCPMode::INPUT, false);
+        numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
+        pinValues = (uint16_t*)malloc(sizeof(uint16_t) * gpioExpansionConfig->numGpioExpansions);
+        gpioReadRequired = true;
+        //gpioReadRequired = false;
 
-        mcp.interruptMode(MCP23017InterruptMode::Or);
-        mcp.interrupt(kiwi_synth::MCPPort::A, CHANGE);
-        mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE);
+        for (int i = 0; i < numGpioExpansions; i++) {
+            KiwiMcp23017 mcp;
+            KiwiMcp23017::Config cfg;
+            cfg.transport_config.Defaults();
+            cfg.transport_config.i2c_config.address = 0x20 + i;
+            cfg.transport_config.i2c_config.pin_config.sda = gpioExpansionConfig->sdaPin;
+            cfg.transport_config.i2c_config.pin_config.scl = gpioExpansionConfig->sclPin;
 
-        mcps.push_back(mcp);
+            mcp.Init(cfg);
+
+            uint8_t pullupsPortA = 0xFF;
+            uint8_t pullupsPortB = 0xFF;
+            if (gpioExpansionConfig->pullupMap) {
+                pullupsPortA = (gpioExpansionConfig->pullupMap[i] & 0b1111111100000000) >> 8;
+                pullupsPortB = gpioExpansionConfig->pullupMap[i] & 0b0000000011111111;
+            }
+            mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF, pullupsPortA, 0x00); // All pins are inputs
+            mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF, pullupsPortB, 0x00); // All pins are inputs
+
+            mcp.interruptMode(MCP23017InterruptMode::Or);
+            uint8_t activesPortA = 0xFF;
+            uint8_t activesPortB = 0xFF;
+            if (gpioExpansionConfig->activeMap) {
+                activesPortA = (gpioExpansionConfig->activeMap[i] & 0b1111111100000000) >> 8;
+                activesPortB = gpioExpansionConfig->activeMap[i] & 0b0000000011111111;
+            }
+            mcp.interrupt(kiwi_synth::MCPPort::A, CHANGE, activesPortA);
+            mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE, activesPortB);
+
+            mcps.push_back(mcp);
+        }
+
+        if (gpioExpansionConfig->useTimer) {
+            InitTimer(gpioExpansionConfig->refreshRate);
+        }
+        interrupt.Init(gpioExpansionConfig->interruptPin, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
+
+
         /*numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
         pinValues = (uint16_t*)malloc(sizeof(uint16_t) * 16);
         gpioReadRequired = true;
@@ -90,8 +131,8 @@ namespace kiwi_synth
 
     void GpioExpansion::RegisterControlListener(ControlListener* controlListener, int controlId)
     {
-        controlListeners.push_back(controlListener);
-        controlIds.push_back(controlId);
+        this->controlListener = controlListener;
+        this->controlId = controlId;
     }
 
     /*
@@ -137,10 +178,18 @@ namespace kiwi_synth
         for (int i = 0; i < numGpioExpansions; i++) {
             pinValues[i] = mcps.at(i).Read();
             mcps.at(i).clearInterrupts();
+
+            if (controlListener) {
+                controlListener->controlUpdate(i, controlId);
+            }
         }
 
-        for (size_t i = 0; i < controlListeners.size(); i++) {
-            controlListeners.at(i)->controlUpdate(0, controlIds.at(i));
+    }
+
+    void GpioExpansion::ClearInterrupts()
+    {
+        for (int i = 0; i < numGpioExpansions; i++) {
+            mcps.at(i).clearInterrupts();
         }
     }
 

@@ -10,7 +10,9 @@ namespace kiwi_synth
         SetMidiChannel(0);
 
         ConfigureMultiPots();
-        patchSettings.Init(&multiPots);
+        //ConfigureGpioExpansion();
+
+        patchSettings.Init(&multiPots, &ge);
         multiPots.RegisterControlListener(&patchSettings, ControlId::MULTIPOTS);
 
         voiceBank.Init(numVoices, &patchSettings, sampleRate);
@@ -46,6 +48,11 @@ namespace kiwi_synth
 
         multiPots.Init(hw, &multiPotsConfig);
         multiPots.StartTimer();
+    }
+
+    void KiwiSynth::ConfigureGpioExpansion()
+    {
+    	ge.Init();
     }
 
     void KiwiSynth::InitMidi()
@@ -136,6 +143,21 @@ namespace kiwi_synth
     {
     	char buff[4096];
         sprintf(buff, "----------------------");
+		hw->PrintLine(buff);
+
+        bool bool1 = patchSettings.getBoolValue(PatchSetting::VCO_2_ON);
+        bool bool2 = patchSettings.getBoolValue(PatchSetting::VCO_3_ON);
+        bool bool3 = patchSettings.getBoolValue(PatchSetting::VCO_NOISE_ON);
+        bool bool4 = patchSettings.getBoolValue(PatchSetting::VCO_EXT_ON);
+        bool bool5 = patchSettings.getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
+		sprintf(buff, "VCO 2 On: %d   VCO 3 On: %d   Noise On: %d   External On: %d   Portamento On: %d", bool1, bool2, bool3, bool4, bool5);
+		hw->PrintLine(buff);
+
+        bool1 = patchSettings.getBoolValue(PatchSetting::LFO_1_TRIGGER_RESET_ON);
+        bool2 = patchSettings.getBoolValue(PatchSetting::LFO_2_TRIGGER_RESET_ON);
+        bool3 = patchSettings.getBoolValue(PatchSetting::ENV_1_REVERSE_PHASE_ON);
+        bool4 = patchSettings.getBoolValue(PatchSetting::ENV_2_REVERSE_PHASE_ON);
+		sprintf(buff, "LFO 1 TReset On: %d   LFO 2 TReset On: %d   ENV 1 RevPhase On: %d   ENV 2 RevPhase On: %d", bool1, bool2, bool3, bool4);
 		hw->PrintLine(buff);
 
 /*		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);

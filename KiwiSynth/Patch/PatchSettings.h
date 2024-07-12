@@ -5,6 +5,7 @@
 #include <string>
 #include "daisy_seed.h"
 #include "../Controls/MultiPots.h"
+#include "../Controls/GpioExpansion.h"
 #include "../Controls/ControlListener.h"
 
 using namespace daisy;
@@ -15,7 +16,8 @@ namespace kiwi_synth
     const int MAX_PATCH_NAME_LENGTH = 31;
 
     typedef enum {
-        MULTIPOTS
+        MULTIPOTS,
+        GPIO_EXPANSION
     } ControlId;
 
     /*
@@ -171,11 +173,12 @@ namespace kiwi_synth
             int intValues[31];
             bool boolValues[9];
             MultiPots* multiPots;
+            GpioExpansion* ge;
 
         public:
             PatchSettings() {}
             ~PatchSettings() {}
-            void Init(MultiPots* multiPots);
+            void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             /*
              * From ControlListener: Callback to update controls.
@@ -219,6 +222,10 @@ namespace kiwi_synth
              * Updates all potentiometer based settings with the current values in the MultiPots buffer.
              */
             void updatePotValues(int controlNumber);
+            /*
+             * Updates expansion basaed values with the current values in the GpioExpansion buffer.
+             */
+            void updateGpioExpansionValues(int controlNumber);
     }; // class PatchSettings
 } // namespace kiwi_synth
 

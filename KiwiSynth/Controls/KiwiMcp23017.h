@@ -398,13 +398,13 @@ namespace kiwi_synth
                 transport.WriteReg(MCPRegister::IOCON, iocon);
             }
 
-            void interrupt(MCPPort port, uint8_t mode)
+            void interrupt(MCPPort port, uint8_t mode, uint8_t pins = 0xFF)
             {
                 MCPRegister defvalreg = MCPRegister::DEFVAL_A + port;
                 MCPRegister intconreg = MCPRegister::INTCON_A + port;
 
                 //enable interrupt for port
-                transport.WriteReg(MCPRegister::GPINTEN_A + port, 0xFF);
+                transport.WriteReg(MCPRegister::GPINTEN_A + port, pins);
                 switch(mode)
                 {
                 case CHANGE:

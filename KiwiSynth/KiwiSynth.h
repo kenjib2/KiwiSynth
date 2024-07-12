@@ -21,6 +21,7 @@ namespace kiwi_synth
             static const int DEFAULT_NUM_VOICES = 4;
             DaisySeed* hw;
             MultiPots multiPots;
+            GpioExpansion ge;
             PatchSettings patchSettings;
             int numVoices;
             int midiChannel;
@@ -37,6 +38,7 @@ namespace kiwi_synth
             void Init(DaisySeed* hw, float sampleRate);
 
             void ConfigureMultiPots();
+            void ConfigureGpioExpansion();
 
             void InitMidi();
             void SetMidiChannel(int midiChannel);

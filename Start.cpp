@@ -36,20 +36,13 @@ int main(void)
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 
-	GpioExpansion ge;
-	ge.Init(nullptr);
+	//GPIO gpio;
+	//gpio.Init(seed::D18, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
 
-	/*mcp.Init();
-	mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF); // Inputs
-	mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF); // Inputs
-    mcp.PinMode(0, kiwi_synth::MCPMode::INPUT, false);
-
-    mcp.interruptMode(MCP23017InterruptMode::Or);
-	mcp.interrupt(kiwi_synth::MCPPort::A, CHANGE);
-	mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE);*/
-
-	GPIO gpio;
-	gpio.Init(seed::D18, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
+	/*GPIO gpio1;
+	gpio1.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
+	GPIO gpio2;
+	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);*/
 
 /*	GpioExpansionConfig cfg;
 	cfg.Defaults();
@@ -73,11 +66,19 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	char buff[256];
+	//bool led1 = false;
+	//bool led2 = false;
+	//char buff[256];
     while(1)
 	{
-		hw.DelayMs(200);
+		hw.DelayMs(500);
 		kiwiSynth.TestOutput();
+
+		//gpio1.Write(led1);
+		//led1 = !led1;
+
+		//gpio2.Write(led2);
+		//led2 = !led2;
 
 		/*bool val = ge.interrupt.Read();
 		pinValues = ge.getPinValues(0);
@@ -97,17 +98,18 @@ int main(void)
 			hw.PrintLine(buff);
 			gpioReadRequired = false;
 		}*/
-		if (gpioReadRequired) {
-			ProcessGpioExpansionTimer(&ge);
+		/*if (gpioReadRequired) {
+			//ProcessGpioExpansionTimer(&ge);
 			//ProcessGpioExpansionTimer(nullptr);
 			//pinRead = mcp.Read() & 0b0000000000000001;
 			//mcp.clearInterrupts();
+			ge.ClearInterrupts();
 			sprintf(buff, "--Interrupted--");
 			hw.PrintLine(buff);
 			sprintf(buff, "Pin value: %d", pinRead);
 			hw.PrintLine(buff);
 			sprintf(buff, "Interrupt: %lu", gpioLastInterruptTime);
 			hw.PrintLine(buff);
-		}
+		}*/
 	}
 }
