@@ -313,6 +313,9 @@ namespace kiwi_synth
             case ENV_2_REVERSE_PHASE_ON:
                 boolValues[8] = value;
                 break;
+            case GEN_SELECT_BUTTON:
+                boolValues[9] = value;
+                break;
             default:
                 break;
         }
@@ -744,12 +747,22 @@ namespace kiwi_synth
         switch(controlNumber)
         {
             case 0:
+                setValue(PatchSetting::VCO_PORTAMENTO_ON, (ge->pinValues[controlNumber] & 0b0000001000000000) > 0);
+                setValue(PatchSetting::GEN_SELECT, (ge->pinValues[controlNumber] & 0b0000000000100000) > 0);
+                setValue(PatchSetting::ENV_2_REVERSE_PHASE_ON, (ge->pinValues[controlNumber] & 0b0000000000000100) > 0);
+                setValue(PatchSetting::ENV_1_REVERSE_PHASE_ON, (ge->pinValues[controlNumber] & 0b0000000000000100) > 0);
                 break;
             case 1:
+                setValue(PatchSetting::VCO_2_ON, (ge->pinValues[controlNumber] & 0b0000100000000000) > 0);
                 break;
             case 2:
                 break;
-            case 4:
+            case 3:
+                setValue(PatchSetting::VCO_NOISE_ON, (ge->pinValues[controlNumber] & 0b0000100000000000) > 0);
+                setValue(PatchSetting::VCO_3_ON, (ge->pinValues[controlNumber] & 0b0000010000000000) > 0);
+                setValue(PatchSetting::VCO_EXT_ON, (ge->pinValues[controlNumber] & 0b0000000010000000) > 0);
+                setValue(PatchSetting::LFO_1_TRIGGER_RESET_ON, (ge->pinValues[controlNumber] & 0b0000000001000000) > 0);
+                setValue(PatchSetting::LFO_2_TRIGGER_RESET_ON, (ge->pinValues[controlNumber] & 0b0000000000100000) > 0);
                 break;
         }
     }

@@ -16,7 +16,7 @@ namespace kiwi_synth
     /*
      * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.
      */
-    void ProcessMultiPotsTimer(void* data);
+    //void ProcessMultiPotsTimer(void* data);
 
    /*
     * Used to initialize a MultiPots object.
@@ -84,12 +84,12 @@ namespace kiwi_synth
             DaisySeed *hw;
             float **mpValueBuffer = nullptr;
             float *directValueBuffer = nullptr;
-            TimerHandle timer;
+            //TimerHandle timer;
             ControlListener* controlListener = nullptr;
             int controlId;
 
             void InitMulti(MultiPotsConfig *multiPotsConfig);
-            void InitTimer(int refreshRate);
+            //void InitTimer(int refreshRate);
             void SelectMpChannel(int channelNumber);
             void ReadPots();
 
@@ -102,7 +102,7 @@ namespace kiwi_synth
             /*
             * Starts the input read timer running.
             */
-            void StartTimer();
+            //void StartTimer();
             /*
             * Loads a single channel of pot values for all attached multiplexers and/or a single directly connected potentiometer
             * into the buffer. This function only needs to be called if the timer is not being used.

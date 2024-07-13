@@ -4,10 +4,10 @@
 namespace kiwi_synth
 {
 
-    void ProcessMultiPotsTimer(void* multiPots)
+    /*void ProcessMultiPotsTimer(void* multiPots)
     {
         ((MultiPots*)multiPots)->Process();
-    }
+    }*/
 
     void MultiPots::Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig)
     {
@@ -24,9 +24,9 @@ namespace kiwi_synth
 
         directValueBuffer = new float[numDirectPots];
 
-        if (multiPotsConfig->useTimer) {
+        /*if (multiPotsConfig->useTimer) {
             InitTimer(multiPotsConfig->refreshRate);
-        }
+        }*/
     }
 
     MultiPots::~MultiPots()
@@ -52,10 +52,10 @@ namespace kiwi_synth
         this->controlId = controlId;
     }
 
-    void MultiPots::StartTimer()
+    /*void MultiPots::StartTimer()
     {
         timer.Start();
-    }
+    }*/
 
     void MultiPots::Process()
     {
@@ -123,7 +123,7 @@ namespace kiwi_synth
      * 
      * 10000 = @.25 seconds
      */
-    void MultiPots::InitTimer(int refreshRate)
+    /*void MultiPots::InitTimer(int refreshRate)
     {
         TimerHandle::Config config;
         config.dir = TimerHandle::Config::CounterDir::UP;
@@ -134,7 +134,7 @@ namespace kiwi_synth
         timer.Init(config);
         timer.SetPrescaler(2400);
         timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessMultiPotsTimer, (void *)(this));
-    }
+    }*/
 
     void MultiPots::SelectMpChannel(int channelNumber)
     {

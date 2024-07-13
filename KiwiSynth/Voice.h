@@ -23,6 +23,8 @@ namespace kiwi_synth
             VCF vcf;
             PatchSettings* patchSettings;
 
+            Oscillator osc;
+
         public:
             int currentMidiNote;
 
@@ -30,7 +32,7 @@ namespace kiwi_synth
             ~Voice() {}
             void Init(int numVCOs, PatchSettings* patchSettings, float sampleRate);
 
-            void Process(AudioHandle::OutputBuffer out, size_t size);
+            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             bool IsAvailable();
             bool IsReleasing();
     };

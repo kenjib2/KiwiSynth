@@ -2,7 +2,6 @@
 
 namespace kiwi_synth
 {
-//    KiwiMcp23017 mcp;
 	uint16_t pinRead = 0;
 
     bool gpioReadRequired = false;
@@ -15,23 +14,6 @@ namespace kiwi_synth
             gpioLastInterruptTime = now;
             gpioReadRequired = true;
         }
-    }
-
-    void ProcessGpioExpansionTimer(void* gpioExpansion)
-    {
-        GpioExpansion * ge = (GpioExpansion*)gpioExpansion;
-        for (int i = 0; i < ge->numGpioExpansions; i++) {
-            KiwiMcp23017 mcp = ge->mcps.at(i);
-            ge->pinValues[i] = mcp.Read();
-            mcp.clearInterrupts();
-        }
-        gpioReadRequired = false;
-        //pinRead = mcp.Read() & 0b0000000000000001;
-        //mcp.clearInterrupts();
-        /*if (gpioReadRequired) {
-            gpioReadRequired = false;
-            ((GpioExpansion*)gpioExpansion)->Process();
-        }*/
     }
 
     GpioExpansion::~GpioExpansion()
@@ -54,6 +36,7 @@ namespace kiwi_synth
         //gpioReadRequired = false;
 
         for (int i = 0; i < numGpioExpansions; i++) {
+            pinValues[i] = 0;
             KiwiMcp23017 mcp;
             KiwiMcp23017::Config cfg;
             cfg.transport_config.Defaults();
@@ -85,10 +68,7 @@ namespace kiwi_synth
             mcps.push_back(mcp);
         }
 
-        if (gpioExpansionConfig->useTimer) {
-            InitTimer(gpioExpansionConfig->refreshRate);
-        }
-        interrupt.Init(gpioExpansionConfig->interruptPin, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
+        //interrupt.Init(gpioExpansionConfig->interruptPin, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
 
 
         /*numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
@@ -133,43 +113,6 @@ namespace kiwi_synth
     {
         this->controlListener = controlListener;
         this->controlId = controlId;
-    }
-
-    /*
-     * (timer speed (Hz)) = (Arduino clock speed (16MHz)) / prescaler
-     * interrupt frequency (Hz) = (Arduino clock speed 480,000,000Hz) / (prescaler * (compare match register + 1))
-     * compare match register = [ 480,000,000/ (prescaler * desired interrupt frequency) ] - 1
-     * 
-     * The clock runs at 480MHz when boosted. TM_5 is a 32-bit timer with a max value of 4,294,967,295. For some
-     * reason the prescalar works against 240MHz instead of 480MHz.
-     * 
-     * A prescalar of 2,400 means:
-     * timer speed = 240,000,000 / 2,400 = 100,000 = 100KHz timer speed.
-     * 
-     * For a 1ms interrupt frequency
-     * Compare match register = (240,000,000Hz / (2,400 * 1000Hz)) = 100
-     * 
-     * This means that with a prescalar of 2,400, the refreshRate will be measured in hundreths of a millisecond.
-     * 
-     * 
-     * 10000 = @.25 seconds
-     */
-    void GpioExpansion::InitTimer(int refreshRate)
-    {
-        TimerHandle::Config config;
-        config.dir = TimerHandle::Config::CounterDir::UP;
-        config.enable_irq = true;
-        config.period = refreshRate;
-        config.periph = TimerHandle::Config::Peripheral::TIM_4;
-
-        timer.Init(config);
-        timer.SetPrescaler(2400);
-        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessGpioExpansionTimer, (void *)(this));
-    }
-
-    void GpioExpansion::StartTimer()
-    {
-        timer.Start();
     }
 
     void GpioExpansion::Process()

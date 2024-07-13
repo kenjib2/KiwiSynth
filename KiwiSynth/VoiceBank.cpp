@@ -12,7 +12,7 @@ namespace kiwi_synth
     }
 
 
-    void VoiceBank::Process(AudioHandle::OutputBuffer out, size_t size)
+    void VoiceBank::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         // FOR NOW JUST TAKE THE OUTPUT OF THE FIRST VOICE
         voices[0].Process(out, size);

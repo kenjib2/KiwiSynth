@@ -28,7 +28,7 @@ namespace kiwi_synth
             VoiceBank() {}
             ~VoiceBank() {}
             void Init(int numVoices, PatchSettings* patchSettings, float sampleRate);
-            void Process(AudioHandle::OutputBuffer out, size_t size);
+            void Process(AudioHandle::InterleavingOutputBuffer, size_t size);
 
             void NoteOn(int note, int velocity);
             void NoteOff(int note, int velocity);

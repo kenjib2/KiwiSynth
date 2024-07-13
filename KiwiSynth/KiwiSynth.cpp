@@ -10,10 +10,11 @@ namespace kiwi_synth
         SetMidiChannel(0);
 
         ConfigureMultiPots();
-        //ConfigureGpioExpansion();
+        ConfigureGpioExpansion();
 
         patchSettings.Init(&multiPots, &ge);
         multiPots.RegisterControlListener(&patchSettings, ControlId::MULTIPOTS);
+        ge.RegisterControlListener(&patchSettings, ControlId::GPIO_EXPANSION);
 
         voiceBank.Init(numVoices, &patchSettings, sampleRate);
     }
@@ -42,17 +43,18 @@ namespace kiwi_synth
         multiPotsConfig.pinA3 = D10;
         multiPotsConfig.pinsSignal = mpPins;
         multiPotsConfig.pinsDirect = directPins;
-        multiPotsConfig.useTimer = true;
-        multiPotsConfig.refreshRate = 50; // One half of a ms, which means 8ms for all pots to refresh. Shorter can cause timing problems.
+        //multiPotsConfig.useTimer = true;
+        //multiPotsConfig.refreshRate = 50; // One half of a ms, which means 8ms for all pots to refresh. Shorter can cause timing problems.
         // Look into refresh rate. Faster should be possible. Could be either pins left floating or not using the E pin.
 
         multiPots.Init(hw, &multiPotsConfig);
-        multiPots.StartTimer();
+        //multiPots.StartTimer();
     }
 
     void KiwiSynth::ConfigureGpioExpansion()
     {
     	ge.Init();
+        //ge.StartTimer();
     }
 
     void KiwiSynth::InitMidi()
@@ -69,7 +71,7 @@ namespace kiwi_synth
         this->midiChannel = midiChannel;
     }
 
-    void KiwiSynth::Process(AudioHandle::OutputBuffer out, size_t size)
+    void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         ProcessMidi();
         voiceBank.Process(out, size);
@@ -83,6 +85,12 @@ namespace kiwi_synth
             MidiEvent event = midi.PopEvent();
             HandleMidiMessage(&event);
         }
+    }
+
+    void KiwiSynth::ProcessInputs()
+    {
+        multiPots.Process();
+        ge.Process();
     }
 
     void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)
@@ -145,22 +153,7 @@ namespace kiwi_synth
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-        bool bool1 = patchSettings.getBoolValue(PatchSetting::VCO_2_ON);
-        bool bool2 = patchSettings.getBoolValue(PatchSetting::VCO_3_ON);
-        bool bool3 = patchSettings.getBoolValue(PatchSetting::VCO_NOISE_ON);
-        bool bool4 = patchSettings.getBoolValue(PatchSetting::VCO_EXT_ON);
-        bool bool5 = patchSettings.getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
-		sprintf(buff, "VCO 2 On: %d   VCO 3 On: %d   Noise On: %d   External On: %d   Portamento On: %d", bool1, bool2, bool3, bool4, bool5);
-		hw->PrintLine(buff);
-
-        bool1 = patchSettings.getBoolValue(PatchSetting::LFO_1_TRIGGER_RESET_ON);
-        bool2 = patchSettings.getBoolValue(PatchSetting::LFO_2_TRIGGER_RESET_ON);
-        bool3 = patchSettings.getBoolValue(PatchSetting::ENV_1_REVERSE_PHASE_ON);
-        bool4 = patchSettings.getBoolValue(PatchSetting::ENV_2_REVERSE_PHASE_ON);
-		sprintf(buff, "LFO 1 TReset On: %d   LFO 2 TReset On: %d   ENV 1 RevPhase On: %d   ENV 2 RevPhase On: %d", bool1, bool2, bool3, bool4);
-		hw->PrintLine(buff);
-
-/*		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);
+		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);
 		float val2 = patchSettings.getFloatValue(PatchSetting::VCO_1_LEVEL);
 		float val3 = patchSettings.getFloatValue(PatchSetting::VCO_MASTER_TUNE);
 		float val4 = patchSettings.getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED);
@@ -246,6 +239,28 @@ namespace kiwi_synth
 		val4 = patchSettings.getFloatValue(PatchSetting::ENV_2_RELEASE);
 		sprintf(buff, "Env 2 Attack: %.3f   Env 2 Decay: %.3f   Env 2 Sustain: %.3f   Env 2 Release: %.3f", val1, val2, val3, val4);
 		hw->PrintLine(buff);
-        */
+        
+
+        sprintf(buff, "----------------------");
+		hw->PrintLine(buff);
+
+        sprintf(buff, "1: %d   2: %d   3: %d   4: %d", ge.getPinValues(0), ge.getPinValues(1), ge.getPinValues(2), ge.getPinValues(3));
+		hw->PrintLine(buff);
+
+        bool bool1 = patchSettings.getBoolValue(PatchSetting::VCO_2_ON);
+        bool bool2 = patchSettings.getBoolValue(PatchSetting::VCO_3_ON);
+        bool bool3 = patchSettings.getBoolValue(PatchSetting::VCO_NOISE_ON);
+        bool bool4 = patchSettings.getBoolValue(PatchSetting::VCO_EXT_ON);
+        bool bool5 = patchSettings.getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
+		sprintf(buff, "VCO 2: %d   VCO 3: %d   Noise: %d   External: %d   Portamento: %d", bool1, bool2, bool3, bool4, bool5);
+		hw->PrintLine(buff);
+
+        bool1 = patchSettings.getBoolValue(PatchSetting::LFO_1_TRIGGER_RESET_ON);
+        bool2 = patchSettings.getBoolValue(PatchSetting::LFO_2_TRIGGER_RESET_ON);
+        bool3 = patchSettings.getBoolValue(PatchSetting::ENV_1_REVERSE_PHASE_ON);
+        bool4 = patchSettings.getBoolValue(PatchSetting::ENV_2_REVERSE_PHASE_ON);
+        bool5 = patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
+		sprintf(buff, "LFO 1 Rst: %d   LFO 2 Rst: %d   ENV 1 Phase: %d   ENV 2 Phase: %d   Select btn: %d", bool1, bool2, bool3, bool4, bool5);
+		hw->PrintLine(buff);
     }
 } // namespace kiwi_synth

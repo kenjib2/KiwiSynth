@@ -137,6 +137,7 @@ namespace kiwi_synth
 
         GEN_BALANCE,
         GEN_SELECT,
+        GEN_SELECT_BUTTON,
         GEN_FX_SELECT,
         GEN_REVERB_SELECT,
         GEN_REVERB_DECAY,
@@ -171,7 +172,7 @@ namespace kiwi_synth
             char name[MAX_PATCH_NAME_LENGTH + 1];
             float floatValues[54];
             int intValues[31];
-            bool boolValues[9];
+            bool boolValues[10];
             MultiPots* multiPots;
             GpioExpansion* ge;
 

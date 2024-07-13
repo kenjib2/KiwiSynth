@@ -13,7 +13,6 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    //extern KiwiMcp23017 mcp;
 	extern uint16_t pin0Value;
 	extern uint16_t pinRead;
 
@@ -26,25 +25,17 @@ namespace kiwi_synth
      */
     void GpioExpansionInterruptCallback(Pin pin);
 
-    /*
-     * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.
-     */
-    void ProcessGpioExpansionTimer(void* data);
-
    /*
-    * Used to initialize a MultiPots object.
+    * Used to initialize a GpioExpansion object.
     *
     * numGpioExpansions: The number of expansions attached.
-    * numPins: The number of pins each expansion has. This should be either 8 or 16. Other values are not supported
-    *     and all multiplexers must have the same number of channels.
     * interruptPin: The pin used for GPIO Expansion interrupts.
     * sdaPin: The pin used for I2C SDA.
     * sdlPin: The pin used for I2C SCL.
-    * useTimer: If true, a timer interrupt will be used to automatically pins if there has been a read request. If set to false, Process()
-    *     will need to be called manually to read pins with a read request.
-    * refreshRate: If useTimer = true, this will be how often the data is refreshed measured in hundredths of a millisecond.
     * pullupMap: An array of uint16_t values. Each of which has a bit for each pin position. For each position, a 0 indicates no pullup
     *     and a 1 indicates an internal pullup.
+    * activeMap: An array of uint16_t values. Each of which has a bit for each pin position. For each position, a 0 indicates that the pin
+    *     is being used and should be read. A 1 indicates that the pin is not in use and might possibly be floating.
     */
     struct GpioExpansionConfig
     {
@@ -52,8 +43,6 @@ namespace kiwi_synth
         Pin interruptPin;
         Pin sdaPin;
         Pin sclPin;
-        bool useTimer;
-        int refreshRate;
         uint16_t* pullupMap;
         uint16_t* activeMap;
 
@@ -75,8 +64,6 @@ namespace kiwi_synth
             interruptPin        = seed::D18;
             sdaPin              = seed::D11; // Pin 12 I2C1_SCL
             sclPin              = seed::D12; // Pin 13 I2C1_SDA
-            useTimer            = true;
-            refreshRate         = 50;
             pullupMap           = pullups;
             activeMap           = actives;
         }
@@ -86,11 +73,9 @@ namespace kiwi_synth
     {
         private:
             int numPins = 16;
-            TimerHandle timer;
             ControlListener* controlListener = nullptr;
             int controlId;
 
-            void InitTimer(int refreshRate);
         public:
             int numGpioExpansions = 4;
             uint16_t* pinValues;
@@ -102,10 +87,6 @@ namespace kiwi_synth
             void Init(GpioExpansionConfig *gpioExpansionConfig);
 
             void RegisterControlListener(ControlListener* controlListener, int controlId);
-            /*
-            * Starts the input read timer running.
-            */
-            void StartTimer();
             /*
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              */

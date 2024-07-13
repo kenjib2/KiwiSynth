@@ -2,36 +2,29 @@
 #include "KiwiSynth/KiwiSynth.h"
 #include "KiwiSynth/Controls/KiwiMcp23017.h"
 #include "KiwiSynth/Controls/GpioExpansion.h"
+#include "KiwiSynth/Controls/Display.h"
 
 using namespace daisy;
 using namespace kiwi_synth;
 
 DaisySeed hw;
 KiwiSynth kiwiSynth;
-Oscillator osc;
 float sig;
+Display display;
 //GpioExpansion ge;
 
 
-//void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
                    size_t                                size)
 {
-    for(size_t i = 0; i < size; i += 2)
-    {
-        // Process
-        sig        = osc.Process();
-        out[i]     = sig;
-        out[i + 1] = sig;
-    }
-	//kiwiSynth->Process(out, size);
+	kiwiSynth.Process(out, size);
 }
 
 int main(void)
 {
 	hw.Configure();
-	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400,000MHz
+	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(48); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
@@ -39,10 +32,14 @@ int main(void)
 	//GPIO gpio;
 	//gpio.Init(seed::D18, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
 
-	/*GPIO gpio1;
+	GPIO gpio1;
 	gpio1.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
 	GPIO gpio2;
-	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);*/
+	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
+	bool led1 = true;
+	bool led2 = false;
+
+	display.Init();
 
 /*	GpioExpansionConfig cfg;
 	cfg.Defaults();
@@ -56,30 +53,32 @@ int main(void)
 	ge.Init(&cfg);
 	//ge.StartTimer();*/
 
-	osc.Init(hw.AudioSampleRate());
-	osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
-	osc.SetFreq(220);
-	osc.SetAmp(0.5f);
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	//bool led1 = false;
-	//bool led2 = false;
+	char message[64];
+	sprintf(message, "Hello Kiwi!");
+	display.TestOutput(message);
 	//char buff[256];
+	int counter = 0;
     while(1)
 	{
-		hw.DelayMs(500);
-		kiwiSynth.TestOutput();
+		hw.DelayMs(1);
+		kiwiSynth.ProcessInputs();
+		if (counter == 499) {
+			kiwiSynth.TestOutput();
 
-		//gpio1.Write(led1);
-		//led1 = !led1;
+			gpio1.Write(led1);
+			led1 = !led1;
+			gpio2.Write(led2);
+			led2 = !led2;
+		}
+		counter = (counter + 1) % 500;
 
-		//gpio2.Write(led2);
-		//led2 = !led2;
-
+		//hw.DelayMs(500);
 		/*bool val = ge.interrupt.Read();
 		pinValues = ge.getPinValues(0);
 		hw.PrintLine(tempBuffer);

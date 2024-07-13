@@ -37,13 +37,14 @@ namespace kiwi_synth
             ~KiwiSynth() {}
             void Init(DaisySeed* hw, float sampleRate);
 
+            void ProcessInputs();
             void ConfigureMultiPots();
             void ConfigureGpioExpansion();
 
             void InitMidi();
             void SetMidiChannel(int midiChannel);
             
-            void Process(AudioHandle::OutputBuffer out, size_t size);
+            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             void TestOutput();
     };
 } // namespace kiwi_synth
