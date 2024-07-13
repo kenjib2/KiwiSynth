@@ -625,6 +625,8 @@ namespace kiwi_synth
                 return boolValues[7];
             case ENV_2_REVERSE_PHASE_ON:
                 return boolValues[8];
+            case GEN_SELECT_BUTTON:
+                return boolValues[9];
             default:
                 return false;
         }
@@ -746,23 +748,23 @@ namespace kiwi_synth
     {
         switch(controlNumber)
         {
-            case 0:
-                setValue(PatchSetting::VCO_PORTAMENTO_ON, (ge->pinValues[controlNumber] & 0b0000001000000000) > 0);
-                setValue(PatchSetting::GEN_SELECT, (ge->pinValues[controlNumber] & 0b0000000000100000) > 0);
-                setValue(PatchSetting::ENV_2_REVERSE_PHASE_ON, (ge->pinValues[controlNumber] & 0b0000000000000100) > 0);
-                setValue(PatchSetting::ENV_1_REVERSE_PHASE_ON, (ge->pinValues[controlNumber] & 0b0000000000000100) > 0);
+            case 0x20:
+                setValue(PatchSetting::VCO_PORTAMENTO_ON, ge->getPinValue(controlNumber, 7));
+                setValue(PatchSetting::GEN_SELECT_BUTTON, ge->getPinValue(controlNumber, 11));
+                setValue(PatchSetting::ENV_2_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 14));
+                setValue(PatchSetting::ENV_1_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 15));
                 break;
-            case 1:
-                setValue(PatchSetting::VCO_2_ON, (ge->pinValues[controlNumber] & 0b0000100000000000) > 0);
+            case 0x21:
+                setValue(PatchSetting::VCO_2_ON, ge->getPinValue(controlNumber, 5));
                 break;
-            case 2:
+            case 0x22:
                 break;
-            case 3:
-                setValue(PatchSetting::VCO_NOISE_ON, (ge->pinValues[controlNumber] & 0b0000100000000000) > 0);
-                setValue(PatchSetting::VCO_3_ON, (ge->pinValues[controlNumber] & 0b0000010000000000) > 0);
-                setValue(PatchSetting::VCO_EXT_ON, (ge->pinValues[controlNumber] & 0b0000000010000000) > 0);
-                setValue(PatchSetting::LFO_1_TRIGGER_RESET_ON, (ge->pinValues[controlNumber] & 0b0000000001000000) > 0);
-                setValue(PatchSetting::LFO_2_TRIGGER_RESET_ON, (ge->pinValues[controlNumber] & 0b0000000000100000) > 0);
+            case 0x23:
+                setValue(PatchSetting::VCO_NOISE_ON, ge->getPinValue(controlNumber, 5));
+                setValue(PatchSetting::VCO_3_ON, ge->getPinValue(controlNumber, 6));
+                setValue(PatchSetting::VCO_EXT_ON, ge->getPinValue(controlNumber, 9));
+                setValue(PatchSetting::LFO_1_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 10));
+                setValue(PatchSetting::LFO_2_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 11));
                 break;
         }
     }

@@ -2,6 +2,7 @@
 #define __KIWI_SYNTH_GPIO_EXPANSION_H__
 
 #include <vector>
+#include <map>
 
 #include "daisy_seed.h"
 #include "Control.h"
@@ -78,7 +79,7 @@ namespace kiwi_synth
 
         public:
             int numGpioExpansions = 4;
-            uint16_t* pinValues;
+            std::map<uint8_t, uint16_t> pinValues;
             std::vector<KiwiMcp23017> mcps;
             GPIO interrupt;
             GpioExpansion() {}
@@ -96,7 +97,8 @@ namespace kiwi_synth
              */
             void ClearInterrupts();
 
-            uint16_t getPinValues(int expansionNumber);
+            uint16_t getPinValues(uint8_t address);
+            bool getPinValue(uint8_t address, uint8_t pin);
     }; // class MultiPots
 
 } // namespace kiwi_synth

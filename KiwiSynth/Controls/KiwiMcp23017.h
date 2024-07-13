@@ -116,6 +116,7 @@ namespace kiwi_synth
                 i2c_config.pin_config.scl = {DSY_GPIOB, 8}; // Pin 12 I2C1_SCL
                 i2c_config.pin_config.sda = {DSY_GPIOB, 9}; // Pin 13 I2C1_SDA
                 i2c_address               = 0x20;
+                i2c_config.address        = 0x20;
             }
         };
 
@@ -173,6 +174,8 @@ namespace kiwi_synth
     class KiwiMcp23X17
     {
         public:
+            uint8_t i2c_address;
+
             struct Config
             {
                 typename Transport::Config transport_config;
@@ -187,6 +190,7 @@ namespace kiwi_synth
 
             void Init(const Config& config)
             {
+                i2c_address = config.transport_config.i2c_config.address;
                 transport.Init(config.transport_config);
 
                 //BANK = 	0 : sequential register addresses

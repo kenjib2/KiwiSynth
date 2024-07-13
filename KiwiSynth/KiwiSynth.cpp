@@ -244,7 +244,7 @@ namespace kiwi_synth
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-        sprintf(buff, "1: %d   2: %d   3: %d   4: %d", ge.getPinValues(0), ge.getPinValues(1), ge.getPinValues(2), ge.getPinValues(3));
+        sprintf(buff, "1: %d   2: %d   3: %d   4: %d", ge.getPinValues(0x20), ge.getPinValues(0x21), ge.getPinValues(0x22), ge.getPinValues(0x23));
 		hw->PrintLine(buff);
 
         bool bool1 = patchSettings.getBoolValue(PatchSetting::VCO_2_ON);
