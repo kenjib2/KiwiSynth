@@ -2,8 +2,11 @@
 
 namespace kiwi_synth
 {
+    char temp[256];
+
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
+        sprintf(temp, "Initializing");
         this->hw = hw;
 
         numVoices = DEFAULT_NUM_VOICES;
@@ -17,6 +20,8 @@ namespace kiwi_synth
         ge.RegisterControlListener(&patchSettings, ControlId::GPIO_EXPANSION);
 
         voiceBank.Init(numVoices, &patchSettings, sampleRate);
+
+        InitMidi();
     }
 
     void KiwiSynth::ConfigureMultiPots()
@@ -64,6 +69,7 @@ namespace kiwi_synth
         midi_config.transport_config.rx = D14;
         midi.Init(midi_config);
         midi.StartReceive();
+        sprintf(temp, "MIDI Started");
     }
 
     void KiwiSynth::SetMidiChannel(int midiChannel)
@@ -82,6 +88,7 @@ namespace kiwi_synth
         midi.Listen();
         while(midi.HasEvents())
         {
+            sprintf(temp, "MIDI Event");
             MidiEvent event = midi.PopEvent();
             HandleMidiMessage(&event);
         }
@@ -95,6 +102,7 @@ namespace kiwi_synth
 
     void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)
     {
+        sprintf(temp, "Handling MIDI");
         if (midiChannel == midiEvent->channel) {
             NoteOnEvent on;
             NoteOffEvent off;
@@ -105,6 +113,7 @@ namespace kiwi_synth
                     on = midiEvent->AsNoteOn();
                     if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
                     {
+                        sprintf(temp, "NoteOn");
                         voiceBank.NoteOn(on.note, on.velocity);
                         break;
                     }
@@ -112,6 +121,7 @@ namespace kiwi_synth
 
                 case NoteOff:
                     off = midiEvent->AsNoteOff();
+                    sprintf(temp, "NoteOff");
                     voiceBank.NoteOff(off.note, off.velocity);
                     /*for (size_t i = 0; i < voices.size(); i++) {
                         Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
@@ -149,10 +159,12 @@ namespace kiwi_synth
 
     void KiwiSynth::TestOutput()
     {
-    	char buff[4096];
+    	char buff[256];
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
+		hw->PrintLine(temp);
+        /*
 		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);
 		float val2 = patchSettings.getFloatValue(PatchSetting::VCO_1_LEVEL);
 		float val3 = patchSettings.getFloatValue(PatchSetting::VCO_MASTER_TUNE);
@@ -261,6 +273,6 @@ namespace kiwi_synth
         bool4 = patchSettings.getBoolValue(PatchSetting::ENV_2_REVERSE_PHASE_ON);
         bool5 = patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
 		sprintf(buff, "LFO 1 Rst: %d   LFO 2 Rst: %d   ENV 1 Phase: %d   ENV 2 Phase: %d   Select btn: %d", bool1, bool2, bool3, bool4, bool5);
-		hw->PrintLine(buff);
+		hw->PrintLine(buff);*/
     }
 } // namespace kiwi_synth

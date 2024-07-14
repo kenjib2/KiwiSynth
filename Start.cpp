@@ -112,3 +112,25 @@ int main(void)
 		}*/
 	}
 }
+
+
+/*
+void RebootToBootloader()
+{
+	// Initialize Boot Pin
+	dsy_gpio_pin bootpin = {DSY_GPIOG, 3};
+	dsy_gpio pin;
+	pin.mode = DSY_GPIO_MODE_OUTPUT_PP;
+	pin.pin = bootpin;
+	dsy_gpio_init(&pin);
+
+	// Pull Pin HIGH
+	dsy_gpio_write(&pin, 1);
+
+	// wait a few ms for cap to charge
+	hardware.DelayMs(10);
+
+	// Software Reset
+	HAL_NVIC_SystemReset();
+}
+*/
