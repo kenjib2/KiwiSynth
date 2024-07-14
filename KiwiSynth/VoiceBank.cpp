@@ -2,11 +2,11 @@
 
 namespace kiwi_synth
 {
-    void VoiceBank::Init(int numVoices, PatchSettings* patchSettings, float sampleRate) {
+    void VoiceBank::Init(int numVoices, int numVcos, PatchSettings* patchSettings, float sampleRate) {
         for (int i = 0; i < numVoices; i++)
         {
             Voice nextVoice;
-            nextVoice.Init(numVoices, patchSettings, sampleRate);
+            nextVoice.Init(numVcos, patchSettings, sampleRate);
             voices.push_back(nextVoice);
         }
     }
@@ -20,13 +20,14 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(int note, int velocity)
     {
-        voices[0].SetFreq(1, mtof(note));
+        voices[0].NoteOn(note, velocity);
         // Voice = RequestVoice...
         // if (voice) voice->NoteOn and add to list of playing notes...
     }
 
     void VoiceBank::NoteOff(int note, int velocity)
     {
+        voices[0].NoteOff(note, velocity);
         /*for (size_t i = 0; i < voices.size(); i++) {
             Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
             if (voice) {

@@ -13,22 +13,12 @@ namespace kiwi_synth
         }
         vcf.Init(patchSettings, sampleRate);
         vca.Init(patchSettings, sampleRate);
-
-        osc.Init(sampleRate);
-        osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
-        osc.SetFreq(220);
-        osc.SetAmp(0.5f);
     }
 
     void Voice::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
-        for(size_t i = 0; i < size; i += 2)
-        {
-            // Process
-            float sig        = osc.Process();
-            out[i]     = sig;
-            out[i + 1] = sig;
-        }
+        vcos[0].Process(out, size);
+        vca.Process(out, size);
         /*float vcoBuffer[numVCOs][size];
         for (int i = 0; i < numVCOs; i++)
         {
@@ -53,9 +43,25 @@ namespace kiwi_synth
         return vca.IsReleasing();
     }
 
-    void Voice::SetFreq(int oscNumber, float frequency)
+    void Voice::NoteOn(int note, int velocity)
     {
-        osc.SetFreq(frequency);
+        vcos[0].SetFreq(mtof(note));
+        vca.NoteOn();
+        // Voice = RequestVoice...
+        // if (voice) voice->NoteOn and add to list of playing notes...
+    }
+
+    void Voice::NoteOff(int note, int velocity)
+    {
+        vca.NoteOff();
+        /*for (size_t i = 0; i < voices.size(); i++) {
+            Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
+            if (voice) {
+                voice->NoteOff(off.note, off.velocity);
+                voiceBank->RemovePlayingVoice(voice);
+                break;
+            }
+        }*/
     }
 
 }

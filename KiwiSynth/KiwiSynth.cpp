@@ -19,7 +19,7 @@ namespace kiwi_synth
         multiPots.RegisterControlListener(&patchSettings, ControlId::MULTIPOTS);
         ge.RegisterControlListener(&patchSettings, ControlId::GPIO_EXPANSION);
 
-        voiceBank.Init(numVoices, &patchSettings, sampleRate);
+        voiceBank.Init(numVoices, NUM_VCOS, &patchSettings, sampleRate);
 
         InitMidi();
     }

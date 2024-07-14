@@ -19,15 +19,23 @@ namespace kiwi_synth
         baseFreq = mtof(midiNote) * tuneHz;
     }
 
-    void VCO::Process(float * out, size_t size)
+    void VCO::SetFreq(float frequency)
+    {
+        osc.SetFreq(frequency);
+    }
+
+    void VCO::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         //CalculateBaseFreq();
         //osc.SetFreq(baseFreq);
 
         float result;
-        for (size_t i = 0; i < size; i++) {
+        for(size_t i = 0; i < size; i += 2)
+        {
+            // Process
             result = osc.Process() * 0.05f;
             out[i] = result;
+            out[i + 1] = result;
         }
     }
 }

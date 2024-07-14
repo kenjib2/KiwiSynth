@@ -23,8 +23,6 @@ namespace kiwi_synth
             VCF vcf;
             PatchSettings* patchSettings;
 
-            Oscillator osc;
-
         public:
             int currentMidiNote;
 
@@ -35,7 +33,8 @@ namespace kiwi_synth
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             bool IsAvailable();
             bool IsReleasing();
-            void SetFreq(int oscNumber, float frequency);
+            void NoteOn(int note, int velocity);
+            void NoteOff(int note, int velocity);
     };
 }
 

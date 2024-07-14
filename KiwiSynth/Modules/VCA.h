@@ -15,12 +15,15 @@ namespace kiwi_synth
         private:
             bool                    noteTriggered;
             PatchSettings*          patchSettings;
+            Adsr                    env;
 
         public:
             VCA() {}
             ~VCA() {}
             void Init(PatchSettings* patchSettings, float sampleRate);
-            void Process(const float* in, float* out, size_t size);
+            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
+            void NoteOn();
+            void NoteOff();
             bool IsPlaying();
             bool IsReleasing();
     };
