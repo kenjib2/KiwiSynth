@@ -35,6 +35,7 @@ namespace kiwi_synth
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             bool IsAvailable();
             bool IsReleasing();
+            void SetFreq(int oscNumber, float frequency);
     };
 }
 

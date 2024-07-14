@@ -20,6 +20,7 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(int note, int velocity)
     {
+        voices[0].SetFreq(1, mtof(note));
         // Voice = RequestVoice...
         // if (voice) voice->NoteOn and add to list of playing notes...
     }

@@ -52,4 +52,10 @@ namespace kiwi_synth
     {
         return vca.IsReleasing();
     }
+
+    void Voice::SetFreq(int oscNumber, float frequency)
+    {
+        osc.SetFreq(frequency);
+    }
+
 }
