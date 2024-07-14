@@ -14,24 +14,24 @@ namespace kiwi_synth
     class VoiceBank
     {
         private:
-            int numVoices;
+            uint8_t numVoices;
             std::vector<Voice> voices;
             PatchSettings* patchSettings;
-            std::vector<int>     playingIndices;
-            std::vector<int>     playingNotes;
+            std::vector<uint8_t>     playingIndices;
+            std::vector<uint8_t>     playingNotes;
 
-            Voice* RequestVoice(int midiNote);
-            void AddPlayingVoice(int index, int midiNote);
-            void RemovePlayingVoice(int index);
+            Voice* RequestVoice(uint8_t midiNote);
+            void AddPlayingVoice(uint8_t index, uint8_t midiNote);
+            void RemovePlayingVoice(uint8_t index);
  
         public:
             VoiceBank() {}
             ~VoiceBank() {}
-            void Init(int numVoices, int numVcos, PatchSettings* patchSettings, float sampleRate);
+            void Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
             void Process(AudioHandle::InterleavingOutputBuffer, size_t size);
 
-            void NoteOn(int note, int velocity);
-            void NoteOff(int note, int velocity);
+            void NoteOn(uint8_t note, uint8_t velocity);
+            void NoteOff(uint8_t note, uint8_t velocity);
     };
 }
 

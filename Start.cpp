@@ -9,9 +9,7 @@ using namespace kiwi_synth;
 
 DaisySeed hw;
 KiwiSynth kiwiSynth;
-float sig;
 Display display;
-//GpioExpansion ge;
 
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
@@ -29,9 +27,6 @@ int main(void)
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 
-	//GPIO gpio;
-	//gpio.Init(seed::D18, GPIO::Mode::INTERRUPT_RISING, GPIO::Pull::NOPULL, GPIO::Speed::LOW, GpioExpansionInterruptCallback);
-
 	GPIO gpio1;
 	gpio1.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
 	GPIO gpio2;
@@ -40,18 +35,6 @@ int main(void)
 	bool led2 = false;
 
 	display.Init();
-
-/*	GpioExpansionConfig cfg;
-	cfg.Defaults();
-	cfg.numGpioExpansions = 1;
-	uint16_t map[1];
-	map[0] = 0b0111111111111111;
-	//map[1] = 0b1111111111111111;
-	//map[2] = 0b1111111111111111;
-	//map[3] = 0b1111111111111111;
-	cfg.pullupMap = map;
-	ge.Init(&cfg);
-	//ge.StartTimer();*/
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 
@@ -62,8 +45,7 @@ int main(void)
 	char message[64];
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
-	//char buff[256];
-	int counter = 0;
+	uint8_t counter = 0;
     while(1)
 	{
 		hw.DelayMs(1);
@@ -77,39 +59,6 @@ int main(void)
 			led2 = !led2;
 		}
 		counter = (counter + 1) % 500;
-
-		//hw.DelayMs(500);
-		/*bool val = ge.interrupt.Read();
-		pinValues = ge.getPinValues(0);
-		hw.PrintLine(tempBuffer);
-		sprintf(buff, "pinValues: %d, interrupt %s", pinValues, val ? "true" : "false");
-		hw.PrintLine(buff);*/
-		/*sprintf(buff, "interrupt %s", gpioReadRequired ? "true" : "false");
-		hw.PrintLine(buff);
-		if (gpioReadRequired) {
-			pinValues = ge.mcps[0].Read() & 0b0000000000000001;
-			ge.mcps[0].clearInterrupts();
-			sprintf(buff, "--Interrupted--");
-			hw.PrintLine(buff);
-			sprintf(buff, "Pin value: %d", pinValues);
-			hw.PrintLine(buff);
-			sprintf(buff, "Interrupt: %lu", kiwi_synth::gpioLastInterruptTime);
-			hw.PrintLine(buff);
-			gpioReadRequired = false;
-		}*/
-		/*if (gpioReadRequired) {
-			//ProcessGpioExpansionTimer(&ge);
-			//ProcessGpioExpansionTimer(nullptr);
-			//pinRead = mcp.Read() & 0b0000000000000001;
-			//mcp.clearInterrupts();
-			ge.ClearInterrupts();
-			sprintf(buff, "--Interrupted--");
-			hw.PrintLine(buff);
-			sprintf(buff, "Pin value: %d", pinRead);
-			hw.PrintLine(buff);
-			sprintf(buff, "Interrupt: %lu", gpioLastInterruptTime);
-			hw.PrintLine(buff);
-		}*/
 	}
 }
 

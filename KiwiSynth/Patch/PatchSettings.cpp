@@ -11,7 +11,7 @@ namespace kiwi_synth
         this->ge = ge;
     }
 
-    void PatchSettings::setValue(PatchSetting setting, int value)
+    void PatchSettings::setValue(PatchSetting setting, uint8_t value)
     {
         switch(setting) {
             case VCO_VOICES:
@@ -95,17 +95,14 @@ namespace kiwi_synth
             case MOD_8_DESTINATION:
                 intValues[26] = value;
                 break;
-            case GEN_BALANCE:
+            case GEN_SELECT:
                 intValues[27] = value;
                 break;
-            case GEN_SELECT:
+            case GEN_FX_SELECT:
                 intValues[28] = value;
                 break;
-            case GEN_FX_SELECT:
-                intValues[29] = value;
-                break;
             case GEN_REVERB_SELECT:
-                intValues[30] = value;
+                intValues[29] = value;
                 break;
             default:
                 break;
@@ -335,7 +332,7 @@ namespace kiwi_synth
         }
     }
 
-    int PatchSettings::getIntValue(PatchSetting setting)
+    uint8_t PatchSettings::getIntValue(PatchSetting setting)
     {
         switch(setting) {
             case VCO_VOICES:
@@ -392,14 +389,12 @@ namespace kiwi_synth
                 return intValues[25];
             case MOD_8_DESTINATION:
                 return intValues[26];
-            case GEN_BALANCE:
-                return intValues[27];
             case GEN_SELECT:
-                return intValues[28];
+                return intValues[27];
             case GEN_FX_SELECT:
-                return intValues[29];
+                return intValues[28];
             case GEN_REVERB_SELECT:
-                return intValues[30];
+                return intValues[29];
             default:
                 return 0;
         }

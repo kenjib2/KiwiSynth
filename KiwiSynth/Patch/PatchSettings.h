@@ -171,7 +171,7 @@ namespace kiwi_synth
             static constexpr float maxValue = 1.0f;
             char name[MAX_PATCH_NAME_LENGTH + 1];
             float floatValues[54];
-            int intValues[31];
+            uint8_t intValues[31];
             bool boolValues[10];
             MultiPots* multiPots;
             GpioExpansion* ge;
@@ -188,7 +188,7 @@ namespace kiwi_synth
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, int value);
+            void setValue(PatchSetting setting, uint8_t value);
             /*
              * Sets a float setting value. If a non-float setting is attempted, no action will be performed.
              */
@@ -205,7 +205,7 @@ namespace kiwi_synth
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
              */
-            int getIntValue(PatchSetting setting);
+            uint8_t getIntValue(PatchSetting setting);
             /*
              * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
              */

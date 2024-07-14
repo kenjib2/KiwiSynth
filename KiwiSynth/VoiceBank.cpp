@@ -2,8 +2,8 @@
 
 namespace kiwi_synth
 {
-    void VoiceBank::Init(int numVoices, int numVcos, PatchSettings* patchSettings, float sampleRate) {
-        for (int i = 0; i < numVoices; i++)
+    void VoiceBank::Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate) {
+        for (uint8_t i = 0; i < numVoices; i++)
         {
             Voice nextVoice;
             nextVoice.Init(numVcos, patchSettings, sampleRate);
@@ -18,14 +18,14 @@ namespace kiwi_synth
         voices[0].Process(out, size);
     }
 
-    void VoiceBank::NoteOn(int note, int velocity)
+    void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
         voices[0].NoteOn(note, velocity);
         // Voice = RequestVoice...
         // if (voice) voice->NoteOn and add to list of playing notes...
     }
 
-    void VoiceBank::NoteOff(int note, int velocity)
+    void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
         voices[0].NoteOff(note, velocity);
         /*for (size_t i = 0; i < voices.size(); i++) {
@@ -38,15 +38,15 @@ namespace kiwi_synth
         }*/
     }
 
-    Voice* VoiceBank::RequestVoice(int midiNote)
+    Voice* VoiceBank::RequestVoice(uint8_t midiNote)
     {
-        size_t lowestIndex = 0;
-        int lowestNote = 128;
-        size_t highestIndex = 0;
-        int highestNote = -1;
+        uint8_t lowestIndex = 0;
+        uint8_t lowestNote = 128;
+        uint8_t highestIndex = 0;
+        uint8_t highestNote = 0;
 
         // First if that note is already playing, retrigger it to preserve envelope/lfo position.
-        for (size_t i = 0; i < voices.size(); i++) {
+        for (uint8_t i = 0; i < voices.size(); i++) {
             if (!voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
                 RemovePlayingVoice(i);
                 AddPlayingVoice(i, midiNote);
@@ -83,9 +83,9 @@ namespace kiwi_synth
 
         // If no voices are available, return the oldest note.
         // We have to replace a playing note that is neither lowest nor highest.
-        for (int i = 0; i < (int)playingIndices.size(); i++) {
-            int playingIndex = playingIndices[i];
-            if (playingIndex != (int)lowestIndex && playingIndex != (int)highestIndex) {
+        for (uint8_t i = 0; i < playingIndices.size(); i++) {
+            uint8_t playingIndex = playingIndices[i];
+            if (playingIndex != lowestIndex && playingIndex != highestIndex) {
                 Voice* voice = &(voices[playingIndex]);
                 RemovePlayingVoice(playingIndex);
                 AddPlayingVoice(playingIndex, midiNote);
@@ -97,16 +97,16 @@ namespace kiwi_synth
     }
 
 
-    void VoiceBank::AddPlayingVoice(int index, int midiNote)
+    void VoiceBank::AddPlayingVoice(uint8_t index, uint8_t midiNote)
     {
         playingIndices.push_back(index);
         playingNotes.push_back(midiNote);
     }
 
 
-    void VoiceBank::RemovePlayingVoice(int index)
+    void VoiceBank::RemovePlayingVoice(uint8_t index)
     {
-        for (size_t i = 0; i < playingIndices.size(); i++) {
+        for (uint8_t i = 0; i < playingIndices.size(); i++) {
             if (playingIndices[i] == index) {
                 playingIndices.erase(playingIndices.begin()+i);
                 playingNotes.erase(playingNotes.begin()+i);
