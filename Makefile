@@ -6,7 +6,7 @@ OPT = -Os # Optimize for smaller size
 TARGET = HardwareTest
 
 # Sources
-CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Modules/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp)
+CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Modules/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp) $(wildcard KiwiSynth/GUI/*.cpp)
 
 # Library Locations
 LIBDAISY_DIR = ../../libDaisy/

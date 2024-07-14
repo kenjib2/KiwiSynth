@@ -2,7 +2,7 @@
 #include "KiwiSynth/KiwiSynth.h"
 #include "KiwiSynth/Controls/KiwiMcp23017.h"
 #include "KiwiSynth/Controls/GpioExpansion.h"
-#include "KiwiSynth/Controls/Display.h"
+#include "KiwiSynth/GUI/Display.h"
 
 using namespace daisy;
 using namespace kiwi_synth;
@@ -40,22 +40,25 @@ int main(void)
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 
+	char message[64];
+	kiwiSynth.ProcessInputs();
+	if (kiwiSynth.BootLoaderRequested())
+	{
+		sprintf(message, "Starting BootLoader...");
+		display.TestOutput(message);
+		System::ResetToBootloader();
+	}
+
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	char message[64];
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
 	uint16_t counter = 0;
     while(1)
 	{
 		hw.DelayMs(1);
-		if (kiwiSynth.BootLoaderRequested())
-		{
-			sprintf(message, "Starting BootLoader...");
-			display.TestOutput(message);
-		}
 
 		kiwiSynth.ProcessInputs();
 		if (counter == 499) {
