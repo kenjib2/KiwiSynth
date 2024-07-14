@@ -157,6 +157,11 @@ namespace kiwi_synth
         }
     }
 
+    bool KiwiSynth::BootLoaderRequested()
+    {
+        return patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
+    }
+
     void KiwiSynth::TestOutput()
     {
     	char buff[256];

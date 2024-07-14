@@ -43,7 +43,8 @@ namespace kiwi_synth
 
             void InitMidi();
             void SetMidiChannel(int midiChannel);
-            
+
+            bool BootLoaderRequested();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             void TestOutput();
     };

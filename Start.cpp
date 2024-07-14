@@ -33,6 +33,8 @@ int main(void)
 	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
 	bool led1 = true;
 	bool led2 = false;
+	gpio1.Write(led1);
+	gpio2.Write(led2);
 
 	display.Init();
 
@@ -45,10 +47,16 @@ int main(void)
 	char message[64];
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
-	uint8_t counter = 0;
+	uint16_t counter = 0;
     while(1)
 	{
 		hw.DelayMs(1);
+		if (kiwiSynth.BootLoaderRequested())
+		{
+			sprintf(message, "Starting BootLoader...");
+			display.TestOutput(message);
+		}
+
 		kiwiSynth.ProcessInputs();
 		if (counter == 499) {
 			kiwiSynth.TestOutput();
