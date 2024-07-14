@@ -33,7 +33,7 @@ namespace kiwi_synth
         for(size_t i = 0; i < size; i += 2)
         {
             // Process
-            result = osc.Process() * 0.05f;
+            result = osc.Process();
             out[i] = result;
             out[i + 1] = result;
         }

@@ -7,6 +7,7 @@
 #include "Modules/VCO.h"
 #include "Modules/VCF.h"
 #include "Modules/VCA.h"
+#include "Modules/Envelope.h"
 #include "Patch/PatchSettings.h"
 
 using namespace daisysp;
@@ -21,6 +22,7 @@ namespace kiwi_synth
             std::vector<VCO> vcos;
             VCA vca;
             VCF vcf;
+            Envelope env1, env2;
             PatchSettings* patchSettings;
 
         public:

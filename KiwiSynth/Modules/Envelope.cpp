@@ -1,8 +1,8 @@
-#include "VCA.h"
+#include "Envelope.h"
 
 namespace kiwi_synth
 {
-    void VCA::Init(PatchSettings* patchSettings, float sampleRate)
+    void Envelope::Init(PatchSettings* patchSettings, float sampleRate)
     {
         this->patchSettings = patchSettings;
         noteTriggered = false;
@@ -14,25 +14,23 @@ namespace kiwi_synth
         env.SetReleaseTime(0.002f);
     }
 
-    void VCA::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
+    void Envelope::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         // Why are these times not matching seconds at all?
         env.SetAttackTime(patchSettings->getFloatValue(PatchSetting::ENV_1_ATTACK, 0.0F, 0.2F));
         env.SetDecayTime(patchSettings->getFloatValue(PatchSetting::ENV_1_DECAY, 0.0F, 0.03F));
         env.SetSustainLevel(patchSettings->getFloatValue(PatchSetting::ENV_1_SUSTAIN, 0.0F, 0.99999F));
         env.SetReleaseTime(patchSettings->getFloatValue(PatchSetting::ENV_1_RELEASE, 0.0F, 0.03F));
-        float envAmount = env.Process(noteTriggered);
-        //out[0] = in[0] * envAmount * (1 - lfoAmount);
-        //out[0] = in[0];
+        float envAmount;
         for(size_t i = 0; i < size; i += 2)
         {
-            // Process
-            out[i] = out[i] * envAmount * 0.08f;
-            out[i + 1] = out[i + 1] * envAmount * 0.08f;
+            envAmount = env.Process(noteTriggered);
+            out[i] = envAmount;
+            out[i + 1] = envAmount;
         }
     }
 
-    void VCA::NoteOn()
+    void Envelope::NoteOn()
     {
         noteTriggered = true;
         if (env.IsRunning()) {
@@ -40,19 +38,19 @@ namespace kiwi_synth
         }
     }
 
-    void VCA::NoteOff()
+    void Envelope::NoteOff()
     {
         noteTriggered = false;
     }
 
-    bool VCA::IsPlaying()
+    bool Envelope::IsPlaying()
     {
         return env.IsRunning();
         return false;
     }
 
 
-    bool VCA::IsReleasing()
+    bool Envelope::IsReleasing()
     {
         return env.GetCurrentSegment() == ADSR_SEG_RELEASE;
         return false;

@@ -13,6 +13,8 @@ namespace kiwi_synth
         }
         vcf.Init(patchSettings, sampleRate);
         vca.Init(patchSettings, sampleRate);
+        env1.Init(patchSettings, sampleRate);
+        env2.Init(patchSettings, sampleRate);
     }
 
     void Voice::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)

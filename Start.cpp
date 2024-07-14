@@ -62,7 +62,7 @@ int main(void)
 
 		kiwiSynth.ProcessInputs();
 		if (counter == 499) {
-			kiwiSynth.TestOutput();
+			//kiwiSynth.TestOutput();
 
 			gpio1.Write(led1);
 			led1 = !led1;

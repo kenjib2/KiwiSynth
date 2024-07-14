@@ -17,7 +17,6 @@ namespace kiwi_synth
             bool                    noteTriggered;
             float                   frequency;
             float                   resonance;
-            float                   envDepth;
             infrasonic::MoogLadder  filter;
             PatchSettings*          patchSettings;
 
