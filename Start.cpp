@@ -23,7 +23,7 @@ int main(void)
 {
 	hw.Configure();
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
-	hw.SetAudioBlockSize(24); // number of samples handled per callback
+	hw.SetAudioBlockSize(12); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 
@@ -58,18 +58,18 @@ int main(void)
 	uint16_t counter = 0;
     while(1)
 	{
-		System::DelayUs(10);
+		System::DelayUs(20);
 
 		kiwiSynth.ProcessInputs();
-		if (counter == 49999) {
-			kiwiSynth.TestOutput(&hw);
+		if (counter == 9999) {
+			//kiwiSynth.TestOutput(&hw);
 
 			gpio1.Write(led1);
 			led1 = !led1;
 			gpio2.Write(led2);
 			led2 = !led2;
 		}
-		counter = (counter + 1) % 50000;
+		counter = (counter + 1) % 10000;
 	}
 }
 
