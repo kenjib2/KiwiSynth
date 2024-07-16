@@ -3,6 +3,7 @@
 namespace kiwi_synth
 {
     void VoiceBank::Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate) {
+        this->numVoices = numVoices;
         for (uint8_t i = 0; i < numVoices; i++)
         {
             Voice nextVoice;
@@ -14,28 +15,40 @@ namespace kiwi_synth
 
     void VoiceBank::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
-        // FOR NOW JUST TAKE THE OUTPUT OF THE FIRST VOICE
-        voices[0].Process(out, size);
+        for (int i = 0; i < numVoices; i++) {
+            voices[i].UpdateSettings();
+        }
+
+        float nextVoice = 0.0f;
+        for(size_t i = 0; i < size; i += 2)
+        {
+            out[i] = 0.0f;
+            for (int j = 0; j < numVoices; j++) {
+                voices[j].Process(&nextVoice);
+                out[i] += nextVoice;
+            }
+            out[i + 1] = out[i];
+        }
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
-        voices[0].NoteOn(note, velocity);
-        // Voice = RequestVoice...
-        // if (voice) voice->NoteOn and add to list of playing notes...
+        Voice* voice = RequestVoice(note);
+        if (voice != NULL) {
+            voice->NoteOn(note, velocity);
+        }
     }
 
     void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
-        voices[0].NoteOff(note, velocity);
-        /*for (size_t i = 0; i < voices.size(); i++) {
-            Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
-            if (voice) {
-                voice->NoteOff(off.note, off.velocity);
-                voiceBank->RemovePlayingVoice(voice);
+        //voices[0].NoteOff(note, velocity);
+        for (size_t i = 0; i < voices.size(); i++) {
+            if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
+                voices[i].NoteOff(note, velocity);
+                RemovePlayingVoice(i);
                 break;
             }
-        }*/
+        }
     }
 
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)
@@ -113,6 +126,11 @@ namespace kiwi_synth
                 break;
             }
         }
+    }
+
+    std::vector<uint8_t>* VoiceBank::getPlayingNotes()
+    {
+        return &playingIndices;
     }
 
 }

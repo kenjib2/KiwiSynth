@@ -21,7 +21,8 @@ namespace kiwi_synth
             Envelope() {}
             ~Envelope() {}
             void Init(PatchSettings* patchSettings, float sampleRate);
-            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
+            void UpdateSettings();
+            void Process(float* sample);
             void NoteOn();
             void NoteOff();
             bool IsPlaying();

@@ -25,6 +25,8 @@ namespace kiwi_synth
             void RemovePlayingVoice(uint8_t index);
  
         public:
+            std::vector<int> playingVoices;
+
             VoiceBank() {}
             ~VoiceBank() {}
             void Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
@@ -32,6 +34,8 @@ namespace kiwi_synth
 
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
+
+            std::vector<uint8_t>* getPlayingNotes();
     };
 }
 

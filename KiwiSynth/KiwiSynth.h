@@ -19,7 +19,6 @@ namespace kiwi_synth
         private:
             static const int NUM_VCOS = 3;
             static const int DEFAULT_NUM_VOICES = 4;
-            DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
             PatchSettings patchSettings;
@@ -38,7 +37,7 @@ namespace kiwi_synth
             void Init(DaisySeed* hw, float sampleRate);
 
             void ProcessInputs();
-            void ConfigureMultiPots();
+            void ConfigureMultiPots(DaisySeed* hw);
             void ConfigureGpioExpansion();
 
             void InitMidi();
@@ -46,7 +45,7 @@ namespace kiwi_synth
 
             bool BootLoaderRequested();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
-            void TestOutput();
+            void TestOutput(DaisySeed* hw);
     };
 } // namespace kiwi_synth
 

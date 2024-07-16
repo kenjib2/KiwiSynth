@@ -24,7 +24,9 @@ namespace kiwi_synth
             VCF() {}
             ~VCF() {}
             void Init(PatchSettings* patchSettings, float sampleRate);
-            void Process(const float* in, float* out, size_t size);
+
+            void UpdateSettings();
+            void Process(float* sample);
     };
 }
 

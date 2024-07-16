@@ -14,20 +14,28 @@ namespace kiwi_synth
         env.SetReleaseTime(0.002f);
     }
 
-    void Envelope::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
+    void Envelope::UpdateSettings()
     {
-        // Why are these times not matching seconds at all?
-        env.SetAttackTime(patchSettings->getFloatValue(PatchSetting::ENV_1_ATTACK, 0.0F, 0.2F));
-        env.SetDecayTime(patchSettings->getFloatValue(PatchSetting::ENV_1_DECAY, 0.0F, 0.03F));
+        env.SetAttackTime(patchSettings->getFloatValue(PatchSetting::ENV_1_ATTACK, 0.0F, 3.0F));
+        env.SetDecayTime(patchSettings->getFloatValue(PatchSetting::ENV_1_DECAY, 0.0F, 3.0F));
         env.SetSustainLevel(patchSettings->getFloatValue(PatchSetting::ENV_1_SUSTAIN, 0.0F, 0.99999F));
-        env.SetReleaseTime(patchSettings->getFloatValue(PatchSetting::ENV_1_RELEASE, 0.0F, 0.03F));
-        float envAmount;
+        env.SetReleaseTime(patchSettings->getFloatValue(PatchSetting::ENV_1_RELEASE, 0.0F, 3.0F));
+    }
+
+    void Envelope::Process(float* sample)
+    {
+        *sample = *sample * env.Process(noteTriggered);
+
+        /*float envAmount;
         for(size_t i = 0; i < size; i += 2)
         {
-            envAmount = env.Process(noteTriggered);
-            out[i] = envAmount;
-            out[i + 1] = envAmount;
-        }
+            // Process
+            envAmount =  env.Process(noteTriggered);
+            out[i] = out[i] * envAmount;
+            out[i + 1] = out[i + 1] * envAmount;
+            //out[i] = out[i] * 0.08f;
+            //out[i + 1] = out[i + 1] * 0.08f;
+        }*/
     }
 
     void Envelope::NoteOn()

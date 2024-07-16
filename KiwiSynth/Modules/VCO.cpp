@@ -24,18 +24,14 @@ namespace kiwi_synth
         osc.SetFreq(frequency);
     }
 
-    void VCO::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
+    void VCO::UpdateSettings()
     {
         //CalculateBaseFreq();
         //osc.SetFreq(baseFreq);
+    }
 
-        float result;
-        for(size_t i = 0; i < size; i += 2)
-        {
-            // Process
-            result = osc.Process();
-            out[i] = result;
-            out[i + 1] = result;
-        }
+    void VCO::Process(float* sample)
+    {
+        *sample = osc.Process();
     }
 }

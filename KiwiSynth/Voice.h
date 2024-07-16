@@ -6,8 +6,8 @@
 #include "daisysp.h"
 #include "Modules/VCO.h"
 #include "Modules/VCF.h"
-#include "Modules/VCA.h"
 #include "Modules/Envelope.h"
+#include "Modules/VCA.h"
 #include "Patch/PatchSettings.h"
 
 using namespace daisysp;
@@ -18,21 +18,24 @@ namespace kiwi_synth
     class Voice
     {
         private:
+            static const int MAX_MODS = 9;
             int numVCOs;
             std::vector<VCO> vcos;
-            VCA vca;
-            VCF vcf;
             Envelope env1, env2;
+            VCF vcf;
+            VCA vca;
             PatchSettings* patchSettings;
 
         public:
             int currentMidiNote;
+            bool noteTriggered;
 
             Voice() {}
             ~Voice() {}
             void Init(int numVCOs, PatchSettings* patchSettings, float sampleRate);
 
-            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
+            void UpdateSettings();
+            void Process(float* sample);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity);

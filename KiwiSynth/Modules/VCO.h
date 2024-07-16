@@ -25,7 +25,9 @@ namespace kiwi_synth
             VCO() {}
             ~VCO() {}
             void Init(PatchSettings* patchSettings, float sampleRate);
-            void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
+
+            void UpdateSettings();
+            void Process(float* sample);
             void SetFreq(float frequency);
     };
 }

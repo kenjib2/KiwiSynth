@@ -572,6 +572,8 @@ namespace kiwi_synth
                 break;
         }
 
+        float lmin;
+        float lmax;
         switch(scale)
         {
             case EXPONENTIAL:
@@ -588,7 +590,9 @@ namespace kiwi_synth
                     break;
                 }
             case LOGARHITHMIC:
-                value = expf(value * (max - min) + min);
+                lmin = logf(min < 0.0000001f ? 0.0000001f : min);
+                lmax = logf(max);
+                value = expf((value * (lmax - lmin)) + lmin);
                 break;
             case LINEAR:
             default:

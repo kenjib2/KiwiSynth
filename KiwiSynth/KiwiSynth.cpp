@@ -7,12 +7,11 @@ namespace kiwi_synth
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
         sprintf(temp, "Initializing");
-        this->hw = hw;
 
         numVoices = DEFAULT_NUM_VOICES;
         SetMidiChannel(0);
 
-        ConfigureMultiPots();
+        ConfigureMultiPots(hw);
         ConfigureGpioExpansion();
 
         patchSettings.Init(&multiPots, &ge);
@@ -24,7 +23,7 @@ namespace kiwi_synth
         InitMidi();
     }
 
-    void KiwiSynth::ConfigureMultiPots()
+    void KiwiSynth::ConfigureMultiPots(DaisySeed* hw)
     {
         int numMps = 3;
         int numChannels = 16;
@@ -123,14 +122,6 @@ namespace kiwi_synth
                     off = midiEvent->AsNoteOff();
                     sprintf(temp, "NoteOff");
                     voiceBank.NoteOff(off.note, off.velocity);
-                    /*for (size_t i = 0; i < voices.size(); i++) {
-                        Voice* voice = voices->FindVoice(); //if (voices[i]->noteTriggered && voices[i]->currentMidiNote == off.note) {
-                        if (voice) {
-                            voice->NoteOff(off.note, off.velocity);
-                            voiceBank->RemovePlayingVoice(voice);
-                            break;
-                        }
-                    }*/
                     break;
 
                 // Unimplemented message types
@@ -162,13 +153,22 @@ namespace kiwi_synth
         return patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
-    void KiwiSynth::TestOutput()
+    void KiwiSynth::TestOutput(DaisySeed* hw)
     {
     	char buff[256];
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-		hw->PrintLine(temp);
+		float val1 = patchSettings.getFloatValue(PatchSetting::VCF_CUTOFF, 40.0F, 22000.0F, LOGARHITHMIC);
+		float val2 = patchSettings.getFloatValue(PatchSetting::VCF_RESONANCE);
+		float val3 = patchSettings.getFloatValue(PatchSetting::VCF_TRACKING);
+		float val4 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
+		float val5 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
+		sprintf(buff, "VCF Cutoff: %.3f   VCF Resonance: %.3f   VCF Tracking: %.3f   VCF Env 1 Depth: %.3f   VCF Env 2 Depth: %.3f", val1, val2, val3, val4, val5);
+		hw->PrintLine(buff);
+
+        //sprintf(buff, "")
+		//hw->PrintLine(temp);
         /*
 		float val1 = patchSettings.getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH);
 		float val2 = patchSettings.getFloatValue(PatchSetting::VCO_1_LEVEL);
