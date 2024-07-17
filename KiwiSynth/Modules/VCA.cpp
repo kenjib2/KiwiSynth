@@ -15,11 +15,14 @@ namespace kiwi_synth
 
     void VCA::Process(float* sample, float* mods, uint8_t numMods)
     {
-        *sample = *sample * 0.12f * level;
         for (uint8_t i = 0; i < numMods; i++)
         {
+            if (i == 0) {
+                *sample = *sample * env1Depth;
+            }
             *sample = *sample * mods[i];
         }
+        *sample = *sample * level * 0.12f;
     }
 
 }

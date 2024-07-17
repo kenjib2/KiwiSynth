@@ -47,9 +47,10 @@ namespace kiwi_synth
         mods[0] = env1Sample;
         vca.Process(sample, mods, numMods);
 
-        numMods = 2;
-        mods[0] = env1Sample;
-        mods[1] = env2Sample;
+        numMods = 3;
+        mods[0] = mtof(currentMidiNote);
+        mods[1] = env1Sample;
+        mods[2] = env2Sample;
         vcf.Process(sample, mods, numMods);
     }
 

@@ -44,7 +44,7 @@ int main(void)
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
 	{
-		sprintf(message, "Starting BootLoader...");
+		sprintf(message, "BootLoader Started");
 		display.TestOutput(message);
 		System::ResetToBootloader();
 	}

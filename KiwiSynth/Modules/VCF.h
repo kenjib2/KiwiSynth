@@ -21,6 +21,7 @@ namespace kiwi_synth
             float                   resonance;
             float                   env1Depth;
             float                   env2Depth;
+            float                   keyboardTracking;
             infrasonic::MoogLadder  filter;
             PatchSettings*          patchSettings;
 
