@@ -10,6 +10,8 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
+    static const float      VCF_MIN_FREQUENCY = 40.0F;
+    static const float      VCF_MAX_FREQUENCY = 22000.0F;
     
     class VCF
     {
@@ -17,6 +19,8 @@ namespace kiwi_synth
             bool                    noteTriggered;
             float                   frequency;
             float                   resonance;
+            float                   env1Depth;
+            float                   env2Depth;
             infrasonic::MoogLadder  filter;
             PatchSettings*          patchSettings;
 
@@ -26,7 +30,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample);
+            void Process(float* sample, float* mods, uint8_t numMods);
     };
 }
 

@@ -14,8 +14,8 @@ namespace kiwi_synth
         }
         vcf.Init(patchSettings, sampleRate);
         vca.Init(patchSettings, sampleRate);
-        env1.Init(patchSettings, sampleRate);
-        env2.Init(patchSettings, sampleRate);
+        env1.Init(patchSettings, sampleRate, 0);
+        env2.Init(patchSettings, sampleRate, 1);
     }
 
     void Voice::UpdateSettings()
@@ -32,17 +32,25 @@ namespace kiwi_synth
 
     void Voice::Process(float* sample)
     {
+        float mods[MAX_MODS];
+        uint8_t numMods = 0;
+
         float env1Sample = 1.0f;
         env1.Process(&env1Sample);
-        float mods[MAX_MODS];
-        uint8_t numMods = 1;
-        mods[0] = env1Sample;
 
-        vcos[0].Process(sample);
-        //env1.Process(sample);
-        //vca.Process(sample);
+        float env2Sample = 1.0f;
+        env2.Process(&env2Sample);
+
+        vcos[0].Process(sample, nullptr, 0);
+
+        numMods = 1;
+        mods[0] = env1Sample;
         vca.Process(sample, mods, numMods);
-        vcf.Process(sample);
+
+        numMods = 2;
+        mods[0] = env1Sample;
+        mods[1] = env2Sample;
+        vcf.Process(sample, mods, numMods);
     }
 
     bool Voice::IsAvailable()
@@ -58,11 +66,15 @@ namespace kiwi_synth
 
     void Voice::NoteOn(int note, int velocity)
     {
+        bool retrigger = true;
+        if (currentMidiNote == note) {
+            retrigger = false;
+        }
         noteTriggered = true;
         currentMidiNote = note;
         vcos[0].SetFreq(mtof(note));
-        env1.NoteOn();
-        env2.NoteOn();
+        env1.NoteOn(retrigger);
+        env2.NoteOn(retrigger);
     }
 
     void Voice::NoteOff(int note, int velocity)

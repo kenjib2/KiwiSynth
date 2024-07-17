@@ -167,6 +167,20 @@ namespace kiwi_synth
 		sprintf(buff, "VCF Cutoff: %.3f   VCF Resonance: %.3f   VCF Tracking: %.3f   VCF Env 1 Depth: %.3f   VCF Env 2 Depth: %.3f", val1, val2, val3, val4, val5);
 		hw->PrintLine(buff);
 
+		val1 = patchSettings.getFloatValue(PatchSetting::ENV_1_ATTACK);
+		val2 = patchSettings.getFloatValue(PatchSetting::ENV_1_DECAY);
+		val3 = patchSettings.getFloatValue(PatchSetting::ENV_1_SUSTAIN);
+		val4 = patchSettings.getFloatValue(PatchSetting::ENV_1_RELEASE);
+		sprintf(buff, "Env 1 Attack: %.3f   Env 1 Decay: %.3f   Env 1 Sustain: %.3f   Env 1 Release: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
+		val1 = patchSettings.getFloatValue(PatchSetting::ENV_2_ATTACK);
+		val2 = patchSettings.getFloatValue(PatchSetting::ENV_2_DECAY);
+		val3 = patchSettings.getFloatValue(PatchSetting::ENV_2_SUSTAIN);
+		val4 = patchSettings.getFloatValue(PatchSetting::ENV_2_RELEASE);
+		sprintf(buff, "Env 2 Attack: %.3f   Env 2 Decay: %.3f   Env 2 Sustain: %.3f   Env 2 Release: %.3f", val1, val2, val3, val4);
+		hw->PrintLine(buff);
+
         //sprintf(buff, "")
 		//hw->PrintLine(temp);
         /*

@@ -14,15 +14,35 @@ namespace kiwi_synth
         //float lfoAmount = 1.0f - lfo.Process();
         //float computedFrequency = frequency * lfoAmount + (18000 - frequency) * envAmount ;
 
-        filter.SetFreq(patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF, 40.0F, 22000.0F, kiwi_synth::LOGARHITHMIC));
-        //filter.SetFreq(patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF) * 18000.0F);
-        filter.SetRes(patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE, 0.0F, 1.0F));
-        //filter.SetFreq(200.0F);
-        //filter.SetRes(1.0F);
+        frequency = patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY, kiwi_synth::LOGARHITHMIC);
+        resonance = patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE, 0.0F, 1.0F);
+        env1Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
+        env2Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
+
+        //filter.SetFreq(frequency);
+        filter.SetRes(resonance);
     }
 
-    void VCF::Process(float* sample)
+    void VCF::Process(float* sample, float* mods, uint8_t numMods)
     {
+        float computedFrequency = frequency;
+        for (int i = 0; i < numMods; i++) {
+            switch (i)
+            {
+                case 0:
+                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env1Depth, VCF_MAX_FREQUENCY) ;
+                    break;
+                case 1:
+                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env2Depth, VCF_MAX_FREQUENCY) ;
+                    break;
+                default:
+                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - computedFrequency) * mods[i], VCF_MAX_FREQUENCY) ;
+                    break;
+            }
+        }
+        //computedFrequency = frequency;
+        filter.SetFreq(computedFrequency);
+
         float output = filter.Process(*sample);
         *sample = output;
     }

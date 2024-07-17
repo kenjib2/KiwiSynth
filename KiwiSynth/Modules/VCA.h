@@ -13,6 +13,8 @@ namespace kiwi_synth
     class VCA
     {
         private:
+            float                   level;
+            float                   env1Depth;
             bool                    noteTriggered;
             PatchSettings*          patchSettings;
 

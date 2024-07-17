@@ -61,15 +61,15 @@ int main(void)
 		System::DelayUs(20);
 
 		kiwiSynth.ProcessInputs();
-		if (counter == 9999) {
-			//kiwiSynth.TestOutput(&hw);
+		if (counter == 999) {
+			kiwiSynth.TestOutput(&hw);
 
 			gpio1.Write(led1);
 			led1 = !led1;
 			gpio2.Write(led2);
 			led2 = !led2;
 		}
-		counter = (counter + 1) % 10000;
+		counter = (counter + 1) % 1000;
 	}
 }
 

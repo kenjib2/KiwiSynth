@@ -14,6 +14,7 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+
     class KiwiSynth
     {
         private:

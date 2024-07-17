@@ -30,7 +30,7 @@ namespace kiwi_synth
         //osc.SetFreq(baseFreq);
     }
 
-    void VCO::Process(float* sample)
+    void VCO::Process(float* sample, float* mods, uint8_t numMods)
     {
         *sample = osc.Process();
     }
