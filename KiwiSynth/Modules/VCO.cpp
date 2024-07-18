@@ -6,6 +6,7 @@ namespace kiwi_synth
     {
         this->patchSettings = patchSettings;
         this->vcoNumber = vcoNumber;
+        pulseWidth = 0.5f;
         level = 1.0F;
         baseFreq = 220.0F;
         freq = 220.F;
@@ -37,18 +38,21 @@ namespace kiwi_synth
         switch (vcoNumber) {
             case 0:
                 // case 0 does not use fineTune
+                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
                 level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL, -0.001F, 1.0F);
                 fineTune = 1.0F;
                 interval = 1.0F;
                 octave = 1.0F;
                 break;
             case 1:
+                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
                 level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
                 fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
                 interval = 1.0F;
                 octave = 1.0F;
                 break;
             case 2:
+                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
                 level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
                 fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
                 interval = 1.0F;
@@ -75,6 +79,7 @@ namespace kiwi_synth
                     break;
             }
         }
+        osc.SetPw(pulseWidth);
         osc.SetFreq(computedFreq);
         float computedLevel = level;
         if (computedLevel < 0) {

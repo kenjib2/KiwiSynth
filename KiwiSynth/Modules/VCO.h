@@ -17,6 +17,7 @@ namespace kiwi_synth
         private:
             PatchSettings* patchSettings;
             uint8_t    vcoNumber;
+            float      pulseWidth;
             float      level;
             float      fineTune;
             float      interval;
