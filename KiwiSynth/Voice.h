@@ -6,8 +6,9 @@
 #include "daisysp.h"
 #include "Modules/VCO.h"
 #include "Modules/VCF.h"
-#include "Modules/Envelope.h"
 #include "Modules/VCA.h"
+#include "Modules/Envelope.h"
+#include "Modules/LFO.h"
 #include "Patch/PatchSettings.h"
 
 using namespace daisysp;
@@ -22,6 +23,7 @@ namespace kiwi_synth
             int numVCOs;
             std::vector<VCO> vcos;
             Envelope env1, env2;
+            LFO lfo1, lfo2;
             VCF vcf;
             VCA vca;
             PatchSettings* patchSettings;

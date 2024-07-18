@@ -2,7 +2,7 @@
 
 namespace kiwi_synth
 {
-    void Envelope::Init(PatchSettings* patchSettings, float sampleRate, int envNumber)
+    void Envelope::Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber)
     {
         this->patchSettings = patchSettings;
         this->envNumber = envNumber;

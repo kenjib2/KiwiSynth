@@ -19,8 +19,8 @@ namespace kiwi_synth
         keyboardTracking = patchSettings->getFloatValue(PatchSetting::VCF_TRACKING);
         env1Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
         env2Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
+        lfo2Depth = patchSettings->getFloatValue(PatchSetting::LFO_2_TO_VCF_CUTOFF, -0.001F, 1.0F);
 
-        //filter.SetFreq(frequency);
         filter.SetRes(resonance);
     }
 
@@ -39,12 +39,16 @@ namespace kiwi_synth
                 case 2:
                     computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env2Depth, VCF_MAX_FREQUENCY) ;
                     break;
+                case 3:
+                    if (lfo2Depth > 0.0F) {
+                        computedFrequency = std::min(computedFrequency * (1.0F + mods[i] * 2.0F * lfo2Depth), VCF_MAX_FREQUENCY) ;
+                    }
+                    break;
                 default:
                     computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - computedFrequency) * mods[i], VCF_MAX_FREQUENCY) ;
                     break;
             }
         }
-        //computedFrequency = frequency;
         filter.SetFreq(computedFrequency);
 
         float output = filter.Process(*sample);

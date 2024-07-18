@@ -16,12 +16,12 @@ namespace kiwi_synth
             bool                    noteTriggered;
             PatchSettings*          patchSettings;
             Adsr                    env;
-            int                     envNumber;
+            uint8_t                 envNumber;
 
         public:
             Envelope() {}
             ~Envelope() {}
-            void Init(PatchSettings* patchSettings, float sampleRate, int envNumber);
+            void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
             void UpdateSettings();
             void Process(float* sample);
             void NoteOn(bool retrigger);
