@@ -20,7 +20,7 @@ namespace kiwi_synth
     {
         private:
             static const int MAX_MODS = 9;
-            int numVCOs;
+            int numVcos;
             std::vector<VCO> vcos;
             Envelope env1, env2;
             LFO lfo1, lfo2;

@@ -16,20 +16,25 @@ namespace kiwi_synth
     {
         private:
             PatchSettings* patchSettings;
-            bool       noteTriggered;
+            uint8_t    vcoNumber;
+            float      level;
+            float      fineTune;
+            float      interval;
+            float      octave;
             float      masterTune;
             float      baseFreq;
             float      freq;
             float      lfo1Depth;
+            bool       noteTriggered;
             int        midiNote;
             Oscillator osc;
 
-            void CalculateBaseFreq();
+            void CalculateFreq();
 
         public:
             VCO() {}
             ~VCO() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber);
 
             void UpdateSettings();
             void Process(float* sample, float* mods, uint8_t numMods);

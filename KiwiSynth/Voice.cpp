@@ -5,11 +5,11 @@ namespace kiwi_synth
     void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate)
     {
         noteTriggered = false;
-        this->numVCOs = numVCOs;
+        this->numVcos = numVCOs;
         this->patchSettings = patchSettings;
         for (int i = 0; i < numVCOs; i++) {
             VCO nextVco;
-            nextVco.Init(patchSettings, sampleRate);
+            nextVco.Init(patchSettings, sampleRate, i);
             vcos.push_back(nextVco);
         }
         vcf.Init(patchSettings, sampleRate);
@@ -22,7 +22,7 @@ namespace kiwi_synth
 
     void Voice::UpdateSettings()
     {
-        for (int i = 0; i < numVCOs; i++) {
+        for (int i = 0; i < numVcos; i++) {
             vcos[i].UpdateSettings();
         }
         vca.UpdateSettings();
@@ -53,7 +53,20 @@ namespace kiwi_synth
 
         numMods = 1;
         mods[0] = lfo1Sample;
-        vcos[0].Process(sample, mods, numMods);
+        *sample = 0.0f;
+        /*float test = 0.0f;
+        vcos[0].Process(&test, mods, numMods);
+        *sample += test * 0.3f;
+        vcos[1].Process(&test, mods, numMods);
+        *sample += test * 0.3f;
+        vcos[2].Process(&test, mods, numMods);
+        *sample += test * 0.3f;*/
+        for (int i = 0; i < numVcos; i++) {
+            float vcoSample = 0.0f;
+            vcos[i].Process(&vcoSample, mods, numMods);
+            vcoSample = vcoSample * 0.3f;
+            *sample = *sample + vcoSample;
+        }
 
         numMods = 1;
         mods[0] = env1Sample;
@@ -86,7 +99,9 @@ namespace kiwi_synth
         }
         noteTriggered = true;
         currentMidiNote = note;
-        vcos[0].SetFreq(mtof(note));
+        for (int i = 0; i < numVcos; i++) {
+            vcos[i].SetFreq(mtof(note));
+        }
         env1.NoteOn(retrigger);
         env2.NoteOn(retrigger);
         lfo1.NoteOn();
