@@ -19,11 +19,12 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	kiwiSynth.Process(out, size);
 }
 
+// Test chords: Am7 C/G F9 C/E
 int main(void)
 {
 	hw.Configure();
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
-	hw.SetAudioBlockSize(24); // number of samples handled per callback
+	hw.SetAudioBlockSize(48); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 

@@ -6,6 +6,7 @@ namespace kiwi_synth
     {
         this->patchSettings = patchSettings;
         this->vcoNumber = vcoNumber;
+        isOn = true;
         pulseWidth = 0.5f;
         level = 1.0F;
         baseFreq = 220.0F;
@@ -33,58 +34,76 @@ namespace kiwi_synth
 
     void VCO::UpdateSettings()
     {
-        masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-        lfo1Depth = patchSettings->getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE, -0.001F, 1.0F, EXPONENTIAL);
         switch (vcoNumber) {
             case 0:
-                // case 0 does not use fineTune
-                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
-                level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL, -0.001F, 1.0F);
-                fineTune = 1.0F;
-                interval = 1.0F;
-                octave = 1.0F;
+                isOn = true;
                 break;
             case 1:
-                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
-                level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
-                fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-                interval = 1.0F;
-                octave = 1.0F;
+                isOn = patchSettings->getBoolValue(PatchSetting::VCO_2_ON);
                 break;
             case 2:
-                pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
-                level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
-                fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-                interval = 1.0F;
-                octave = 1.0F;
+                isOn = patchSettings->getBoolValue(PatchSetting::VCO_3_ON);
                 break;
         }
+        if (isOn) {
+            masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
+            lfo1Depth = patchSettings->getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE, -0.001F, 1.0F, EXPONENTIAL);
+            switch (vcoNumber) {
+                case 0:
+                    // case 0 does not use fineTune
+                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
+                    level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL, -0.001F, 1.0F);
+                    fineTune = 1.0F;
+                    interval = 1.0F;
+                    octave = 1.0F;
+                    break;
+                case 1:
+                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
+                    level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
+                    fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
+                    interval = 1.0F;
+                    octave = 1.0F;
+                    break;
+                case 2:
+                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
+                    level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
+                    fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
+                    interval = 1.0F;
+                    octave = 1.0F;
+                    break;
+            }
 
-        CalculateFreq();
+            CalculateFreq();
+        }
     }
 
     void VCO::Process(float* sample, float* mods, uint8_t numMods)
     {
-        float computedFreq = freq;
-        for (int i = 0; i < numMods; i++) {
-            switch (i)
-            {
-                case 0:
-                    if (lfo1Depth > 0.0F) {
-                        computedFreq = std::max(std::min(computedFreq * (1.0F + mods[i] * 2.0F * lfo1Depth), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
-                    }
-                    break;
-                default:
-                    computedFreq = std::max(std::min(computedFreq + (VCO_MAX_FREQUENCY - computedFreq) * mods[i], VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
-                    break;
+        if (isOn) {
+            float computedFreq = freq;
+            for (int i = 0; i < numMods; i++) {
+                switch (i)
+                {
+                    case 0:
+                        if (lfo1Depth > 0.0F) {
+                            computedFreq = std::max(std::min(computedFreq * (1.0F + mods[i] * 2.0F * lfo1Depth), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
+                        }
+                        break;
+                    default:
+                        computedFreq = std::max(std::min(computedFreq + (VCO_MAX_FREQUENCY - computedFreq) * mods[i], VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
+                        break;
+                }
             }
+            osc.SetPw(pulseWidth);
+            osc.SetFreq(computedFreq);
+            float computedLevel = level;
+            if (computedLevel < 0) {
+                computedLevel = 0.0F;
+            }
+            *sample = osc.Process() * computedLevel;
         }
-        osc.SetPw(pulseWidth);
-        osc.SetFreq(computedFreq);
-        float computedLevel = level;
-        if (computedLevel < 0) {
-            computedLevel = 0.0F;
+        else {
+            *sample = 0.0f;
         }
-        *sample = osc.Process() * computedLevel;
     }
 }

@@ -5,6 +5,7 @@
 
 #include "daisysp.h"
 #include "Modules/VCO.h"
+#include "Modules/Noise.h"
 #include "Modules/VCF.h"
 #include "Modules/VCA.h"
 #include "Modules/Envelope.h"
@@ -22,6 +23,7 @@ namespace kiwi_synth
             static const int MAX_MODS = 9;
             int numVcos;
             std::vector<VCO> vcos;
+            Noise noise;
             Envelope env1, env2;
             LFO lfo1, lfo2;
             VCF vcf;

@@ -26,6 +26,7 @@ namespace kiwi_synth
             float      baseFreq;
             float      freq;
             float      lfo1Depth;
+            bool       isOn;
             bool       noteTriggered;
             int        midiNote;
             Oscillator osc;
