@@ -15,8 +15,9 @@ namespace kiwi_synth
     class LFO
     {
         private:
-            bool            retriggerPhase;
+            float           pulseWidth;
             float           freq;
+            bool            noteOnReset;
             float           phase;
             PatchSettings*  patchSettings;
             Oscillator      osc;

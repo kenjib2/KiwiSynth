@@ -6,7 +6,8 @@ namespace kiwi_synth
     {
         this->patchSettings = patchSettings;
         this->lfoNumber = lfoNumber;
-        retriggerPhase = false;
+        noteOnReset = false;
+        pulseWidth = 0.5f;
     	osc.Init(sampleRate);
         osc.SetWaveform(Oscillator::WAVE_TRI);
         osc.SetFreq(2.0f);
@@ -20,21 +21,29 @@ namespace kiwi_synth
 
     void LFO::UpdateSettings()
     {
-        PatchSetting rate = PatchSetting::LFO_1_RATE;
-        PatchSetting triggerPhase = PatchSetting::LFO_1_TRIGGER_PHASE;
+        PatchSetting rateSetting = PatchSetting::LFO_1_RATE;
+        PatchSetting triggerPhaseSetting = PatchSetting::LFO_1_TRIGGER_PHASE;
+        PatchSetting triggerResetSetting = PatchSetting::LFO_1_TRIGGER_RESET_ON;
+        PatchSetting pulseWidthSetting = PatchSetting::LFO_1_PULSE_WIDTH;
 
         switch(lfoNumber) {
             case 0:
-                rate = PatchSetting::LFO_1_RATE;
-                triggerPhase = PatchSetting::LFO_1_TRIGGER_PHASE;
+                rateSetting = PatchSetting::LFO_1_RATE;
+                triggerPhaseSetting = PatchSetting::LFO_1_TRIGGER_PHASE;
+                triggerResetSetting = PatchSetting::LFO_1_TRIGGER_RESET_ON;
+                pulseWidthSetting = PatchSetting::LFO_1_PULSE_WIDTH;
                 break;
             case 1:
-                rate = PatchSetting::LFO_2_RATE;
-                triggerPhase = PatchSetting::LFO_2_TRIGGER_PHASE;
+                rateSetting = PatchSetting::LFO_2_RATE;
+                triggerPhaseSetting = PatchSetting::LFO_2_TRIGGER_PHASE;
+                triggerResetSetting = PatchSetting::LFO_2_TRIGGER_RESET_ON;
+                pulseWidthSetting = PatchSetting::LFO_2_PULSE_WIDTH;
                 break;
         }
-        freq = patchSettings->getFloatValue(rate, LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
-        phase = patchSettings->getFloatValue(triggerPhase);
+        freq = patchSettings->getFloatValue(rateSetting, LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
+        phase = patchSettings->getFloatValue(triggerPhaseSetting);
+        noteOnReset = patchSettings->getBoolValue(triggerResetSetting);
+        pulseWidth = patchSettings->getFloatValue(pulseWidthSetting);
 
         osc.SetFreq(freq);
     }
@@ -46,7 +55,7 @@ namespace kiwi_synth
 
     void LFO::NoteOn()
     {
-        if (retriggerPhase) {
+        if (noteOnReset) {
             osc.Reset(phase);
         }
     }
