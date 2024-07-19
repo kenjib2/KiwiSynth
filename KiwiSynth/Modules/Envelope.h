@@ -14,6 +14,7 @@ namespace kiwi_synth
     {
         private:
             bool                    noteTriggered;
+            bool                    reversed;
             PatchSettings*          patchSettings;
             Adsr                    env;
             uint8_t                 envNumber;
