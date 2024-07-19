@@ -28,13 +28,10 @@ int main(void)
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 
-	GPIO gpio1;
-	gpio1.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
+
 	GPIO gpio2;
 	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
-	bool led1 = true;
 	bool led2 = false;
-	gpio1.Write(led1);
 	gpio2.Write(led2);
 
 	display.Init();
@@ -59,7 +56,7 @@ int main(void)
 	//uint16_t counter = 0;
     while(1)
 	{
-		System::DelayUs(10);
+		System::DelayUs(1);
 
 		kiwiSynth.ProcessInputs();
 		/*if (counter == 999) {

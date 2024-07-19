@@ -14,6 +14,7 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+    static const int MIDI_LED_DURATION = 50;
 
     class KiwiSynth
     {
@@ -25,6 +26,8 @@ namespace kiwi_synth
             PatchSettings patchSettings;
             int numVoices;
             int midiChannel;
+	        GPIO gpioMidiActivity;
+	        int midiCounter = 0;
 
             MidiUartHandler midi;
             VoiceBank voiceBank;

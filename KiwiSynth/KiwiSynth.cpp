@@ -69,6 +69,10 @@ namespace kiwi_synth
         midi.Init(midi_config);
         midi.StartReceive();
         sprintf(temp, "MIDI Started");
+	    
+        gpioMidiActivity.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
+        gpioMidiActivity.Write(false);
+        midiCounter = 0;
     }
 
     void KiwiSynth::SetMidiChannel(int midiChannel)
@@ -80,6 +84,12 @@ namespace kiwi_synth
     {
         ProcessMidi();
         voiceBank.Process(out, size);
+        if (midiCounter == 0) {
+            gpioMidiActivity.Write(true);
+        } else if (midiCounter == MIDI_LED_DURATION) {
+            gpioMidiActivity.Write(false);
+        }
+        midiCounter++;
     }
 
     void KiwiSynth::ProcessMidi()
@@ -109,6 +119,7 @@ namespace kiwi_synth
             switch(midiEvent->type)
             {
                 case NoteOn:
+                    midiCounter = 0;
                     on = midiEvent->AsNoteOn();
                     if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
                     {
@@ -119,6 +130,7 @@ namespace kiwi_synth
                     break;
 
                 case NoteOff:
+                    midiCounter = 0;
                     off = midiEvent->AsNoteOff();
                     sprintf(temp, "NoteOff");
                     voiceBank.NoteOff(off.note, off.velocity);
