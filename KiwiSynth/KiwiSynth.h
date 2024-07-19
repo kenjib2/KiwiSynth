@@ -20,7 +20,7 @@ namespace kiwi_synth
     {
         private:
             static const int NUM_VCOS = 3;
-            static const int DEFAULT_NUM_VOICES = 4;
+            static const int DEFAULT_NUM_VOICES = 3;
             MultiPots multiPots;
             GpioExpansion ge;
             PatchSettings patchSettings;
