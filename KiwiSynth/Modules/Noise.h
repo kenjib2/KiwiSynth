@@ -14,6 +14,7 @@ namespace kiwi_synth
         private:
             PatchSettings* patchSettings;
             float      level;
+            float      lastSample;
             bool       isOn;
             bool       noteTriggered;
             WhiteNoise noise;
@@ -25,6 +26,8 @@ namespace kiwi_synth
 
             void UpdateSettings();
             void Process(float* sample, float* mods, uint8_t numMods);
+
+            float GetLastSample();
     };
 }
 

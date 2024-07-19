@@ -13,6 +13,7 @@ namespace kiwi_synth
             vcos.push_back(nextVco);
         }
         noise.Init(patchSettings, sampleRate);
+        sampleAndHold.Init(patchSettings, sampleRate);
         vcf.Init(patchSettings, sampleRate);
         vca.Init(patchSettings, sampleRate);
         env1.Init(patchSettings, sampleRate, 0);
@@ -27,6 +28,7 @@ namespace kiwi_synth
             vcos[i].UpdateSettings();
         }
         noise.UpdateSettings();
+        sampleAndHold.UpdateSettings();
         vca.UpdateSettings();
         vcf.UpdateSettings();
 
@@ -61,6 +63,7 @@ namespace kiwi_synth
             vcos[i].Process(&vcoSample, mods, numMods);
             *sample = *sample + vcoSample * 0.3f;
         }
+
         float noiseSample = 0.0f;
         noise.Process(&noiseSample, nullptr, 0);
         *sample = *sample + noiseSample * 0.3f;
@@ -69,11 +72,15 @@ namespace kiwi_synth
         mods[0] = env1Sample;
         vca.Process(sample, mods, numMods);
 
-        numMods = 4;
+        float sampleAndHoldSample = noise.GetLastSample();
+        sampleAndHold.Process(&sampleAndHoldSample);
+
+        numMods = 5;
         mods[0] = mtof(currentMidiNote);
         mods[1] = env1Sample;
         mods[2] = env2Sample;
         mods[3] = lfo2Sample;
+        mods[4] = sampleAndHoldSample;
         vcf.Process(sample, mods, numMods);
     }
 

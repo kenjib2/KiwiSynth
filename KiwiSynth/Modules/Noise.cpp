@@ -7,6 +7,7 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         isOn = true;
         level = 1.0F;
+        lastSample = 0.0F;
         noise.Init();
     }
 
@@ -18,8 +19,14 @@ namespace kiwi_synth
 
     void Noise::Process(float* sample, float* mods, uint8_t numMods)
     {
+        lastSample = noise.Process();
         if (isOn) {
-            *sample = noise.Process() * level;
+            *sample = lastSample * level;
         }
+    }
+
+    float Noise::GetLastSample()
+    {
+        return lastSample;
     }
 }

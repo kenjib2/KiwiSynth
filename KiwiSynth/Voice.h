@@ -6,6 +6,7 @@
 #include "daisysp.h"
 #include "Modules/VCO.h"
 #include "Modules/Noise.h"
+#include "Modules/SampleAndHold.h"
 #include "Modules/VCF.h"
 #include "Modules/VCA.h"
 #include "Modules/Envelope.h"
@@ -25,6 +26,7 @@ namespace kiwi_synth
             std::vector<VCO> vcos;
             Noise noise;
             Envelope env1, env2;
+            SampleAndHold sampleAndHold;
             LFO lfo1, lfo2;
             VCF vcf;
             VCA vca;
