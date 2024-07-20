@@ -25,6 +25,7 @@ namespace kiwi_synth
             void RemovePlayingVoice(uint8_t index);
  
         public:
+            float balance;
             std::vector<int> playingVoices;
 
             VoiceBank() {}

@@ -52,21 +52,16 @@ int main(void)
 
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
-	//uint16_t counter = 0;
+	uint16_t counter = 0;
     while(1)
 	{
 		System::DelayUs(5);
 
 		kiwiSynth.ProcessInputs();
-		/*if (counter == 999) {
-			//kiwiSynth.TestOutput(&hw);
-
-			gpio1.Write(led1);
-			led1 = !led1;
-			gpio2.Write(led2);
-			led2 = !led2;
+		if (counter == 999) {
+			kiwiSynth.TestOutput(&hw);
 		}
-		counter = (counter + 1) % 1000;*/
+		counter = (counter + 1) % 1000;
 	}
 }
 

@@ -164,26 +164,15 @@ namespace kiwi_synth
         sprintf(buff, "----------------------");
 		hw->PrintLine(buff);
 
-		float val1 = patchSettings.getFloatValue(PatchSetting::VCF_CUTOFF, 40.0F, 22000.0F, LOGARHITHMIC);
-		float val2 = patchSettings.getFloatValue(PatchSetting::VCF_RESONANCE);
-		float val3 = patchSettings.getFloatValue(PatchSetting::VCF_TRACKING);
-		float val4 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
-		float val5 = patchSettings.getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
-		sprintf(buff, "VCF Cutoff: %.3f   VCF Resonance: %.3f   VCF Tracking: %.3f   VCF Env 1 Depth: %.3f   VCF Env 2 Depth: %.3f", val1, val2, val3, val4, val5);
+        sprintf(buff, "VoiceBank Balance: %d", (int)(voiceBank.balance * 1000.0F));
 		hw->PrintLine(buff);
 
-		val1 = patchSettings.getFloatValue(PatchSetting::ENV_1_ATTACK);
-		val2 = patchSettings.getFloatValue(PatchSetting::ENV_1_DECAY);
-		val3 = patchSettings.getFloatValue(PatchSetting::ENV_1_SUSTAIN);
-		val4 = patchSettings.getFloatValue(PatchSetting::ENV_1_RELEASE);
-		sprintf(buff, "Env 1 Attack: %.3f   Env 1 Decay: %.3f   Env 1 Sustain: %.3f   Env 1 Release: %.3f", val1, val2, val3, val4);
-		hw->PrintLine(buff);
-
-		val1 = patchSettings.getFloatValue(PatchSetting::ENV_2_ATTACK);
-		val2 = patchSettings.getFloatValue(PatchSetting::ENV_2_DECAY);
-		val3 = patchSettings.getFloatValue(PatchSetting::ENV_2_SUSTAIN);
-		val4 = patchSettings.getFloatValue(PatchSetting::ENV_2_RELEASE);
-		sprintf(buff, "Env 2 Attack: %.3f   Env 2 Decay: %.3f   Env 2 Sustain: %.3f   Env 2 Release: %.3f", val1, val2, val3, val4);
+		float val1 = patchSettings.getFloatValue(PatchSetting::VCA_LEVEL);
+		float val2 = patchSettings.getFloatValue(PatchSetting::VCA_ENV_1_DEPTH);
+		float val3 = patchSettings.getFloatValue(PatchSetting::SH_LEVEL);
+		float val4 = patchSettings.getFloatValue(PatchSetting::SH_RATE);
+		float val5 = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE);
+		sprintf(buff, "VCA Level: %d   VCA Env 1 Depth: %d   S&H Level: %d   S&H Rate: %d   Balance: %d", (int)(val1 * 1000.0F), (int)(val2 * 1000.0F), (int)(val3 * 1000.0F), (int)(val4 * 1000.0F), (int)(val5 * 1000.0F));
 		hw->PrintLine(buff);
 
         //sprintf(buff, "")
