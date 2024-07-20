@@ -61,12 +61,12 @@ namespace kiwi_synth
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
             vcos[i].Process(&vcoSample, mods, numMods);
-            *sample = *sample + vcoSample * 0.3f;
+            *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
         float noiseSample = 0.0f;
         noise.Process(&noiseSample, nullptr, 0);
-        *sample = *sample + noiseSample * 0.3f;
+        *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
 
         numMods = 1;
         mods[0] = env1Sample;

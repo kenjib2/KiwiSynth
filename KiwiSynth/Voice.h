@@ -17,6 +17,7 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
+    const static float VOICE_ATTENTUATION_CONSTANT = 0.3f;
     
     class Voice
     {

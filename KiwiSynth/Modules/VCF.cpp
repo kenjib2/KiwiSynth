@@ -31,21 +31,21 @@ namespace kiwi_synth
             switch (i)
             {
                 case 0:
-                    computedFrequency = std::min(computedFrequency + mods[i] * keyboardTracking * 0.8F, VCF_MAX_FREQUENCY) ;
+                    computedFrequency = std::fmin(computedFrequency + mods[i] * keyboardTracking * 0.8F, VCF_MAX_FREQUENCY) ;
                     break;
                 case 1:
-                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env1Depth, VCF_MAX_FREQUENCY) ;
+                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env1Depth, VCF_MAX_FREQUENCY) ;
                     break;
                 case 2:
-                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env2Depth, VCF_MAX_FREQUENCY) ;
+                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env2Depth, VCF_MAX_FREQUENCY) ;
                     break;
                 case 3:
                     if (lfo2Depth > 0.0F) {
-                        computedFrequency = std::min(computedFrequency * (1.0F + mods[i] * 2.0F * lfo2Depth), VCF_MAX_FREQUENCY) ;
+                        computedFrequency = std::fmin(computedFrequency * (1.0F + mods[i] * 2.0F * lfo2Depth), VCF_MAX_FREQUENCY) ;
                     }
                     break;
                 default:
-                    computedFrequency = std::min(computedFrequency + (VCF_MAX_FREQUENCY - computedFrequency) * mods[i], VCF_MAX_FREQUENCY) ;
+                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - computedFrequency) * mods[i], VCF_MAX_FREQUENCY) ;
                     break;
             }
         }

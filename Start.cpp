@@ -29,10 +29,9 @@ int main(void)
 	hw.StartLog(false);
 
 
-	GPIO gpio2;
+	/*GPIO gpio2;
 	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
-	bool led2 = false;
-	gpio2.Write(led2);
+	gpio2.Write(false);*/
 
 	display.Init();
 

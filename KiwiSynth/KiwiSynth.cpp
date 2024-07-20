@@ -115,7 +115,6 @@ namespace kiwi_synth
         if (midiChannel == midiEvent->channel) {
             NoteOnEvent on;
             NoteOffEvent off;
-            //ControlChangeEvent controlChange;
             switch(midiEvent->type)
             {
                 case NoteOn:
@@ -145,13 +144,7 @@ namespace kiwi_synth
                 case SystemRealTime:
                 case ChannelMode:
                 case MessageLast:
-                    break;
-
                 case ControlChange:
-                    /*controlChange = midiEvent->AsControlChange();
-                    intVals[0] = controlChange.control_number;
-                    intVals[1] = controlChange.value;
-                    midiListeners[i]->Trigger(TriggerMidiControlChange, intVals, NULL);*/
                     break;
 
                 default:

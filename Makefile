@@ -1,5 +1,5 @@
 # Misc
-LDFLAGS = -u _printf_float
+#LDFLAGS = -u _printf_float
 OPT = -Os # Optimize for smaller size
 
 # Project Name

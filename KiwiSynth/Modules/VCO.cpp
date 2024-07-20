@@ -86,11 +86,11 @@ namespace kiwi_synth
                 {
                     case 0:
                         if (lfo1Depth > 0.0F) {
-                            computedFreq = std::max(std::min(computedFreq * (1.0F + mods[i] * 2.0F * lfo1Depth), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
+                            computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mods[i] * 2.0F * lfo1Depth), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
                         }
                         break;
                     default:
-                        computedFreq = std::max(std::min(computedFreq + (VCO_MAX_FREQUENCY - computedFreq) * mods[i], VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
+                        computedFreq = std::fmax(std::fmin(computedFreq + (VCO_MAX_FREQUENCY - computedFreq) * mods[i], VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
                         break;
                 }
             }
