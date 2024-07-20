@@ -33,6 +33,7 @@ namespace kiwi_synth
             void Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
             void Process(AudioHandle::InterleavingOutputBuffer, size_t size);
 
+            void UpdateSettings();
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
 

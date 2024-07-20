@@ -158,6 +158,11 @@ namespace kiwi_synth
         return patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
+    void KiwiSynth::UpdateSettings()
+    {
+        voiceBank.UpdateSettings();
+    }
+
     void KiwiSynth::TestOutput(DaisySeed* hw)
     {
     	char buff[256];

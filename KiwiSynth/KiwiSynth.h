@@ -20,7 +20,7 @@ namespace kiwi_synth
     {
         private:
             static const int NUM_VCOS = 3;
-            static const int DEFAULT_NUM_VOICES = 3;
+            static const int DEFAULT_NUM_VOICES = 4;
             MultiPots multiPots;
             GpioExpansion ge;
             PatchSettings patchSettings;
@@ -48,6 +48,7 @@ namespace kiwi_synth
             void SetMidiChannel(int midiChannel);
 
             bool BootLoaderRequested();
+            void UpdateSettings();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             void TestOutput(DaisySeed* hw);
     };
