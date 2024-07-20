@@ -9,6 +9,7 @@ namespace kiwi_synth
         level = 1.0F;
         lastSample = 0.0F;
         noise.Init();
+        noise.SetSeed(std::rand());
     }
 
     void Noise::UpdateSettings()

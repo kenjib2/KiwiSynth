@@ -32,6 +32,11 @@ namespace kiwi_synth
             VCF vcf;
             VCA vca;
             PatchSettings* patchSettings;
+            bool triggerNeeded;
+            bool noteOffNeeded;
+            bool resetMods;
+            int triggerNote;
+            int triggerVelocity;
 
         public:
             int currentMidiNote;
