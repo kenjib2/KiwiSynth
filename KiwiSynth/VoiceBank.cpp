@@ -16,31 +16,19 @@ namespace kiwi_synth
     
     void VoiceBank::UpdateSettings()
     {
-        balance = patchSettings->getFloatValue(PatchSetting::GEN_BALANCE);
         for (int i = 0; i < numVoices; i++) {
             voices[i].UpdateSettings();
         }
     }
 
-
-    void VoiceBank::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
+    void VoiceBank::Process(float* sample)
     {
         float nextVoice = 0.0f;
-        float nextSample = 0.0f;
-        for(size_t i = 0; i < size; i += 2)
-        {
-            nextSample = 0.0f;
-            for (int j = 0; j < numVoices; j++) {
-                voices[j].Process(&nextVoice);
-                nextSample += nextVoice;
-            }
-            if (balance >= 0.5f) {
-                out[i] = nextSample * (1.0f - balance) * 2.0F;
-                out[i + 1] = nextSample * 1.0F;
-            } else {
-                out[i] = nextSample * 1.0F;
-                out[i + 1] = nextSample * balance * 2.0F;
-            }
+        *sample = 0.0f;
+
+        for (int i = 0; i < numVoices; i++) {
+            voices[i].Process(&nextVoice);
+            *sample += nextVoice;
         }
     }
 

@@ -1,3 +1,5 @@
+//#define __DEBUG__
+
 #include "daisy_seed.h"
 #include "KiwiSynth/KiwiSynth.h"
 #include "KiwiSynth/Controls/KiwiMcp23017.h"
@@ -52,17 +54,22 @@ int main(void)
 
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
-	//uint16_t counter = 0;
+	#ifdef __DEBUG__
+		uint16_t counter = 0;
+	#endif // __DEBUG__
     while(1)
 	{
 		System::DelayUs(5);
 
 		kiwiSynth.ProcessInputs();
 		kiwiSynth.UpdateSettings();
-		/*if (counter == 999) {
-			kiwiSynth.TestOutput(&hw);
-		}
-		counter = (counter + 1) % 1000;*/
+
+		#ifdef __DEBUG__
+			if (counter == 999) {
+				kiwiSynth.TestOutput(&hw);
+			}
+			counter = (counter + 1) % 1000;
+		#endif // __DEBUG__
 	}
 }
 

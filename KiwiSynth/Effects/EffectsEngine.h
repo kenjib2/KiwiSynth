@@ -1,0 +1,31 @@
+#ifndef __KIWI_SYNTH_EFFECTS_ENGINE_H__
+#define __KIWI_SYNTH_EFFECTS_ENGINE_H__
+
+
+#include "daisysp.h"
+#include "../Patch/PatchSettings.h"
+#include "Zita/reverb.h"
+
+using namespace daisysp;
+
+namespace kiwi_synth
+{
+    class EffectsEngine
+    {
+        private:
+            float                   reverbLevel;
+            PatchSettings*          patchSettings;
+            Reverb                  reverb;
+
+        public:
+            EffectsEngine() {}
+            ~EffectsEngine() {}
+            void Init(PatchSettings* patchSettings, float sampleRate);
+
+            void UpdateSettings();
+            void Process(float* sample);
+    };
+}
+
+
+#endif // __KIWI_SYNTH_EFFECTS_ENGINE_H__

@@ -25,13 +25,12 @@ namespace kiwi_synth
             void RemovePlayingVoice(uint8_t index);
  
         public:
-            float balance;
             std::vector<int> playingVoices;
 
             VoiceBank() {}
             ~VoiceBank() {}
             void Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
-            void Process(AudioHandle::InterleavingOutputBuffer, size_t size);
+            void Process(float* sample);
 
             void UpdateSettings();
             void NoteOn(uint8_t note, uint8_t velocity);

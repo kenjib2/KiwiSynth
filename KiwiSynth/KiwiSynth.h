@@ -1,5 +1,6 @@
 #ifndef __KIWI_SYNTH_KIWI_SYNTH_H__
 #define __KIWI_SYNTH_KIWI_SYNTH_H__
+//#define __DEBUG__
 
 
 #include<vector>
@@ -8,6 +9,7 @@
 #include "Controls/MultiPots.h"
 #include "Patch/PatchSettings.h"
 #include "VoiceBank.h"
+#include "Effects/EffectsEngine.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -20,7 +22,7 @@ namespace kiwi_synth
     {
         private:
             static const int NUM_VCOS = 3;
-            static const int DEFAULT_NUM_VOICES = 4;
+            static const int DEFAULT_NUM_VOICES = 2;
             MultiPots multiPots;
             GpioExpansion ge;
             PatchSettings patchSettings;
@@ -28,9 +30,11 @@ namespace kiwi_synth
             int midiChannel;
 	        GPIO gpioMidiActivity;
 	        int midiCounter = 0;
+            float balance;
 
             MidiUartHandler midi;
             VoiceBank voiceBank;
+            EffectsEngine effectsEngine;
 
             void ProcessMidi();
             void HandleMidiMessage(MidiEvent* midiEvent);
