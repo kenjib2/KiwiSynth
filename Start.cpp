@@ -47,13 +47,13 @@ int main(void)
 		display.TestOutput(message);
 		System::ResetToBootloader();
 	}
+	sprintf(message, "Hello Kiwi!");
+	display.TestOutput(message);
 
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	sprintf(message, "Hello Kiwi!");
-	display.TestOutput(message);
 	#ifdef __DEBUG__
 		uint16_t counter = 0;
 	#endif // __DEBUG__

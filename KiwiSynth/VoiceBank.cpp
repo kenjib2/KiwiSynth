@@ -107,6 +107,10 @@ namespace kiwi_synth
             }
         }
 
+        // If we get here it means we have 1 or 2 voice polyphony. Return the highest note.
+        RemovePlayingVoice(highestIndex);
+        AddPlayingVoice(highestIndex, midiNote);
+        return &(voices[highestIndex]); 
         return NULL;
     }
 
