@@ -42,7 +42,6 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
-        //voices[0].NoteOff(note, velocity);
         for (size_t i = 0; i < voices.size(); i++) {
             if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
                 voices[i].NoteOff(note, velocity);

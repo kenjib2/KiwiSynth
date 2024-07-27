@@ -15,6 +15,8 @@ namespace kiwi_synth
         private:
             bool                    noteTriggered;
             bool                    reversed;
+            bool                    quickRelease;
+            float                   releaseValue;
             PatchSettings*          patchSettings;
             Adsr                    env;
             uint8_t                 envNumber;
@@ -25,10 +27,11 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
             void UpdateSettings();
             void Process(float* sample);
-            void NoteOn(bool retrigger);
+            void NoteOn();
             void NoteOff();
             bool IsPlaying();
             bool IsReleasing();
+            void SetQuickRelease(bool quickRelease);
     };
 }
 

@@ -7,6 +7,7 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         this->envNumber = envNumber;
         noteTriggered = false;
+        quickRelease = false;
         reversed = false;
         env.Init(sampleRate);
 
@@ -43,7 +44,10 @@ namespace kiwi_synth
         env.SetAttackTime(patchSettings->getFloatValue(attack, 0.0F, 3.0F));
         env.SetDecayTime(patchSettings->getFloatValue(decay, 0.0F, 3.0F));
         env.SetSustainLevel(patchSettings->getFloatValue(sustain, 0.0F, 0.99999F));
-        env.SetReleaseTime(patchSettings->getFloatValue(release, 0.0F, 3.0F));
+        releaseValue = patchSettings->getFloatValue(release, 0.0F, 3.0F);
+        if (!quickRelease) {
+            env.SetReleaseTime(releaseValue);
+        }
         reversed = patchSettings->getBoolValue(envReversed);
     }
 
@@ -60,11 +64,11 @@ namespace kiwi_synth
         }
     }
 
-    void Envelope::NoteOn(bool retrigger)
+    void Envelope::NoteOn()
     {
         noteTriggered = true;
         if (env.IsRunning()) {
-            env.Retrigger(retrigger);
+            env.Retrigger(false);
         }
     }
 
@@ -81,5 +85,15 @@ namespace kiwi_synth
     bool Envelope::IsReleasing()
     {
         return env.GetCurrentSegment() == ADSR_SEG_RELEASE;
+    }
+
+    void Envelope::SetQuickRelease(bool quickRelease)
+    {
+        this->quickRelease = quickRelease;
+        if (quickRelease) {
+            env.SetReleaseTime(0.0015F);
+        } else {
+            env.SetReleaseTime(releaseValue);
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace kiwi_synth
     void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate)
     {
         noteTriggered = false;
-        triggerNeeded = false;
+        noteTriggerCount = -1;
         noteOffNeeded = false;
         this->numVcos = numVCOs;
         this->patchSettings = patchSettings;
@@ -42,16 +42,19 @@ namespace kiwi_synth
 
     void Voice::Process(float* sample)
     {
-        if (triggerNeeded) {
-            triggerNeeded = false;
+        if (noteTriggerCount > 0) {
+            noteTriggerCount--;
+        } else if (noteTriggerCount == 0) {
+            noteTriggerCount = -1;
 
-            noteTriggered = true;
             currentMidiNote = triggerNote;
             for (int i = 0; i < numVcos; i++) {
                 vcos[i].SetFreq(mtof(triggerNote));
             }
-            env1.NoteOn(resetMods);
-            env2.NoteOn(resetMods);
+            env1.SetQuickRelease(false);
+            env2.SetQuickRelease(false);
+            env1.NoteOn();
+            env2.NoteOn();
             lfo1.NoteOn();
             lfo2.NoteOn();
         }
@@ -120,14 +123,14 @@ namespace kiwi_synth
 
     void Voice::NoteOn(int note, int velocity)
     {
-        if (currentMidiNote == note) {
-            resetMods = false;
-        } else {
-            resetMods = true;
+        if (currentMidiNote != note) {
+            env1.SetQuickRelease(true);
+            env2.SetQuickRelease(true);
         }
-        triggerNeeded = true;
+        noteTriggerCount = NOTE_TRIGGER_SAMPLES;
         triggerNote = note;
         triggerVelocity = velocity;
+        noteTriggered = true;
     }
 
     void Voice::NoteOff(int note, int velocity)

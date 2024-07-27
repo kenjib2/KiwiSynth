@@ -18,6 +18,7 @@ using namespace daisysp;
 namespace kiwi_synth
 {
     const static float VOICE_ATTENTUATION_CONSTANT = 0.3f;
+    const static int NOTE_TRIGGER_SAMPLES = 72;
     
     class Voice
     {
@@ -32,9 +33,8 @@ namespace kiwi_synth
             VCF vcf;
             VCA vca;
             PatchSettings* patchSettings;
-            bool triggerNeeded;
+            int noteTriggerCount;
             bool noteOffNeeded;
-            bool resetMods;
             int triggerNote;
             int triggerVelocity;
 
