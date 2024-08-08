@@ -30,11 +30,6 @@ int main(void)
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartLog(false);
 
-
-	/*GPIO gpio2;
-	gpio2.Init(seed::D23, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
-	gpio2.Write(false);*/
-
 	display.Init();
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
@@ -72,25 +67,3 @@ int main(void)
 		#endif // __DEBUG__
 	}
 }
-
-
-/*
-void RebootToBootloader()
-{
-	// Initialize Boot Pin
-	dsy_gpio_pin bootpin = {DSY_GPIOG, 3};
-	dsy_gpio pin;
-	pin.mode = DSY_GPIO_MODE_OUTPUT_PP;
-	pin.pin = bootpin;
-	dsy_gpio_init(&pin);
-
-	// Pull Pin HIGH
-	dsy_gpio_write(&pin, 1);
-
-	// wait a few ms for cap to charge
-	hardware.DelayMs(10);
-
-	// Software Reset
-	HAL_NVIC_SystemReset();
-}
-*/
