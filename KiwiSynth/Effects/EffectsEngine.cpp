@@ -21,13 +21,6 @@ namespace kiwi_synth
         float xl = sample[0];
         float xr = sample[1];
 
-        //float output[2] = { 0.0F, 0.0F };
-        //reverb.prepare(1);
-
-        //reverb.process(1, &sample, (float**)&output);
-        //sample[0] = output[0];
-        //sample[1] = output[1];
-
         // Pack input variables in array.
         float *reverbIn[2] = {&xl, &xr};
 
@@ -43,14 +36,6 @@ namespace kiwi_synth
 
         sample[0] = yl;
         sample[1] = yr;
-
-        /*float fxSample[2] = { 0.0F, 0.0F };
-        if (reverbLevel > 0.000f) {
-            fxSample[0] = 0.0F * reverbLevel;
-            fxSample[1] = 0.0F * reverbLevel;
-        }
-        sample[0] = sample[0] + fxSample[0];
-        sample[1] = sample[1] + fxSample[1];*/
     }
 
 }

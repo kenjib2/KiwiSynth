@@ -37,6 +37,8 @@ namespace kiwi_synth
             bool noteOffNeeded;
             int triggerNote;
             int triggerVelocity;
+            float mods[MAX_MODS];
+            uint8_t numMods = 0;
 
         public:
             int currentMidiNote;

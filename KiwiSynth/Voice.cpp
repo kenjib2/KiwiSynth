@@ -66,9 +66,6 @@ namespace kiwi_synth
             env2.NoteOff();
         }
 
-        float mods[MAX_MODS];
-        uint8_t numMods = 0;
-
         float env1Sample = 1.0f;
         env1.Process(&env1Sample);
 
