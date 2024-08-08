@@ -85,9 +85,9 @@ namespace kiwi_synth
     {
         ProcessMidi();
         if (midiCounter == 0) {
-            gpioMidiActivity.Write(true);
+            midiLEDOn = true;
         } else if (midiCounter == MIDI_LED_DURATION) {
-            gpioMidiActivity.Write(false);
+            midiLEDOn = false;
         }
         midiCounter++;
 
@@ -122,6 +122,10 @@ namespace kiwi_synth
 
     void KiwiSynth::ProcessInputs()
     {
+        if (midiLEDOn != midiLEDState) {
+            midiLEDState = midiLEDOn;
+            gpioMidiActivity.Write(midiLEDOn);
+        }
         multiPots.Process();
         ge.Process();
     }

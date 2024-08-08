@@ -30,6 +30,8 @@ namespace kiwi_synth
             int midiChannel;
 	        GPIO gpioMidiActivity;
 	        int midiCounter = 0;
+            bool midiLEDState = false;
+            bool midiLEDOn = false;
             float balance;
 
             MidiUartHandler midi;
