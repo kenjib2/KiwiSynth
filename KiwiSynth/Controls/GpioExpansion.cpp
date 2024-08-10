@@ -54,7 +54,7 @@ namespace kiwi_synth
             mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF, pullupsPortA, 0x00); // All pins are inputs
             mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF, pullupsPortB, 0x00); // All pins are inputs
 
-            mcp.interruptMode(MCP23017InterruptMode::Or);
+            /*mcp.interruptMode(MCP23017InterruptMode::Or);
             uint8_t activesPortA = 0xFF;
             uint8_t activesPortB = 0xFF;
             if (gpioExpansionConfig->activeMap) {
@@ -62,7 +62,7 @@ namespace kiwi_synth
                 activesPortB = gpioExpansionConfig->activeMap[i] & 0b0000000011111111;
             }
             mcp.interrupt(kiwi_synth::MCPPort::A, CHANGE, activesPortA);
-            mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE, activesPortB);
+            mcp.interrupt(kiwi_synth::MCPPort::B, CHANGE, activesPortB); */
 
             mcps.push_back(mcp);
         }
@@ -125,7 +125,6 @@ namespace kiwi_synth
                 controlListener->controlUpdate(mcps.at(i).i2c_address, controlId);
             }
         }
-
     }
 
     void GpioExpansion::ClearInterrupts()

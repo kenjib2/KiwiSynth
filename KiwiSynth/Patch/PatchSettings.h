@@ -171,10 +171,24 @@ namespace kiwi_synth
             static constexpr float maxValue = 1.0f;
             char name[MAX_PATCH_NAME_LENGTH + 1];
             float floatValues[54];
-            uint8_t intValues[31];
+            int8_t intValues[31];
             bool boolValues[10];
+            bool lastPinValues[4][16];
             MultiPots* multiPots;
             GpioExpansion* ge;
+
+            /*
+             * Updates a value based on encoder settings.
+             */
+            void processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB);
+            /*
+             * Updates all potentiometer based settings with the current values in the MultiPots buffer.
+             */
+            void updatePotValues(int controlNumber);
+            /*
+             * Updates expansion basaed values with the current values in the GpioExpansion buffer.
+             */
+            void updateGpioExpansionValues(int controlNumber);
 
         public:
             PatchSettings() {}
@@ -218,15 +232,6 @@ namespace kiwi_synth
              * Gets a string setting value. If a non-string setting is attempted, "" will be returned.
              */
             std::string getStringValue(PatchSetting setting);
-
-            /*
-             * Updates all potentiometer based settings with the current values in the MultiPots buffer.
-             */
-            void updatePotValues(int controlNumber);
-            /*
-             * Updates expansion basaed values with the current values in the GpioExpansion buffer.
-             */
-            void updateGpioExpansionValues(int controlNumber);
     }; // class PatchSettings
 } // namespace kiwi_synth
 

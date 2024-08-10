@@ -59,7 +59,6 @@ namespace kiwi_synth
     void KiwiSynth::ConfigureGpioExpansion()
     {
     	ge.Init();
-        //ge.StartTimer();
     }
 
     void KiwiSynth::InitMidi()
@@ -284,9 +283,6 @@ namespace kiwi_synth
             sprintf(buff, "----------------------");
             hw->PrintLine(buff);
 
-            sprintf(buff, "1: %d   2: %d   3: %d   4: %d", ge.getPinValues(0x20), ge.getPinValues(0x21), ge.getPinValues(0x22), ge.getPinValues(0x23));
-            hw->PrintLine(buff);
-
             bool bool1 = patchSettings.getBoolValue(PatchSetting::VCO_2_ON);
             bool bool2 = patchSettings.getBoolValue(PatchSetting::VCO_3_ON);
             bool bool3 = patchSettings.getBoolValue(PatchSetting::VCO_NOISE_ON);
@@ -302,6 +298,50 @@ namespace kiwi_synth
             bool4 = patchSettings.getBoolValue(PatchSetting::ENV_2_REVERSE_PHASE_ON);
             bool5 = patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
             sprintf(buff, "LFO 1 Rst: %d   LFO 2 Rst: %d   ENV 1 Phase: %d   ENV 2 Phase: %d   Select btn: %d", bool1, bool2, bool3, bool4, bool5);
+            hw->PrintLine(buff);
+
+
+            sprintf(buff, "----------------------");
+            hw->PrintLine(buff);
+
+            val1 = ge.getPinValues(0x20);
+            val2 = ge.getPinValues(0x21);
+            val3 = ge.getPinValues(0x22);
+            val4 = ge.getPinValues(0x23);
+            sprintf(buff, "0x20: %d   0x21: %d   0x22: %d   0x23: %d", val1, val2, val3, val4);
+            hw->PrintLine(buff);
+
+            val1 = patchSettings.getIntValue(PatchSetting::VCO_VOICES);
+            val2 = patchSettings.getIntValue(PatchSetting::VCO_1_WAVEFORM);
+            val3 = patchSettings.getIntValue(PatchSetting::VCO_2_WAVEFORM);
+            val4 = patchSettings.getIntValue(PatchSetting::VCO_2_OCTAVE);
+            val5 = patchSettings.getIntValue(PatchSetting::VCO_2_INTERVAL);
+            val6 = patchSettings.getIntValue(PatchSetting::VCO_3_WAVEFORM);
+            sprintf(buff, "VCO Vc: %d,  VCO 1 Wv: %d,  VCO 2 Wv: %d,  VCO 2 Oct: %d,  VCO 2 Int: %d,  VCO 3 Wv: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = patchSettings.getIntValue(PatchSetting::VCO_3_OCTAVE);
+            val2 = patchSettings.getIntValue(PatchSetting::VCO_3_INTERVAL);
+            val3 = patchSettings.getIntValue(PatchSetting::VCO_NOISE_TYPE);
+            val4 = patchSettings.getIntValue(PatchSetting::VCF_FILTER_TYPE);
+            val5 = patchSettings.getIntValue(PatchSetting::LFO_1_WAVEFORM);
+            val6 = patchSettings.getIntValue(PatchSetting::LFO_2_WAVEFORM);
+            sprintf(buff, "VCO 3 Oct: %d,  VCO 3 Int: %d,  VCO Noise: %d,  VCF Type: %d,  LFO 1 Wv: %d,  LFO 2 Wv: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = patchSettings.getIntValue(PatchSetting::MOD_1_SOURCE);
+            val2 = patchSettings.getIntValue(PatchSetting::MOD_1_DESTINATION);
+            val3 = patchSettings.getIntValue(PatchSetting::MOD_2_SOURCE);
+            val4 = patchSettings.getIntValue(PatchSetting::MOD_2_DESTINATION);
+            val5 = patchSettings.getIntValue(PatchSetting::MOD_3_SOURCE);
+            val6 = patchSettings.getIntValue(PatchSetting::MOD_3_DESTINATION);
+            sprintf(buff, "MOD 1 S: %d,  MOD 1 D: %d,  MOD 2 S: %d,  MOD 2 D: %d,  MOD 3 S: %d,  MOD 3 D: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = patchSettings.getIntValue(PatchSetting::MOD_4_SOURCE);
+            val2 = patchSettings.getIntValue(PatchSetting::MOD_4_DESTINATION);
+            val3 = patchSettings.getIntValue(PatchSetting::GEN_SELECT);
+            sprintf(buff, "MOD 4 S: %d,  MOD 4 D: %d,  GEN Sel: %d", val1, val2, val3);
             hw->PrintLine(buff);
         }
     #endif // __DEBUG__

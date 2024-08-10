@@ -60,10 +60,10 @@ int main(void)
 		kiwiSynth.UpdateSettings();
 
 		#ifdef __DEBUG__
-			if (counter == 999) {
+			if (counter == 499) {
 				kiwiSynth.TestOutput(&hw);
 			}
-			counter = (counter + 1) % 1000;
+			counter = (counter + 1) % 500;
 		#endif // __DEBUG__
 	}
 }

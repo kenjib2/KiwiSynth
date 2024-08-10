@@ -44,41 +44,42 @@ namespace kiwi_synth
         Pin interruptPin;
         Pin sdaPin;
         Pin sclPin;
-        uint16_t* pullupMap;
-        uint16_t* activeMap;
+        uint16_t pullupMap[4];
+        uint16_t activeMap[4];
 
         void Defaults()
         {
-            uint16_t pullups[4];
-            pullups[0] = 0xFFFF;
-            pullups[1] = 0xFFFF;
-            pullups[2] = 0xFFFF;
-            pullups[3] = 0xFFFF;
+            // All A7 and B7 must be pullup to avoid a crash due to chip bug
+            pullupMap[0] = 0b1111111111111111;
+            pullupMap[1] = 0b1111111111111111;
+            pullupMap[2] = 0b1111111111111111;
+            pullupMap[3] = 0b1001111110111111;
 
-            uint16_t actives[4];
-            actives[0] = 0b1111111011111110;
-            actives[1] = 0b1111110001111111;
-            actives[2] = 0b1111111011111110;
-            actives[3] = 0b1111110011111000;
+            activeMap[0] = 0b0111111101111111;
+            activeMap[1] = 0b0111111101111111;
+            activeMap[2] = 0b0111111101111111;
+            activeMap[3] = 0b0001111100111111;
+            /*activeMap[0] = 0b1111111011111110;
+            activeMap[1] = 0b1111110001111111;
+            activeMap[2] = 0b1111111011111110;
+            activeMap[3] = 0b1111110011111000;*/
 
             numGpioExpansions   = 4;
             interruptPin        = seed::D18;
             sdaPin              = seed::D11; // Pin 12 I2C1_SCL
             sclPin              = seed::D12; // Pin 13 I2C1_SDA
-            pullupMap           = pullups;
-            activeMap           = actives;
         }
     };
 
     class GpioExpansion : public Control
     {
         private:
-            int numPins = 16;
+            static const int NUM_PINS = 16;
+            int numGpioExpansions = 4;
             ControlListener* controlListener = nullptr;
             int controlId;
 
         public:
-            int numGpioExpansions = 4;
             std::map<uint8_t, uint16_t> pinValues;
             std::vector<KiwiMcp23017> mcps;
             GPIO interrupt;
@@ -99,6 +100,8 @@ namespace kiwi_synth
 
             uint16_t getPinValues(uint8_t address);
             bool getPinValue(uint8_t address, uint8_t pin);
+            uint8_t getEncoderValue();
+
     }; // class MultiPots
 
 } // namespace kiwi_synth

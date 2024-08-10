@@ -9,100 +9,142 @@ namespace kiwi_synth
     {
         this->multiPots = multiPots;
         this->ge = ge;
+
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 16; j++) {
+                lastPinValues[i][j] = false;
+            }
+        }
+
+        // Set initial encoder values.
+        setValue(PatchSetting::VCO_VOICES, (uint8_t)0);
+        setValue(PatchSetting::VCO_1_WAVEFORM, (uint8_t)0);
+        setValue(PatchSetting::VCO_2_WAVEFORM, (uint8_t)0);
+        setValue(PatchSetting::VCO_2_OCTAVE, (uint8_t)3);
+        setValue(PatchSetting::VCO_2_INTERVAL, (uint8_t)11);
+        setValue(PatchSetting::VCO_3_WAVEFORM, (uint8_t)0);
+        setValue(PatchSetting::VCO_3_OCTAVE, (uint8_t)3);
+        setValue(PatchSetting::VCO_3_INTERVAL, (uint8_t)11);
+        setValue(PatchSetting::VCF_FILTER_TYPE, (uint8_t)0);
+        setValue(PatchSetting::LFO_1_WAVEFORM, (uint8_t)0);
+        setValue(PatchSetting::LFO_2_WAVEFORM, (uint8_t)0);
+        setValue(PatchSetting::MOD_1_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_1_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_2_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_2_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_3_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_3_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_4_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_4_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_5_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_5_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_6_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_6_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_7_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_7_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::MOD_8_SOURCE, (uint8_t)0);
+        setValue(PatchSetting::MOD_8_DESTINATION, (uint8_t)0);
+        setValue(PatchSetting::GEN_SELECT, (uint8_t)0);
+        setValue(PatchSetting::GEN_FX_SELECT, (uint8_t)0);
+        setValue(PatchSetting::GEN_REVERB_SELECT, (uint8_t)0);
     }
 
     void PatchSettings::setValue(PatchSetting setting, uint8_t value)
     {
         switch(setting) {
             case VCO_VOICES:
-                intValues[0] = value;
+                intValues[0] = std::min((int)value, 4); // Poly, Mono, MultiTimbral Layered, MT Split Mono/Poly, MT Split Poly/Mono
                 break;
             case VCO_1_WAVEFORM:
-                intValues[1] = value;
+                intValues[1] = std::min((int)value, 2); // Blep Sq, Blep Saw, Blep Tri
                 break;
             case VCO_2_WAVEFORM:
-                intValues[2] = value;
+                intValues[2] = std::min((int)value, 2);
                 break;
             case VCO_2_OCTAVE:
-                intValues[3] = value;
+                intValues[3] = std::min((int)value, 6); // -3 to +3 Octaves
                 break;
             case VCO_2_INTERVAL:
-                intValues[4] = value;
+                intValues[4] = std::min((int)value, 22); // -11 to +11 Semitones
                 break;
             case VCO_3_WAVEFORM:
-                intValues[5] = value;
+                intValues[5] = std::min((int)value, 2);
                 break;
             case VCO_3_OCTAVE:
-                intValues[6] = value;
+                intValues[6] = std::min((int)value, 6);
                 break;
             case VCO_3_INTERVAL:
-                intValues[7] = value;
+                intValues[7] = std::min((int)value, 22);
+                break;
+            case VCO_NOISE_TYPE:
+                intValues[8] = std::min((int)value, 3); // White, Pink, Brown, Fractal
                 break;
             case VCF_FILTER_TYPE:
-                intValues[8] = value;
+                intValues[9] = std::min((int)value, 4); // Lowpass Ladder, Lowpass 2 Pole, Lowpass 1 Pole, Highpass, Bandpass, Notch
                 break;
             case LFO_1_WAVEFORM:
-                intValues[9] = value;
+                intValues[10] = std::min((int)value, 2); // Sq, Saw, Tri
                 break;
             case LFO_2_WAVEFORM:
-                intValues[10] = value;
+                intValues[11] = std::min((int)value, 2); // Sq, Saw, Tri
                 break;
             case MOD_1_SOURCE:
-                intValues[11] = value;
+                intValues[12] = std::min((int)value, 8);
                 break;
             case MOD_1_DESTINATION:
-                intValues[12] = value;
+                intValues[13] = std::min((int)value, 8);
                 break;
             case MOD_2_SOURCE:
-                intValues[13] = value;
+                intValues[14] = std::min((int)value, 8);
                 break;
             case MOD_2_DESTINATION:
-                intValues[14] = value;
+                intValues[15] = std::min((int)value, 8);
                 break;
             case MOD_3_SOURCE:
-                intValues[15] = value;
+                intValues[16] = std::min((int)value, 8);
                 break;
             case MOD_3_DESTINATION:
-                intValues[16] = value;
+                intValues[17] = std::min((int)value, 8);
                 break;
             case MOD_4_SOURCE:
-                intValues[17] = value;
+                intValues[18] = std::min((int)value, 8);
                 break;
             case MOD_4_DESTINATION:
-                intValues[18] = value;
+                intValues[19] = std::min((int)value, 8);
                 break;
             case MOD_5_SOURCE:
-                intValues[19] = value;
+                intValues[20] = std::min((int)value, 8);
                 break;
             case MOD_5_DESTINATION:
-                intValues[20] = value;
+                intValues[21] = std::min((int)value, 8);
                 break;
             case MOD_6_SOURCE:
-                intValues[21] = value;
+                intValues[22] = std::min((int)value, 8);
                 break;
             case MOD_6_DESTINATION:
-                intValues[22] = value;
+                intValues[23] = std::min((int)value, 8);
                 break;
             case MOD_7_SOURCE:
-                intValues[23] = value;
+                intValues[24] = std::min((int)value, 8);
                 break;
             case MOD_7_DESTINATION:
-                intValues[24] = value;
+                intValues[25] = std::min((int)value, 8);
                 break;
             case MOD_8_SOURCE:
-                intValues[25] = value;
+                intValues[26] = std::min((int)value, 8);
                 break;
             case MOD_8_DESTINATION:
-                intValues[26] = value;
+                intValues[27] = std::min((int)value, 8);
                 break;
             case GEN_SELECT:
-                intValues[27] = value;
-                break;
-            case GEN_FX_SELECT:
                 intValues[28] = value;
                 break;
+            case GEN_FX_SELECT:
+                intValues[29] = std::min((int)value, 8);
+                break;
             case GEN_REVERB_SELECT:
-                intValues[29] = value;
+                intValues[30] = std::min((int)value, 2); // Room, Hall, Cathedral
                 break;
             default:
                 break;
@@ -351,50 +393,52 @@ namespace kiwi_synth
                 return intValues[6];
             case VCO_3_INTERVAL:
                 return intValues[7];
-            case VCF_FILTER_TYPE:
+            case VCO_NOISE_TYPE:
                 return intValues[8];
-            case LFO_1_WAVEFORM:
+            case VCF_FILTER_TYPE:
                 return intValues[9];
-            case LFO_2_WAVEFORM:
+            case LFO_1_WAVEFORM:
                 return intValues[10];
-            case MOD_1_SOURCE:
+            case LFO_2_WAVEFORM:
                 return intValues[11];
-            case MOD_1_DESTINATION:
+            case MOD_1_SOURCE:
                 return intValues[12];
-            case MOD_2_SOURCE:
+            case MOD_1_DESTINATION:
                 return intValues[13];
-            case MOD_2_DESTINATION:
+            case MOD_2_SOURCE:
                 return intValues[14];
-            case MOD_3_SOURCE:
+            case MOD_2_DESTINATION:
                 return intValues[15];
-            case MOD_3_DESTINATION:
+            case MOD_3_SOURCE:
                 return intValues[16];
-            case MOD_4_SOURCE:
+            case MOD_3_DESTINATION:
                 return intValues[17];
-            case MOD_4_DESTINATION:
+            case MOD_4_SOURCE:
                 return intValues[18];
-            case MOD_5_SOURCE:
+            case MOD_4_DESTINATION:
                 return intValues[19];
-            case MOD_5_DESTINATION:
+            case MOD_5_SOURCE:
                 return intValues[20];
-            case MOD_6_SOURCE:
+            case MOD_5_DESTINATION:
                 return intValues[21];
-            case MOD_6_DESTINATION:
+            case MOD_6_SOURCE:
                 return intValues[22];
-            case MOD_7_SOURCE:
+            case MOD_6_DESTINATION:
                 return intValues[23];
-            case MOD_7_DESTINATION:
+            case MOD_7_SOURCE:
                 return intValues[24];
-            case MOD_8_SOURCE:
+            case MOD_7_DESTINATION:
                 return intValues[25];
-            case MOD_8_DESTINATION:
+            case MOD_8_SOURCE:
                 return intValues[26];
-            case GEN_SELECT:
+            case MOD_8_DESTINATION:
                 return intValues[27];
-            case GEN_FX_SELECT:
+            case GEN_SELECT:
                 return intValues[28];
-            case GEN_REVERB_SELECT:
+            case GEN_FX_SELECT:
                 return intValues[29];
+            case GEN_REVERB_SELECT:
+                return intValues[30];
             default:
                 return 0;
         }
@@ -655,6 +699,28 @@ namespace kiwi_synth
         }
     }
 
+    void PatchSettings::processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB)
+    {
+        int index = controlNumber - 0x20;
+        bool lastAValue = lastPinValues[index][pinA - 1];
+        bool pinAValue = ge->getPinValue(controlNumber, pinA);
+        bool pinBValue = ge->getPinValue(controlNumber, pinB);
+
+        if (lastAValue && !pinAValue) {
+            uint8_t currentValue = getIntValue(setting);
+
+            if (pinBValue != pinAValue) {
+                if (currentValue != 0) {
+                    setValue(setting, --currentValue);
+                }
+            } else {
+                setValue(setting, ++currentValue);
+            }
+        }
+
+        lastPinValues[index][pinA - 1] = pinAValue;
+    }
+
     void PatchSettings::updatePotValues(int controlNumber)
     {
         switch(controlNumber)
@@ -752,11 +818,29 @@ namespace kiwi_synth
                 setValue(PatchSetting::GEN_SELECT_BUTTON, ge->getPinValue(controlNumber, 11));
                 setValue(PatchSetting::ENV_2_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 14));
                 setValue(PatchSetting::ENV_1_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 15));
+                processEncoder(PatchSetting::MOD_1_SOURCE, controlNumber, 1, 2);
+                processEncoder(PatchSetting::VCO_3_INTERVAL, controlNumber, 4, 3);
+                processEncoder(PatchSetting::VCO_2_INTERVAL, controlNumber, 6, 5);
+                processEncoder(PatchSetting::GEN_SELECT, controlNumber, 9, 10);
+                processEncoder(PatchSetting::VCF_FILTER_TYPE, controlNumber, 12, 13);
                 break;
             case 0x21:
                 setValue(PatchSetting::VCO_2_ON, ge->getPinValue(controlNumber, 5));
+                processEncoder(PatchSetting::VCO_2_WAVEFORM, controlNumber, 1, 2);
+                processEncoder(PatchSetting::VCO_3_WAVEFORM, controlNumber, 3, 4);
+                processEncoder(PatchSetting::VCO_VOICES, controlNumber, 10, 6);
+                processEncoder(PatchSetting::VCO_1_WAVEFORM, controlNumber, 11, 12);
+                processEncoder(PatchSetting::VCO_2_OCTAVE, controlNumber, 13, 14);
+                processEncoder(PatchSetting::VCO_3_OCTAVE, controlNumber, 15, 9);
                 break;
             case 0x22:
+                processEncoder(PatchSetting::MOD_4_SOURCE, controlNumber, 2, 1);
+                processEncoder(PatchSetting::MOD_3_SOURCE, controlNumber, 4, 3);
+                processEncoder(PatchSetting::MOD_2_SOURCE, controlNumber, 6, 5);
+                processEncoder(PatchSetting::MOD_1_DESTINATION, controlNumber, 9, 7);
+                processEncoder(PatchSetting::MOD_2_DESTINATION, controlNumber, 10, 11);
+                processEncoder(PatchSetting::MOD_3_DESTINATION, controlNumber, 12, 13);
+                processEncoder(PatchSetting::MOD_4_DESTINATION, controlNumber, 15, 14);
                 break;
             case 0x23:
                 setValue(PatchSetting::VCO_NOISE_ON, ge->getPinValue(controlNumber, 5));
@@ -764,6 +848,9 @@ namespace kiwi_synth
                 setValue(PatchSetting::VCO_EXT_ON, ge->getPinValue(controlNumber, 9));
                 setValue(PatchSetting::LFO_1_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 10));
                 setValue(PatchSetting::LFO_2_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 11));
+                processEncoder(PatchSetting::LFO_2_WAVEFORM, controlNumber, 2, 1);
+                processEncoder(PatchSetting::LFO_1_WAVEFORM, controlNumber, 4, 3);
+                processEncoder(PatchSetting::VCO_NOISE_TYPE, controlNumber, 13, 12);
                 break;
         }
     }
