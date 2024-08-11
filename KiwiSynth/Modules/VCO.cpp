@@ -48,16 +48,19 @@ namespace kiwi_synth
         if (isOn) {
             masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
             lfo1Depth = patchSettings->getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE, -0.001F, 1.0F, EXPONENTIAL);
+            int waveform = 0;
             switch (vcoNumber) {
                 case 0:
-                    // case 0 does not use fineTune
+                    waveform = patchSettings->getIntValue(PatchSetting::VCO_1_WAVEFORM);
                     pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL, -0.001F, 1.0F);
+                    // case 0 does not use fineTune
                     fineTune = 1.0F;
                     interval = 1.0F;
                     octave = 1.0F;
                     break;
                 case 1:
+                    waveform = patchSettings->getIntValue(PatchSetting::VCO_2_WAVEFORM);
                     pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
@@ -65,11 +68,23 @@ namespace kiwi_synth
                     octave = patchSettings->getFloatValue(PatchSetting::VCO_2_OCTAVE, -2.0f, 2.0f, Scale::OCTAVE);
                     break;
                 case 2:
+                    waveform = patchSettings->getIntValue(PatchSetting::VCO_3_WAVEFORM);
                     pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
                     interval = patchSettings->getFloatValue(PatchSetting::VCO_3_INTERVAL, -0.91666666667f, 0.91666666667f, Scale::OCTAVE);
                     octave = patchSettings->getFloatValue(PatchSetting::VCO_3_OCTAVE, -2.0f, 2.0f, Scale::OCTAVE);
+                    break;
+            }
+            switch (waveform) {
+                case 0:
+                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
+                    break;
+                case 1:
+                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
+                    break;
+                case 2:
+                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_TRI);
                     break;
             }
 
