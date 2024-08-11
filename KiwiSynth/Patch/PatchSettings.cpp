@@ -467,6 +467,12 @@ namespace kiwi_synth
             case VCO_2_LEVEL:
                 value = floatValues[5];
                 break;
+            case VCO_2_OCTAVE:
+                value = (float)(intValues[3]) / 4.0f;
+                break;
+            case VCO_2_INTERVAL:
+                value = (float)(intValues[4]) / 22.0f;
+                break;
             case VCO_2_FINE_TUNE:
                 value = floatValues[6];
                 break;
@@ -475,6 +481,12 @@ namespace kiwi_synth
                 break;
             case VCO_3_LEVEL:
                 value = floatValues[8];
+                break;
+            case VCO_3_OCTAVE:
+                value = (float)intValues[6] / 4.0f;
+                break;
+            case VCO_3_INTERVAL:
+                value = (float)(intValues[7]) / 22.0f;
                 break;
             case VCO_3_FINE_TUNE:
                 value = floatValues[9];
