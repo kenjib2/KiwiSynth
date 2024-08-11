@@ -196,6 +196,10 @@ namespace kiwi_synth
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             /*
+             * Converts a +/- number of octaves into a frequency multiplier
+             */
+            static float octaveToFrequencyMultiplier(int octave);
+            /*
              * From ControlListener: Callback to update controls.
              */
             void controlUpdate(int controlNumber, int controlId);

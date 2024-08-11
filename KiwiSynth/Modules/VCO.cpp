@@ -61,15 +61,17 @@ namespace kiwi_synth
                     pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-                    interval = 1.0F;
-                    octave = 1.0F;
+                    interval = patchSettings->getIntValue(PatchSetting::VCO_2_INTERVAL);
+                    interval = 1.0f;
+                    octave = PatchSettings::octaveToFrequencyMultiplier(patchSettings->getIntValue(PatchSetting::VCO_2_OCTAVE) - 2);
                     break;
                 case 2:
                     pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-                    interval = 1.0F;
-                    octave = 1.0F;
+                    interval = patchSettings->getIntValue(PatchSetting::VCO_3_INTERVAL);
+                    interval = 1.0f;
+                    octave = PatchSettings::octaveToFrequencyMultiplier(patchSettings->getIntValue(PatchSetting::VCO_3_OCTAVE) - 2);
                     break;
             }
 

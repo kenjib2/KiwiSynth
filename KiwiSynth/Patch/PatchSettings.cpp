@@ -21,10 +21,10 @@ namespace kiwi_synth
         setValue(PatchSetting::VCO_VOICES, (uint8_t)0);
         setValue(PatchSetting::VCO_1_WAVEFORM, (uint8_t)0);
         setValue(PatchSetting::VCO_2_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::VCO_2_OCTAVE, (uint8_t)3);
+        setValue(PatchSetting::VCO_2_OCTAVE, (uint8_t)2);
         setValue(PatchSetting::VCO_2_INTERVAL, (uint8_t)11);
         setValue(PatchSetting::VCO_3_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::VCO_3_OCTAVE, (uint8_t)3);
+        setValue(PatchSetting::VCO_3_OCTAVE, (uint8_t)2);
         setValue(PatchSetting::VCO_3_INTERVAL, (uint8_t)11);
         setValue(PatchSetting::VCF_FILTER_TYPE, (uint8_t)0);
         setValue(PatchSetting::LFO_1_WAVEFORM, (uint8_t)0);
@@ -63,7 +63,7 @@ namespace kiwi_synth
                 intValues[2] = std::min((int)value, 2);
                 break;
             case VCO_2_OCTAVE:
-                intValues[3] = std::min((int)value, 6); // -3 to +3 Octaves
+                intValues[3] = std::min((int)value, 4); // -2 to +2 Octaves
                 break;
             case VCO_2_INTERVAL:
                 intValues[4] = std::min((int)value, 22); // -11 to +11 Semitones
@@ -72,7 +72,7 @@ namespace kiwi_synth
                 intValues[5] = std::min((int)value, 2);
                 break;
             case VCO_3_OCTAVE:
-                intValues[6] = std::min((int)value, 6);
+                intValues[6] = std::min((int)value, 4);
                 break;
             case VCO_3_INTERVAL:
                 intValues[7] = std::min((int)value, 22);
@@ -645,6 +645,29 @@ namespace kiwi_synth
         }
 
         return value;
+    }
+
+    float PatchSettings::octaveToFrequencyMultiplier(int octave)
+    {
+        if (octave == 0) {
+            return 1.0F;
+        } else if (octave > 0) {
+            float multiplier = 1.0f;
+            for (int i = 0; i < octave; i++) {
+                multiplier *= 2.0f;
+            }
+            return multiplier;
+        } else if (octave < 0) {
+            float multiplier = 1.0F;
+            for (int i = 0; i > octave; i--) {
+                multiplier /= 2.0f;
+            }
+            return multiplier;
+        }
+
+        return 1.0F;
+
+        //return pow(2, octave);
     }
 
     bool PatchSettings::getBoolValue(PatchSetting setting)
