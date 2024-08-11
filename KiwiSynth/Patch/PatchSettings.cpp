@@ -84,10 +84,10 @@ namespace kiwi_synth
                 intValues[9] = std::min((int)value, 4); // Lowpass Ladder, Lowpass 2 Pole, Lowpass 1 Pole, Highpass, Bandpass, Notch
                 break;
             case LFO_1_WAVEFORM:
-                intValues[10] = std::min((int)value, 2); // Sq, Saw, Tri
+                intValues[10] = std::min((int)value, 3); // Tri, Sq, Ramp, Saw
                 break;
             case LFO_2_WAVEFORM:
-                intValues[11] = std::min((int)value, 2); // Sq, Saw, Tri
+                intValues[11] = std::min((int)value, 3); // Tri, Sq, Ramp, Saw
                 break;
             case MOD_1_SOURCE:
                 intValues[12] = std::min((int)value, 8);
