@@ -81,7 +81,7 @@ namespace kiwi_synth
                 intValues[8] = std::min((int)value, 3); // White, Pink, Brown, Fractal
                 break;
             case VCF_FILTER_TYPE:
-                intValues[9] = std::min((int)value, 4); // Lowpass Ladder, Lowpass 2 Pole, Lowpass 1 Pole, Highpass, Bandpass, Notch
+                intValues[9] = std::min((int)value, 7); // Ladder Lowpass, 1 Pole Lowpass, 1 Pole Highpass, SVF Lowpass, SVF Highpass, SVF Bandpass, SVF Notch, SVF Peak
                 break;
             case LFO_1_WAVEFORM:
                 intValues[10] = std::min((int)value, 3); // Tri, Sq, Ramp, Saw

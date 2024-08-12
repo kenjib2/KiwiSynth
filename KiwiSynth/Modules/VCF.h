@@ -12,6 +12,17 @@ namespace kiwi_synth
 {
     static const float      VCF_MIN_FREQUENCY = 40.0F;
     static const float      VCF_MAX_FREQUENCY = 22000.0F;
+
+    enum FilterType {
+        LADDER_LOWPASS,
+        ONE_POLE_LOWPASS,
+        ONE_POLE_HIGHPASS,
+        SVF_LOWPASS,
+        SVF_HIGHPASS,
+        SVF_BANDPASS,
+        SVF_NOTCH,
+        SVF_PEAK
+    };
     
     class VCF
     {
@@ -23,7 +34,10 @@ namespace kiwi_synth
             float                   env2Depth;
             float                   lfo2Depth;
             float                   keyboardTracking;
+            FilterType              filterType;
             infrasonic::MoogLadder  filter;
+            OnePole                 opFilter;
+            Svf                     svFilter;
             PatchSettings*          patchSettings;
 
         public:
