@@ -1,5 +1,3 @@
-//#define __DEBUG__
-
 #include "daisy_seed.h"
 #include "KiwiSynth/KiwiSynth.h"
 #include "KiwiSynth/Controls/KiwiMcp23017.h"

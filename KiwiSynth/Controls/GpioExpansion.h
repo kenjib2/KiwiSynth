@@ -19,7 +19,6 @@ namespace kiwi_synth
 
     extern bool gpioReadRequired;
     extern uint32_t gpioLastInterruptTime;
-    extern char tempBuffer[256];
 
     /*
      * Internal function for interrupt callbacks.

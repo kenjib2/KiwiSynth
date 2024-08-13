@@ -12,6 +12,9 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+    const static int NUM_MPS = 3;
+    const static int NUM_CHANNELS = 16;
+    const static int NUM_DIRECT_POTS = 1;
 
     /*
      * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.
@@ -21,10 +24,6 @@ namespace kiwi_synth
    /*
     * Used to initialize a MultiPots object.
     *
-    * numMps: The number of multiplexers attached.
-    * numChannels: The number of channels each multiplexer has. This should be either 8 or 16. Other values are not supported
-    *     and all multiplexers must have the same number of channels.
-    * numDirectPots: The number of potentiometers directly connected to ADC pins.
     * pinA0: The pin which is connected to A0 on the multiplexer.
     * pinA1: The pin which is connected to A0 on the multiplexer.
     * pinA2: The pin which is connected to A0 on the multiplexer.
@@ -38,9 +37,6 @@ namespace kiwi_synth
     */
     struct MultiPotsConfig
     {
-        int numMps;
-        int numChannels;
-        int numDirectPots;
         Pin pinA0;
         Pin pinA1;
         Pin pinA2;
@@ -71,9 +67,6 @@ namespace kiwi_synth
     class MultiPots : public Control
     {
         private:
-            int numMps = 0;
-            int numChannels = 0;
-            int numDirectPots = 0;
             int currentPot = 0;
             GPIO a0;
             GPIO a1;
@@ -82,8 +75,6 @@ namespace kiwi_synth
             std::vector<Pin> pinsSignal;
             std::vector<Pin> pinsDirect;
             DaisySeed *hw;
-            float **mpValueBuffer = nullptr;
-            float *directValueBuffer = nullptr;
             //TimerHandle timer;
             ControlListener* controlListener = nullptr;
             int controlId;
@@ -95,7 +86,7 @@ namespace kiwi_synth
 
         public:
             MultiPots() {};
-            ~MultiPots();
+            ~MultiPots() {};
             void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
             void RegisterControlListener(ControlListener* controlListener, int controlId);

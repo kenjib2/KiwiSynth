@@ -2,12 +2,12 @@
 
 namespace kiwi_synth
 {
-    char temp[256];
+    #ifdef __DEBUG__
+        char DSY_SDRAM_BSS buff[256];
+    #endif // __DEBUG__
 
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
-        sprintf(temp, "Initializing");
-
         numVoices = DEFAULT_NUM_VOICES;
         SetMidiChannel(0);
 
@@ -26,10 +26,6 @@ namespace kiwi_synth
 
     void KiwiSynth::ConfigureMultiPots(DaisySeed* hw)
     {
-        int numMps = 3;
-        int numChannels = 16;
-        int numDirectPots = 1;
-
         std::vector<Pin> mpPins;
         mpPins.push_back(A0);
         mpPins.push_back(A1);
@@ -39,9 +35,6 @@ namespace kiwi_synth
         directPins.push_back(A4);
 
         MultiPotsConfig multiPotsConfig;
-        multiPotsConfig.numMps = numMps;
-        multiPotsConfig.numChannels = numChannels;
-        multiPotsConfig.numDirectPots = numDirectPots;
         multiPotsConfig.pinA0 = D7;
         multiPotsConfig.pinA1 = D8;
         multiPotsConfig.pinA2 = D9;
@@ -68,7 +61,6 @@ namespace kiwi_synth
         midi_config.transport_config.rx = D14;
         midi.Init(midi_config);
         midi.StartReceive();
-        sprintf(temp, "MIDI Started");
 	    
         gpioMidiActivity.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
         gpioMidiActivity.Write(false);
@@ -113,7 +105,6 @@ namespace kiwi_synth
         midi.Listen();
         while(midi.HasEvents())
         {
-            sprintf(temp, "MIDI Event");
             MidiEvent event = midi.PopEvent();
             HandleMidiMessage(&event);
         }
@@ -131,7 +122,6 @@ namespace kiwi_synth
 
     void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)
     {
-        sprintf(temp, "Handling MIDI");
         if (midiChannel == midiEvent->channel) {
             NoteOnEvent on;
             NoteOffEvent off;
@@ -142,7 +132,6 @@ namespace kiwi_synth
                     on = midiEvent->AsNoteOn();
                     if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
                     {
-                        sprintf(temp, "NoteOn");
                         voiceBank.NoteOn(on.note, on.velocity);
                         break;
                     }
@@ -151,7 +140,6 @@ namespace kiwi_synth
                 case NoteOff:
                     midiCounter = 0;
                     off = midiEvent->AsNoteOff();
-                    sprintf(temp, "NoteOff");
                     voiceBank.NoteOff(off.note, off.velocity);
                     break;
 
@@ -188,7 +176,6 @@ namespace kiwi_synth
     #ifdef __DEBUG__
         void KiwiSynth::TestOutput(DaisySeed* hw)
         {
-            char buff[256];
             sprintf(buff, "----------------------");
             hw->PrintLine(buff);
 

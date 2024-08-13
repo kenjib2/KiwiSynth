@@ -73,7 +73,6 @@ namespace kiwi_synth
         /*numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
         pinValues = (uint16_t*)malloc(sizeof(uint16_t) * 16);
         gpioReadRequired = true;
-        sprintf(tempBuffer, "Initialized");
 
         for (int i = 0; i < numGpioExpansions; i++) {
             KiwiMcp23017 mcp;

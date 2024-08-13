@@ -3,6 +3,8 @@
 
 namespace kiwi_synth
 {
+    float DSY_SDRAM_BSS mpValueBuffer[NUM_MPS][NUM_CHANNELS];
+    float DSY_SDRAM_BSS directValueBuffer[NUM_DIRECT_POTS];
 
     /*void ProcessMultiPotsTimer(void* multiPots)
     {
@@ -11,40 +13,13 @@ namespace kiwi_synth
 
     void MultiPots::Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig)
     {
-        numMps = multiPotsConfig->numMps;
-        numChannels = multiPotsConfig->numChannels;
-        numDirectPots = multiPotsConfig->numDirectPots;
         InitMulti(multiPotsConfig);
-
-        mpValueBuffer = new float*[numMps];
-        for (int i = 0; i < numMps; i++) {
-            mpValueBuffer[i] = new float[numChannels];
-        }
         currentPot = 0;
-
-        directValueBuffer = new float[numDirectPots];
 
         /*if (multiPotsConfig->useTimer) {
             InitTimer(multiPotsConfig->refreshRate);
         }*/
     }
-
-    MultiPots::~MultiPots()
-    {
-        for (int i = 0; i < numMps; i++) {
-            if (mpValueBuffer[i]) {
-                free(mpValueBuffer[i]);
-            }
-        }
-        if (mpValueBuffer) {
-            free(mpValueBuffer);
-        }
-
-        if (directValueBuffer) {
-            free(directValueBuffer);
-        }
-    }
-
 
     void MultiPots::RegisterControlListener(ControlListener* controlListener, int controlId)
     {
@@ -61,7 +36,7 @@ namespace kiwi_synth
     {
         // We read before selecting because reading will not use the new pin if we only just selected it. We need to cycle in between.
         ReadPots();
-        currentPot = (currentPot + 1) % std::max(numChannels, numDirectPots);
+        currentPot = (currentPot + 1) % std::max(NUM_CHANNELS, NUM_DIRECT_POTS);
         // We are setting the pin for the *next* call of Process.
         SelectMpChannel(currentPot);
     }
@@ -81,26 +56,26 @@ namespace kiwi_synth
         a0.Init(multiPotsConfig->pinA0, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
         a1.Init(multiPotsConfig->pinA1, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
         a2.Init(multiPotsConfig->pinA2, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
-        if (numChannels > 8) {
+        if (NUM_CHANNELS > 8) {
         a3.Init(multiPotsConfig->pinA3, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
         }
 
-        AdcChannelConfig *adcConfig = new AdcChannelConfig[numMps];
-        for (int i = 0; i < numMps; i++)
+        AdcChannelConfig *adcConfig = new AdcChannelConfig[NUM_MPS];
+        for (int i = 0; i < NUM_MPS; i++)
         {
             pinsSignal.push_back(multiPotsConfig->pinsSignal[i]);
             //Configure the signal pins as ADC inputs. This is where we'll read the knob values from each multiplexer.
             adcConfig[i].InitSingle(pinsSignal[i]);
         }
 
-        for (int i = 0; i < numDirectPots; i++)
+        for (int i = 0; i < NUM_DIRECT_POTS; i++)
         {
             pinsDirect.push_back(multiPotsConfig->pinsDirect[i]);
             //Configure the signal pins as ADC inputs. This is where we'll read the knob values from each direct ADC pot.
-            adcConfig[i + numMps].InitSingle(pinsDirect[i]);
+            adcConfig[i + NUM_MPS].InitSingle(pinsDirect[i]);
         }
 
-        hw->adc.Init(adcConfig, numMps + numDirectPots);
+        hw->adc.Init(adcConfig, NUM_MPS + NUM_DIRECT_POTS);
         free(adcConfig);
     }
 
@@ -145,7 +120,7 @@ namespace kiwi_synth
         int a1Value = channelNumber % 4 / 2;
         int a0Value = channelNumber % 2;
 
-        if (numChannels > 8) {
+        if (NUM_CHANNELS > 8) {
             a3.Write(a3Value); // channelNumber & 0b1000
         }
         a2.Write(a2Value); // channelNumber & 0b0100
@@ -155,16 +130,16 @@ namespace kiwi_synth
 
     void MultiPots::ReadPots()
     {
-        if (currentPot < numChannels)
+        if (currentPot < NUM_CHANNELS)
         {
-            for (int i = 0; i < numMps; i++)
+            for (int i = 0; i < NUM_MPS; i++)
             {
                 mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
             }
         }
 
-        if (currentPot < numDirectPots) {
-            directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + numMps);
+        if (currentPot < NUM_DIRECT_POTS) {
+            directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + NUM_MPS);
         }
 
         if (controlListener) {

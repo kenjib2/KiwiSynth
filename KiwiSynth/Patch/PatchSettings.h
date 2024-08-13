@@ -169,11 +169,6 @@ namespace kiwi_synth
         private:
             static constexpr float minValue = 0.0f;
             static constexpr float maxValue = 1.0f;
-            char name[MAX_PATCH_NAME_LENGTH + 1];
-            float floatValues[54];
-            int8_t intValues[31];
-            bool boolValues[10];
-            bool lastPinValues[4][16];
             MultiPots* multiPots;
             GpioExpansion* ge;
 
