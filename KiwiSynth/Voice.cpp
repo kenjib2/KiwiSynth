@@ -100,7 +100,7 @@ namespace kiwi_synth
 
         float noiseSample = 0.0f;
         noise.Process(&noiseSample, nullptr, 0);
-        *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
+        *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT * 0.8f;
 
         numMods = 1;
         mods[0] = env1Sample;

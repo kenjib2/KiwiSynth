@@ -13,11 +13,13 @@ namespace kiwi_synth
     {
         private:
             PatchSettings* patchSettings;
+            int        noiseType;
             float      level;
             float      lastSample;
             bool       isOn;
             bool       noteTriggered;
-            WhiteNoise noise;
+            WhiteNoise white;
+            Dust       dust;
 
         public:
             Noise() {}

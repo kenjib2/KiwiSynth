@@ -26,7 +26,7 @@ namespace kiwi_synth
             }
             *sample = *sample * mods[i];
         }
-        *sample = (*sample + levelSample) * VCA_ATTENTUATION_CONSTANT;
+        *sample = std::fmin((*sample + levelSample) * VCA_ATTENTUATION_CONSTANT, 0.99999f);
     }
 
 }

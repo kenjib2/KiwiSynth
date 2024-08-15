@@ -32,6 +32,7 @@ namespace kiwi_synth
         setValue(PatchSetting::VCO_3_WAVEFORM, (uint8_t)0);
         setValue(PatchSetting::VCO_3_OCTAVE, (uint8_t)2);
         setValue(PatchSetting::VCO_3_INTERVAL, (uint8_t)11);
+        setValue(PatchSetting::VCO_NOISE_TYPE, (uint8_t)0);
         setValue(PatchSetting::VCF_FILTER_TYPE, (uint8_t)0);
         setValue(PatchSetting::LFO_1_WAVEFORM, (uint8_t)0);
         setValue(PatchSetting::LFO_2_WAVEFORM, (uint8_t)0);
@@ -84,7 +85,7 @@ namespace kiwi_synth
                 intValues[7] = std::min((int)value, 22);
                 break;
             case VCO_NOISE_TYPE:
-                intValues[8] = std::min((int)value, 3); // White, Pink, Brown, Fractal
+                intValues[8] = std::min((int)value, 1); // White, Dust
                 break;
             case VCF_FILTER_TYPE:
                 intValues[9] = std::min((int)value, 7); // Ladder Lowpass, 1 Pole Lowpass, 1 Pole Highpass, SVF Lowpass, SVF Highpass, SVF Bandpass, SVF Notch, SVF Peak
