@@ -25,10 +25,22 @@ namespace kiwi_synth
         {
             case 0:
             default:
-                numVoices = maxVoices;
+                for (int i = 0; i < maxVoices; i++) {
+                    voices[i].noiseAndSHOn = true;
+                }
+                numVoices = 2;
                 break;
             case 1:
+                for (int i = 0; i < maxVoices; i++) {
+                    voices[i].noiseAndSHOn = true;
+                }
                 numVoices = 1;
+                break;
+            case 2:
+                for (int i = 0; i < maxVoices; i++) {
+                    voices[i].noiseAndSHOn = false;
+                }
+                numVoices = maxVoices;
                 break;
         }
     }
@@ -38,7 +50,7 @@ namespace kiwi_synth
         float nextVoice = 0.0f;
         *sample = 0.0f;
 
-        for (int i = 0; i < maxVoices; i++) {
+        for (int i = 0; i < numVoices; i++) {
             voices[i].Process(&nextVoice);
             if (i < numVoices) {
                 *sample += nextVoice;

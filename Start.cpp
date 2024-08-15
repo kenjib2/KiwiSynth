@@ -7,16 +7,42 @@
 using namespace daisy;
 using namespace kiwi_synth;
 
+#define __CPU_LOAD__
+
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
+#ifdef __CPU_LOAD__
+	CpuLoadMeter load;
+	char DSY_SDRAM_BSS buff[256];
+	// 1 voice max 46, avg 41
+	// 1 voice 1 VCO max 46, avg 38
+	// 2 voice max 75, avg 70
+	// 2 voice 1 VCO max 63, avg 62
+	// 2 voice 2 VCO max 67, avg 65
+	// 2 voice no reverb max 63, 60 avg 
+	// 2 voice no noise or SH max 67, avg 65
+	// 3 voice max 99, avg 96 then CRASH
+	// 3 voice no noise or SH max 94, avg 92
+	// 3 voice no noise or SH or polyblep max 90, avg 88
+	// 3 voice 2 VCO no noise or SH max 88, avg 86
+	// Reverb costs @ 10%
+#endif // __CPU_LOAD__
 
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
                    size_t                                size)
 {
+	#ifdef __CPU_LOAD__
+		load.OnBlockStart();
+	#endif // __CPU_LOAD__
+
 	kiwiSynth.Process(out, size);
+
+	#ifdef __CPU_LOAD__
+		load.OnBlockEnd();
+	#endif // __CPU_LOAD__
 }
 
 // Test chords: Am7 C/G F9 C/E
@@ -43,6 +69,10 @@ int main(void)
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);
 
+	#ifdef __CPU_LOAD__
+		load.Init(hw.AudioSampleRate(), 48);
+	#endif // __CPU_LOAD__
+
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
@@ -50,6 +80,9 @@ int main(void)
 	#ifdef __DEBUG__
 		uint16_t counter = 0;
 	#endif // __DEBUG__
+	#ifdef __CPU_LOAD__
+		uint16_t counter = 0;
+	#endif // __CPU_LOAD__
     while(1)
 	{
 		System::DelayUs(5);
@@ -63,5 +96,12 @@ int main(void)
 			}
 			counter = (counter + 1) % 500;
 		#endif // __DEBUG__
+		#ifdef __CPU_LOAD__
+			if (counter == 499) {
+				sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
+	            hw.PrintLine(buff);
+			}
+			counter = (counter + 1) % 500;
+		#endif // __CPU_LOAD__
 	}
 }

@@ -61,7 +61,7 @@ namespace kiwi_synth
     {
         switch(setting) {
             case VCO_VOICES:
-                intValues[0] = std::min((int)value, 1); // Poly, Mono, MultiTimbral Layered, MT Split Mono/Poly, MT Split Poly/Mono
+                intValues[0] = std::min((int)value, 2); // 2 Voice, Mono, 3 Voice (No Noise/SH), MultiTimbral Layered, MT Split Mono/Poly, MT Split Poly/Mono
                 break;
             case VCO_1_WAVEFORM:
                 intValues[1] = std::min((int)value, 2); // Blep Sq, Blep Saw, Blep Tri
