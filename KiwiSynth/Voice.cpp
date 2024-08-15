@@ -7,6 +7,9 @@ namespace kiwi_synth
         noteTriggered = false;
         noteTriggerCount = -1;
         noteOffNeeded = false;
+        noteTriggered = 64;
+        currentMidiNote = 64.0f;
+        currentPlayingNote = 64.0f;
         this->numVcos = numVCOs;
         this->patchSettings = patchSettings;
         for (int i = 0; i < numVCOs; i++) {

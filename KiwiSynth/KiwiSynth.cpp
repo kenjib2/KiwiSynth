@@ -8,7 +8,7 @@ namespace kiwi_synth
 
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
-        numVoices = DEFAULT_NUM_VOICES;
+        numVoices = MAX_VOICES;
         SetMidiChannel(0);
 
         ConfigureMultiPots(hw);

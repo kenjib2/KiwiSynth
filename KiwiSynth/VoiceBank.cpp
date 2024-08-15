@@ -2,10 +2,11 @@
 
 namespace kiwi_synth
 {
-    void VoiceBank::Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate) {
+    void VoiceBank::Init(uint8_t maxVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate) {
         this->patchSettings = patchSettings;
-        this->numVoices = numVoices;
-        for (uint8_t i = 0; i < numVoices; i++)
+        this->maxVoices = maxVoices;
+        this->numVoices = maxVoices;
+        for (uint8_t i = 0; i < maxVoices; i++)
         {
             Voice nextVoice;
             nextVoice.Init(numVcos, patchSettings, sampleRate);
@@ -16,8 +17,19 @@ namespace kiwi_synth
     
     void VoiceBank::UpdateSettings()
     {
-        for (int i = 0; i < numVoices; i++) {
+        for (int i = 0; i < maxVoices; i++) {
             voices[i].UpdateSettings();
+        }
+
+        switch (patchSettings->getIntValue(PatchSetting::VCO_VOICES))
+        {
+            case 0:
+            default:
+                numVoices = maxVoices;
+                break;
+            case 1:
+                numVoices = 1;
+                break;
         }
     }
 
@@ -26,9 +38,11 @@ namespace kiwi_synth
         float nextVoice = 0.0f;
         *sample = 0.0f;
 
-        for (int i = 0; i < numVoices; i++) {
+        for (int i = 0; i < maxVoices; i++) {
             voices[i].Process(&nextVoice);
-            *sample += nextVoice;
+            if (i < numVoices) {
+                *sample += nextVoice;
+            }
         }
     }
 
@@ -59,7 +73,7 @@ namespace kiwi_synth
         uint8_t highestNote = 0;
 
         // First if that note is already playing, retrigger it to preserve envelope/lfo position.
-        for (uint8_t i = 0; i < voices.size(); i++) {
+        for (uint8_t i = 0; i < numVoices; i++) {
             if (!voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
                 RemovePlayingVoice(i);
                 AddPlayingVoice(i, midiNote);
@@ -68,7 +82,7 @@ namespace kiwi_synth
         }
 
         // Else return first available voice.
-        for (size_t i = 0; i < voices.size(); i++) {
+        for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsAvailable()) {
                 AddPlayingVoice(i, midiNote);
                 return &voices[i];
@@ -76,7 +90,7 @@ namespace kiwi_synth
         }
 
         // Else return first releasing voice.
-        for (size_t i = 0; i < voices.size(); i++) {
+        for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsReleasing()) {
                 RemovePlayingVoice(i);
                 AddPlayingVoice(i, midiNote);
@@ -96,13 +110,12 @@ namespace kiwi_synth
 
         // If no voices are available, return the oldest note.
         // We have to replace a playing note that is neither lowest nor highest.
-        for (uint8_t i = 0; i < playingIndices.size(); i++) {
+        for (uint8_t i = 0; i < numVoices; i++) {
             uint8_t playingIndex = playingIndices[i];
             if (playingIndex != lowestIndex && playingIndex != highestIndex) {
-                Voice* voice = &(voices[playingIndex]);
                 RemovePlayingVoice(playingIndex);
                 AddPlayingVoice(playingIndex, midiNote);
-                return voice;
+                return &(voices[playingIndex]);
             }
         }
 
@@ -110,7 +123,6 @@ namespace kiwi_synth
         RemovePlayingVoice(highestIndex);
         AddPlayingVoice(highestIndex, midiNote);
         return &(voices[highestIndex]); 
-        return NULL;
     }
 
 

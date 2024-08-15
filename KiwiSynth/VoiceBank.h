@@ -14,6 +14,7 @@ namespace kiwi_synth
     class VoiceBank
     {
         private:
+            uint8_t maxVoices;
             uint8_t numVoices;
             std::vector<Voice> voices;
             PatchSettings* patchSettings;
@@ -29,7 +30,7 @@ namespace kiwi_synth
 
             VoiceBank() {}
             ~VoiceBank() {}
-            void Init(uint8_t numVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
+            void Init(uint8_t maxVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
             void Process(float* sample);
 
             void UpdateSettings();
