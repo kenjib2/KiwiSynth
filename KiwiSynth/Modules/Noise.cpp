@@ -30,7 +30,7 @@ namespace kiwi_synth
                 lastSample = white.Process();
                 break;
             case 1:
-                lastSample = dust.Process();
+                lastSample = dust.Process() * 2.0f;
                 break;
         }
 
