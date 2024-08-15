@@ -32,15 +32,15 @@ namespace kiwi_synth
                 break;
             case 1:
                 for (int i = 0; i < maxVoices; i++) {
-                    voices[i].noiseAndSHOn = true;
-                }
-                numVoices = 1;
-                break;
-            case 2:
-                for (int i = 0; i < maxVoices; i++) {
                     voices[i].noiseAndSHOn = false;
                 }
                 numVoices = maxVoices;
+                break;
+            case 2:
+                for (int i = 0; i < maxVoices; i++) {
+                    voices[i].noiseAndSHOn = true;
+                }
+                numVoices = 1;
                 break;
         }
     }
