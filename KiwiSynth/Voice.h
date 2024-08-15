@@ -35,6 +35,9 @@ namespace kiwi_synth
             PatchSettings* patchSettings;
             int noteTriggerCount;
             bool noteOffNeeded;
+            bool portamentoOn;
+            float portamentoSpeed;
+            float currentPlayingNote;
             int triggerNote;
             int triggerVelocity;
             float mods[MAX_MODS];

@@ -38,6 +38,9 @@ namespace kiwi_synth
         env2.UpdateSettings();
         lfo1.UpdateSettings();
         lfo2.UpdateSettings();
+
+        portamentoOn = patchSettings->getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
+        portamentoSpeed = patchSettings->getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED, 0.0001F, 0.05F, Scale::LOGARHITHMIC);
     }
 
     void Voice::Process(float* sample)
@@ -46,17 +49,25 @@ namespace kiwi_synth
             noteTriggerCount--;
         } else if (noteTriggerCount == 0) {
             noteTriggerCount = -1;
-
             currentMidiNote = triggerNote;
-            for (int i = 0; i < numVcos; i++) {
-                vcos[i].SetFreq(mtof(triggerNote));
-            }
             env1.SetQuickRelease(false);
             env2.SetQuickRelease(false);
             env1.NoteOn();
             env2.NoteOn();
             lfo1.NoteOn();
             lfo2.NoteOn();
+        }
+
+        float fCurrentMidiNote = (float)currentMidiNote;
+        if (portamentoOn && currentPlayingNote < fCurrentMidiNote) {
+            currentPlayingNote = std::fmin(currentPlayingNote + portamentoSpeed, fCurrentMidiNote);
+        } else if (portamentoOn && currentPlayingNote > currentMidiNote) {
+            currentPlayingNote = std::fmax(currentPlayingNote - portamentoSpeed, fCurrentMidiNote);
+        } else {
+            currentPlayingNote = fCurrentMidiNote;
+        }
+        for (int i = 0; i < numVcos; i++) {
+            vcos[i].SetFreq(mtof(currentPlayingNote));
         }
 
         if (noteOffNeeded) {
