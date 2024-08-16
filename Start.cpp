@@ -11,8 +11,9 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
+ * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
+ * When a low note is set, a lower note that steals a voice does not get set as the lower note.
  * Modulation Matrix
- * Increase flash space SRAM boot?
  * Delay
  * Chorus
  * Flanger
@@ -81,7 +82,7 @@ int main(void)
 	{
 		sprintf(message, "BootLoader Started");
 		display.TestOutput(message);
-		System::ResetToBootloader();
+		System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
 	}
 	sprintf(message, "Hello Kiwi!");
 	display.TestOutput(message);

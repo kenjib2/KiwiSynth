@@ -1,6 +1,8 @@
 # Misc
 #LDFLAGS = -u _printf_float
 #OPT = -Os # Optimize for smaller size
+# Need to run make program-boot to load the Daisy bootloader before flashing. Then press and release reset and then boot (not both together). Lights should pulsate if successful.
+# To set it back to flash loading run make program-dfu
 APP_TYPE = BOOT_SRAM
 
 # Project Name
