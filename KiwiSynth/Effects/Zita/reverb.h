@@ -22,7 +22,7 @@
 #define __REVERB_H
 
 #include "pareq.h"
-
+#include "daisy_seed.h"
 
 // -----------------------------------------------------------------------
 
@@ -36,22 +36,19 @@ private:
     Diff1 (void);
     ~Diff1 (void);
 
-    void  init (int size, float c);
+    // SRAM UPDATE
+    //void  init (int size, float c);
+    void  init (int size, float c, int idx);
     void  fini (void);
+    float process (float x);
 
-    float process (float x)
-    {
-	float z = _line [_i];
-	x -= _c * z;
-        _line [_i] = x;
-        if (++_i == _size) _i = 0;
-	return z + _c * x;
-    } 
-
+    // SRAM UPDATE
+    int     _idx;
     int     _i;
     float   _c;
     int     _size;
-    float  *_line;
+    // SRAM UPDATE
+    //float  *_line;
 };
 
 
@@ -97,23 +94,19 @@ private:
     Delay (void);
     ~Delay (void);
 
-    void  init (int size);
+    // SRAM UPDATE
+    //void  init (int size);
+    void  init (int size, int idx);
     void  fini (void);
+    float read (void);
+    void write (float x);
 
-    float read (void)
-    {
-	return _line [_i];
-    }
-
-    void write (float x)
-    {
-	_line [_i++] = x;
-	if (_i == _size) _i = 0;
-    }
-
+    // SRAM UPDATE
+    int     _idx;
     int     _i;
     int     _size;
-    float  *_line;
+    // SRAM UPDATE
+    //float  *_line;
 };
 
 
@@ -129,27 +122,21 @@ private:
     Vdelay (void);
     ~Vdelay (void);
 
-    void  init (int size);
+    // SRAM UPDATE
+    //void  init (int size);
+    void  init (int size, int idx);
     void  fini (void);
     void  set_delay (int del);
+    float read (void);
+    void write (float x);
 
-    float read (void)
-    {
-	float x = _line [_ir++];
-	if (_ir == _size) _ir = 0;
-	return x;
-    }
-
-    void write (float x)
-    {
-	_line [_iw++] = x;
-	if (_iw == _size) _iw = 0;
-    }
-
+    // SRAM UPDATE
+    int     _idx;
     int     _ir;
     int     _iw;
     int     _size;
-    float  *_line;
+    // SRAM UPDATE
+    //float  *_line;
 };
 
 

@@ -1,6 +1,7 @@
 # Misc
 #LDFLAGS = -u _printf_float
-OPT = -Os # Optimize for smaller size
+#OPT = -Os # Optimize for smaller size
+APP_TYPE = BOOT_SRAM
 
 # Project Name
 TARGET = HardwareTest

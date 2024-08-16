@@ -9,6 +9,21 @@ using namespace kiwi_synth;
 
 //#define __CPU_LOAD__
 
+/*
+ * TO DO
+ * Modulation Matrix
+ * Increase flash space SRAM boot?
+ * Delay
+ * Chorus
+ * Flanger
+ * Phaser
+ * Save / Load
+ * Polytimbral modes
+ * UI
+ * L/R Output noise
+ * Headphone out noise
+ */
+
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
@@ -52,13 +67,15 @@ int main(void)
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(48); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	hw.StartLog(false);
+	#if defined(__CPU_LOAD__) || defined(__DEBUG__)
+		hw.StartLog(false);
+	#endif // __CPU_LOAD__ || __DEBUG__
 
 	display.Init();
 
+	char message[64];
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 
-	char message[64];
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
 	{

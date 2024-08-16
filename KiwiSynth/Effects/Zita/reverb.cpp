@@ -27,9 +27,16 @@
 // -----------------------------------------------------------------------
 
 
+// SRAM UPDATE
+float DSY_SDRAM_BSS vdelayLine[2][4800];
+float DSY_SDRAM_BSS diff1Line[8][1600];
+float DSY_SDRAM_BSS delayLine[8][12000];
+
+
+// SRAM UPDATE
 Diff1::Diff1 (void) :
-    _size (0),
-    _line (0)
+    _size (0)//,
+    //_line (0)
 {
 }    
 
@@ -40,11 +47,16 @@ Diff1::~Diff1 (void)
 }
 
 
-void Diff1::init (int size, float c)
+// SRAM UPDATE
+//void Diff1::init (int size, float c)
+void Diff1::init (int size, float c, int idx)
 {
+    // SRAM UPDATE
+    _idx = idx;
     _size = size;
-    _line = new float [size];
-    memset (_line, 0, size * sizeof (float));
+    // SRAM UPDATE
+    //_line = new float [size];
+    memset (diff1Line[_idx], 0, size * sizeof (float));
     _i = 0;
     _c = c;
 }
@@ -52,18 +64,37 @@ void Diff1::init (int size, float c)
 
 void Diff1::fini (void)
 {
-    delete[] _line;
+    // SRAM UPDATE
+    //delete[] _line;
     _size = 0;
-    _line = 0;
+    // SRAM UPDATE
+    //_line = 0;
 }
+
+
+float Diff1::process (float x)
+{
+    // SRAM UPDATE
+	//float z = _line [_i];
+	float z = diff1Line[_idx][_i];
+	x -= _c * z;
+    // SRAM UPDATE
+    //_line [_i] = x;
+    diff1Line[_idx][_i] = x;
+    if (++_i == _size) _i = 0;
+	return z + _c * x;
+} 
+
+
 
 
 // -----------------------------------------------------------------------
 
 
+// SRAM UPDATE
 Delay::Delay (void) :
-    _size (0),
-    _line (0)
+    _size (0)//,
+    //_line (0)
 {
 }
 
@@ -74,29 +105,55 @@ Delay::~Delay (void)
 }
 
 
-void Delay::init (int size)
+// SRAM UPDATE
+//void Delay::init (int size)
+void Delay::init (int size, int idx)
 {
+    // SRAM UPDATE
+    _idx = idx;
     _size = size;
-    _line = new float [size];
-    memset (_line, 0, size * sizeof (float));
+    // SRAM UPDATE
+    //_line = new float [size];
+    //memset (_line, 0, size * sizeof (float));
+    memset (delayLine[_idx], 0, size * sizeof (float));
     _i = 0;
 }
 
 
 void Delay::fini (void)
 {
-    delete[] _line;
+    // SRAM UPDATE
+    //delete[] _line;
     _size = 0;
-    _line = 0;
+    // SRAM UPDATE
+    //_line = 0;
+}
+
+
+float Delay::read (void)
+{
+    // SRAM UPDATE
+	//return _line [_i];
+	return delayLine[_idx][_i];
+}
+
+
+void Delay::write (float x)
+{
+    // SRAM UPDATE
+	//_line [_i++] = x;
+	delayLine[_idx][_i++] = x;
+	if (_i == _size) _i = 0;
 }
 
 
 // -----------------------------------------------------------------------
 
 
+// SRAM UPDATE
 Vdelay::Vdelay (void) :
-    _size (0),
-    _line (0)
+    _size (0)//,
+    //_line (0)
 {
 }
 
@@ -107,11 +164,17 @@ Vdelay::~Vdelay (void)
 }
 
 
-void Vdelay::init (int size)
+// SRAM UPDATE
+//void Vdelay::init (int size)
+void Vdelay::init (int size, int idx)
 {
+    // SRAM UPDATE
+    _idx = idx;
     _size = size;
-    _line = new float [size];
-    memset (_line, 0, size * sizeof (float));
+    // SRAM UPDATE
+    //_line = new float [size];
+    //memset (_line, 0, size * sizeof (float));
+    memset (vdelayLine[_idx], 0, size * sizeof (float));
     _ir = 0;
     _iw = 0;
 }
@@ -119,9 +182,11 @@ void Vdelay::init (int size)
 
 void Vdelay::fini (void)
 {
-    delete[] _line;
+    // SRAM UPDATE
+    //delete[] _line;
     _size = 0;
-    _line = 0;
+    // SRAM UPDATE
+    //_line = 0;
 }
 
 
@@ -129,6 +194,25 @@ void Vdelay::set_delay (int del)
 {
     _ir = _iw - del;
     if (_ir < 0) _ir += _size;
+}
+
+
+float Vdelay::read (void)
+{
+    // SRAM UPDATE
+	//float x = _line [_ir++];
+	float x = vdelayLine[_idx][_ir++];
+	if (_ir == _size) _ir = 0;
+	return x;
+}
+
+
+void Vdelay::write (float x)
+{
+    // SRAM UPDATE
+	//_line [_iw++] = x;
+	vdelayLine[_idx][_iw++] = x;
+	if (_iw == _size) _iw = 0;
 }
 
 
@@ -230,14 +314,20 @@ void Reverb::init (float fsamp, bool ambis)
     _g0 = _d0 = 0;
     _g1 = _d1 = 0;
 
-    _vdelay0.init ((int)(0.1f * _fsamp));
-    _vdelay1.init ((int)(0.1f * _fsamp));
+    // SRAM UPDATE
+    //_vdelay0.init ((int)(0.1f * _fsamp));
+    //_vdelay1.init ((int)(0.1f * _fsamp));
+    _vdelay0.init ((int)(0.1f * _fsamp), 0);
+    _vdelay1.init ((int)(0.1f * _fsamp), 1);
     for (i = 0; i < 8; i++)
     {
 	k1 = (int)(floorf (_tdiff1 [i] * _fsamp + 0.5f));
 	k2 = (int)(floorf (_tdelay [i] * _fsamp + 0.5f));
-        _diff1 [i].init (k1, (i & 1) ? -0.6f : 0.6f);
-        _delay [i].init (k2 - k1);
+        // SRAM UPDATE
+        //_diff1 [i].init (k1, (i & 1) ? -0.6f : 0.6f);
+        //_delay [i].init (k2 - k1);
+        _diff1 [i].init (k1, (i & 1) ? -0.6f : 0.6f, i);
+        _delay [i].init (k2 - k1, i);
     }
 
     _pareq1.setfsamp (fsamp);
