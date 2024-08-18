@@ -20,6 +20,7 @@ namespace kiwi_synth
             PatchSettings* patchSettings;
             std::vector<uint8_t>     playingIndices;
             std::vector<uint8_t>     playingNotes;
+            std::vector<uint8_t>     monoNotes;
 
             Voice* RequestVoice(uint8_t midiNote);
             void AddPlayingVoice(uint8_t index, uint8_t midiNote);
@@ -36,8 +37,6 @@ namespace kiwi_synth
             void UpdateSettings();
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
-
-            std::vector<uint8_t>* getPlayingNotes();
     };
 }
 

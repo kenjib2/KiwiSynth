@@ -62,7 +62,7 @@ namespace kiwi_synth
             float GetMatrixMods(int destination);
             bool IsAvailable();
             bool IsReleasing();
-            void NoteOn(int note, int velocity);
+            void NoteOn(int note, int velocity, bool reset = true);
             void NoteOff(int note, int velocity);
     };
 }

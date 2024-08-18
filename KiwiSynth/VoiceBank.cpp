@@ -60,19 +60,47 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
-        Voice* voice = RequestVoice(note);
-        if (voice != NULL) {
-            voice->NoteOn(note, velocity);
+        if (numVoices == 1) {
+            monoNotes.push_back(note);
+            if (voices[0].noteTriggered) {
+                voices[0].NoteOn(note, velocity, false);
+            } else {
+                voices[0].NoteOn(note, velocity);
+            }
+        } else {
+            Voice* voice = RequestVoice(note);
+            if (voice != NULL) {
+                voice->NoteOn(note, velocity);
+            }
         }
     }
 
     void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
-        for (size_t i = 0; i < voices.size(); i++) {
-            if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
-                voices[i].NoteOff(note, velocity);
-                RemovePlayingVoice(i);
-                break;
+        if (numVoices == 1) {
+            if (note == monoNotes.back()) {
+                monoNotes.pop_back();
+                if (monoNotes.size() > 0) {
+                    int prevNote = monoNotes.back();
+                    voices[0].NoteOn(prevNote, velocity, false);
+                } else {
+                    voices[0].NoteOff(note, velocity);
+                }
+            } else {
+                for(unsigned int i = 0; i < monoNotes.size(); i++) {
+                    if (monoNotes[i] == note) {
+                        monoNotes.erase(monoNotes.begin() + i);
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (size_t i = 0; i < voices.size(); i++) {
+                if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
+                    voices[i].NoteOff(note, velocity);
+                    RemovePlayingVoice(i);
+                    break;
+                }
             }
         }
     }
@@ -154,11 +182,6 @@ namespace kiwi_synth
                 break;
             }
         }
-    }
-
-    std::vector<uint8_t>* VoiceBank::getPlayingNotes()
-    {
-        return &playingIndices;
     }
 
 }

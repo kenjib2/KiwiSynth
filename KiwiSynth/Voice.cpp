@@ -8,7 +8,7 @@ namespace kiwi_synth
         noteTriggered = false;
         noteTriggerCount = -1;
         noteOffNeeded = false;
-        noteTriggered = 64;
+        currentMidiNote = 64;
         currentMidiNote = 64.0f;
         currentPlayingNote = 64.0f;
         this->numVcos = numVCOs;
@@ -147,7 +147,7 @@ namespace kiwi_synth
 
     bool Voice::IsAvailable()
     {
-        return !env1.IsPlaying();
+        return !env1.IsPlaying() && !noteTriggered;
     }
 
 
@@ -156,9 +156,9 @@ namespace kiwi_synth
         return env1.IsReleasing();
     }
 
-    void Voice::NoteOn(int note, int velocity)
+    void Voice::NoteOn(int note, int velocity, bool reset)
     {
-        if (currentMidiNote != note) {
+        if (currentMidiNote != note && reset) {
             env1.SetQuickRelease(true);
             env2.SetQuickRelease(true);
         }
