@@ -18,6 +18,7 @@ namespace kiwi_synth
             PatchSettings* patchSettings;
             uint8_t    vcoNumber;
             float      pulseWidth;
+            float      waveFolderGain;
             float      level;
             float      fineTune;
             float      interval;
@@ -29,7 +30,9 @@ namespace kiwi_synth
             bool       isOn;
             bool       noteTriggered;
             int        midiNote;
+            int        waveform;
             Oscillator osc;
+            Wavefolder wavefolder;
 
             void CalculateFreq();
 
@@ -39,7 +42,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber);
 
             void UpdateSettings();
-            void Process(float* sample, float* mods, uint8_t numMods);
+            void Process(float* sample, float* mods, uint8_t numMods, bool fold = true);
             void SetFreq(float frequency);
     };
 }

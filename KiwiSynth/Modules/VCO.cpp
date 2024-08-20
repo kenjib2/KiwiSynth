@@ -7,6 +7,7 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         this->vcoNumber = vcoNumber;
         isOn = true;
+        waveform = 0;
         pulseWidth = 0.5f;
         level = 1.0F;
         baseFreq = 220.0F;
@@ -48,11 +49,10 @@ namespace kiwi_synth
         if (isOn) {
             masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
             lfo1Depth = patchSettings->getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE, -0.001F, 1.0F, EXPONENTIAL);
-            int waveform = 0;
             switch (vcoNumber) {
                 case 0:
                     waveform = patchSettings->getIntValue(PatchSetting::VCO_1_WAVEFORM);
-                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
+                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL, -0.001F, 1.0F);
                     // case 0 does not use fineTune
                     fineTune = 1.0F;
@@ -61,7 +61,7 @@ namespace kiwi_synth
                     break;
                 case 1:
                     waveform = patchSettings->getIntValue(PatchSetting::VCO_2_WAVEFORM);
-                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
+                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
                     interval = patchSettings->getFloatValue(PatchSetting::VCO_2_INTERVAL, -0.91666666667f, 0.91666666667f, Scale::OCTAVE);
@@ -69,7 +69,7 @@ namespace kiwi_synth
                     break;
                 case 2:
                     waveform = patchSettings->getIntValue(PatchSetting::VCO_3_WAVEFORM);
-                    pulseWidth = patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
+                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
                     level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL, -0.001F, 1.0F);
                     fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
                     interval = patchSettings->getFloatValue(PatchSetting::VCO_3_INTERVAL, -0.91666666667f, 0.91666666667f, Scale::OCTAVE);
@@ -87,12 +87,17 @@ namespace kiwi_synth
                     osc.SetWaveform(Oscillator::WAVE_POLYBLEP_TRI);
                     break;
             }
+            if (pulseWidth > 0.495f) {
+                waveFolderGain = 1.0f;
+            } else {
+                waveFolderGain = 1.0f + (0.495F - pulseWidth) * 55;
+            }
 
             CalculateFreq();
         }
     }
 
-    void VCO::Process(float* sample, float* mods, uint8_t numMods)
+    void VCO::Process(float* sample, float* mods, uint8_t numMods, bool fold)
     {
         if (isOn) {
             float computedFreq = freq;
@@ -111,11 +116,14 @@ namespace kiwi_synth
             }
             osc.SetPw(pulseWidth);
             osc.SetFreq(computedFreq);
-            float computedLevel = level;
-            if (computedLevel < 0) {
-                computedLevel = 0.0F;
+            float waveSample = osc.Process();
+            wavefolder.SetGain(waveFolderGain);
+            if (waveform == 2 && fold) { // Triangle
+                waveSample = wavefolder.Process(waveSample);
+            } else if (waveform == 1) { // Sawtooth
+                waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F) * (0.49999f + 10 * (std::fmax(pulseWidth, 0.45) - 0.45));
             }
-            *sample = osc.Process() * computedLevel;
+            *sample = waveSample * std::fmax(level, 0.0F);
         }
         else {
             *sample = 0.0f;
