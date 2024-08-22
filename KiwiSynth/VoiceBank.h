@@ -21,6 +21,8 @@ namespace kiwi_synth
             std::vector<uint8_t>     playingIndices;
             std::vector<uint8_t>     playingNotes;
             std::vector<uint8_t>     monoNotes;
+            float modMatrix[MOD_DESTINATIONS][MOD_SOURCES];
+            float modValues[MOD_DESTINATIONS];
 
             Voice* RequestVoice(uint8_t midiNote);
             void AddPlayingVoice(uint8_t index, uint8_t midiNote);
@@ -35,6 +37,9 @@ namespace kiwi_synth
             void Process(float* sample);
 
             void UpdateSettings();
+            void InitModMatrix();
+            void UpdateModMatrix();
+            void CalculateModValues();
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
     };

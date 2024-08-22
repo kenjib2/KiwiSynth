@@ -19,8 +19,6 @@ namespace kiwi_synth
 {
     const static float VOICE_ATTENTUATION_CONSTANT = 0.3f;
     const static int NOTE_TRIGGER_SAMPLES = 72;
-    const static int MOD_SOURCES = 4;
-    const static int MOD_DESTINATIONS = 4;
     
     class Voice
     {
@@ -46,10 +44,9 @@ namespace kiwi_synth
             float vcoMods[MAX_MODS];
             uint8_t numVcoMods;
             uint8_t numMods = 0;
-            float modMatrix[MOD_SOURCES][MOD_DESTINATIONS];
 
         public:
-            bool noiseAndSHOn;
+            bool fullFunctionality;
             int currentMidiNote;
             bool noteTriggered;
 
@@ -59,7 +56,6 @@ namespace kiwi_synth
 
             void UpdateSettings();
             void Process(float* sample);
-            float GetMatrixMods(int destination);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity, bool reset = true);

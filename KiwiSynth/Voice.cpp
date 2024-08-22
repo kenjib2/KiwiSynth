@@ -4,7 +4,7 @@ namespace kiwi_synth
 {
     void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate)
     {
-        noiseAndSHOn = true;
+        fullFunctionality = true;
         noteTriggered = false;
         noteTriggerCount = -1;
         noteOffNeeded = false;
@@ -26,12 +26,6 @@ namespace kiwi_synth
         env2.Init(patchSettings, sampleRate, 1);
         lfo1.Init(patchSettings, sampleRate, 0);
         lfo2.Init(patchSettings, sampleRate, 1);
-
-        for (int i = 0; i < MOD_SOURCES; i++) {
-            for (int j = 0; j < MOD_DESTINATIONS; j++) {
-                modMatrix[i][j] = 1.0f;
-            }
-        }
     }
 
     void Voice::UpdateSettings()
@@ -105,14 +99,13 @@ namespace kiwi_synth
 
         numMods = 1;
         mods[0] = lfo1Sample;
-        //mods[1] = GetMatrixMods(DST_VCO_FREQ);
         *sample = 0.0f;
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
             vcos[i].Process(&vcoSample, mods, numMods);
             *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
-        if (noiseAndSHOn) {
+        if (fullFunctionality) {
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, nullptr, 0);
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT * 0.8f;
@@ -127,22 +120,13 @@ namespace kiwi_synth
         mods[1] = env1Sample;
         mods[2] = env2Sample;
         mods[3] = lfo2Sample;
-        if (noiseAndSHOn) {
+        if (fullFunctionality) {
             float sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample);
             numMods = 5;
             mods[4] = sampleAndHoldSample;
         }
         vcf.Process(sample, mods, numMods);
-    }
-
-    float Voice::GetMatrixMods(int destination) {
-        float value = 1.0f;
-        for (int i = 0; i < MOD_SOURCES; i++) {
-            value *= modMatrix[i][destination];
-        }
-
-        return value;
     }
 
     bool Voice::IsAvailable()

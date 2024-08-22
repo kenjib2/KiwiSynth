@@ -97,52 +97,52 @@ namespace kiwi_synth
                 intValues[11] = std::min((int)value, 3); // Tri, Sq, Ramp, Saw
                 break;
             case MOD_1_SOURCE:
-                intValues[12] = std::min((int)value, 8);
+                intValues[12] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_1_DESTINATION:
-                intValues[13] = std::min((int)value, 8);
+                intValues[13] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_2_SOURCE:
-                intValues[14] = std::min((int)value, 8);
+                intValues[14] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_2_DESTINATION:
-                intValues[15] = std::min((int)value, 8);
+                intValues[15] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_3_SOURCE:
-                intValues[16] = std::min((int)value, 8);
+                intValues[16] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_3_DESTINATION:
-                intValues[17] = std::min((int)value, 8);
+                intValues[17] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_4_SOURCE:
-                intValues[18] = std::min((int)value, 8);
+                intValues[18] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_4_DESTINATION:
-                intValues[19] = std::min((int)value, 8);
+                intValues[19] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_5_SOURCE:
-                intValues[20] = std::min((int)value, 8);
+                intValues[20] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_5_DESTINATION:
-                intValues[21] = std::min((int)value, 8);
+                intValues[21] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_6_SOURCE:
-                intValues[22] = std::min((int)value, 8);
+                intValues[22] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_6_DESTINATION:
-                intValues[23] = std::min((int)value, 8);
+                intValues[23] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_7_SOURCE:
-                intValues[24] = std::min((int)value, 8);
+                intValues[24] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_7_DESTINATION:
-                intValues[25] = std::min((int)value, 8);
+                intValues[25] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case MOD_8_SOURCE:
-                intValues[26] = std::min((int)value, 8);
+                intValues[26] = std::min((int)value, MOD_SOURCES);
                 break;
             case MOD_8_DESTINATION:
-                intValues[27] = std::min((int)value, 8);
+                intValues[27] = std::min((int)value, MOD_DESTINATIONS);
                 break;
             case GEN_SELECT:
                 intValues[28] = value;

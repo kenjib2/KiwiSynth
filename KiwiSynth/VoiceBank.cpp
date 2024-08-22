@@ -12,6 +12,7 @@ namespace kiwi_synth
             nextVoice.Init(numVcos, patchSettings, sampleRate);
             voices.push_back(nextVoice);
         }
+        InitModMatrix();
     }
 
     
@@ -26,22 +27,28 @@ namespace kiwi_synth
             case 0:
             default:
                 for (int i = 0; i < maxVoices; i++) {
-                    voices[i].noiseAndSHOn = true;
+                    voices[i].fullFunctionality = true;
                 }
                 numVoices = 2;
                 break;
             case 1:
                 for (int i = 0; i < maxVoices; i++) {
-                    voices[i].noiseAndSHOn = false;
+                    voices[i].fullFunctionality = false;
                 }
                 numVoices = maxVoices;
                 break;
             case 2:
                 for (int i = 0; i < maxVoices; i++) {
-                    voices[i].noiseAndSHOn = true;
+                    voices[i].fullFunctionality = true;
                 }
                 numVoices = 1;
                 break;
+        }
+
+        if (numVoices != maxVoices) {
+            InitModMatrix();
+            UpdateModMatrix();
+            CalculateModValues();
         }
     }
 
@@ -54,6 +61,34 @@ namespace kiwi_synth
             voices[i].Process(&nextVoice);
             if (i < numVoices) {
                 *sample += nextVoice;
+            }
+        }
+    }
+
+    void VoiceBank::InitModMatrix() {
+        memset(modMatrix, 0, MOD_SOURCES * MOD_DESTINATIONS * sizeof(float));
+        memset(modValues, 0, MOD_DESTINATIONS * sizeof(float));
+    }
+
+    void VoiceBank::UpdateModMatrix() {
+        uint8_t source;
+        uint8_t destination;
+        float value;
+        for (int i = 0; i < 8; i++) {
+            source = patchSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + i * 3));
+            destination = patchSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + i * 3));
+            value = patchSettings->getFloatValue((PatchSetting)(MOD_1_DEPTH + i * 3));
+
+            if (source != ModulationSource::SRC_NONE && destination != ModulationDestination::DST_NONE) {
+                modMatrix[destination - 1][source - 1] += value;
+            }
+        }
+    }
+
+    void VoiceBank::CalculateModValues() {
+        for (int i = 0; i < MOD_DESTINATIONS; i++) {
+            for (int j = 0; j < MOD_SOURCES; j++) {
+                modValues[i] += modMatrix[i][j];
             }
         }
     }

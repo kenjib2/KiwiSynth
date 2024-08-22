@@ -13,14 +13,13 @@ using namespace kiwi_synth;
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * When a low note is set, a lower note that steals a voice does not get set as the lower note.
- * Wavefolder for Triangle and Sawtooth
  * Modulation Matrix
  * Delay
  * Chorus
  * Flanger
  * Phaser
  * Save / Load
- * Polytimbral modes
+ * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply?
  * UI
  * L/R Output noise
  * Headphone out noise

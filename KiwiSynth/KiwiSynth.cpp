@@ -330,6 +330,40 @@ namespace kiwi_synth
             val3 = patchSettings.getIntValue(PatchSetting::GEN_SELECT);
             sprintf(buff, "MOD 4 S: %d,  MOD 4 D: %d,  GEN Sel: %d", val1, val2, val3);
             hw->PrintLine(buff);
+
+            /*val1 = voiceBank.modValues[0] * 1000;
+            val2 = voiceBank.modValues[1] * 1000;
+            val3 = voiceBank.modValues[2] * 1000;
+            val4 = voiceBank.modValues[3] * 1000;
+            val5 = voiceBank.modValues[4] * 1000;
+            val6 = voiceBank.modValues[5] * 1000;
+            sprintf(buff, "MODV 0: %d,  MODV 1: %d,  MODV 2: %d,  MODV 3: %d,  MODV 4: %d,  MODV 5: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modValues[6] * 1000;
+            val2 = voiceBank.modValues[7] * 1000;
+            val3 = voiceBank.modValues[8] * 1000;
+            val4 = voiceBank.modValues[9] * 1000;
+            val5 = voiceBank.modValues[10] * 1000;
+            val6 = voiceBank.modValues[11] * 1000;
+            sprintf(buff, "MODV 6: %d,  MODV 7: %d,  MODV 8: %d,  MODV 9: %d,  MODV 10: %d,  MODV 11: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modValues[12] * 1000;
+            val2 = voiceBank.modValues[13] * 1000;
+            val3 = voiceBank.modValues[14] * 1000;
+            val4 = voiceBank.modValues[15] * 1000;
+            val5 = voiceBank.modValues[16] * 1000;
+            val6 = voiceBank.modValues[17] * 1000;
+            sprintf(buff, "MODV 12: %d,  MODV 13: %d,  MODV 14: %d,  MODV 15: %d,  MODV 16: %d,  MODV 17: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modValues[18] * 1000;
+            val2 = voiceBank.modValues[19] * 1000;
+            val3 = voiceBank.modValues[20] * 1000;
+            val4 = voiceBank.modValues[21] * 1000;
+            sprintf(buff, "MODV 18: %d,  MODV 19: %d,  MODV 20: %d,  MODV 21: %d", val1, val2, val3, val4);
+            hw->PrintLine(buff);*/
         }
     #endif // __DEBUG__
 } // namespace kiwi_synth

@@ -14,6 +14,8 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
+    const static int MOD_SOURCES = 12;
+    const static int MOD_DESTINATIONS = 22;
 
     typedef enum {
         MULTIPOTS,
@@ -150,7 +152,7 @@ namespace kiwi_synth
     typedef enum
     {
         SRC_NONE,
-        SRC_FIXED = 0,
+        SRC_FIXED,
         SRC_LFO_1,
         SRC_LFO_2,
         SRC_ENV_1,
@@ -162,13 +164,13 @@ namespace kiwi_synth
         SRC_PITCH_BEND,
         SRC_EXPRESSION,
         SRC_PEDAL
-    } MODULATION_SOURCE;
+    } ModulationSource; // 13 sources
 
     typedef enum
     {
         DST_NONE,
-        DST_VCO_FREQ = 0,
-        DST_VCO_PULSE_WIDTH,
+        DST_VCOS_FREQ,
+        DST_VCOS_PULSE_WIDTH,
         DST_VCO_1_FREQ,
         DST_VCO_1_PULSE_WIDTH,
         DST_VCO_2_FREQ,
@@ -176,22 +178,22 @@ namespace kiwi_synth
         DST_VCO_3_FREQ,
         DST_VCO_3_PULSE_WIDTH,
         DST_VCF_CUTOFF,
-        DST_VCF_RESONANCE,
-        DST_VCF_ENV_1_DEPTH,
-        DST_VCF_ENV_2_DEPTH,
+        //DST_VCF_RESONANCE,
+        //DST_VCF_ENV_1_DEPTH,
+        //DST_VCF_ENV_2_DEPTH,
         DST_VCA_LEVEL,
-        DST_VCA_ENV_1_DEPTH,
-        DST_VCA_ENV_2_DEPTH,
+        //DST_VCA_ENV_1_DEPTH,
+        //DST_VCA_ENV_2_DEPTH,
         DST_LFO_1_FREQ,
         DST_LFO_1_PULSE_WIDTH,
-        DST_LFO_1_TO_MASTER_TUNE,
-        DST_LFO_1_TO_VCF_CUTOFF,
-        DST_LFO_1_TRIGGER_PHASE,
+        //DST_LFO_1_TO_MASTER_TUNE,
+        //DST_LFO_1_TO_VCF_CUTOFF,
+        //DST_LFO_1_TRIGGER_PHASE,
         DST_LFO_2_FREQ,
         DST_LFO_2_PULSE_WIDTH,
-        DST_LFO_2_TO_MASTER_TUNE,
-        DST_LFO_2_TO_VCF_CUTOFF,
-        DST_LFO_2_TRIGGER_PHASE,
+        //DST_LFO_2_TO_MASTER_TUNE,
+        //DST_LFO_2_TO_VCF_CUTOFF,
+        //DST_LFO_2_TRIGGER_PHASE,
         DST_ENV_1_ATTACK,
         DST_ENV_1_DECAY,
         DST_ENV_1_SUSTAIN,
@@ -200,13 +202,13 @@ namespace kiwi_synth
         DST_ENV_2_DECAY,
         DST_ENV_2_SUSTAIN,
         DST_ENV_2_RELEASE,
-        DST_FX_1,
-        DST_FX_2,
-        DST_FX_3,
-        DST_FX_4,
-        DST_FX_5,
-        DST_FX_REVERB
-    } MODULATION_DESTINATION;
+        //DST_FX_1,
+        //DST_FX_2,
+        //DST_FX_3,
+        //DST_FX_4,
+        //DST_FX_5,
+        //DST_FX_REVERB
+    } ModulationDestination; // 23 destination
 
     typedef enum
     {
