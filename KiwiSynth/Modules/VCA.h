@@ -15,7 +15,6 @@ namespace kiwi_synth
     {
         private:
             float                   level;
-            float                   env1Depth;
             bool                    noteTriggered;
             PatchSettings*          patchSettings;
 
@@ -25,7 +24,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample, float* mods, uint8_t numMods);
+            void Process(float* sample, float mod);
     };
 }
 

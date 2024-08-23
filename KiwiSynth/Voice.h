@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "daisysp.h"
+#include "Modulation.h"
 #include "Modules/VCO.h"
 #include "Modules/Noise.h"
 #include "Modules/SampleAndHold.h"
@@ -44,10 +45,17 @@ namespace kiwi_synth
             float vcoMods[MAX_MODS];
             uint8_t numVcoMods;
             uint8_t numMods = 0;
+            float modValues[NUM_MOD_DESTINATIONS];
+            float prevSourceValues[NUM_MOD_SOURCES];
+
+            void initMods();
+            void calculateMods(Modulation* modulations);
+            float getModValue(ModulationSource source, float depth);
 
         public:
             bool fullFunctionality;
             int currentMidiNote;
+            int currentVelocity;
             bool noteTriggered;
 
             Voice() {}
@@ -55,7 +63,7 @@ namespace kiwi_synth
             void Init(int numVCOs, PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample);
+            void Process(float* sample, Modulation* modulations);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity, bool reset = true);

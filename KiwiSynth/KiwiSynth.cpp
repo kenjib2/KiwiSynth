@@ -216,7 +216,7 @@ namespace kiwi_synth
 
             val1 = patchSettings.getFloatValue(PatchSetting::VCA_LEVEL) * 1000;
             val2 = patchSettings.getFloatValue(PatchSetting::VCA_ENV_1_DEPTH) * 1000;
-            val3 = patchSettings.getFloatValue(PatchSetting::SH_LEVEL) * 1000;
+            val3 = patchSettings.getFloatValue(PatchSetting::SH_TO_VCF_CUTOFF) * 1000;
             val4 = patchSettings.getFloatValue(PatchSetting::SH_RATE) * 1000;
             val5 = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE) * 1000;
             sprintf(buff, "VCA Level: %d   VCA Env 1 Depth: %d   S&H Level: %d   S&H Rate: %d   Balance: %d", val1, val2, val3, val4, val5);
@@ -331,38 +331,73 @@ namespace kiwi_synth
             sprintf(buff, "MOD 4 S: %d,  MOD 4 D: %d,  GEN Sel: %d", val1, val2, val3);
             hw->PrintLine(buff);
 
-            /*val1 = voiceBank.modValues[0] * 1000;
-            val2 = voiceBank.modValues[1] * 1000;
-            val3 = voiceBank.modValues[2] * 1000;
-            val4 = voiceBank.modValues[3] * 1000;
-            val5 = voiceBank.modValues[4] * 1000;
-            val6 = voiceBank.modValues[5] * 1000;
-            sprintf(buff, "MODV 0: %d,  MODV 1: %d,  MODV 2: %d,  MODV 3: %d,  MODV 4: %d,  MODV 5: %d", val1, val2, val3, val4, val5, val6);
+            /*val1 = voiceBank.modulations[0].source;
+            val2 = voiceBank.modulations[0].destination;
+            val3 = voiceBank.modulations[0].depth * 1000;
+            val4 = voiceBank.modulations[1].source;
+            val5 = voiceBank.modulations[1].destination;
+            val6 = voiceBank.modulations[1].depth * 1000;
+            sprintf(buff, "MODS 0: %d,  MODD 0: %d,  MODV 0: %d,  MODS 1: %d,  MODD 1: %d,  MODV 1: %d", val1, val2, val3, val4, val5, val6);
             hw->PrintLine(buff);
 
-            val1 = voiceBank.modValues[6] * 1000;
-            val2 = voiceBank.modValues[7] * 1000;
-            val3 = voiceBank.modValues[8] * 1000;
-            val4 = voiceBank.modValues[9] * 1000;
-            val5 = voiceBank.modValues[10] * 1000;
-            val6 = voiceBank.modValues[11] * 1000;
-            sprintf(buff, "MODV 6: %d,  MODV 7: %d,  MODV 8: %d,  MODV 9: %d,  MODV 10: %d,  MODV 11: %d", val1, val2, val3, val4, val5, val6);
+            val1 = voiceBank.modulations[2].source;
+            val2 = voiceBank.modulations[2].destination;
+            val3 = voiceBank.modulations[2].depth * 1000;
+            val4 = voiceBank.modulations[3].source;
+            val5 = voiceBank.modulations[3].destination;
+            val6 = voiceBank.modulations[3].depth * 1000;
+            sprintf(buff, "MODS 2: %d,  MODD 2: %d,  MODV 2: %d,  MODS 3: %d,  MODD 3: %d,  MODV 3: %d", val1, val2, val3, val4, val5, val6);
             hw->PrintLine(buff);
 
-            val1 = voiceBank.modValues[12] * 1000;
-            val2 = voiceBank.modValues[13] * 1000;
-            val3 = voiceBank.modValues[14] * 1000;
-            val4 = voiceBank.modValues[15] * 1000;
-            val5 = voiceBank.modValues[16] * 1000;
-            val6 = voiceBank.modValues[17] * 1000;
-            sprintf(buff, "MODV 12: %d,  MODV 13: %d,  MODV 14: %d,  MODV 15: %d,  MODV 16: %d,  MODV 17: %d", val1, val2, val3, val4, val5, val6);
+            val1 = voiceBank.modulations[4].source;
+            val2 = voiceBank.modulations[4].destination;
+            val3 = voiceBank.modulations[4].depth * 1000;
+            val4 = voiceBank.modulations[5].source;
+            val5 = voiceBank.modulations[5].destination;
+            val6 = voiceBank.modulations[5].depth * 1000;
+            sprintf(buff, "MODS 4: %d,  MODD 4: %d,  MODV 4: %d,  MODS 5: %d,  MODD 5: %d,  MODV 5: %d", val1, val2, val3, val4, val5, val6);
             hw->PrintLine(buff);
 
-            val1 = voiceBank.modValues[18] * 1000;
-            val2 = voiceBank.modValues[19] * 1000;
-            val3 = voiceBank.modValues[20] * 1000;
-            val4 = voiceBank.modValues[21] * 1000;
-            sprintf(buff, "MODV 18: %d,  MODV 19: %d,  MODV 20: %d,  MODV 21: %d", val1, val2, val3, val4);
+            val1 = voiceBank.modulations[6].source;
+            val2 = voiceBank.modulations[6].destination;
+            val3 = voiceBank.modulations[6].depth * 1000;
+            val4 = voiceBank.modulations[7].source;
+            val5 = voiceBank.modulations[7].destination;
+            val6 = voiceBank.modulations[7].depth * 1000;
+            sprintf(buff, "MODS 6: %d,  MODD 6: %d,  MODV 6: %d,  MODS 7: %d,  MODD 7: %d,  MODV 7: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modulations[8].source;
+            val2 = voiceBank.modulations[8].destination;
+            val3 = voiceBank.modulations[8].depth * 1000;
+            val4 = voiceBank.modulations[9].source;
+            val5 = voiceBank.modulations[9].destination;
+            val6 = voiceBank.modulations[9].depth * 1000;
+            sprintf(buff, "MODS 8: %d,  MODD 8: %d,  MODV 8: %d,  MODS 9: %d,  MODD 9: %d,  MODV 9: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modulations[10].source;
+            val2 = voiceBank.modulations[10].destination;
+            val3 = voiceBank.modulations[10].depth * 1000;
+            val4 = voiceBank.modulations[11].source;
+            val5 = voiceBank.modulations[11].destination;
+            val6 = voiceBank.modulations[11].depth * 1000;
+            sprintf(buff, "MODS 10: %d,  MODD 10: %d,  MODV 10: %d,  MODS 11: %d,  MODD 11: %d,  MODV 11: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modulations[12].source;
+            val2 = voiceBank.modulations[12].destination;
+            val3 = voiceBank.modulations[12].depth * 1000;
+            val4 = voiceBank.modulations[13].source;
+            val5 = voiceBank.modulations[13].destination;
+            val6 = voiceBank.modulations[13].depth * 1000;
+            sprintf(buff, "MODS 12: %d,  MODD 12: %d,  MODV 12: %d,  MODS 13: %d,  MODD 13: %d,  MODV 13: %d", val1, val2, val3, val4, val5, val6);
+            hw->PrintLine(buff);
+
+            val1 = voiceBank.modulations[14].source;
+            val2 = voiceBank.modulations[14].destination;
+            val3 = voiceBank.modulations[14].depth * 1000;
+            sprintf(buff, "MODS 14: %d,  MODD 14: %d,  MODV 14: %d", val1, val2, val3);
             hw->PrintLine(buff);*/
         }
     #endif // __DEBUG__

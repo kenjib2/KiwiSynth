@@ -24,40 +24,40 @@ namespace kiwi_synth
         }
 
         // Set initial encoder values.
-        setValue(PatchSetting::VCO_VOICES, (uint8_t)0);
-        setValue(PatchSetting::VCO_1_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::VCO_2_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::VCO_2_OCTAVE, (uint8_t)2);
-        setValue(PatchSetting::VCO_2_INTERVAL, (uint8_t)11);
-        setValue(PatchSetting::VCO_3_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::VCO_3_OCTAVE, (uint8_t)2);
-        setValue(PatchSetting::VCO_3_INTERVAL, (uint8_t)11);
-        setValue(PatchSetting::VCO_NOISE_TYPE, (uint8_t)0);
-        setValue(PatchSetting::VCF_FILTER_TYPE, (uint8_t)0);
-        setValue(PatchSetting::LFO_1_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::LFO_2_WAVEFORM, (uint8_t)0);
-        setValue(PatchSetting::MOD_1_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_1_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_2_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_2_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_3_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_3_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_4_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_4_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_5_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_5_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_6_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_6_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_7_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_7_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::MOD_8_SOURCE, (uint8_t)0);
-        setValue(PatchSetting::MOD_8_DESTINATION, (uint8_t)0);
-        setValue(PatchSetting::GEN_SELECT, (uint8_t)0);
-        setValue(PatchSetting::GEN_FX_SELECT, (uint8_t)0);
-        setValue(PatchSetting::GEN_REVERB_SELECT, (uint8_t)0);
+        setValue(PatchSetting::VCO_VOICES, (int8_t)0);
+        setValue(PatchSetting::VCO_1_WAVEFORM, (int8_t)0);
+        setValue(PatchSetting::VCO_2_WAVEFORM, (int8_t)0);
+        setValue(PatchSetting::VCO_2_OCTAVE, (int8_t)2);
+        setValue(PatchSetting::VCO_2_INTERVAL, (int8_t)11);
+        setValue(PatchSetting::VCO_3_WAVEFORM, (int8_t)0);
+        setValue(PatchSetting::VCO_3_OCTAVE, (int8_t)2);
+        setValue(PatchSetting::VCO_3_INTERVAL, (int8_t)11);
+        setValue(PatchSetting::VCO_NOISE_TYPE, (int8_t)0);
+        setValue(PatchSetting::VCF_FILTER_TYPE, (int8_t)0);
+        setValue(PatchSetting::LFO_1_WAVEFORM, (int8_t)0);
+        setValue(PatchSetting::LFO_2_WAVEFORM, (int8_t)0);
+        setValue(PatchSetting::MOD_1_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_1_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_2_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_2_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_3_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_3_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_4_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_4_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_5_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_5_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_6_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_6_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_7_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_7_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::MOD_8_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_8_DESTINATION, (int8_t)-1);
+        setValue(PatchSetting::GEN_SELECT, (int8_t)0);
+        setValue(PatchSetting::GEN_FX_SELECT, (int8_t)0);
+        setValue(PatchSetting::GEN_REVERB_SELECT, (int8_t)0);
     }
 
-    void PatchSettings::setValue(PatchSetting setting, uint8_t value)
+    void PatchSettings::setValue(PatchSetting setting, int8_t value)
     {
         switch(setting) {
             case VCO_VOICES:
@@ -97,52 +97,52 @@ namespace kiwi_synth
                 intValues[11] = std::min((int)value, 3); // Tri, Sq, Ramp, Saw
                 break;
             case MOD_1_SOURCE:
-                intValues[12] = std::min((int)value, MOD_SOURCES);
+                intValues[12] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_1_DESTINATION:
-                intValues[13] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[13] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_2_SOURCE:
-                intValues[14] = std::min((int)value, MOD_SOURCES);
+                intValues[14] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_2_DESTINATION:
-                intValues[15] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[15] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_3_SOURCE:
-                intValues[16] = std::min((int)value, MOD_SOURCES);
+                intValues[16] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_3_DESTINATION:
-                intValues[17] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[17] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_4_SOURCE:
-                intValues[18] = std::min((int)value, MOD_SOURCES);
+                intValues[18] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_4_DESTINATION:
-                intValues[19] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[19] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_5_SOURCE:
-                intValues[20] = std::min((int)value, MOD_SOURCES);
+                intValues[20] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_5_DESTINATION:
-                intValues[21] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[21] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_6_SOURCE:
-                intValues[22] = std::min((int)value, MOD_SOURCES);
+                intValues[22] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_6_DESTINATION:
-                intValues[23] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[23] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_7_SOURCE:
-                intValues[24] = std::min((int)value, MOD_SOURCES);
+                intValues[24] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_7_DESTINATION:
-                intValues[25] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[25] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case MOD_8_SOURCE:
-                intValues[26] = std::min((int)value, MOD_SOURCES);
+                intValues[26] = std::min((int)value, NUM_MOD_SOURCES);
                 break;
             case MOD_8_DESTINATION:
-                intValues[27] = std::min((int)value, MOD_DESTINATIONS);
+                intValues[27] = std::min((int)value, NUM_MOD_DESTINATIONS);
                 break;
             case GEN_SELECT:
                 intValues[28] = value;
@@ -270,7 +270,7 @@ namespace kiwi_synth
             case LFO_2_TO_VCF_CUTOFF:
                 floatValues[35] = value;
                 break;
-            case SH_LEVEL:
+            case SH_TO_VCF_CUTOFF:
                 floatValues[36] = value;
                 break;
             case SH_RATE:
@@ -381,7 +381,7 @@ namespace kiwi_synth
         }
     }
 
-    uint8_t PatchSettings::getIntValue(PatchSetting setting)
+    int8_t PatchSettings::getIntValue(PatchSetting setting)
     {
         switch(setting) {
             case VCO_VOICES:
@@ -576,7 +576,7 @@ namespace kiwi_synth
             case LFO_2_TO_VCF_CUTOFF:
                 value = floatValues[35];
                 break;
-            case SH_LEVEL:
+            case SH_TO_VCF_CUTOFF:
                 value = floatValues[36];
                 break;
             case SH_RATE:
@@ -749,10 +749,12 @@ namespace kiwi_synth
         bool pinBValue = ge->getPinValue(controlNumber, pinB);
 
         if (lastAValue && !pinAValue) {
-            uint8_t currentValue = getIntValue(setting);
+            int8_t currentValue = getIntValue(setting);
 
             if (pinBValue != pinAValue) {
-                if (currentValue != 0) {
+                if (currentValue > 0) {
+                    setValue(setting, --currentValue);
+                } else if (currentValue == 0 && setting >= MOD_1_SOURCE && setting <= MOD_8_DESTINATION) {
                     setValue(setting, --currentValue);
                 }
             } else {
@@ -844,7 +846,7 @@ namespace kiwi_synth
                 setValue(PatchSetting::ENV_2_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 15:
-                setValue(PatchSetting::SH_LEVEL, multiPots->GetMpValue(0, controlNumber));
+                setValue(PatchSetting::SH_TO_VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
                 setValue(PatchSetting::VCO_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(PatchSetting::ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;

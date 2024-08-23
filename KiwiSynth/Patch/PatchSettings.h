@@ -14,8 +14,9 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
-    const static int MOD_SOURCES = 12;
-    const static int MOD_DESTINATIONS = 22;
+    const static int NUM_MOD_SOURCES = 13; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 22; // Not including NONE
+    const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
 
     typedef enum {
         MULTIPOTS,
@@ -95,7 +96,7 @@ namespace kiwi_synth
         LFO_2_TRIGGER_PHASE,
         LFO_2_TO_VCF_CUTOFF,
 
-        SH_LEVEL,
+        SH_TO_VCF_CUTOFF,
         SH_RATE,
 
         MOD_1_SOURCE,
@@ -151,13 +152,14 @@ namespace kiwi_synth
 
     typedef enum
     {
-        SRC_NONE,
+        SRC_NONE = -1,
         SRC_FIXED,
         SRC_LFO_1,
         SRC_LFO_2,
         SRC_ENV_1,
         SRC_ENV_2,
         SRC_SH,
+        SRC_NOTE,
         SRC_VELOCITY,
         SRC_AFTERTOUCH,
         SRC_MOD_WHEEL,
@@ -168,7 +170,7 @@ namespace kiwi_synth
 
     typedef enum
     {
-        DST_NONE,
+        DST_NONE = -1,
         DST_VCOS_FREQ,
         DST_VCOS_PULSE_WIDTH,
         DST_VCO_1_FREQ,
@@ -208,7 +210,7 @@ namespace kiwi_synth
         //DST_FX_4,
         //DST_FX_5,
         //DST_FX_REVERB
-    } ModulationDestination; // 23 destination
+    } ModulationDestination; // 22 destination
 
     typedef enum
     {
@@ -264,7 +266,7 @@ namespace kiwi_synth
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, uint8_t value);
+            void setValue(PatchSetting setting, int8_t value);
             /*
              * Sets a float setting value. If a non-float setting is attempted, no action will be performed.
              */
@@ -281,7 +283,7 @@ namespace kiwi_synth
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
              */
-            uint8_t getIntValue(PatchSetting setting);
+            int8_t getIntValue(PatchSetting setting);
             /*
              * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
              */

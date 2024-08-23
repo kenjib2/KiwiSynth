@@ -26,6 +26,7 @@ namespace kiwi_synth
         env2.Init(patchSettings, sampleRate, 1);
         lfo1.Init(patchSettings, sampleRate, 0);
         lfo2.Init(patchSettings, sampleRate, 1);
+        initMods();
     }
 
     void Voice::UpdateSettings()
@@ -47,7 +48,36 @@ namespace kiwi_synth
         portamentoSpeed = patchSettings->getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED, 0.0001F, 0.05F, Scale::LOGARHITHMIC);
     }
 
-    void Voice::Process(float* sample)
+    void Voice::initMods()
+    {
+        memset(modValues, 0, NUM_MOD_DESTINATIONS * sizeof(float));
+    }
+
+    void Voice::calculateMods(Modulation* modulations)
+    {
+        for (int i = 0; i < NUM_MODULATIONS; i++) {
+            if (modulations[i].destination >= 0 && modulations[i].destination < NUM_MOD_DESTINATIONS 
+                && modulations[i].source >= 0 && modulations[i].source < NUM_MOD_SOURCES)
+            modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
+        }
+    }
+
+    float Voice::getModValue(ModulationSource source, float depth)
+    {
+        switch (source) {
+            case (SRC_NONE):
+                return 0.0f;
+                break;
+            case (SRC_FIXED):
+                return depth;
+                break;
+            default:
+                return prevSourceValues[source] * depth;
+                break;
+        }
+    }
+
+    void Voice::Process(float* sample, Modulation* modulations)
     {
         // Triggering notes to play
         if (noteTriggerCount > 0) {
@@ -55,6 +85,7 @@ namespace kiwi_synth
         } else if (noteTriggerCount == 0) {
             noteTriggerCount = -1;
             currentMidiNote = triggerNote;
+            currentVelocity = triggerVelocity;
             env1.SetQuickRelease(false);
             env2.SetQuickRelease(false);
             env1.NoteOn();
@@ -85,6 +116,9 @@ namespace kiwi_synth
         }
 
         // Processing modules
+        initMods();
+        calculateMods(modulations);
+
         float env1Sample = 1.0f;
         env1.Process(&env1Sample);
 
@@ -111,22 +145,37 @@ namespace kiwi_synth
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT * 0.8f;
         }
 
-        numMods = 1;
-        mods[0] = env1Sample;
-        vca.Process(sample, mods, numMods);
+        vca.Process(sample, modValues[DST_VCA_LEVEL]);
 
         numMods = 4;
         mods[0] = mtof(currentMidiNote);
         mods[1] = env1Sample;
         mods[2] = env2Sample;
         mods[3] = lfo2Sample;
+        float sampleAndHoldSample = 0.0f;
         if (fullFunctionality) {
-            float sampleAndHoldSample = noise.GetLastSample();
+            sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample);
             numMods = 5;
             mods[4] = sampleAndHoldSample;
         }
         vcf.Process(sample, mods, numMods);
+
+        // Setting up source values for the next round of modulations. We must modulate based on the previous
+        // sample because of possible circular dependencies otherwise.
+        // No need to set SRC_NONE nor SRC_FIXED. They can't be modulated.
+        prevSourceValues[SRC_LFO_1] = lfo1Sample;
+        prevSourceValues[SRC_LFO_2] = lfo2Sample;
+        prevSourceValues[SRC_ENV_1] = env1Sample;
+        prevSourceValues[SRC_ENV_2] = env2Sample;
+        prevSourceValues[SRC_SH] = sampleAndHoldSample;
+        prevSourceValues[SRC_NOTE] = currentMidiNote;
+        prevSourceValues[SRC_VELOCITY] = currentVelocity;
+        prevSourceValues[SRC_AFTERTOUCH] = 0.0f;
+        prevSourceValues[SRC_MOD_WHEEL] = 0.0f;
+        prevSourceValues[SRC_PITCH_BEND] = 0.0f;
+        prevSourceValues[SRC_EXPRESSION] = 0.0f;
+        prevSourceValues[SRC_PEDAL] = 0.0f;
     }
 
     bool Voice::IsAvailable()

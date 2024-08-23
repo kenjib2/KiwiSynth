@@ -5,6 +5,7 @@
 #include "daisysp.h"
 #include "Voice.h"
 #include "Patch/PatchSettings.h"
+#include "Modulation.h"
 
 using namespace daisysp;
 
@@ -18,11 +19,9 @@ namespace kiwi_synth
             uint8_t numVoices;
             std::vector<Voice> voices;
             PatchSettings* patchSettings;
-            std::vector<uint8_t>     playingIndices;
+             std::vector<uint8_t>     playingIndices;
             std::vector<uint8_t>     playingNotes;
             std::vector<uint8_t>     monoNotes;
-            float modMatrix[MOD_DESTINATIONS][MOD_SOURCES];
-            float modValues[MOD_DESTINATIONS];
 
             Voice* RequestVoice(uint8_t midiNote);
             void AddPlayingVoice(uint8_t index, uint8_t midiNote);
@@ -30,6 +29,7 @@ namespace kiwi_synth
  
         public:
             std::vector<int> playingVoices;
+            Modulation modulations[NUM_MODULATIONS];
 
             VoiceBank() {}
             ~VoiceBank() {}
@@ -37,9 +37,8 @@ namespace kiwi_synth
             void Process(float* sample);
 
             void UpdateSettings();
-            void InitModMatrix();
-            void UpdateModMatrix();
-            void CalculateModValues();
+            void InitModulations();
+            void UpdateModulations();
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
     };

@@ -9,7 +9,7 @@ namespace kiwi_synth
         SAMPLE_AND_HOLD_MAXIMUM_RATE = sampleRate; // 1 sec
 
         rate = SAMPLE_AND_HOLD_MINIMUM_RATE * 100;
-        level = 0.0F;
+        shToVcfCutoff = 0.0F;
         counter = 0;
         currentSample = 0.0F;
     }
@@ -17,7 +17,7 @@ namespace kiwi_synth
     void SampleAndHold::UpdateSettings()
     {
         rate = (int)patchSettings->getFloatValue(PatchSetting::SH_RATE, SAMPLE_AND_HOLD_MINIMUM_RATE, SAMPLE_AND_HOLD_MAXIMUM_RATE, LOGARHITHMIC);
-        level = patchSettings->getFloatValue(PatchSetting::SH_LEVEL, -0.001F, 1.001F, EXPONENTIAL);
+        shToVcfCutoff = patchSettings->getFloatValue(PatchSetting::SH_TO_VCF_CUTOFF, -0.001F, 1.001F, EXPONENTIAL);
     }
 
     void SampleAndHold::Process(float* sample)
@@ -28,7 +28,7 @@ namespace kiwi_synth
             currentSample = *sample;
         }
 
-        float computedLevel = level * level;
+        float computedLevel = shToVcfCutoff * shToVcfCutoff;
         if (computedLevel > 1.0F) {
             computedLevel = 0.9999999999F;
         }

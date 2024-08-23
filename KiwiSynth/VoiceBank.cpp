@@ -12,7 +12,7 @@ namespace kiwi_synth
             nextVoice.Init(numVcos, patchSettings, sampleRate);
             voices.push_back(nextVoice);
         }
-        InitModMatrix();
+        InitModulations();
     }
 
     
@@ -46,9 +46,7 @@ namespace kiwi_synth
         }
 
         if (numVoices != maxVoices) {
-            InitModMatrix();
-            UpdateModMatrix();
-            CalculateModValues();
+            UpdateModulations();
         }
     }
 
@@ -58,39 +56,55 @@ namespace kiwi_synth
         *sample = 0.0f;
 
         for (int i = 0; i < numVoices; i++) {
-            voices[i].Process(&nextVoice);
+            voices[i].Process(&nextVoice, modulations);
             if (i < numVoices) {
                 *sample += nextVoice;
             }
         }
     }
 
-    void VoiceBank::InitModMatrix() {
-        memset(modMatrix, 0, MOD_SOURCES * MOD_DESTINATIONS * sizeof(float));
-        memset(modValues, 0, MOD_DESTINATIONS * sizeof(float));
-    }
-
-    void VoiceBank::UpdateModMatrix() {
-        uint8_t source;
-        uint8_t destination;
-        float value;
+    void VoiceBank::InitModulations() {
         for (int i = 0; i < 8; i++) {
-            source = patchSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + i * 3));
-            destination = patchSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + i * 3));
-            value = patchSettings->getFloatValue((PatchSetting)(MOD_1_DEPTH + i * 3));
-
-            if (source != ModulationSource::SRC_NONE && destination != ModulationDestination::DST_NONE) {
-                modMatrix[destination - 1][source - 1] += value;
-            }
+            modulations[i].source = SRC_NONE;
+            modulations[i].destination = DST_NONE;
+            modulations[i].depth = 0.0f;
         }
+        modulations[8].source = SRC_LFO_1;
+        modulations[8].destination = DST_VCOS_FREQ;
+        modulations[8].depth = 0.0f;
+        modulations[9].source = SRC_ENV_1;
+        modulations[9].destination = DST_VCA_LEVEL;
+        modulations[9].depth = 0.0f;
+        modulations[10].source = SRC_NOTE;
+        modulations[10].destination = DST_VCF_CUTOFF;
+        modulations[10].depth = 0.0f;
+        modulations[11].source = SRC_ENV_1;
+        modulations[11].destination = DST_VCF_CUTOFF;
+        modulations[11].depth = 0.0f;
+        modulations[12].source = SRC_ENV_2;
+        modulations[12].destination = DST_VCF_CUTOFF;
+        modulations[12].depth = 0.0f;
+        modulations[13].source = SRC_LFO_2;
+        modulations[13].destination = DST_VCF_CUTOFF;
+        modulations[13].depth = 0.0f;
+        modulations[14].source = SRC_SH;
+        modulations[14].destination = DST_VCF_CUTOFF;
+        modulations[14].depth = 0.0f;
     }
 
-    void VoiceBank::CalculateModValues() {
-        for (int i = 0; i < MOD_DESTINATIONS; i++) {
-            for (int j = 0; j < MOD_SOURCES; j++) {
-                modValues[i] += modMatrix[i][j];
-            }
+    void VoiceBank::UpdateModulations() {
+        for (int i = 0; i < 8; i++) {
+            modulations[i].source = (ModulationSource)patchSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + i * 3));
+            modulations[i].destination = (ModulationDestination)patchSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + i * 3));
+            modulations[i].depth = patchSettings->getFloatValue((PatchSetting)(MOD_1_DEPTH + i * 3));
         }
+        modulations[8].depth = patchSettings->getFloatValue(LFO_1_TO_MASTER_TUNE);
+        modulations[9].depth = patchSettings->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[10].depth = patchSettings->getFloatValue(VCF_TRACKING);
+        modulations[11].depth = patchSettings->getFloatValue(VCF_ENV_1_DEPTH);
+        modulations[12].depth = patchSettings->getFloatValue(VCF_ENV_2_DEPTH);
+        modulations[13].depth = patchSettings->getFloatValue(LFO_2_TO_VCF_CUTOFF);
+        modulations[14].depth = patchSettings->getFloatValue(SH_TO_VCF_CUTOFF);
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)

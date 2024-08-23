@@ -16,7 +16,7 @@ namespace kiwi_synth
             float                   SAMPLE_AND_HOLD_MAXIMUM_RATE;
             PatchSettings*          patchSettings;
             int                     rate;
-            float                   level;
+            float                   shToVcfCutoff;
             int                     counter;
             float                   currentSample;
 
