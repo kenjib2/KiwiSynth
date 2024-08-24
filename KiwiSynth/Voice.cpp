@@ -84,6 +84,9 @@ namespace kiwi_synth
         }
     }
 
+    /*
+     * All modulations are one sample behind due to circular dependencies.
+     */
     void Voice::Process(float* sample, Modulation* modulations)
     {
         // Triggering notes to play
@@ -152,7 +155,7 @@ namespace kiwi_synth
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
-        vca.Process(sample, modulations[9].depth * env1Sample, modValues[DST_VCA_LEVEL]);
+        vca.Process(sample, modulations[9].depth * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
         numMods = 4;
         mods[0] = mtof(currentMidiNote);
