@@ -191,6 +191,7 @@ namespace kiwi_synth
                 // Find the lowest and highest playing notes to make sure that we don't return them in the next step.
                 // These will be the most audibly conspicuous notes to steal.
                 if (voices[i].currentMidiNote < lowestNote) {
+                    lowestIndex = i;
                     lowestNote = voices[i].currentMidiNote;
                 }
                 if (voices[i].currentMidiNote > highestNote) {
