@@ -149,7 +149,7 @@ namespace kiwi_synth
         if (fullFunctionality) {
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, nullptr, 0);
-            *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT * 0.8f;
+            *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
         vca.Process(sample, modulations[9].depth * env1Sample, modValues[DST_VCA_LEVEL]);
