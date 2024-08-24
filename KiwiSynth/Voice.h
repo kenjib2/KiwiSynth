@@ -25,7 +25,6 @@ namespace kiwi_synth
     {
         private:
             static const int MAX_MODS = 9;
-            int numVcos;
             std::vector<VCO> vcos;
             Noise noise;
             Envelope env1, env2;
@@ -54,13 +53,15 @@ namespace kiwi_synth
 
         public:
             bool fullFunctionality;
+            int maxVcos;
+            int numVcos;
             int currentMidiNote;
             int currentVelocity;
             bool noteTriggered;
 
             Voice() {}
             ~Voice() {}
-            void Init(int numVCOs, PatchSettings* patchSettings, float sampleRate);
+            void Init(int maxVcos, PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
             void Process(float* sample, Modulation* modulations);

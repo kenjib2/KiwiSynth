@@ -166,7 +166,7 @@ namespace kiwi_synth
         SRC_PITCH_BEND,
         SRC_EXPRESSION,
         SRC_PEDAL
-    } ModulationSource; // 13 sources
+    } ModulationSource; // 14 sources
 
     typedef enum
     {

@@ -28,26 +28,27 @@ namespace kiwi_synth
             default:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = true;
+                    voices[i].numVcos = voices[i].maxVcos;
                 }
                 numVoices = 2;
                 break;
             case 1:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = false;
+                    voices[i].numVcos = 1;
                 }
                 numVoices = maxVoices;
                 break;
             case 2:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = true;
+                    voices[i].numVcos = voices[i].maxVcos;
                 }
                 numVoices = 1;
                 break;
         }
 
-        if (numVoices != maxVoices) {
-            UpdateModulations();
-        }
+        UpdateModulations();
     }
 
     void VoiceBank::Process(float* sample)
@@ -64,10 +65,12 @@ namespace kiwi_synth
     }
 
     void VoiceBank::InitModulations() {
-        for (int i = 0; i < 8; i++) {
-            modulations[i].source = SRC_NONE;
-            modulations[i].destination = DST_NONE;
-            modulations[i].depth = 0.0f;
+        if (numVoices != maxVoices) {
+            for (int i = 0; i < 8; i++) {
+                modulations[i].source = SRC_NONE;
+                modulations[i].destination = DST_NONE;
+                modulations[i].depth = 0.0f;
+            }
         }
         modulations[8].source = SRC_LFO_1;
         modulations[8].destination = DST_VCOS_FREQ;

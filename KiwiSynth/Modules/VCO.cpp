@@ -112,7 +112,7 @@ namespace kiwi_synth
             if (waveform == 2 && fold) { // Triangle
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform == 1) { // Sawtooth
-                // Wavefolding does weird non-linear stuff to perceived level because it is a variant on clipping. We are compensating here with parts of this
+                // Sawtooth flattening does weird non-linear stuff to perceived level because of hard clipping. We are compensating here with parts of this
                 // formula arrived at after lots of trial and error.
                 waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F) * (0.49999f + 10 * (std::fmax(pulseWidth, 0.45) - 0.45));
             }

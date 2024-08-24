@@ -18,7 +18,12 @@ namespace kiwi_synth
         if (level > 0.0005f) {
             levelSample = *sample * std::fmax((level + mod), 0.00001f);
         }
-        *sample = (*sample + *sample * mod * 2) * env1Mod + levelSample; // env1Mod is the only mod we multiple instead of add because it is also note triggering
+        if (mod != 0.0f) {
+            *sample = (*sample + *sample * mod * 2) * env1Mod + levelSample; // env1Mod is the only mod we multiple instead of add because it is also note triggering
+        } else {
+            // avoiding extra calculations for fullFunctionality = false
+            *sample = *sample * env1Mod + levelSample;
+        }
         *sample = std::fmax(std::fmin(*sample * VCA_ATTENTUATION_CONSTANT, 0.99999f), 0.00001f);
     }
 

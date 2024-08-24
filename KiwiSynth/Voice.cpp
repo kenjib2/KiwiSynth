@@ -11,7 +11,8 @@ namespace kiwi_synth
         currentMidiNote = 64;
         currentMidiNote = 64.0f;
         currentPlayingNote = 64.0f;
-        this->numVcos = numVCOs;
+        this->maxVcos = numVCOs;
+        this->numVcos = maxVcos;
         this->patchSettings = patchSettings;
         for (int i = 0; i < numVCOs; i++) {
             VCO nextVco;
@@ -31,7 +32,7 @@ namespace kiwi_synth
 
     void Voice::UpdateSettings()
     {
-        for (int i = 0; i < numVcos; i++) {
+        for (int i = 0; i < maxVcos; i++) {
             vcos[i].UpdateSettings();
         }
         noise.UpdateSettings();
@@ -55,11 +56,15 @@ namespace kiwi_synth
 
     void Voice::calculateMods(Modulation* modulations)
     {
-        for (int i = 0; i < 9; i++) {
-            if (modulations[i].destination >= 0 && modulations[i].destination < NUM_MOD_DESTINATIONS 
-                && modulations[i].source >= 0 && modulations[i].source < NUM_MOD_SOURCES)
-            modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
+        if (fullFunctionality) {
+            for (int i = 0; i < 8; i++) {
+                if (modulations[i].destination >= 0 && modulations[i].source >= 0) {
+                    modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
+                }
+            }
         }
+        modValues[modulations[8].destination] += getModValue(modulations[8].source, modulations[8].depth);
+
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
         for (int i = 10; i < NUM_MODULATIONS; i++) {
@@ -121,7 +126,7 @@ namespace kiwi_synth
         } else {
             currentPlayingNote = fCurrentMidiNote;
         }
-        for (int i = 0; i < numVcos; i++) {
+        for (int i = 0; i < maxVcos; i++) {
             vcos[i].SetFreq(mtof(currentPlayingNote));
         }
 
