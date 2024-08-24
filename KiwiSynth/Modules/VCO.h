@@ -42,7 +42,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber);
 
             void UpdateSettings();
-            void Process(float* sample, float* mods, uint8_t numMods, bool fold = true);
+            void Process(float* sample, float mod, bool fold = true);
             void SetFreq(float frequency);
     };
 }

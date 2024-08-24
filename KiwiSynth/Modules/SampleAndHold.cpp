@@ -28,16 +28,7 @@ namespace kiwi_synth
             currentSample = *sample;
         }
 
-        float computedLevel = shToVcfCutoff * shToVcfCutoff;
-        if (computedLevel > 1.0F) {
-            computedLevel = 0.9999999999F;
-        }
-
-        if (computedLevel > 0.0F) {
-            *sample = computedLevel * currentSample;
-        } else {
-            *sample = 0.0F;
-        }
+        *sample = currentSample;
     }
 
 }

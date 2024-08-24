@@ -19,7 +19,7 @@ namespace kiwi_synth
             levelSample = *sample * std::fmax((level + mod), 0.00001f);
         }
         *sample = (*sample + *sample * mod * 2) * env1Mod + levelSample; // env1Mod is the only mod we multiple instead of add because it is also note triggering
-        *sample = std::fmax(std::fmin(*sample, 0.99999f), 0.00001f) * VCA_ATTENTUATION_CONSTANT;
+        *sample = std::fmax(std::fmin(*sample * VCA_ATTENTUATION_CONSTANT, 0.99999f), 0.00001f);
     }
 
 }

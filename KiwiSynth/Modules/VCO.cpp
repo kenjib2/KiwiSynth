@@ -97,23 +97,14 @@ namespace kiwi_synth
         }
     }
 
-    void VCO::Process(float* sample, float* mods, uint8_t numMods, bool fold)
+    void VCO::Process(float* sample, float mod, bool fold)
     {
         if (isOn) {
             float computedFreq = freq;
-            for (int i = 0; i < numMods; i++) {
-                switch (i)
-                {
-                    case 0:
-                        if (lfo1Depth > 0.0F) {
-                            computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mods[i] * 2.0F * lfo1Depth), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
-                        }
-                        break;
-                    default:
-                        computedFreq = std::fmax(std::fmin(computedFreq + (VCO_MAX_FREQUENCY - computedFreq) * mods[i], VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
-                        break;
-                }
+            if (mod != 0.0F) {
+                computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mod * 2.0F), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
             }
+
             osc.SetPw(pulseWidth);
             osc.SetFreq(computedFreq);
             float waveSample = osc.Process();
@@ -121,6 +112,8 @@ namespace kiwi_synth
             if (waveform == 2 && fold) { // Triangle
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform == 1) { // Sawtooth
+                // Wavefolding does weird non-linear stuff to perceived level because it is a variant on clipping. We are compensating here with parts of this
+                // formula arrived at after lots of trial and error.
                 waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F) * (0.49999f + 10 * (std::fmax(pulseWidth, 0.45) - 0.45));
             }
             *sample = waveSample * std::fmax(level, 0.0F);

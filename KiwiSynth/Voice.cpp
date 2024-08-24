@@ -141,12 +141,9 @@ namespace kiwi_synth
         float lfo2Sample = 1.0f;
         lfo2.Process(&lfo2Sample);
 
-        numMods = 1;
-        mods[0] = lfo1Sample;
-        *sample = 0.0f;
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
-            vcos[i].Process(&vcoSample, mods, numMods);
+            vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i]);
             *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
         if (fullFunctionality) {
@@ -167,7 +164,7 @@ namespace kiwi_synth
             sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample);
             numMods = 5;
-            mods[4] = sampleAndHoldSample;
+            mods[4] = sampleAndHoldSample * patchSettings->getFloatValue(SH_TO_VCF_CUTOFF);
         }
         vcf.Process(sample, mods, numMods);
 
