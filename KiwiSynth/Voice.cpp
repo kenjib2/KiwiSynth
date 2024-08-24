@@ -55,7 +55,14 @@ namespace kiwi_synth
 
     void Voice::calculateMods(Modulation* modulations)
     {
-        for (int i = 0; i < NUM_MODULATIONS; i++) {
+        for (int i = 0; i < 9; i++) {
+            if (modulations[i].destination >= 0 && modulations[i].destination < NUM_MOD_DESTINATIONS 
+                && modulations[i].source >= 0 && modulations[i].source < NUM_MOD_SOURCES)
+            modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
+        }
+        // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
+        // avoid having to check an if condition each time and thus save operator executions.
+        for (int i = 10; i < NUM_MODULATIONS; i++) {
             if (modulations[i].destination >= 0 && modulations[i].destination < NUM_MOD_DESTINATIONS 
                 && modulations[i].source >= 0 && modulations[i].source < NUM_MOD_SOURCES)
             modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
@@ -145,7 +152,7 @@ namespace kiwi_synth
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT * 0.8f;
         }
 
-        vca.Process(sample, modValues[DST_VCA_LEVEL]);
+        vca.Process(sample, modulations[9].depth * env1Sample, modValues[DST_VCA_LEVEL]);
 
         numMods = 4;
         mods[0] = mtof(currentMidiNote);
