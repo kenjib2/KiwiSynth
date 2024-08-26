@@ -67,9 +67,9 @@ namespace kiwi_synth
 
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
-        for (int i = 10; i < NUM_MODULATIONS; i++) {
-            if (modulations[i].destination >= 0 && modulations[i].destination < NUM_MOD_DESTINATIONS 
-                && modulations[i].source >= 0 && modulations[i].source < NUM_MOD_SOURCES)
+        // Also skipping 10 because VCF tracking needs to be handled in a special way.
+
+        for (int i = 11; i < NUM_MODULATIONS; i++) {
             modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
         }
     }
@@ -151,27 +151,20 @@ namespace kiwi_synth
             vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i]);
             *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
+
+        float sampleAndHoldSample = 0.0f;
         if (fullFunctionality) {
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, nullptr, 0);
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
+
+            sampleAndHoldSample = noise.GetLastSample();
+            sampleAndHold.Process(&sampleAndHoldSample);
         }
 
         vca.Process(sample, modulations[9].depth * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
-        numMods = 4;
-        mods[0] = mtof(currentMidiNote);
-        mods[1] = env1Sample;
-        mods[2] = env2Sample;
-        mods[3] = lfo2Sample;
-        float sampleAndHoldSample = 0.0f;
-        if (fullFunctionality) {
-            sampleAndHoldSample = noise.GetLastSample();
-            sampleAndHold.Process(&sampleAndHoldSample);
-            numMods = 5;
-            mods[4] = sampleAndHoldSample * patchSettings->getFloatValue(SH_TO_VCF_CUTOFF);
-        }
-        vcf.Process(sample, mods, numMods);
+        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF]);
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.

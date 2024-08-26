@@ -29,6 +29,7 @@ namespace kiwi_synth
  
         public:
             std::vector<int> playingVoices;
+            // 0-7: mod matrix, 8: LFO1 > VCOs, 9: ENV1 > VCA, 10: NOTE > Cutoff, 11: ENV1 > Cutoff, 12: ENV2 > Cutoff, 13: LFO2 > Cutoff, 14: S&H > Cutoff
             Modulation modulations[NUM_MODULATIONS];
 
             VoiceBank() {}

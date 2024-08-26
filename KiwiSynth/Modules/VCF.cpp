@@ -50,32 +50,15 @@ namespace kiwi_synth
         }
     }
 
-    void VCF::Process(float* sample, float* mods, uint8_t numMods)
+    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod)
     {
         float computedFrequency = frequency;
-        for (int i = 0; i < numMods; i++) {
-            switch (i)
-            {
-                case 0:
-                    computedFrequency = std::fmin(computedFrequency + mods[i] * keyboardTracking * 0.8F, VCF_MAX_FREQUENCY) ;
-                    break;
-                case 1:
-                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env1Depth, VCF_MAX_FREQUENCY) ;
-                    break;
-                case 2:
-                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mods[i] * env2Depth, VCF_MAX_FREQUENCY) ;
-                    break;
-                case 3:
-                    if (lfo2Depth > 0.0F) {
-                        computedFrequency = std::fmin(computedFrequency * (1.0F + mods[i] * 2.0F * lfo2Depth), VCF_MAX_FREQUENCY) ;
-                    }
-                    break;
-                default:
-                    computedFrequency = std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - computedFrequency) * mods[i], VCF_MAX_FREQUENCY) ;
-                    break;
-            }
-        }
+        computedFrequency = std::fmin(computedFrequency + trackingMod * mtof(currentMidiNote), VCF_MAX_FREQUENCY) ;
 
+        if (mod != 0.0f) {
+            // avoiding extra calculations for fullFunctionality = false
+            computedFrequency = std::fmax(std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod, VCF_MAX_FREQUENCY), VCF_MIN_FREQUENCY);
+        }
 
         float output;
         switch (filterType) {

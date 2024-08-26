@@ -104,9 +104,9 @@ namespace kiwi_synth
         modulations[8].depth = patchSettings->getFloatValue(LFO_1_TO_MASTER_TUNE);
         modulations[9].depth = patchSettings->getFloatValue(VCA_ENV_1_DEPTH);
         modulations[10].depth = patchSettings->getFloatValue(VCF_TRACKING);
-        modulations[11].depth = patchSettings->getFloatValue(VCF_ENV_1_DEPTH);
-        modulations[12].depth = patchSettings->getFloatValue(VCF_ENV_2_DEPTH);
-        modulations[13].depth = patchSettings->getFloatValue(LFO_2_TO_VCF_CUTOFF);
+        modulations[11].depth = patchSettings->getFloatValue(VCF_ENV_1_DEPTH, 0.0f, 1.0f, EXPONENTIAL);
+        modulations[12].depth = patchSettings->getFloatValue(VCF_ENV_2_DEPTH, 0.0f, 1.0f, EXPONENTIAL);
+        modulations[13].depth = patchSettings->getFloatValue(LFO_2_TO_VCF_CUTOFF, 0.0f, 1.0f, EXPONENTIAL);
         modulations[14].depth = patchSettings->getFloatValue(SH_TO_VCF_CUTOFF);
     }
 

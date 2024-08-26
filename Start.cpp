@@ -13,6 +13,8 @@ using namespace kiwi_synth;
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * Modulation Matrix
+ * Distortion
+ * Pre-filter distortion
  * Delay
  * Chorus
  * Flanger
@@ -80,7 +82,7 @@ int main(void)
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
 	{
-		sprintf(message, "BootLoader Started");
+		sprintf(message, "Ready for Update...");
 		display.TestOutput(message);
 		System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
 	}
