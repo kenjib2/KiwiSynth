@@ -141,10 +141,10 @@ namespace kiwi_synth
         env2.Process(&env2Sample);
 
         float lfo1Sample = 1.0f;
-        lfo1.Process(&lfo1Sample);
+        lfo1.Process(&lfo1Sample, modValues[DST_LFO_1_FREQ]);
 
         float lfo2Sample = 1.0f;
-        lfo2.Process(&lfo2Sample);
+        lfo2.Process(&lfo2Sample, modValues[DST_LFO_2_FREQ]);
 
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
@@ -175,7 +175,7 @@ namespace kiwi_synth
         prevSourceValues[SRC_ENV_2] = env2Sample;
         prevSourceValues[SRC_SH] = sampleAndHoldSample;
         prevSourceValues[SRC_NOTE] = currentMidiNote;
-        prevSourceValues[SRC_VELOCITY] = currentVelocity;
+        prevSourceValues[SRC_VELOCITY] = (float)currentVelocity / 127.0f;
         prevSourceValues[SRC_AFTERTOUCH] = 0.0f;
         prevSourceValues[SRC_MOD_WHEEL] = 0.0f;
         prevSourceValues[SRC_PITCH_BEND] = 0.0f;
