@@ -184,15 +184,15 @@ namespace kiwi_synth
         //DST_VCF_ENV_1_DEPTH,
         //DST_VCF_ENV_2_DEPTH,
         DST_VCA_LEVEL,          // 9
-        //DST_VCA_ENV_1_DEPTH,
+        DST_VCA_ENV_1_DEPTH,    // 10
         //DST_VCA_ENV_2_DEPTH,
-        DST_LFO_1_FREQ,         // 10
-        DST_LFO_1_PULSE_WIDTH,  // 11
+        DST_LFO_1_FREQ,         // 11
+        DST_LFO_1_PULSE_WIDTH,  // 12
         //DST_LFO_1_TO_MASTER_TUNE,
         //DST_LFO_1_TO_VCF_CUTOFF,
         //DST_LFO_1_TRIGGER_PHASE,
-        DST_LFO_2_FREQ,         // 12
-        DST_LFO_2_PULSE_WIDTH,  // 13
+        DST_LFO_2_FREQ,         // 13
+        DST_LFO_2_PULSE_WIDTH,  // 14
         //DST_LFO_2_TO_MASTER_TUNE,
         //DST_LFO_2_TO_VCF_CUTOFF,
         //DST_LFO_2_TRIGGER_PHASE,

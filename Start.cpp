@@ -13,7 +13,6 @@ using namespace kiwi_synth;
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * Modulation Matrix
- * Velocity to VCA isn't working right -- might need separate mods for VCA level and ENV1 to VCA
  * Distortion
  * Pre-filter distortion
  * Delay

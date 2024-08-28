@@ -162,7 +162,7 @@ namespace kiwi_synth
             sampleAndHold.Process(&sampleAndHoldSample);
         }
 
-        vca.Process(sample, modulations[9].depth * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
+        vca.Process(sample, std::fmin(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
         vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF]);
 

@@ -11,6 +11,23 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
+    typedef enum {
+        MODS_MOD_MATRIX_1,
+        MODS_MOD_MATRIX_2,
+        MODS_MOD_MATRIX_3,
+        MODS_MOD_MATRIX_4,
+        MODS_MOD_MATRIX_5,
+        MODS_MOD_MATRIX_6,
+        MODS_MOD_MATRIX_7,
+        MODS_MOD_MATRIX_8,
+        MODS_LFO_1_TO_VCOS,
+        MODS_ENV_1_TO_VCA,
+        MODS_NOTE_TO_VCF_FREQ,
+        MODS_ENV_1_TO_VCF_FREQ,
+        MODS_ENV_2_TO_VCF_FREQ,
+        MODS_LFO_2_TO_VCF_FREQ,
+        MODS_SH_TO_VCF_FREQ
+    } Modulations;
     
     class VoiceBank
     {
@@ -29,7 +46,6 @@ namespace kiwi_synth
  
         public:
             std::vector<int> playingVoices;
-            // 0-7: mod matrix, 8: LFO1 > VCOs, 9: ENV1 > VCA, 10: NOTE > Cutoff, 11: ENV1 > Cutoff, 12: ENV2 > Cutoff, 13: LFO2 > Cutoff, 14: S&H > Cutoff
             Modulation modulations[NUM_MODULATIONS];
 
             VoiceBank() {}
