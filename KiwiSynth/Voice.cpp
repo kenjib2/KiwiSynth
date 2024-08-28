@@ -148,7 +148,7 @@ namespace kiwi_synth
 
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
-            vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i]);
+            vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH + 2 * i]);
             *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
