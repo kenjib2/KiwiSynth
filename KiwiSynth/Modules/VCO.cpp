@@ -19,6 +19,8 @@ namespace kiwi_synth
     	osc.Init(sampleRate);
         osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
         osc.SetFreq(220.0F);
+        wavefolder.Init();
+        wavefolder.SetGain(1.0F);
     }
 
     void VCO::CalculateFreq()
@@ -108,8 +110,8 @@ namespace kiwi_synth
             osc.SetPw(std::max(std::fmin(pulseWidth + pwMod, 0.5f), 0.03f));
             osc.SetFreq(computedFreq);
             float waveSample = osc.Process();
-            wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 27, 28.0f), 1.0f));
             if (waveform == 2 && fold) { // Triangle
+                wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 27, 28.0f), 1.0f));
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform == 1) { // Sawtooth
                 // Sawtooth flattening does weird non-linear stuff to perceived level because of hard clipping. We are compensating here with parts of this

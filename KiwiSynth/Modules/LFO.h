@@ -15,12 +15,15 @@ namespace kiwi_synth
     class LFO
     {
         private:
+            int             waveform;
             float           pulseWidth;
+            float           waveFolderGain;
             float           freq;
             bool            noteOnReset;
             float           phase;
             PatchSettings*  patchSettings;
             Oscillator      osc;
+            Wavefolder      wavefolder;
             uint8_t         lfoNumber;
 
         public:
@@ -29,7 +32,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
 
             void UpdateSettings();
-            void Process(float* sample, float mod);
+            void Process(float* sample, float mod, float pwMod, bool fold = true);
             void SetFreq(float frequency);
             void NoteOn();
     };
