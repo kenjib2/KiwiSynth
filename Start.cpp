@@ -13,6 +13,11 @@ using namespace kiwi_synth;
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * Modulation Matrix
+ * Pitch Bend
+ * Modwheel
+ * Aftertouch
+ * Expression
+ * Pedal
  * Distortion
  * Pre-filter distortion
  * Delay

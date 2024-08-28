@@ -161,11 +161,11 @@ namespace kiwi_synth
         SRC_SH,     // 5
         SRC_NOTE,   // 6
         SRC_VELOCITY,   // 7
-        SRC_AFTERTOUCH, // 8
-        SRC_MOD_WHEEL,  // 9
-        SRC_PITCH_BEND, // 10
-        SRC_EXPRESSION, // 11
-        SRC_PEDAL       // 12
+        SRC_AFTERTOUCH, // 8    *
+        SRC_MOD_WHEEL,  // 9    *
+        SRC_PITCH_BEND, // 10   *
+        SRC_EXPRESSION, // 11   *
+        SRC_PEDAL       // 12   *
     } ModulationSource; // 14 sources
 
     typedef enum
@@ -180,36 +180,36 @@ namespace kiwi_synth
         DST_VCO_3_FREQ,         // 6
         DST_VCO_3_PULSE_WIDTH,  // 7
         DST_VCF_CUTOFF,         // 8
-        //DST_VCF_RESONANCE,
-        //DST_VCF_ENV_1_DEPTH,
-        //DST_VCF_ENV_2_DEPTH,
+        //DST_VCF_RESONANCE,            *
+        //DST_VCF_ENV_1_DEPTH,          *
+        //DST_VCF_ENV_2_DEPTH,          *
         DST_VCA_LEVEL,          // 9
         DST_VCA_ENV_1_DEPTH,    // 10
-        //DST_VCA_ENV_2_DEPTH,
+        //DST_VCA_ENV_2_DEPTH,          *
         DST_LFO_1_FREQ,         // 11
         DST_LFO_1_PULSE_WIDTH,  // 12
-        //DST_LFO_1_TO_MASTER_TUNE,
-        //DST_LFO_1_TO_VCF_CUTOFF,
-        //DST_LFO_1_TRIGGER_PHASE,
+        //DST_LFO_1_TO_MASTER_TUNE,     *
+        //DST_LFO_1_TO_VCF_CUTOFF,      *
+        //DST_LFO_1_TRIGGER_PHASE,      *
         DST_LFO_2_FREQ,         // 13
         DST_LFO_2_PULSE_WIDTH,  // 14
-        //DST_LFO_2_TO_MASTER_TUNE,
-        //DST_LFO_2_TO_VCF_CUTOFF,
-        //DST_LFO_2_TRIGGER_PHASE,
-        DST_ENV_1_ATTACK,
-        DST_ENV_1_DECAY,
-        DST_ENV_1_SUSTAIN,
-        DST_ENV_1_RELEASE,
-        DST_ENV_2_ATTACK,
-        DST_ENV_2_DECAY,
-        DST_ENV_2_SUSTAIN,
-        DST_ENV_2_RELEASE,
-        //DST_FX_1,
-        //DST_FX_2,
-        //DST_FX_3,
-        //DST_FX_4,
-        //DST_FX_5,
-        //DST_FX_REVERB
+        //DST_LFO_2_TO_MASTER_TUNE,     *
+        //DST_LFO_2_TO_VCF_CUTOFF,      *
+        //DST_LFO_2_TRIGGER_PHASE,      *
+        DST_ENV_1_ATTACK,       // 15   *
+        DST_ENV_1_DECAY,        // 16   *
+        DST_ENV_1_SUSTAIN,      // 17   *
+        DST_ENV_1_RELEASE,      // 18   *
+        DST_ENV_2_ATTACK,       // 19   *
+        DST_ENV_2_DECAY,        // 20   *
+        DST_ENV_2_SUSTAIN,      // 21   *
+        DST_ENV_2_RELEASE,      // 22   *
+        //DST_FX_1,                     *
+        //DST_FX_2,                     *
+        //DST_FX_3,                     *
+        //DST_FX_4,                     *
+        //DST_FX_5,                     *
+        //DST_FX_REVERB                 *
     } ModulationDestination; // 22 destination
 
     typedef enum
