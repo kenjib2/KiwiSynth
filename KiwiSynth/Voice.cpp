@@ -155,11 +155,11 @@ namespace kiwi_synth
         float sampleAndHoldSample = 0.0f;
         if (fullFunctionality) {
             float noiseSample = 0.0f;
-            noise.Process(&noiseSample, nullptr, 0);
+            noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
             *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
 
             sampleAndHoldSample = noise.GetLastSample();
-            sampleAndHold.Process(&sampleAndHoldSample);
+            sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE]);
         }
 
         vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);

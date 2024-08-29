@@ -22,7 +22,7 @@ namespace kiwi_synth
         level = patchSettings->getFloatValue(PatchSetting::VCO_NOISE_LEVEL);
     }
 
-    void Noise::Process(float* sample, float* mods, uint8_t numMods)
+    void Noise::Process(float* sample, float mod)
     {
         switch (noiseType) {
             case 0:
@@ -35,7 +35,7 @@ namespace kiwi_synth
         }
 
         if (isOn) {
-            *sample = lastSample * level;
+            *sample = lastSample * std::fmax((level + mod), 0.0f);
         }
     }
 

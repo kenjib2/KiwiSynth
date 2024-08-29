@@ -15,7 +15,7 @@ namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
     const static int NUM_MOD_SOURCES = 13; // Not including NONE
-    const static int NUM_MOD_DESTINATIONS = 18; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 20; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
 
     typedef enum {
@@ -179,21 +179,23 @@ namespace kiwi_synth
         DST_VCO_2_PULSE_WIDTH,  // 5
         DST_VCO_3_FREQ,         // 6
         DST_VCO_3_PULSE_WIDTH,  // 7
-        DST_VCF_CUTOFF,         // 8
-        DST_VCF_RESONANCE,      // 9
+        DST_NOISE_LEVEL,        // 8
+        DST_SH_RATE,            // 9
+        DST_VCF_CUTOFF,         // 10
+        DST_VCF_RESONANCE,      // 11
         //DST_VCF_ENV_1_DEPTH,          *   // Modulating other modulations might be complicated
         //DST_VCF_ENV_2_DEPTH,          *
-        DST_VCA_LEVEL,          // 10
-        DST_VCA_ENV_1_DEPTH,    // 11
+        DST_VCA_LEVEL,          // 12
+        DST_VCA_ENV_1_DEPTH,    // 13
         //DST_VCA_ENV_2_DEPTH,          *
-        DST_LFO_1_FREQ,         // 12
-        DST_LFO_1_PULSE_WIDTH,  // 13
+        DST_LFO_1_FREQ,         // 14
+        DST_LFO_1_PULSE_WIDTH,  // 15
         //DST_LFO_1_TO_MASTER_TUNE,     *
-        DST_LFO_1_TRIGGER_PHASE,// 14
-        DST_LFO_2_FREQ,         // 15
-        DST_LFO_2_PULSE_WIDTH,  // 16
+        DST_LFO_1_TRIGGER_PHASE,// 16
+        DST_LFO_2_FREQ,         // 17
+        DST_LFO_2_PULSE_WIDTH,  // 18
         //DST_LFO_2_TO_VCF_CUTOFF,      *
-        DST_LFO_2_TRIGGER_PHASE,// 17
+        DST_LFO_2_TRIGGER_PHASE,// 19
         //DST_ENV_1_ATTACK,       //    *   // Envelope might be too expensive to modulate
         //DST_ENV_1_DECAY,        //    *
         //DST_ENV_1_SUSTAIN,      //    *
@@ -208,7 +210,7 @@ namespace kiwi_synth
         //DST_FX_4,               //    *
         //DST_FX_5,               //    *
         //DST_FX_REVERB           //    *
-    } ModulationDestination; // 18 destinations
+    } ModulationDestination; // 20 destinations
 
     typedef enum
     {

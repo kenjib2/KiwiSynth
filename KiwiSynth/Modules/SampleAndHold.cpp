@@ -20,10 +20,11 @@ namespace kiwi_synth
         shToVcfCutoff = patchSettings->getFloatValue(PatchSetting::SH_TO_VCF_CUTOFF, -0.001F, 1.001F, EXPONENTIAL);
     }
 
-    void SampleAndHold::Process(float* sample)
+    void SampleAndHold::Process(float* sample, float mod)
     {
+        
         counter++;
-        if (counter >= rate) {
+        if (counter >= std::fmin(std::fmax(rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0F, SAMPLE_AND_HOLD_MINIMUM_RATE), SAMPLE_AND_HOLD_MAXIMUM_RATE)) {
             counter = 0;
             currentSample = *sample;
         }
