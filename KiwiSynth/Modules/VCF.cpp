@@ -50,7 +50,7 @@ namespace kiwi_synth
         }
     }
 
-    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod)
+    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod)
     {
         float computedFrequency = frequency;
         computedFrequency = std::fmin(computedFrequency + trackingMod * mtof(currentMidiNote), VCF_MAX_FREQUENCY) ;
@@ -60,40 +60,42 @@ namespace kiwi_synth
             computedFrequency = std::fmax(std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod, VCF_MAX_FREQUENCY), VCF_MIN_FREQUENCY);
         }
 
+        float computedResonance = std::fmax(std::fmin(resonance + resMod, 1.0f), 0.0f);
+
         float output;
         switch (filterType) {
             case LADDER_LOWPASS:
                 filter.SetFreq(computedFrequency);
-                filter.SetRes(resonance);
+                filter.SetRes(computedResonance);
                 output = filter.Process(*sample);
                 break;
             case SVF_LOWPASS:
                 svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(resonance);
+                svFilter.SetRes(computedResonance);
                 svFilter.Process(*sample);
                 output = svFilter.Low();
                 break;
             case SVF_HIGHPASS:
                 svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(resonance);
+                svFilter.SetRes(computedResonance);
                 svFilter.Process(*sample);
                 output = svFilter.High();
                 break;
             case SVF_BANDPASS:
                 svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(resonance);
+                svFilter.SetRes(computedResonance);
                 svFilter.Process(*sample);
                 output = svFilter.Band();
                 break;
             case SVF_NOTCH:
                 svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(resonance);
+                svFilter.SetRes(computedResonance);
                 svFilter.Process(*sample);
                 output = svFilter.Notch();
                 break;
             case SVF_PEAK:
                 svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(resonance);
+                svFilter.SetRes(computedResonance);
                 svFilter.Process(*sample);
                 output = svFilter.Peak();
                 break;

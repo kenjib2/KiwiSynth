@@ -46,7 +46,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample, float trackingMod, int currentMidiNote, float mods);
+            void Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod);
     };
 }
 
