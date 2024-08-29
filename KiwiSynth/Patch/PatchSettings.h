@@ -15,7 +15,7 @@ namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
     const static int NUM_MOD_SOURCES = 13; // Not including NONE
-    const static int NUM_MOD_DESTINATIONS = 22; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 16; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
 
     typedef enum {
@@ -166,7 +166,7 @@ namespace kiwi_synth
         SRC_PITCH_BEND, // 10   *
         SRC_EXPRESSION, // 11   *
         SRC_PEDAL       // 12   *
-    } ModulationSource; // 14 sources
+    } ModulationSource; // 13 sources
 
     typedef enum
     {
@@ -189,14 +189,12 @@ namespace kiwi_synth
         DST_LFO_1_FREQ,         // 12
         DST_LFO_1_PULSE_WIDTH,  // 13
         //DST_LFO_1_TO_MASTER_TUNE,     *
-        //DST_LFO_1_TO_VCF_CUTOFF,      *
-        //DST_LFO_1_TRIGGER_PHASE,      *
+        //DST_LFO_1_TRIGGER_PHASE,      *   // CAN BE DONE
         DST_LFO_2_FREQ,         // 14
         DST_LFO_2_PULSE_WIDTH,  // 15
-        //DST_LFO_2_TO_MASTER_TUNE,     *
         //DST_LFO_2_TO_VCF_CUTOFF,      *
-        //DST_LFO_2_TRIGGER_PHASE,      *
-        //DST_ENV_1_ATTACK,       //    *   // Envelope might be too expensive to modulation
+        //DST_LFO_2_TRIGGER_PHASE,      *   // CAN BE DONE
+        //DST_ENV_1_ATTACK,       //    *   // Envelope might be too expensive to modulate
         //DST_ENV_1_DECAY,        //    *
         //DST_ENV_1_SUSTAIN,      //    *
         //DST_ENV_1_RELEASE,      //    *
@@ -204,13 +202,13 @@ namespace kiwi_synth
         //DST_ENV_2_DECAY,        //    *
         //DST_ENV_2_SUSTAIN,      //    *
         //DST_ENV_2_RELEASE,      //    *
-        //DST_FX_1,                     *
-        //DST_FX_2,                     *
-        //DST_FX_3,                     *
-        //DST_FX_4,                     *
-        //DST_FX_5,                     *
-        //DST_FX_REVERB                 *
-    } ModulationDestination; // 22 destinations
+        //DST_FX_1,               //    *   // Can't modulate effects because source values are different for each voice
+        //DST_FX_2,               //    *
+        //DST_FX_3,               //    *
+        //DST_FX_4,               //    *
+        //DST_FX_5,               //    *
+        //DST_FX_REVERB           //    *
+    } ModulationDestination; // 16 destinations
 
     typedef enum
     {
