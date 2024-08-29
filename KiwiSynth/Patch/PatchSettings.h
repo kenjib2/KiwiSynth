@@ -203,7 +203,7 @@ namespace kiwi_synth
         //DST_ENV_2_SUSTAIN,      //    *
         //DST_ENV_2_RELEASE,      //    *
         //DST_FX_1,               //    *   // Can't modulate effects because source values are different for each voice
-        //DST_FX_2,               //    *
+        //DST_FX_2,               //    *   // Could possibly modulate for sources 7-12 only
         //DST_FX_3,               //    *
         //DST_FX_4,               //    *
         //DST_FX_5,               //    *
