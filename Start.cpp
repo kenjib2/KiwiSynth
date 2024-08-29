@@ -12,7 +12,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Modulation Matrix
  * Pitch Bend
  * Modwheel
  * Aftertouch
@@ -24,6 +23,7 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * Modulating modulations and effects
  * Save / Load
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply?
  * Can we optimize to get 3 voice working with 3 VCOs again?

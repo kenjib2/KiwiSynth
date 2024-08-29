@@ -141,10 +141,10 @@ namespace kiwi_synth
         env2.Process(&env2Sample);
 
         float lfo1Sample = 1.0f;
-        lfo1.Process(&lfo1Sample, modValues[DST_LFO_1_FREQ], modValues[DST_LFO_1_PULSE_WIDTH]);
+        lfo1.Process(&lfo1Sample, modValues[DST_LFO_1_FREQ], modValues[DST_LFO_1_PULSE_WIDTH], modValues[DST_LFO_1_TRIGGER_PHASE]);
 
         float lfo2Sample = 1.0f;
-        lfo2.Process(&lfo2Sample, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH]);
+        lfo2.Process(&lfo2Sample, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH], modValues[DST_LFO_2_TRIGGER_PHASE]);
 
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;

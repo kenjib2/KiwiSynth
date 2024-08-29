@@ -20,6 +20,7 @@ namespace kiwi_synth
             float           waveFolderGain;
             float           freq;
             bool            noteOnReset;
+            float           basePhase;
             float           phase;
             PatchSettings*  patchSettings;
             Oscillator      osc;
@@ -32,7 +33,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
 
             void UpdateSettings();
-            void Process(float* sample, float mod, float pwMod, bool fold = true);
+            void Process(float* sample, float mod, float pwMod, float tphaseMod, bool fold = true);
             void SetFreq(float frequency);
             void NoteOn();
     };

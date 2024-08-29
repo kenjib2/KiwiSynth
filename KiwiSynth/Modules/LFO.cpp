@@ -61,7 +61,7 @@ namespace kiwi_synth
                 break;
         }
         freq = patchSettings->getFloatValue(rateSetting, LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
-        phase = patchSettings->getFloatValue(triggerPhaseSetting);
+        basePhase = patchSettings->getFloatValue(triggerPhaseSetting);
         noteOnReset = patchSettings->getBoolValue(triggerResetSetting);
         pulseWidth = patchSettings->getFloatValue(pulseWidthSetting, 0.03F, 0.97F);
         if (pulseWidth < 0.032F) {
@@ -71,8 +71,9 @@ namespace kiwi_synth
         }
     }
 
-    void LFO::Process(float* sample, float mod, float pwMod, bool fold)
+    void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod, bool fold)
     {
+        phase = fmod(basePhase + tphaseMod, 1.0F);
         osc.SetPw(std::max(std::fmin(pulseWidth + pwMod, 0.97f), 0.03f));
 
         float computedFreq = freq;
