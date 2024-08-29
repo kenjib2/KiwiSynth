@@ -105,7 +105,7 @@ namespace kiwi_synth
         if (isOn) {
             float computedFreq = freq;
             if (mod != 0.0F) {
-                computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mod * 2.0F), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
+                computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mod), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
             }
 
             osc.SetPw(std::max(std::fmin(pulseWidth + pwMod, 0.5f), 0.03f));
@@ -115,9 +115,6 @@ namespace kiwi_synth
                 wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 27, 28.0f), 1.0f));
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform == 1) { // Sawtooth
-                // Sawtooth flattening does weird non-linear stuff to perceived level because of hard clipping. We are compensating here with parts of this
-                // formula arrived at after lots of trial and error.
-                //waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F) * (0.49999f + 10 * (std::fmax(pulseWidth, 0.45) - 0.45));
                 waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F);
             }
             *sample = waveSample * std::fmax(level, 0.0F);

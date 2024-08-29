@@ -7,11 +7,12 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         this->lfoNumber = lfoNumber;
         noteOnReset = false;
-        pulseWidth = 0.5f;
+        pulseWidth = 0.5F;
     	osc.Init(sampleRate);
         osc.SetWaveform(Oscillator::WAVE_TRI);
-        osc.SetFreq(2.0f);
-        osc.PhaseAdd(0.0f);
+        osc.SetFreq(2.0F);
+        osc.PhaseAdd(0.0F);
+        osc.SetAmp(1.0F);
         wavefolder.Init();
         wavefolder.SetGain(1.0f);
     }
@@ -67,7 +68,7 @@ namespace kiwi_synth
         if (pulseWidth < 0.032F) {
             waveFolderGain = 1.0f;
         } else {
-            waveFolderGain = 0.97f + pulseWidth * 27;
+            waveFolderGain = 0.97f + pulseWidth * 5.0f;
         }
     }
 
@@ -85,7 +86,7 @@ namespace kiwi_synth
 
         float waveSample = osc.Process();
         if (waveform == 0 && fold) { // Triangle
-            wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 27, 28.0f), 1.0f));
+            wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 5.0f, 6.0f), 1.0f));
             waveSample = wavefolder.Process(waveSample);
         } else if (waveform > 1) { // Sawtooth or Ramp
             waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F);
