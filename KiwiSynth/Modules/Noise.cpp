@@ -11,6 +11,7 @@ namespace kiwi_synth
         lastSample = 0.0F;
         white.Init();
         white.SetSeed(std::rand());
+        white.SetAmp(1.0F);
         dust.Init();
         dust.SetDensity(0.015f);
     }
@@ -30,7 +31,7 @@ namespace kiwi_synth
                 lastSample = white.Process();
                 break;
             case 1:
-                lastSample = dust.Process() * 2.0f;
+                lastSample = dust.Process();
                 break;
         }
 

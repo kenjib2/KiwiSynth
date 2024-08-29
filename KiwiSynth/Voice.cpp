@@ -156,7 +156,11 @@ namespace kiwi_synth
         if (fullFunctionality) {
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
-            *sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT;
+            if (patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE) == 0) {
+                std::fmax(std::fmin(*sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT, 1.0F), -1.0F);
+            } else {
+                *sample = *sample + noiseSample;
+            }
 
             sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE]);
