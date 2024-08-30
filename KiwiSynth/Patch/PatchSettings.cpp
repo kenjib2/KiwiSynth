@@ -5,12 +5,6 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    char DSY_SDRAM_BSS name[MAX_PATCH_NAME_LENGTH + 1];
-    float DSY_SDRAM_BSS floatValues[54];
-    int8_t DSY_SDRAM_BSS intValues[31];
-    bool DSY_SDRAM_BSS boolValues[10];
-    bool DSY_SDRAM_BSS lastPinValues[4][16];
-
     void PatchSettings::Init(MultiPots* multiPots, GpioExpansion* ge)
     {
         this->multiPots = multiPots;

@@ -232,6 +232,13 @@ namespace kiwi_synth
     class PatchSettings : public ControlListener
     {
         private:
+            // was global in PatchSettings.cpp and DSY_SDRAM_BSS
+            char name[MAX_PATCH_NAME_LENGTH + 1];
+            float floatValues[54];
+            int8_t intValues[31];
+            bool boolValues[10];
+            bool lastPinValues[4][16];
+
             static constexpr float minValue = 0.0f;
             static constexpr float maxValue = 1.0f;
             MultiPots* multiPots;
