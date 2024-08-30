@@ -9,18 +9,18 @@ namespace kiwi_synth
 
     void VCA::UpdateSettings()
     {
-        level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL, -0.001F, 1.0F); // Start in negative to deal with low level pot noise
+        level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL);
     }
 
     void VCA::Process(float* sample, float env1Mod, float mod, bool fullFunctionality)
     {
         float levelSample = 0.0f;
         if (fullFunctionality) {
-            if (level > 0.0005f) {
+            if (level > 0.0015f) {
                 levelSample = *sample * (level + mod);
             }
         } else {
-            if (level > 0.0005f) {
+            if (level > 0.0015f) {
                 levelSample = *sample * level;
             }
         }
