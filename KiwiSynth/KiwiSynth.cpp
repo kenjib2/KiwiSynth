@@ -125,41 +125,97 @@ namespace kiwi_synth
         if (midiChannel == midiEvent->channel) {
             NoteOnEvent on;
             NoteOffEvent off;
-            switch(midiEvent->type)
-            {
-                case NoteOn:
-                    midiCounter = 0;
-                    on = midiEvent->AsNoteOn();
-                    if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
-                    {
-                        voiceBank.NoteOn(on.note, on.velocity);
+            ControlChangeEvent cc;
+            if (numVoices == MAX_VOICES) {
+                switch(midiEvent->type)
+                {
+                    case NoteOn:
+                        midiCounter = 0;
+                        on = midiEvent->AsNoteOn();
+                        if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
+                        {
+                            voiceBank.NoteOn(on.note, on.velocity);
+                            break;
+                        }
                         break;
-                    }
-                    break;
 
-                case NoteOff:
-                    midiCounter = 0;
-                    off = midiEvent->AsNoteOff();
-                    voiceBank.NoteOff(off.note, off.velocity);
-                    break;
+                    case NoteOff:
+                        midiCounter = 0;
+                        off = midiEvent->AsNoteOff();
+                        voiceBank.NoteOff(off.note, off.velocity);
+                        break;
 
-                // Unimplemented message types
-                case ChannelPressure:
-                    patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
-                    break;
+                    case PolyphonicKeyPressure:
+                    case ProgramChange:
+                    case SystemCommon:
+                    case SystemRealTime:
+                    case ChannelMode:
+                    case MessageLast:
+                    case PitchBend:
+                    case ChannelPressure:
+                    case ControlChange:
+                    default:
+                        break;
+                }
+            } else {
+                switch(midiEvent->type)
+                {
+                    case NoteOn:
+                        midiCounter = 0;
+                        on = midiEvent->AsNoteOn();
+                        if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
+                        {
+                            voiceBank.NoteOn(on.note, on.velocity);
+                            break;
+                        }
+                        break;
 
-                case PolyphonicKeyPressure:
-                case ProgramChange:
-                case PitchBend:
-                case SystemCommon:
-                case SystemRealTime:
-                case ChannelMode:
-                case MessageLast:
-                case ControlChange:
-                    break;
+                    case NoteOff:
+                        midiCounter = 0;
+                        off = midiEvent->AsNoteOff();
+                        voiceBank.NoteOff(off.note, off.velocity);
+                        break;
 
-                default:
-                    break;
+                    case PitchBend:
+                        patchSettings.setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
+                        break;
+
+                    // Unimplemented message types
+                    case ChannelPressure:
+                        patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
+                        break;
+
+                    case ControlChange:
+                        cc = midiEvent->AsControlChange();
+                        switch (cc.control_number) {
+                            case 1:  // Mod Wheel
+                                patchSettings.setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
+                                break;
+
+                            case 11: // Expression
+                                patchSettings.setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
+                                break;
+
+                            case 64: // Sustain Pedal
+                                if (cc.value < 64) {
+                                    patchSettings.setValue(GEN_SUSTAIN, false); // Off
+                                } else {
+                                    patchSettings.setValue(GEN_SUSTAIN, true);  // On
+                                }
+                                break;
+
+                        }
+                        break;
+
+                    case PolyphonicKeyPressure:
+                    case ProgramChange:
+                    case SystemCommon:
+                    case SystemRealTime:
+                    case ChannelMode:
+                    case MessageLast:
+                    default:
+                        break;
+                }
             }
         }
     }
