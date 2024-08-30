@@ -102,12 +102,9 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	#ifdef __DEBUG__
+	#if defined(__CPU_LOAD__) || defined(__DEBUG__)
 		uint16_t counter = 0;
 	#endif // __DEBUG__
-	#ifdef __CPU_LOAD__
-		uint16_t counter = 0;
-	#endif // __CPU_LOAD__
     while(1)
 	{
 		System::DelayUs(5);

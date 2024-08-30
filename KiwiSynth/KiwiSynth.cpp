@@ -145,6 +145,9 @@ namespace kiwi_synth
 
                 // Unimplemented message types
                 case ChannelPressure:
+                    patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
+                    break;
+
                 case PolyphonicKeyPressure:
                 case ProgramChange:
                 case PitchBend:
@@ -329,6 +332,14 @@ namespace kiwi_synth
             val2 = patchSettings.getIntValue(PatchSetting::MOD_4_DESTINATION);
             val3 = patchSettings.getIntValue(PatchSetting::GEN_SELECT);
             sprintf(buff, "MOD 4 S: %d,  MOD 4 D: %d,  GEN Sel: %d", val1, val2, val3);
+            hw->PrintLine(buff);
+
+            val1 = patchSettings.getFloatValue(PatchSetting::GEN_AFTERTOUCH) * 1000;
+            val2 = patchSettings.getFloatValue(PatchSetting::GEN_MOD_WHEEL) * 1000;
+            val3 = patchSettings.getFloatValue(PatchSetting::GEN_PITCH_BEND) * 1000;
+            val4 = patchSettings.getFloatValue(PatchSetting::GEN_EXPRESSION) * 1000;
+            bool5 = patchSettings.getBoolValue(PatchSetting::GEN_SUSTAIN);
+            sprintf(buff, "ATouch: %d,  MWheel: %d,  PBend: %d,  Expr: %d,  Sus: %d", val1, val2, val3, val4, bool5);
             hw->PrintLine(buff);
 
             /*val1 = voiceBank.modulations[0].source;

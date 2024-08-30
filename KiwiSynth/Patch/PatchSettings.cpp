@@ -318,6 +318,18 @@ namespace kiwi_synth
             case GEN_REVERB_DECAY:
                 floatValues[53] = value;
                 break;
+            case GEN_AFTERTOUCH:
+                floatValues[54] = value;
+                break;
+            case GEN_MOD_WHEEL:
+                floatValues[55] = value;
+                break;
+            case GEN_PITCH_BEND:
+                floatValues[56] = value;
+                break;
+            case GEN_EXPRESSION:
+                floatValues[57] = value;
+                break;
             default:
                 break;
         }
