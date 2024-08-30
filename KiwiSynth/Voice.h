@@ -53,6 +53,7 @@ namespace kiwi_synth
 
         public:
             bool fullFunctionality;
+            bool mono;
             int maxVcos;
             int numVcos;
             int currentMidiNote;

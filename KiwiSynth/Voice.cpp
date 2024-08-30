@@ -168,7 +168,7 @@ namespace kiwi_synth
 
         vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL], fullFunctionality);
 
-        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE], fullFunctionality, mono);
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.

@@ -50,7 +50,7 @@ namespace kiwi_synth
         }
     }
 
-    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod)
+    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod, bool fullFunctionality, bool mono)
     {
         float computedFrequency = frequency;
         computedFrequency = std::fmin(computedFrequency + trackingMod * mtof(currentMidiNote), VCF_MAX_FREQUENCY) ;
@@ -60,59 +60,68 @@ namespace kiwi_synth
             computedFrequency = std::fmax(std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod, VCF_MAX_FREQUENCY), VCF_MIN_FREQUENCY);
         }
 
-        float computedResonance = std::fmax(std::fmin(resonance + resMod, 1.0f), 0.0f);
-
+        float computedResonance = resonance;
         float output;
-        switch (filterType) {
-            case LADDER_LOWPASS:
-                filter.SetFreq(computedFrequency);
-                filter.SetRes(computedResonance);
-                output = filter.Process(*sample);
-                break;
-            case SVF_LOWPASS:
-                svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(computedResonance);
-                svFilter.Process(*sample);
-                output = svFilter.Low();
-                break;
-            case SVF_HIGHPASS:
-                svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(computedResonance);
-                svFilter.Process(*sample);
-                output = svFilter.High();
-                break;
-            case SVF_BANDPASS:
-                svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(computedResonance);
-                svFilter.Process(*sample);
-                output = svFilter.Band();
-                break;
-            case SVF_NOTCH:
-                svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(computedResonance);
-                svFilter.Process(*sample);
-                output = svFilter.Notch();
-                break;
-            case SVF_PEAK:
-                svFilter.SetFreq(computedFrequency);
-                svFilter.SetRes(computedResonance);
-                svFilter.Process(*sample);
-                output = svFilter.Peak();
-                break;
-            case ONE_POLE_LOWPASS:
-                opFilter.SetFilterMode(daisysp::OnePole::FilterMode::FILTER_MODE_LOW_PASS);
-                opFilter.SetFrequency(computedFrequency / 100000.0f);
-                output = opFilter.Process(*sample);
-                break;
-            case ONE_POLE_HIGHPASS:
-                opFilter.SetFilterMode(daisysp::OnePole::FilterMode::FILTER_MODE_HIGH_PASS);
-                opFilter.SetFrequency(computedFrequency / 100000.0f);
-                output = opFilter.Process(*sample);
-                break;
-            default:
-                output = *sample;
-                break;
+        if (fullFunctionality) {
+            computedResonance = std::fmax(std::fmin(resonance + resMod, 1.0f), 0.0f);
         }
+        if (fullFunctionality && mono) {
+            switch (filterType) {
+                case LADDER_LOWPASS:
+                    filter.SetFreq(computedFrequency);
+                    filter.SetRes(computedResonance);
+                    output = filter.Process(*sample);
+                    break;
+                case SVF_LOWPASS:
+                    svFilter.SetFreq(computedFrequency);
+                    svFilter.SetRes(computedResonance);
+                    svFilter.Process(*sample);
+                    output = svFilter.Low();
+                    break;
+                case SVF_HIGHPASS:
+                    svFilter.SetFreq(computedFrequency);
+                    svFilter.SetRes(computedResonance);
+                    svFilter.Process(*sample);
+                    output = svFilter.High();
+                    break;
+                case SVF_BANDPASS:
+                    svFilter.SetFreq(computedFrequency);
+                    svFilter.SetRes(computedResonance);
+                    svFilter.Process(*sample);
+                    output = svFilter.Band();
+                    break;
+                case SVF_NOTCH:
+                    svFilter.SetFreq(computedFrequency);
+                    svFilter.SetRes(computedResonance);
+                    svFilter.Process(*sample);
+                    output = svFilter.Notch();
+                    break;
+                case SVF_PEAK:
+                    svFilter.SetFreq(computedFrequency);
+                    svFilter.SetRes(computedResonance);
+                    svFilter.Process(*sample);
+                    output = svFilter.Peak();
+                    break;
+                case ONE_POLE_LOWPASS:
+                    opFilter.SetFilterMode(daisysp::OnePole::FilterMode::FILTER_MODE_LOW_PASS);
+                    opFilter.SetFrequency(computedFrequency / 100000.0f);
+                    output = opFilter.Process(*sample);
+                    break;
+                case ONE_POLE_HIGHPASS:
+                    opFilter.SetFilterMode(daisysp::OnePole::FilterMode::FILTER_MODE_HIGH_PASS);
+                    opFilter.SetFrequency(computedFrequency / 100000.0f);
+                    output = opFilter.Process(*sample);
+                    break;
+                default:
+                    output = *sample;
+                    break;
+            }
+        } else {
+            filter.SetFreq(computedFrequency);
+            filter.SetRes(computedResonance);
+            output = filter.Process(*sample);
+        }
+
         *sample = output;
     }
 }

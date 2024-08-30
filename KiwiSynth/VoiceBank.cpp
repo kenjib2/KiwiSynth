@@ -28,6 +28,7 @@ namespace kiwi_synth
             default:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = true;
+                    voices[i].mono = false;
                     voices[i].numVcos = voices[i].maxVcos;
                 }
                 numVoices = 2;
@@ -35,6 +36,7 @@ namespace kiwi_synth
             case 1:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = false;
+                    voices[i].mono = false;
                     voices[i].numVcos = 1;
                 }
                 numVoices = maxVoices;
@@ -42,6 +44,7 @@ namespace kiwi_synth
             case 2:
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = true;
+                    voices[i].mono = true;
                     voices[i].numVcos = voices[i].maxVcos;
                 }
                 numVoices = 1;
