@@ -7,7 +7,7 @@
 using namespace daisy;
 using namespace kiwi_synth;
 
-//#define __CPU_LOAD__
+#define __CPU_LOAD__
 
 /*
  * TO DO

@@ -75,21 +75,17 @@ namespace kiwi_synth
     void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality)
     {
         if (fullFunctionality) {
-            float computedFreq = freq;
             phase = fmod(basePhase + tphaseMod, 1.0F);
-            osc.SetPw(std::max(std::fmin(pulseWidth + pwMod, 0.97f), 0.03f));
-            if (mod != 0.0F) {
-                computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mod * 10.0F), LFO_MAX_FREQUENCY), LFO_MIN_FREQUENCY);
-            }
-            osc.SetFreq(computedFreq);
+            osc.SetPw(pulseWidth + pwMod);
+            osc.SetFreq(freq * (1.0F + mod * 10.0F));
 
             float waveSample = osc.Process();
 
             if (waveform == 0) { // Triangle
-                wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 5.0f, 6.0f), 1.0f));
+                wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 5.0f, 1.0f));
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform > 1) { // Sawtooth or Ramp
-                waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F);
+                waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0F, 1.0F);
             }
 
             *sample = waveSample;

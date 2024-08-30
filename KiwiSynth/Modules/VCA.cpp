@@ -17,15 +17,14 @@ namespace kiwi_synth
         float levelSample = 0.0f;
         if (fullFunctionality) {
             if (level > 0.0005f) {
-                levelSample = *sample * std::fmax((level + mod), 0.00001f);
+                levelSample = *sample * (level + mod);
             }
         } else {
             if (level > 0.0005f) {
                 levelSample = *sample * level;
             }
         }
-        *sample = *sample * env1Mod + levelSample; // env1Mod is the only mod we multiple instead of add because it is also note triggering
-        *sample = std::fmax(std::fmin(*sample * VCA_ATTENTUATION_CONSTANT, 0.99999f), 0.00001f);
+        *sample = fclamp((*sample * env1Mod + levelSample) * VCA_ATTENTUATION_CONSTANT, 0.0F, 0.9999999F); // env1Mod is the only mod we multiple instead of add because it is also note triggering
     }
 
 }

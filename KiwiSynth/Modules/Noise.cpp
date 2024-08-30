@@ -25,14 +25,10 @@ namespace kiwi_synth
 
     void Noise::Process(float* sample, float mod)
     {
-        switch (noiseType) {
-            case 0:
-            default:
-                lastSample = white.Process();
-                break;
-            case 1:
-                lastSample = dust.Process();
-                break;
+        if (noiseType == 0) {
+            lastSample = white.Process();
+        } else {
+            lastSample = dust.Process();
         }
 
         if (isOn) {

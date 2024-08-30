@@ -53,17 +53,16 @@ namespace kiwi_synth
     void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod, bool fullFunctionality, bool mono)
     {
         float computedFrequency = frequency;
-        computedFrequency = std::fmin(computedFrequency + trackingMod * mtof(currentMidiNote), VCF_MAX_FREQUENCY) ;
+        computedFrequency = computedFrequency + trackingMod * mtof(currentMidiNote);
 
         if (mod != 0.0f) {
-            // avoiding extra calculations for fullFunctionality = false
-            computedFrequency = std::fmax(std::fmin(computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod, VCF_MAX_FREQUENCY), VCF_MIN_FREQUENCY);
+            computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod;
         }
 
         float computedResonance = resonance;
         float output;
         if (fullFunctionality) {
-            computedResonance = std::fmax(std::fmin(resonance + resMod, 1.0f), 0.0f);
+            computedResonance = fclamp(resonance + resMod, 0.0f, 1.0f);
         }
         if (fullFunctionality && mono) {
             switch (filterType) {

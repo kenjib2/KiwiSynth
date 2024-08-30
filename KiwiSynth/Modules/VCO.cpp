@@ -104,28 +104,24 @@ namespace kiwi_synth
     {
         if (isOn) {
             float waveSample;
-            float computedFreq = freq;
-            if (mod != 0.0F) {
-                computedFreq = std::fmax(std::fmin(computedFreq * (1.0F + mod), VCO_MAX_FREQUENCY), VCO_MIN_FREQUENCY);
-            }
-            osc.SetFreq(computedFreq);
+            osc.SetFreq(freq * (1.0F + mod));
 
             if (fullFunctionality) {
-                osc.SetPw(std::max(std::fmin(pulseWidth + pwMod, 0.5f), 0.03f));
+                osc.SetPw(pulseWidth + pwMod);
 
                 waveSample = osc.Process();
                 if (waveform == 2 && fullFunctionality) { // Triangle
-                    wavefolder.SetGain(std::max(std::fmin(waveFolderGain + pwMod * 27, 28.0f), 1.0f));
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0F));
                     waveSample = wavefolder.Process(waveSample);
                 } else if (waveform == 1) { // Sawtooth
-                    waveSample = std::fmax(std::fmin(waveSample * (waveFolderGain + 1.0f) / 2, 1.0F), -1.0F);
+                    waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0F, 1.0F);
                 }
+
+                *sample = waveSample * level;
             } else {
                 osc.SetPw(pulseWidth);
-                waveSample = osc.Process();
+                *sample = osc.Process();
             }
-
-            *sample = waveSample * std::fmax(level, 0.0F);
         }
         else {
             *sample = 0.0f;

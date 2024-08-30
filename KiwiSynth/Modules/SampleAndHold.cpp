@@ -25,7 +25,7 @@ namespace kiwi_synth
         
         counter++;
         if (fullFunctionality) {
-            if (counter >= std::fmin(std::fmax(rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0F, SAMPLE_AND_HOLD_MINIMUM_RATE), SAMPLE_AND_HOLD_MAXIMUM_RATE)) {
+            if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0F) {
                 counter = 0;
                 currentSample = *sample;
             }
