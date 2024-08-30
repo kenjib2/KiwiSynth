@@ -12,11 +12,17 @@ namespace kiwi_synth
         level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL, -0.001F, 1.0F); // Start in negative to deal with low level pot noise
     }
 
-    void VCA::Process(float* sample, float env1Mod, float mod)
+    void VCA::Process(float* sample, float env1Mod, float mod, bool fullFunctionality)
     {
         float levelSample = 0.0f;
-        if (level > 0.0005f) {
-            levelSample = *sample * std::fmax((level + mod), 0.00001f);
+        if (fullFunctionality) {
+            if (level > 0.0005f) {
+                levelSample = *sample * std::fmax((level + mod), 0.00001f);
+            }
+        } else {
+            if (level > 0.0005f) {
+                levelSample = *sample * level;
+            }
         }
         *sample = *sample * env1Mod + levelSample; // env1Mod is the only mod we multiple instead of add because it is also note triggering
         *sample = std::fmax(std::fmin(*sample * VCA_ATTENTUATION_CONSTANT, 0.99999f), 0.00001f);

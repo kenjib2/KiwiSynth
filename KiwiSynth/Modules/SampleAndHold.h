@@ -26,7 +26,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample, float mod);
+            void Process(float* sample, float mod, bool fullFunctionality);
     };
 }
 
