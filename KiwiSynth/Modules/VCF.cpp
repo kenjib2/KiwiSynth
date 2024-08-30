@@ -15,10 +15,6 @@ namespace kiwi_synth
     {
         frequency = patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY, kiwi_synth::LOGARHITHMIC);
         resonance = patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE);
-        keyboardTracking = patchSettings->getFloatValue(PatchSetting::VCF_TRACKING);
-        env1Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_1_DEPTH);
-        env2Depth = patchSettings->getFloatValue(PatchSetting::VCF_ENV_2_DEPTH);
-        lfo2Depth = patchSettings->getFloatValue(PatchSetting::LFO_2_TO_VCF_CUTOFF, -0.001F, 1.0F);
 
         switch (patchSettings->getIntValue(PatchSetting::VCF_FILTER_TYPE))
         {

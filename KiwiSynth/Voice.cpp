@@ -180,11 +180,11 @@ namespace kiwi_synth
         prevSourceValues[SRC_SH] = sampleAndHoldSample;
         prevSourceValues[SRC_NOTE] = currentMidiNote;
         prevSourceValues[SRC_VELOCITY] = (float)currentVelocity / 127.0f;
-        prevSourceValues[SRC_AFTERTOUCH] = 0.0f;
-        prevSourceValues[SRC_MOD_WHEEL] = 0.0f;
-        prevSourceValues[SRC_PITCH_BEND] = 0.0f;
-        prevSourceValues[SRC_EXPRESSION] = 0.0f;
-        prevSourceValues[SRC_PEDAL] = 0.0f;
+        prevSourceValues[SRC_AFTERTOUCH] = patchSettings->getFloatValue(GEN_AFTERTOUCH);
+        prevSourceValues[SRC_MOD_WHEEL] = patchSettings->getFloatValue(GEN_MOD_WHEEL);
+        prevSourceValues[SRC_PITCH_BEND] = patchSettings->getFloatValue(GEN_PITCH_BEND);
+        prevSourceValues[SRC_EXPRESSION] = patchSettings->getFloatValue(GEN_EXPRESSION);
+        prevSourceValues[SRC_SUSTAIN] = patchSettings->getBoolValue(GEN_SUSTAIN);
     }
 
     bool Voice::IsAvailable()

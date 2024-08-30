@@ -26,7 +26,6 @@ namespace kiwi_synth
             float      masterTune;
             float      baseFreq;
             float      freq;
-            float      lfo1Depth;
             bool       isOn;
             bool       noteTriggered;
             int        midiNote;

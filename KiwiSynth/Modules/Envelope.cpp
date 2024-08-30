@@ -41,10 +41,10 @@ namespace kiwi_synth
                 envReversed = PatchSetting::ENV_2_REVERSE_PHASE_ON;
                 break;
         }
-        env.SetAttackTime(patchSettings->getFloatValue(attack, 0.0F, 3.0F));
-        env.SetDecayTime(patchSettings->getFloatValue(decay, 0.0F, 3.0F));
-        env.SetSustainLevel(patchSettings->getFloatValue(sustain, 0.0F, 0.99999F));
-        releaseValue = patchSettings->getFloatValue(release, 0.0F, 3.0F);
+        env.SetAttackTime(patchSettings->getFloatValue(attack) * 3.0F);
+        env.SetDecayTime(patchSettings->getFloatValue(decay) * 3.0F);
+        env.SetSustainLevel(patchSettings->getFloatValue(sustain));
+        releaseValue = patchSettings->getFloatValue(release) * 3.0F;
         if (!quickRelease) {
             env.SetReleaseTime(releaseValue);
         }

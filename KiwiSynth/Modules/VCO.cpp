@@ -51,7 +51,6 @@ namespace kiwi_synth
         }
         if (isOn) {
             masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -0.08333333333f, 0.08333333333f, Scale::OCTAVE);
-            lfo1Depth = patchSettings->getFloatValue(PatchSetting::LFO_1_TO_MASTER_TUNE, -0.001F, 1.0F, EXPONENTIAL);
             switch (vcoNumber) {
                 case 0:
                     waveform = patchSettings->getIntValue(PatchSetting::VCO_1_WAVEFORM);

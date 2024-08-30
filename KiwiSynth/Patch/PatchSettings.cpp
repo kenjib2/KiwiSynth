@@ -445,189 +445,170 @@ namespace kiwi_synth
         }
     }
 
-    float PatchSettings::getFloatValue(PatchSetting setting, float min, float max, Scale scale)
-    {
-        float value;
-
+    float PatchSettings::getFloatValue(PatchSetting setting) {
         switch(setting) {
             case VCO_MASTER_TUNE:
-                value = floatValues[0];
-                break;
+                return floatValues[0];
             case VCO_PORTAMENTO_SPEED:
-                value = floatValues[1];
-                break;
+                return floatValues[1];
             case VCO_1_PULSE_WIDTH:
-                value = floatValues[2];
-                break;
+                return floatValues[2];
             case VCO_1_LEVEL:
-                value = floatValues[3];
-                break;
+                return floatValues[3];
             case VCO_2_PULSE_WIDTH:
-                value = floatValues[4];
-                break;
+                return floatValues[4];
             case VCO_2_LEVEL:
-                value = floatValues[5];
-                break;
+                return floatValues[5];
             case VCO_2_OCTAVE:
-                value = (float)(intValues[3]) / 4.0f;
-                break;
+                return (float)(intValues[3]) / 4.0f;
             case VCO_2_INTERVAL:
-                value = (float)(intValues[4]) / 22.0f;
-                break;
+                return (float)(intValues[4]) / 22.0f;
             case VCO_2_FINE_TUNE:
-                value = floatValues[6];
-                break;
+                return floatValues[6];
             case VCO_3_PULSE_WIDTH:
-                value = floatValues[7];
-                break;
+                return floatValues[7];
             case VCO_3_LEVEL:
-                value = floatValues[8];
-                break;
+                return floatValues[8];
             case VCO_3_OCTAVE:
-                value = (float)intValues[6] / 4.0f;
-                break;
+                return (float)intValues[6] / 4.0f;
             case VCO_3_INTERVAL:
-                value = (float)(intValues[7]) / 22.0f;
-                break;
+                return (float)(intValues[7]) / 22.0f;
             case VCO_3_FINE_TUNE:
-                value = floatValues[9];
-                break;
+                return floatValues[9];
             case VCO_NOISE_LEVEL:
-                value = floatValues[10];
-                break;
+                return floatValues[10];
             case VCO_EXT_TRIGGER_GATE:
-                value = floatValues[11];
-                break;
+                return floatValues[11];
             case VCO_EXT_LEVEL:
-                value = floatValues[12];
-                break;
+                return floatValues[12];
             case VCF_CUTOFF:
-                value = floatValues[13];
-                break;
+                return floatValues[13];
             case VCF_RESONANCE:
-                value = floatValues[14];
-                break;
+                return floatValues[14];
             case VCF_TRACKING:
-                value = floatValues[15];
-                break;
+                return floatValues[15];
             case VCF_ENV_1_DEPTH:
-                value = floatValues[16];
-                break;
+                return floatValues[16];
             case VCF_ENV_2_DEPTH:
-                value = floatValues[17];
-                break;
+                return floatValues[17];
             case VCA_LEVEL:
-                value = floatValues[18];
-                break;
+                return floatValues[18];
             case VCA_ENV_1_DEPTH:
-                value = floatValues[19];
-                break;
+                return floatValues[19];
             case ENV_1_ATTACK:
-                value = floatValues[20];
-                break;
+                return floatValues[20];
             case ENV_1_DECAY:
-                value = floatValues[21];
-                break;
+                return floatValues[21];
             case ENV_1_SUSTAIN:
-                value = floatValues[22];
-                break;
+                return floatValues[22];
             case ENV_1_RELEASE:
-                value = floatValues[23];
-                break;
+                return floatValues[23];
             case ENV_2_ATTACK:
-                value = floatValues[24];
-                break;
+                return floatValues[24];
             case ENV_2_DECAY:
-                value = floatValues[25];
-                break;
+                return floatValues[25];
             case ENV_2_SUSTAIN:
-                value = floatValues[26];
-                break;
+                return floatValues[26];
             case ENV_2_RELEASE:
-                value = floatValues[27];
-                break;
+                return floatValues[27];
             case LFO_1_PULSE_WIDTH:
-                value = floatValues[28];
-                break;
+                return floatValues[28];
             case LFO_1_RATE:
-                value = floatValues[29];
-                break;
+                return floatValues[29];
             case LFO_1_TRIGGER_PHASE:
-                value = floatValues[30];
-                break;
+                return floatValues[30];
             case LFO_1_TO_MASTER_TUNE:
-                value = floatValues[31];
-                break;
+                return floatValues[31];
             case LFO_2_PULSE_WIDTH:
-                value = floatValues[32];
-                break;
+                return floatValues[32];
             case LFO_2_RATE:
-                value = floatValues[33];
-                break;
+                return floatValues[33];
             case LFO_2_TRIGGER_PHASE:
-                value = floatValues[34];
-                break;
+                return floatValues[34];
             case LFO_2_TO_VCF_CUTOFF:
-                value = floatValues[35];
-                break;
+                return floatValues[35];
             case SH_TO_VCF_CUTOFF:
-                value = floatValues[36];
-                break;
+                return floatValues[36];
             case SH_RATE:
-                value = floatValues[37];
-                break;
+                return floatValues[37];
             case MOD_1_DEPTH:
-                value = floatValues[38];
-                break;
+                return floatValues[38];
             case MOD_2_DEPTH:
-                value = floatValues[39];
-                break;
+                return floatValues[39];
             case MOD_3_DEPTH:
-                value = floatValues[40];
-                break;
+                return floatValues[40];
             case MOD_4_DEPTH:
-                value = floatValues[41];
-                break;
+                return floatValues[41];
             case MOD_5_DEPTH:
-                value = floatValues[42];
-                break;
+                return floatValues[42];
             case MOD_6_DEPTH:
-                value = floatValues[43];
-                break;
+                return floatValues[43];
             case MOD_7_DEPTH:
-                value = floatValues[44];
-                break;
+                return floatValues[44];
             case MOD_8_DEPTH:
-                value = floatValues[45];
-                break;
+                return floatValues[45];
             case FX_1:
-                value = floatValues[46];
-                break;
+                return floatValues[46];
             case FX_2:
-                value = floatValues[47];
-                break;
+                return floatValues[47];
             case FX_3:
-                value = floatValues[48];
-                break;
+                return floatValues[48];
             case FX_4:
-                value = floatValues[49];
-                break;
+                return floatValues[49];
             case FX_5:
-                value = floatValues[50];
-                break;
+                return floatValues[50];
             case FX_REVERB:
-                value = floatValues[51];
-                break;
+                return floatValues[51];
             case GEN_BALANCE:
-                value = floatValues[52];
-                break;
+                return floatValues[52];
             case GEN_REVERB_DECAY:
-                value = floatValues[53];
-                break;
+                return floatValues[53];
+            case GEN_AFTERTOUCH:
+                return floatValues[54];
+            case GEN_MOD_WHEEL:
+                return floatValues[55];
+            case GEN_PITCH_BEND:
+                return floatValues[56];
+            case GEN_EXPRESSION:
+                return floatValues[57];
             default:
-                value = 0.0f;
+                return 0.0f;
+        }
+    }
+
+    float PatchSettings::getFloatValue(PatchSetting setting, Scale scale)
+    {
+        float value = getFloatValue(setting);
+
+        switch(scale)
+        {
+            case EXPONENTIAL:
+                value = value * value;
+                break;
+            case OCTAVE:
+                {
+                    // For plus or minus one octave we want 2^(2x-1)
+                    // More generally it's 2^(rangex - range/2)
+                    // This only works if max + min = 0
+                    value = pow(2, value);
+
+                    break;
+                }
+            case LOGARHITHMIC:
+                value = expf(value);
+                break;
+            case LINEAR:
+            default:
+                value = value;
                 break;
         }
+
+        return value;
+    }
+
+    float PatchSettings::getFloatValue(PatchSetting setting, float min, float max, Scale scale)
+    {
+        float value = getFloatValue(setting);
 
         float lmin;
         float lmax;

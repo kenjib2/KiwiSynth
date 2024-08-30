@@ -145,6 +145,12 @@ namespace kiwi_synth
         GEN_REVERB_SELECT,
         GEN_REVERB_DECAY,
         GEN_NAME,
+        GEN_AFTERTOUCH,
+        GEN_MOD_WHEEL,
+        GEN_PITCH_BEND,
+        GEN_EXPRESSION,
+        GEN_SUSTAIN
+        
         // Headphones is analog only
         // Output Level is analog only
         // Power switch is analog only
@@ -165,7 +171,7 @@ namespace kiwi_synth
         SRC_MOD_WHEEL,  // 9    *
         SRC_PITCH_BEND, // 10   *
         SRC_EXPRESSION, // 11   *
-        SRC_PEDAL       // 12   *
+        SRC_SUSTAIN     // 12   *
     } ModulationSource; // 13 sources
 
     typedef enum
@@ -234,9 +240,9 @@ namespace kiwi_synth
         private:
             // was global in PatchSettings.cpp and DSY_SDRAM_BSS
             char name[MAX_PATCH_NAME_LENGTH + 1];
-            float floatValues[54];
+            float floatValues[58];
             int8_t intValues[31];
-            bool boolValues[10];
+            bool boolValues[11];
             bool lastPinValues[4][16];
 
             static constexpr float minValue = 0.0f;
@@ -294,7 +300,15 @@ namespace kiwi_synth
             /*
              * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValue(PatchSetting setting, float min = 0.0f, float max = 1.0f, Scale scale = LINEAR);
+            float getFloatValue(PatchSetting setting);
+            /*
+             * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
+             */
+            float getFloatValue(PatchSetting setting, Scale scale);
+            /*
+             * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
+             */
+            float getFloatValue(PatchSetting setting, float min, float max, Scale scale = LINEAR);
             /*
              * Gets a bool setting value. If a non-float setting is attempted, false will be returned.
              */

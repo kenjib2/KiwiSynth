@@ -30,10 +30,6 @@ namespace kiwi_synth
             bool                    noteTriggered;
             float                   frequency;
             float                   resonance;
-            float                   env1Depth;
-            float                   env2Depth;
-            float                   lfo2Depth;
-            float                   keyboardTracking;
             FilterType              filterType;
             infrasonic::MoogLadder  filter;
             OnePole                 opFilter;

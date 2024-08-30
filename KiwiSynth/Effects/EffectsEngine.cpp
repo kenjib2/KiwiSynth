@@ -10,9 +10,11 @@ namespace kiwi_synth
 
     void EffectsEngine::UpdateSettings()
     {
-        reverbLevel = patchSettings->getFloatValue(PatchSetting::FX_REVERB, -0.001F, 1.0F); // Start in negative to deal with low level pot noise
-        if (reverbLevel > 0.0F) {
-            reverb.set_opmix(std::fmin(reverbLevel, 1.0F));
+        reverbLevel = patchSettings->getFloatValue(PatchSetting::FX_REVERB);
+        if (reverbLevel > 0.002F) {
+            reverb.set_opmix(reverbLevel);
+        } else {
+            reverb.set_opmix(0.0F);
         }
     }
 
