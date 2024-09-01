@@ -23,12 +23,14 @@ namespace kiwi_synth
         private:
             static const int NUM_VCOS = 3;
             static const int MAX_VOICES = 3;
+            DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
             PatchSettings patchSettings;
             int numVoices;
             int midiChannel;
 	        GPIO gpioMidiActivity;
+            GPIO gpioSustain;
 	        int midiCounter = 0;
             bool midiLEDState = false;
             bool midiLEDOn = false;

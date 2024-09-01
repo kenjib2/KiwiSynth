@@ -8,6 +8,7 @@ namespace kiwi_synth
 
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
+        this->hw = hw;
         numVoices = MAX_VOICES;
         SetMidiChannel(0);
 
@@ -65,6 +66,11 @@ namespace kiwi_synth
         gpioMidiActivity.Init(seed::D22, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL);
         gpioMidiActivity.Write(false);
         midiCounter = 0;
+
+        //AdcChannelConfig adcExpression;
+        //adcExpression.InitSingle(seed::A5);
+        //hw->adc.Init(&adcExpression, 1);
+        gpioSustain.Init(seed::A6, GPIO::Mode::INPUT, GPIO::Pull::PULLUP);
     }
 
     void KiwiSynth::SetMidiChannel(int midiChannel)
@@ -108,6 +114,9 @@ namespace kiwi_synth
             MidiEvent event = midi.PopEvent();
             HandleMidiMessage(&event);
         }
+
+        patchSettings.setValue(GEN_SUSTAIN, gpioSustain.Read() ? 0.0f : 1.0f);
+        //patchSettings.setValue(GEN_EXPRESSION, hw->adc.GetFloat(0));
     }
 
     void KiwiSynth::ProcessInputs()
@@ -126,96 +135,68 @@ namespace kiwi_synth
             NoteOnEvent on;
             NoteOffEvent off;
             ControlChangeEvent cc;
-            if (numVoices == MAX_VOICES) {
-                switch(midiEvent->type)
-                {
-                    case NoteOn:
-                        midiCounter = 0;
-                        on = midiEvent->AsNoteOn();
-                        if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
-                        {
-                            voiceBank.NoteOn(on.note, on.velocity);
+            switch(midiEvent->type)
+            {
+                case NoteOn:
+                    midiCounter = 0;
+                    on = midiEvent->AsNoteOn();
+                    if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
+                    {
+                        voiceBank.NoteOn(on.note, on.velocity);
+                        break;
+                    }
+                    break;
+
+                case NoteOff:
+                    midiCounter = 0;
+                    off = midiEvent->AsNoteOff();
+                    voiceBank.NoteOff(off.note, off.velocity);
+                    break;
+
+                case PitchBend:
+                    midiCounter = 0;
+                    patchSettings.setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
+                    break;
+
+                // Unimplemented message types
+                case ChannelPressure:
+                    midiCounter = 0;
+                    patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
+                    break;
+
+                case ControlChange:
+                    cc = midiEvent->AsControlChange();
+                    switch (cc.control_number) {
+                        case 1:  // Mod Wheel
+                            midiCounter = 0;
+                            patchSettings.setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
                             break;
-                        }
-                        break;
 
-                    case NoteOff:
-                        midiCounter = 0;
-                        off = midiEvent->AsNoteOff();
-                        voiceBank.NoteOff(off.note, off.velocity);
-                        break;
-
-                    case PolyphonicKeyPressure:
-                    case ProgramChange:
-                    case SystemCommon:
-                    case SystemRealTime:
-                    case ChannelMode:
-                    case MessageLast:
-                    case PitchBend:
-                    case ChannelPressure:
-                    case ControlChange:
-                    default:
-                        break;
-                }
-            } else {
-                switch(midiEvent->type)
-                {
-                    case NoteOn:
-                        midiCounter = 0;
-                        on = midiEvent->AsNoteOn();
-                        if(midiEvent->data[1] != 0) // This is to avoid Max/MSP Note outs for now..
-                        {
-                            voiceBank.NoteOn(on.note, on.velocity);
+                        case 11: // Expression
+                            midiCounter = 0;
+                            patchSettings.setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
                             break;
-                        }
-                        break;
 
-                    case NoteOff:
-                        midiCounter = 0;
-                        off = midiEvent->AsNoteOff();
-                        voiceBank.NoteOff(off.note, off.velocity);
-                        break;
+                        case 64: // Sustain Pedal
+                            midiCounter = 0;
+                            if (cc.value < 64) {
+                                patchSettings.setValue(GEN_SUSTAIN, 0.0F); // Off
+                            } else {
+                                patchSettings.setValue(GEN_SUSTAIN, 1.0F);  // On
+                            }
+                            break;
 
-                    case PitchBend:
-                        patchSettings.setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
-                        break;
+                    }
+                    break;
 
-                    // Unimplemented message types
-                    case ChannelPressure:
-                        patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
-                        break;
-
-                    case ControlChange:
-                        cc = midiEvent->AsControlChange();
-                        switch (cc.control_number) {
-                            case 1:  // Mod Wheel
-                                patchSettings.setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
-                                break;
-
-                            case 11: // Expression
-                                patchSettings.setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
-                                break;
-
-                            case 64: // Sustain Pedal
-                                if (cc.value < 64) {
-                                    patchSettings.setValue(GEN_SUSTAIN, false); // Off
-                                } else {
-                                    patchSettings.setValue(GEN_SUSTAIN, true);  // On
-                                }
-                                break;
-
-                        }
-                        break;
-
-                    case PolyphonicKeyPressure:
-                    case ProgramChange:
-                    case SystemCommon:
-                    case SystemRealTime:
-                    case ChannelMode:
-                    case MessageLast:
-                    default:
-                        break;
-                }
+                case PolyphonicKeyPressure:
+                case ProgramChange:
+                case SystemCommon:
+                case SystemRealTime:
+                case ChannelMode:
+                case MessageLast:
+                default:
+                    break;
             }
         }
     }
@@ -394,8 +375,8 @@ namespace kiwi_synth
             val2 = patchSettings.getFloatValue(PatchSetting::GEN_MOD_WHEEL) * 1000;
             val3 = patchSettings.getFloatValue(PatchSetting::GEN_PITCH_BEND) * 1000;
             val4 = patchSettings.getFloatValue(PatchSetting::GEN_EXPRESSION) * 1000;
-            bool5 = patchSettings.getBoolValue(PatchSetting::GEN_SUSTAIN);
-            sprintf(buff, "ATouch: %d,  MWheel: %d,  PBend: %d,  Expr: %d,  Sus: %d", val1, val2, val3, val4, bool5);
+            val5 = patchSettings.getFloatValue(PatchSetting::GEN_SUSTAIN) * 1000;
+            sprintf(buff, "ATouch: %d,  MWheel: %d,  PBend: %d,  Expr: %d,  Sus: %d", val1, val2, val3, val4, val5);
             hw->PrintLine(buff);
 
             /*val1 = voiceBank.modulations[0].source;

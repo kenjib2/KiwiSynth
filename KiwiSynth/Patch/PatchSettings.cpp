@@ -49,6 +49,11 @@ namespace kiwi_synth
         setValue(PatchSetting::GEN_SELECT, (int8_t)0);
         setValue(PatchSetting::GEN_FX_SELECT, (int8_t)0);
         setValue(PatchSetting::GEN_REVERB_SELECT, (int8_t)0);
+        setValue(PatchSetting::GEN_PITCH_BEND, 0.0f);
+        setValue(PatchSetting::GEN_AFTERTOUCH, 0.0f);
+        setValue(PatchSetting::GEN_MOD_WHEEL, 0.0f);
+        setValue(PatchSetting::GEN_EXPRESSION, 0.0f);
+        setValue(PatchSetting::GEN_SUSTAIN, 0.0f);
     }
 
     void PatchSettings::setValue(PatchSetting setting, int8_t value)
@@ -330,6 +335,9 @@ namespace kiwi_synth
             case GEN_EXPRESSION:
                 floatValues[57] = value;
                 break;
+            case GEN_SUSTAIN:
+                floatValues[58] = value;
+                break;
             default:
                 break;
         }
@@ -583,6 +591,8 @@ namespace kiwi_synth
                 return floatValues[56];
             case GEN_EXPRESSION:
                 return floatValues[57];
+            case GEN_SUSTAIN:
+                return floatValues[58];
             default:
                 return 0.0f;
         }

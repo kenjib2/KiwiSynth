@@ -184,7 +184,7 @@ namespace kiwi_synth
         prevSourceValues[SRC_MOD_WHEEL] = patchSettings->getFloatValue(GEN_MOD_WHEEL);
         prevSourceValues[SRC_PITCH_BEND] = patchSettings->getFloatValue(GEN_PITCH_BEND);
         prevSourceValues[SRC_EXPRESSION] = patchSettings->getFloatValue(GEN_EXPRESSION);
-        prevSourceValues[SRC_SUSTAIN] = patchSettings->getBoolValue(GEN_SUSTAIN);
+        prevSourceValues[SRC_SUSTAIN] = patchSettings->getFloatValue(GEN_SUSTAIN);
     }
 
     bool Voice::IsAvailable()
