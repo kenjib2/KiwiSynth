@@ -14,7 +14,7 @@ namespace kiwi_synth
 {
     const static int NUM_MPS = 3;
     const static int NUM_CHANNELS = 16;
-    const static int NUM_DIRECT_POTS = 1;
+    const static int NUM_DIRECT_POTS = 2;
 
     /*
      * Internal function of type daisy::TimerHandle::PeriodElapsedCallback used for timer callbacks.

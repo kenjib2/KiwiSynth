@@ -34,6 +34,7 @@ namespace kiwi_synth
 
         std::vector<Pin> directPins;
         directPins.push_back(A4);
+        directPins.push_back(A5);
 
         MultiPotsConfig multiPotsConfig;
         multiPotsConfig.pinA0 = D7;
@@ -42,12 +43,8 @@ namespace kiwi_synth
         multiPotsConfig.pinA3 = D10;
         multiPotsConfig.pinsSignal = mpPins;
         multiPotsConfig.pinsDirect = directPins;
-        //multiPotsConfig.useTimer = true;
-        //multiPotsConfig.refreshRate = 50; // One half of a ms, which means 8ms for all pots to refresh. Shorter can cause timing problems.
-        // Look into refresh rate. Faster should be possible. Could be either pins left floating or not using the E pin.
 
         multiPots.Init(hw, &multiPotsConfig);
-        //multiPots.StartTimer();
     }
 
     void KiwiSynth::ConfigureGpioExpansion()
@@ -67,9 +64,6 @@ namespace kiwi_synth
         gpioMidiActivity.Write(false);
         midiCounter = 0;
 
-        //AdcChannelConfig adcExpression;
-        //adcExpression.InitSingle(seed::A5);
-        //hw->adc.Init(&adcExpression, 1);
         gpioSustain.Init(seed::A6, GPIO::Mode::INPUT, GPIO::Pull::PULLUP);
     }
 
@@ -116,7 +110,7 @@ namespace kiwi_synth
         }
 
         patchSettings.setValue(GEN_SUSTAIN, gpioSustain.Read() ? 0.0f : 1.0f);
-        //patchSettings.setValue(GEN_EXPRESSION, hw->adc.GetFloat(0));
+        patchSettings.setValue(GEN_EXPRESSION, multiPots.GetDirectValue(1));
     }
 
     void KiwiSynth::ProcessInputs()

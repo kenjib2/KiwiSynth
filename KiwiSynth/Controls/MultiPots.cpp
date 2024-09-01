@@ -60,7 +60,7 @@ namespace kiwi_synth
         a3.Init(multiPotsConfig->pinA3, GPIO::Mode::OUTPUT, GPIO::Pull::NOPULL, GPIO::Speed::LOW);
         }
 
-        AdcChannelConfig *adcConfig = new AdcChannelConfig[NUM_MPS];
+        AdcChannelConfig *adcConfig = new AdcChannelConfig[NUM_MPS + NUM_DIRECT_POTS];
         for (int i = 0; i < NUM_MPS; i++)
         {
             pinsSignal.push_back(multiPotsConfig->pinsSignal[i]);
