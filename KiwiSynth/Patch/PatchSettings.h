@@ -15,7 +15,7 @@ namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
     const static int NUM_MOD_SOURCES = 13; // Not including NONE
-    const static int NUM_MOD_DESTINATIONS = 20; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 28; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
 
     typedef enum {
@@ -202,21 +202,21 @@ namespace kiwi_synth
         DST_LFO_2_PULSE_WIDTH,  // 18
         //DST_LFO_2_TO_VCF_CUTOFF,      *
         DST_LFO_2_TRIGGER_PHASE,// 19
-        //DST_ENV_1_ATTACK,       //    *   // Envelope might be too expensive to modulate
-        //DST_ENV_1_DECAY,        //    *
-        //DST_ENV_1_SUSTAIN,      //    *
-        //DST_ENV_1_RELEASE,      //    *
-        //DST_ENV_2_ATTACK,       //    *
-        //DST_ENV_2_DECAY,        //    *
-        //DST_ENV_2_SUSTAIN,      //    *
-        //DST_ENV_2_RELEASE,      //    *
+        DST_ENV_1_ATTACK,       // 20   *   // Envelope might be too expensive to modulate
+        DST_ENV_1_DECAY,        // 21   *
+        DST_ENV_1_SUSTAIN,      // 22   *
+        DST_ENV_1_RELEASE,      // 23   *
+        DST_ENV_2_ATTACK,       // 24   *
+        DST_ENV_2_DECAY,        // 25   *
+        DST_ENV_2_SUSTAIN,      // 26   *
+        DST_ENV_2_RELEASE,      // 27   *
         //DST_FX_1,               //    *   // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               //    *   // Could possibly modulate for sources 7-12 only
         //DST_FX_3,               //    *
         //DST_FX_4,               //    *
         //DST_FX_5,               //    *
         //DST_FX_REVERB           //    *
-    } ModulationDestination; // 20 destinations
+    } ModulationDestination; // 28 destinations
 
     typedef enum
     {

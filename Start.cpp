@@ -12,20 +12,20 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Pitch Bend
- * Modwheel
- * Aftertouch
- * Expression
- * Pedal
- * Distortion
- * Pre-filter distortion
+ * Test Expression
+ * Test Pedal
+ * Distortion atan softer, tanh harsher -- maybe upsample to fs * 2 then distort, then down sample to fs
+ * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
+ * ABS distortion like X-a(X*ABS(X))
+ * Pre-filter vs output distortion
+ * Pitch bend down is off applied to VCO freq -- goes down farther than up
  * Delay
  * Chorus
  * Flanger
  * Phaser
  * Modulating modulations and effects
  * Save / Load
- * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply?
+ * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Can we optimize to get 3 voice working with 3 VCOs again?
  * UI
  * L/R Output noise

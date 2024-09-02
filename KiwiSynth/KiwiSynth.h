@@ -1,7 +1,5 @@
 #ifndef __KIWI_SYNTH_KIWI_SYNTH_H__
 #define __KIWI_SYNTH_KIWI_SYNTH_H__
-//#define __DEBUG__
-
 
 #include<vector>
 
@@ -13,6 +11,8 @@
 
 using namespace daisy;
 using namespace daisy::seed;
+
+//#define __DEBUG__
 
 namespace kiwi_synth
 {

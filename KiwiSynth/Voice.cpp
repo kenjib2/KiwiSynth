@@ -135,10 +135,10 @@ namespace kiwi_synth
         calculateMods(modulations);
 
         float env1Sample = 1.0f;
-        env1.Process(&env1Sample);
+        env1.Process(&env1Sample, modValues[DST_ENV_1_ATTACK], modValues[DST_ENV_1_DECAY], modValues[DST_ENV_1_SUSTAIN], modValues[DST_ENV_1_RELEASE], fullFunctionality);
 
         float env2Sample = 1.0f;
-        env2.Process(&env2Sample);
+        env2.Process(&env2Sample, modValues[DST_ENV_2_ATTACK], modValues[DST_ENV_2_DECAY], modValues[DST_ENV_2_SUSTAIN], modValues[DST_ENV_2_RELEASE], fullFunctionality);
 
         float lfo1Sample = 1.0f;
         lfo1.Process(&lfo1Sample, modValues[DST_LFO_1_FREQ], modValues[DST_LFO_1_PULSE_WIDTH], modValues[DST_LFO_1_TRIGGER_PHASE], fullFunctionality);

@@ -15,44 +15,78 @@ namespace kiwi_synth
         env.SetDecayTime(0.0f);
         env.SetSustainLevel(1.0f);
         env.SetReleaseTime(0.002f);
+
+        prevAttackMod = 0.0f;
+        prevDecayMod = 0.0f;
+        prevSustainMod = 0.0f;
+        prevReleaseMod = 0.0f;
     }
 
     void Envelope::UpdateSettings()
     {
-        PatchSetting attack = PatchSetting::ENV_1_ATTACK;
-        PatchSetting decay = PatchSetting::ENV_1_DECAY;
-        PatchSetting sustain = PatchSetting::ENV_1_SUSTAIN;
-        PatchSetting release = PatchSetting::ENV_1_RELEASE;
-        PatchSetting envReversed = PatchSetting::ENV_1_REVERSE_PHASE_ON;
-
-        switch(envNumber) {
-            case 0:
-                attack = PatchSetting::ENV_1_ATTACK;
-                decay = PatchSetting::ENV_1_DECAY;
-                sustain = PatchSetting::ENV_1_SUSTAIN;
-                release = PatchSetting::ENV_1_RELEASE;
-                envReversed = PatchSetting::ENV_1_REVERSE_PHASE_ON;
-                break;
-            case 1:
-                attack = PatchSetting::ENV_2_ATTACK;
-                decay = PatchSetting::ENV_2_DECAY;
-                sustain = PatchSetting::ENV_2_SUSTAIN;
-                release = PatchSetting::ENV_2_RELEASE;
-                envReversed = PatchSetting::ENV_2_REVERSE_PHASE_ON;
-                break;
+        if (envNumber == 0) {
+            env.SetAttackTime(std::fmax((patchSettings->getFloatValue(ENV_1_ATTACK) + prevAttackMod), 0.0f) * 3.0f);
+            env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_1_DECAY) + prevDecayMod), 0.0f) * 3.0f);
+            env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_1_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
+            releaseValue = std::fmax((patchSettings->getFloatValue(ENV_1_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
+            reversed = patchSettings->getBoolValue(ENV_1_REVERSE_PHASE_ON);
+        } else { // envNumber == 1
+            env.SetAttackTime(std::fmax((patchSettings->getFloatValue(ENV_2_ATTACK) + prevAttackMod), 0.0f) * 3.0f);
+            env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_2_DECAY) + prevDecayMod), 0.0f) * 3.0f);
+            env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_2_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
+            releaseValue = std::fmax((patchSettings->getFloatValue(ENV_2_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
+            reversed = patchSettings->getBoolValue(ENV_2_REVERSE_PHASE_ON);
         }
-        env.SetAttackTime(patchSettings->getFloatValue(attack) * 3.0F);
-        env.SetDecayTime(patchSettings->getFloatValue(decay) * 3.0F);
-        env.SetSustainLevel(patchSettings->getFloatValue(sustain));
-        releaseValue = patchSettings->getFloatValue(release) * 3.0F;
         if (!quickRelease) {
             env.SetReleaseTime(releaseValue);
         }
-        reversed = patchSettings->getBoolValue(envReversed);
     }
 
-    void Envelope::Process(float* sample)
+    void Envelope::Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod, bool fullFunctionality)
     {
+        if (fullFunctionality) {
+            if (attackMod != prevAttackMod) {
+                if (envNumber == 0) {
+                    env.SetAttackTime(std::fmax((patchSettings->getFloatValue(PatchSetting::ENV_1_ATTACK) + attackMod), 0.0f) * 3.0f);
+                } else { // envNumber == 1
+                    env.SetAttackTime(std::fmax((patchSettings->getFloatValue(PatchSetting::ENV_2_ATTACK) + attackMod), 0.0f) * 3.0f);
+                }
+                prevAttackMod = attackMod;
+            }
+
+            if (decayMod != prevDecayMod) {
+                if (envNumber == 0) {
+                    env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_1_DECAY) + prevDecayMod), 0.0f) * 3.0f);
+                } else { // envNumber == 1
+                    env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_2_DECAY) + prevDecayMod), 0.0f) * 3.0f);
+                }
+                prevDecayMod = decayMod;
+            }
+
+            if (sustainMod != prevSustainMod) {
+                if (envNumber == 0) {
+                    env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_1_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
+                } else { // envNumber == 1
+                    env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_2_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
+                }
+                prevSustainMod = sustainMod;
+            }
+
+            if (releaseMod != prevReleaseMod) {
+                float releaseValue;
+                if (envNumber == 0) {
+                    releaseValue = std::fmax((patchSettings->getFloatValue(ENV_1_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
+                } else { // envNumber == 1
+                    releaseValue = std::fmax((patchSettings->getFloatValue(ENV_2_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
+                }
+
+                if (!quickRelease) {
+                    env.SetReleaseTime(releaseValue);
+                }
+                prevReleaseMod = releaseMod;
+            }
+        }
+
         if (reversed) {
             *sample = 1.0F - *sample * env.Process(noteTriggered);
             if (!env.IsRunning()) { // We have to still process it first to keep it moving, despite *sample getting overwritten.
