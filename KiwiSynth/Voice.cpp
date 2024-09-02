@@ -127,7 +127,7 @@ namespace kiwi_synth
             currentPlayingNote = fCurrentMidiNote;
         }
         for (int i = 0; i < maxVcos; i++) {
-            vcos[i].SetFreq(mtof(currentPlayingNote));
+            vcos[i].midiNote = currentPlayingNote;
         }
 
         // Processing modules
@@ -203,6 +203,9 @@ namespace kiwi_synth
         if (currentMidiNote != note && reset) {
             env1.SetQuickRelease(true);
             env2.SetQuickRelease(true);
+        }
+        for (int i = 0; i < numVcos; i++) {
+            vcos[i].midiNote = (float)note;
         }
         noteTriggerCount = NOTE_TRIGGER_SAMPLES;
         triggerNote = note;

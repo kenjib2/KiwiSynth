@@ -20,29 +20,26 @@ namespace kiwi_synth
             float      pulseWidth;
             float      waveFolderGain;
             float      level;
-            float      fineTune;
-            float      interval;
-            float      octave;
-            float      masterTune;
-            float      baseFreq;
-            float      freq;
+            float      fineTune; // mod to midi note -1 to 1
+            float      interval; // mod to midi note -11 to 11
+            float      octave; // mod to midi note -24, -12, 0, 12, 24
+            float      masterTune; // mod to midi note -1.0f to 1.0f
+            float      playingNote; // midiNote with fineTune, interval, octave, and masterTune applied.
             bool       isOn;
             bool       noteTriggered;
-            int        midiNote;
             int        waveform;
             Oscillator osc;
             Wavefolder wavefolder;
 
-            void CalculateFreq();
-
         public:
+            float        midiNote; // 0 to 127 with portamento applied. Needs mtof to make a frequency.
+
             VCO() {}
             ~VCO() {}
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber);
 
             void UpdateSettings();
             void Process(float* sample, float mod, float pwMod, bool fullFunctionality = true);
-            void SetFreq(float frequency);
     };
 }
 

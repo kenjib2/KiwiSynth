@@ -52,7 +52,7 @@ namespace kiwi_synth
         computedFrequency = computedFrequency + trackingMod * mtof(currentMidiNote);
 
         if (mod != 0.0f) {
-            computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod;
+            computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod / 4.0f;
         }
 
         float computedResonance = resonance;
