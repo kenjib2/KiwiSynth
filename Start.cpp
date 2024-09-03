@@ -8,6 +8,11 @@ using namespace daisy;
 using namespace kiwi_synth;
 
 //#define __CPU_LOAD__
+// 91/99/93 all active
+// 71/73/72 no reverb/effectsEngine
+// 87/95/88 no MIDI
+// 83/91/85 no calculateMods
+// 91/99/93 optimize calculateMods
 
 /*
  * TO DO

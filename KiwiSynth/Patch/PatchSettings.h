@@ -14,7 +14,7 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
-    const static int NUM_MOD_SOURCES = 13; // Not including NONE
+    const static int NUM_MOD_SOURCES = 14; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 28; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
 
@@ -158,21 +158,21 @@ namespace kiwi_synth
 
     typedef enum
     {
-        SRC_NONE = -1,
-        SRC_FIXED,  // 0
-        SRC_LFO_1,  // 1
-        SRC_LFO_2,  // 2
-        SRC_ENV_1,  // 3
-        SRC_ENV_2,  // 4
-        SRC_SH,     // 5
-        SRC_NOTE,   // 6
-        SRC_VELOCITY,   // 7
-        SRC_AFTERTOUCH, // 8    *
-        SRC_MOD_WHEEL,  // 9    *
-        SRC_PITCH_BEND, // 10   *
-        SRC_EXPRESSION, // 11   *
-        SRC_SUSTAIN     // 12   *
-    } ModulationSource; // 13 sources
+        SRC_NONE, // = 0,
+        SRC_FIXED,  // 1
+        SRC_LFO_1,  // 2
+        SRC_LFO_2,  // 3
+        SRC_ENV_1,  // 4
+        SRC_ENV_2,  // 5
+        SRC_SH,     // 6
+        SRC_NOTE,   // 7
+        SRC_VELOCITY,   // 8
+        SRC_AFTERTOUCH, // 9
+        SRC_MOD_WHEEL,  // 10
+        SRC_PITCH_BEND, // 11
+        SRC_EXPRESSION, // 12
+        SRC_SUSTAIN     // 13
+    } ModulationSource; // 14 sources
 
     typedef enum
     {
@@ -189,34 +189,34 @@ namespace kiwi_synth
         DST_SH_RATE,            // 9
         DST_VCF_CUTOFF,         // 10
         DST_VCF_RESONANCE,      // 11
-        //DST_VCF_ENV_1_DEPTH,          *   // Modulating other modulations might be complicated
-        //DST_VCF_ENV_2_DEPTH,          *
+        //DST_VCF_ENV_1_DEPTH,          // Modulating other modulations might be complicated
+        //DST_VCF_ENV_2_DEPTH,
         DST_VCA_LEVEL,          // 12
         DST_VCA_ENV_1_DEPTH,    // 13
-        //DST_VCA_ENV_2_DEPTH,          *
+        //DST_VCA_ENV_2_DEPTH,
         DST_LFO_1_FREQ,         // 14
         DST_LFO_1_PULSE_WIDTH,  // 15
-        //DST_LFO_1_TO_MASTER_TUNE,     *
+        //DST_LFO_1_TO_MASTER_TUNE,
         DST_LFO_1_TRIGGER_PHASE,// 16
         DST_LFO_2_FREQ,         // 17
         DST_LFO_2_PULSE_WIDTH,  // 18
-        //DST_LFO_2_TO_VCF_CUTOFF,      *
+        //DST_LFO_2_TO_VCF_CUTOFF,
         DST_LFO_2_TRIGGER_PHASE,// 19
-        DST_ENV_1_ATTACK,       // 20   *   // Envelope might be too expensive to modulate
-        DST_ENV_1_DECAY,        // 21   *
-        DST_ENV_1_SUSTAIN,      // 22   *
-        DST_ENV_1_RELEASE,      // 23   *
-        DST_ENV_2_ATTACK,       // 24   *
-        DST_ENV_2_DECAY,        // 25   *
-        DST_ENV_2_SUSTAIN,      // 26   *
-        DST_ENV_2_RELEASE,      // 27   *
-        //DST_FX_1,               //    *   // Can't modulate effects because source values are different for each voice
-        //DST_FX_2,               //    *   // Could possibly modulate for sources 7-12 only
-        //DST_FX_3,               //    *
-        //DST_FX_4,               //    *
-        //DST_FX_5,               //    *
-        //DST_FX_REVERB           //    *
-    } ModulationDestination; // 28 destinations
+        DST_ENV_1_ATTACK,       // 20
+        DST_ENV_1_DECAY,        // 21
+        DST_ENV_1_SUSTAIN,      // 22
+        DST_ENV_1_RELEASE,      // 23
+        DST_ENV_2_ATTACK,       // 24
+        DST_ENV_2_DECAY,        // 25
+        DST_ENV_2_SUSTAIN,      // 26
+        DST_ENV_2_RELEASE,      // 27
+        //DST_FX_1,               // Can't modulate effects because source values are different for each voice
+        //DST_FX_2,               // Could possibly modulate for sources 7-12 only
+        //DST_FX_3,
+        //DST_FX_4,
+        //DST_FX_5,
+        //DST_FX_REVERB
+    } ModulationDestination; // 28 destinations not including None
 
     typedef enum
     {

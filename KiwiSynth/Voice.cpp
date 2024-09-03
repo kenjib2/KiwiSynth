@@ -28,6 +28,8 @@ namespace kiwi_synth
         lfo1.Init(patchSettings, sampleRate, 0);
         lfo2.Init(patchSettings, sampleRate, 1);
         initMods();
+        prevSourceValues[SRC_NONE] = 0.0f;
+        prevSourceValues[SRC_FIXED] = 1.0f;
     }
 
     void Voice::UpdateSettings()
@@ -59,33 +61,18 @@ namespace kiwi_synth
         if (fullFunctionality) {
             for (int i = 0; i < 8; i++) {
                 if (modulations[i].destination >= 0 && modulations[i].source >= 0) {
-                    modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
+                    modValues[modulations[i].destination] += prevSourceValues[modulations[i].source] * modulations[i].depth;
                 }
             }
         }
-        modValues[modulations[8].destination] += getModValue(modulations[8].source, modulations[8].depth);
+        modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * modulations[8].depth;
 
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
         // Also skipping 10 because VCF tracking needs to be handled in a special way.
 
         for (int i = 11; i < NUM_MODULATIONS; i++) {
-            modValues[modulations[i].destination] += getModValue(modulations[i].source, modulations[i].depth);
-        }
-    }
-
-    float Voice::getModValue(ModulationSource source, float depth)
-    {
-        switch (source) {
-            case (SRC_NONE):
-                return 0.0f;
-                break;
-            case (SRC_FIXED):
-                return depth;
-                break;
-            default:
-                return prevSourceValues[source] * depth;
-                break;
+            modValues[modulations[i].destination] += prevSourceValues[modulations[i].source] * modulations[i].depth;
         }
     }
 
@@ -172,7 +159,7 @@ namespace kiwi_synth
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.
-        // No need to set SRC_NONE nor SRC_FIXED. They can't be modulated.
+        // No need to change SRC_NONE nor SRC_FIXED from the init values. They can't be modulated.
         prevSourceValues[SRC_LFO_1] = lfo1Sample;
         prevSourceValues[SRC_LFO_2] = lfo2Sample;
         prevSourceValues[SRC_ENV_1] = env1Sample;
