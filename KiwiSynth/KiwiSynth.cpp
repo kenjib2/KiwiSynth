@@ -92,7 +92,11 @@ namespace kiwi_synth
                 out[i + 1] = nextSample * balance * 2.0F;
             }
 
-            effectsEngine.Process(&(out[i]));
+            if (voiceBank.numVoices == MAX_VOICES) {
+                effectsEngine.ProcessReverbOnly(&(out[i]));
+            } else {
+                effectsEngine.Process(&(out[i]));
+            }
         }
     }
 

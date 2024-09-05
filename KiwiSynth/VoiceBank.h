@@ -33,7 +33,6 @@ namespace kiwi_synth
     {
         private:
             uint8_t maxVoices;
-            uint8_t numVoices;
             std::vector<Voice> voices;
             PatchSettings* patchSettings;
              std::vector<uint8_t>     playingIndices;
@@ -47,6 +46,7 @@ namespace kiwi_synth
         public:
             std::vector<int> playingVoices;
             Modulation modulations[NUM_MODULATIONS];
+            uint8_t numVoices;
 
             VoiceBank() {}
             ~VoiceBank() {}

@@ -14,6 +14,8 @@ namespace kiwi_synth
     {
         private:
             float                   reverbLevel;
+            float                   gain;
+            float                   level;
             PatchSettings*          patchSettings;
             Reverb                  reverb;
 
@@ -23,6 +25,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
+            void ProcessReverbOnly(float* sample);
             void Process(float* sample);
     };
 }
