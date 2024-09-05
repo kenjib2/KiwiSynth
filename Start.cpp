@@ -8,23 +8,24 @@ using namespace daisy;
 using namespace kiwi_synth;
 
 #define __CPU_LOAD__
-// 91/99/93 all active
-// 71/73/72 no reverb/effectsEngine			20
-// 87/95/88 no MIDI							4
-// 83/91/85 no calculateMods				8
-// 91/99/93 optimize calculateMods			0
-// 76/83/77 fullFunctionality = false		16
-// 83/93/86 no envelope processing          7
-// 75/83/78 no lfo processing				15
-// 62/68/63 no vco processing				30
-// 87/94/88 no noise/SH (was off anyway)    5
-// 90/99/93 no vca							0
-// 70/77/71 no vcf                          22
-// 76/83/77 no filter process               16
-// 83/91/85 remove if fullFunctionality	    8
-// 91/98/93 Set mono=false on voice startup 0  ****** added
-// 87/94/89 Rmv VCF switch & alt filters    4  ****** new baseline
-// 83/90/85 Optimize and remove ifs         8  ****** new baseline
+// 80/87/81 remove lfo osc.process          3  (fmod to fclamp makes it 6, remove waveshaping also makes it 8)
+
+// 83/90/85 all active
+// 78/87/80 no envelope processing          5 (was 7)
+// 73/80/84 no LFO processing               11 (was 15)
+// 58/64/59 no vco processing				26 (was 30)
+// 81/88/83 no noise/SH (was off anyway)    2 (was 5)
+// 83/91/85 no vca							0 (was 0)
+// 71/78/73 no vcf                          12 (was 22)
+// 68/70/69 no reverb/effectsEngine			16 (was 20)
+// 82/88/83 no MIDI							2 (was 4)
+// 80/88/81 no calculateMods				4 (was 8)
+// 72/79/74 fullFunctionality = false		11 (was 16)
+// 81/88/82 remove fmod from lfo            3
+// 76/83/77 remove waveshaping from vco     8
+// Most expensive: reverb, lfo, vco, vcf, reverb
+
+
 
 /*
  * TO DO
@@ -43,6 +44,7 @@ using namespace kiwi_synth;
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Dust noise has some clicks/pops
+ * Re-implement additional VCF modes?
  * Save / Load
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Can we optimize to get 3 voice working with 3 VCOs again?

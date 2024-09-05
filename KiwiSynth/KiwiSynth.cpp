@@ -75,11 +75,7 @@ namespace kiwi_synth
     void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         ProcessMidi();
-        if (midiCounter == 0) {
-            midiLEDOn = true;
-        } else if (midiCounter == MIDI_LED_DURATION) {
-            midiLEDOn = false;
-        }
+        midiLEDOn = (midiCounter < MIDI_LED_DURATION);
         midiCounter++;
 
         float nextSample = 0.0f;
