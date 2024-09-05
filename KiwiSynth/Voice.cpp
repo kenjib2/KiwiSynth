@@ -5,6 +5,7 @@ namespace kiwi_synth
     void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate)
     {
         fullFunctionality = true;
+        mono = false;
         noteTriggered = false;
         noteTriggerCount = -1;
         noteOffNeeded = false;

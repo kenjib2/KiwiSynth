@@ -60,7 +60,7 @@ namespace kiwi_synth
         if (fullFunctionality) {
             computedResonance = fclamp(resonance + resMod, 0.0f, 1.0f);
         }
-        if (fullFunctionality && mono) {
+        /*if (fullFunctionality && mono) {
             switch (filterType) {
                 case LADDER_LOWPASS:
                     filter.SetFreq(computedFrequency);
@@ -111,11 +111,11 @@ namespace kiwi_synth
                     output = *sample;
                     break;
             }
-        } else {
+        } else {*/
             filter.SetFreq(computedFrequency);
             filter.SetRes(computedResonance);
             output = filter.Process(*sample);
-        }
+        //}
 
         *sample = output;
     }

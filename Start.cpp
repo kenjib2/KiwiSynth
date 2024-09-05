@@ -7,12 +7,24 @@
 using namespace daisy;
 using namespace kiwi_synth;
 
-//#define __CPU_LOAD__
+#define __CPU_LOAD__
 // 91/99/93 all active
-// 71/73/72 no reverb/effectsEngine
-// 87/95/88 no MIDI
-// 83/91/85 no calculateMods
-// 91/99/93 optimize calculateMods
+// 71/73/72 no reverb/effectsEngine			20
+// 87/95/88 no MIDI							4
+// 83/91/85 no calculateMods				8
+// 91/99/93 optimize calculateMods			0
+// 76/83/77 fullFunctionality = false		16
+// 83/93/86 no envelope processing          7
+// 75/83/78 no lfo processing				15
+// 62/68/63 no vco processing				30
+// 87/94/88 no noise/SH (was off anyway)    5
+// 90/99/93 no vca							0
+// 70/77/71 no vcf                          22
+// 76/83/77 no filter process               16
+// 83/91/85 remove if fullFunctionality	    8
+// 91/98/93 Set mono=false on voice startup 0  ****** added
+// 87/94/89 Rmv VCF switch & alt filters    4  ****** new baseline
+// ALSO TRY TRACKING WHICH MODS ARE NOT ZERO AND ONLY MULT THOSE COLS/ROWS
 
 /*
  * TO DO
