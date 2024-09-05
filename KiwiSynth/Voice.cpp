@@ -40,7 +40,7 @@ namespace kiwi_synth
         noise.UpdateSettings();
         sampleAndHold.UpdateSettings();
         vca.UpdateSettings();
-        vcf.UpdateSettings();  
+        vcf.UpdateSettings();
 
         env1.UpdateSettings();
         env2.UpdateSettings();

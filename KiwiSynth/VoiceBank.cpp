@@ -37,7 +37,7 @@ namespace kiwi_synth
                 for (int i = 0; i < maxVoices; i++) {
                     voices[i].fullFunctionality = false;
                     voices[i].mono = false;
-                    voices[i].numVcos = 1;
+                    voices[i].numVcos = 2;
                 }
                 numVoices = maxVoices;
                 break;
