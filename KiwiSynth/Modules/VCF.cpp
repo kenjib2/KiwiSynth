@@ -16,37 +16,10 @@ namespace kiwi_synth
         frequency = patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY, kiwi_synth::LOGARHITHMIC);
         resonance = patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE);
 
-        switch (patchSettings->getIntValue(PatchSetting::VCF_FILTER_TYPE))
-        {
-            case 0:
-            default:
-                filterType = LADDER_LOWPASS;
-                break;
-            case 1:
-                filterType = SVF_LOWPASS;
-                break;
-            case 2:
-                filterType = SVF_HIGHPASS;
-                break;
-            case 3:
-                filterType = SVF_BANDPASS;
-                break;
-            case 4:
-                filterType = SVF_NOTCH;
-                break;
-            case 5:
-                filterType = SVF_PEAK;
-                break;
-            case 6:
-                filterType = ONE_POLE_LOWPASS;
-                break;
-            case 7:
-                filterType = ONE_POLE_HIGHPASS;
-                break;
-        }
+        filterType = (FilterType)patchSettings->getIntValue(PatchSetting::VCF_FILTER_TYPE);
     }
 
-    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod, bool fullFunctionality, bool mono)
+    void VCF::Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod)
     {
         float computedFrequency = frequency;
         computedFrequency = computedFrequency + trackingMod * mtof(currentMidiNote);

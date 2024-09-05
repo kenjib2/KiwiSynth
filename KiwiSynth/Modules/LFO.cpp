@@ -24,29 +24,7 @@ namespace kiwi_synth
 
     void LFO::UpdateSettings()
     {
-        PatchSetting waveformSetting = PatchSetting::LFO_1_WAVEFORM;
-        PatchSetting rateSetting = PatchSetting::LFO_1_RATE;
-        PatchSetting triggerPhaseSetting = PatchSetting::LFO_1_TRIGGER_PHASE;
-        PatchSetting triggerResetSetting = PatchSetting::LFO_1_TRIGGER_RESET_ON;
-        PatchSetting pulseWidthSetting = PatchSetting::LFO_1_PULSE_WIDTH;
-
-        switch(lfoNumber) {
-            case 0:
-                waveformSetting = PatchSetting::LFO_1_WAVEFORM;
-                rateSetting = PatchSetting::LFO_1_RATE;
-                triggerPhaseSetting = PatchSetting::LFO_1_TRIGGER_PHASE;
-                triggerResetSetting = PatchSetting::LFO_1_TRIGGER_RESET_ON;
-                pulseWidthSetting = PatchSetting::LFO_1_PULSE_WIDTH;
-                break;
-            case 1:
-                waveformSetting = PatchSetting::LFO_2_WAVEFORM;
-                rateSetting = PatchSetting::LFO_2_RATE;
-                triggerPhaseSetting = PatchSetting::LFO_2_TRIGGER_PHASE;
-                triggerResetSetting = PatchSetting::LFO_2_TRIGGER_RESET_ON;
-                pulseWidthSetting = PatchSetting::LFO_2_PULSE_WIDTH;
-                break;
-        }
-        waveform = patchSettings->getIntValue(waveformSetting);
+        waveform = patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         switch (waveform) {
             case 0:
                 osc.SetWaveform(Oscillator::WAVE_TRI);
@@ -61,10 +39,10 @@ namespace kiwi_synth
                 osc.SetWaveform(Oscillator::WAVE_SAW);
                 break;
         }
-        freq = patchSettings->getFloatValue(rateSetting, LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
-        basePhase = patchSettings->getFloatValue(triggerPhaseSetting);
-        noteOnReset = patchSettings->getBoolValue(triggerResetSetting);
-        pulseWidth = patchSettings->getFloatValue(pulseWidthSetting, 0.03F, 0.97F);
+        freq = patchSettings->getFloatValue((PatchSetting)(LFO_1_RATE + lfoNumber), LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
+        basePhase = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_PHASE + lfoNumber));
+        noteOnReset = patchSettings->getBoolValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_RESET_ON + lfoNumber));
+        pulseWidth = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03F, 0.97F);
         if (pulseWidth < 0.032F) {
             waveFolderGain = 1.0f;
         } else {

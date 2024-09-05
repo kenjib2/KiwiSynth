@@ -15,13 +15,13 @@ namespace kiwi_synth
 
     enum FilterType {
         LADDER_LOWPASS,
-        ONE_POLE_LOWPASS,
-        ONE_POLE_HIGHPASS,
         SVF_LOWPASS,
         SVF_HIGHPASS,
         SVF_BANDPASS,
         SVF_NOTCH,
-        SVF_PEAK
+        SVF_PEAK,
+        ONE_POLE_LOWPASS,
+        ONE_POLE_HIGHPASS
     };
     
     class VCF
@@ -42,7 +42,7 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod, bool fullFunctionality, bool mono);
+            void Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod);
     };
 }
 

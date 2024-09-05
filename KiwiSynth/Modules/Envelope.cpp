@@ -24,20 +24,13 @@ namespace kiwi_synth
 
     void Envelope::UpdateSettings()
     {
-        if (envNumber == 0) {
-            env.SetAttackTime(std::fmax((patchSettings->getFloatValue(ENV_1_ATTACK) + prevAttackMod), 0.0f) * 3.0f);
-            env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_1_DECAY) + prevDecayMod), 0.0f) * 3.0f);
-            env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_1_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
-            releaseValue = std::fmax((patchSettings->getFloatValue(ENV_1_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
-            reversed = patchSettings->getBoolValue(ENV_1_REVERSE_PHASE_ON);
-        } else { // envNumber == 1
-            env.SetAttackTime(std::fmax((patchSettings->getFloatValue(ENV_2_ATTACK) + prevAttackMod), 0.0f) * 3.0f);
-            env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_2_DECAY) + prevDecayMod), 0.0f) * 3.0f);
-            env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_2_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
-            releaseValue = std::fmax((patchSettings->getFloatValue(ENV_2_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
-            reversed = patchSettings->getBoolValue(ENV_2_REVERSE_PHASE_ON);
-        }
         if (!quickRelease) {
+            env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + prevAttackMod), 0.0f) * 3.0f);
+            env.SetDecayTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_DECAY + envNumber)) + prevDecayMod), 0.0f) * 3.0f);
+            env.SetSustainLevel(fclamp(patchSettings->getFloatValue((PatchSetting)(ENV_1_SUSTAIN + envNumber)) + prevSustainMod, 0.0f, 1.0f));
+            releaseValue = std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0F;
+            reversed = patchSettings->getBoolValue((PatchSetting)(ENV_1_REVERSE_PHASE_ON + envNumber));
+
             env.SetReleaseTime(releaseValue);
         }
     }

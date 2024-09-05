@@ -10,7 +10,6 @@ namespace kiwi_synth
         noteTriggerCount = -1;
         noteOffNeeded = false;
         currentMidiNote = 64;
-        currentMidiNote = 64.0f;
         currentPlayingNote = 64.0f;
         this->maxVcos = numVCOs;
         this->numVcos = maxVcos;
@@ -41,7 +40,7 @@ namespace kiwi_synth
         noise.UpdateSettings();
         sampleAndHold.UpdateSettings();
         vca.UpdateSettings();
-        vcf.UpdateSettings();
+        vcf.UpdateSettings();  
 
         env1.UpdateSettings();
         env2.UpdateSettings();
@@ -152,9 +151,9 @@ namespace kiwi_synth
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
             if (patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE) == 0) {
-                std::fmax(std::fmin(*sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT, 1.0F), -1.0F);
+                fclamp(*sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0F, 1.0F);
             } else {
-                *sample = *sample + noiseSample;
+                fclamp(*sample = *sample + noiseSample, -1.0f, 1.0f);
             }
 
             sampleAndHoldSample = noise.GetLastSample();
@@ -163,7 +162,7 @@ namespace kiwi_synth
 
         vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
-        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE], fullFunctionality, mono);
+        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.

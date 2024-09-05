@@ -84,17 +84,16 @@ namespace kiwi_synth
         ENV_2_REVERSE_PHASE_ON,
 
         LFO_1_WAVEFORM,
-        LFO_1_PULSE_WIDTH,
-        LFO_1_RATE,
-        LFO_1_TRIGGER_RESET_ON,
-        LFO_1_TRIGGER_PHASE,
-        LFO_1_TO_MASTER_TUNE,
-
         LFO_2_WAVEFORM,
+        LFO_1_PULSE_WIDTH,
         LFO_2_PULSE_WIDTH,
+        LFO_1_RATE,
         LFO_2_RATE,
+        LFO_1_TRIGGER_RESET_ON,
         LFO_2_TRIGGER_RESET_ON,
+        LFO_1_TRIGGER_PHASE,
         LFO_2_TRIGGER_PHASE,
+        LFO_1_TO_MASTER_TUNE,
         LFO_2_TO_VCF_CUTOFF,
 
         SH_TO_VCF_CUTOFF,
