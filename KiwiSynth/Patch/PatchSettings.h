@@ -33,24 +33,26 @@ namespace kiwi_synth
         VCO_PORTAMENTO_SPEED,
 
         VCO_1_WAVEFORM,
+        VCO_2_WAVEFORM,
+        VCO_3_WAVEFORM,
+
         VCO_1_PULSE_WIDTH,
+        VCO_2_PULSE_WIDTH,
+        VCO_3_PULSE_WIDTH,
+
         VCO_1_LEVEL,
+        VCO_2_LEVEL,
+        VCO_3_LEVEL,
 
         VCO_2_ON,
-        VCO_2_WAVEFORM,
-        VCO_2_PULSE_WIDTH,
-        VCO_2_LEVEL,
-        VCO_2_OCTAVE,
-        VCO_2_INTERVAL,
-        VCO_2_FINE_TUNE,
-
         VCO_3_ON,
-        VCO_3_WAVEFORM,
-        VCO_3_PULSE_WIDTH,
-        VCO_3_LEVEL,
+        VCO_2_OCTAVE,
         VCO_3_OCTAVE,
+        VCO_2_INTERVAL,
         VCO_3_INTERVAL,
+        VCO_2_FINE_TUNE,
         VCO_3_FINE_TUNE,
+
 
         VCO_NOISE_ON,
         VCO_NOISE_TYPE,

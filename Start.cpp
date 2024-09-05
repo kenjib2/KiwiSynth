@@ -25,6 +25,7 @@ using namespace kiwi_synth;
 // 91/98/93 Set mono=false on voice startup 0  ****** added
 // 87/94/89 Rmv VCF switch & alt filters    4  ****** new baseline
 // ALSO TRY TRACKING WHICH MODS ARE NOT ZERO AND ONLY MULT THOSE COLS/ROWS
+// 82/96/86
 
 /*
  * TO DO

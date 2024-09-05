@@ -37,32 +37,16 @@ namespace kiwi_synth
         }
         if (isOn) {
             masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
-            switch (vcoNumber) {
-                case 0:
-                    waveform = patchSettings->getIntValue(PatchSetting::VCO_1_WAVEFORM);
-                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH, 0.03F, 0.5F);
-                    level = patchSettings->getFloatValue(PatchSetting::VCO_1_LEVEL);
-                    // case 0 does not use fineTune, interval, or octave
-                    fineTune = 0.0F;
-                    interval = 0.0F;
-                    octave = 0.0F;
-                    break;
-                case 1:
-                    waveform = patchSettings->getIntValue(PatchSetting::VCO_2_WAVEFORM);
-                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_2_PULSE_WIDTH, 0.03F, 0.5F);
-                    level = patchSettings->getFloatValue(PatchSetting::VCO_2_LEVEL);
-                    fineTune = patchSettings->getFloatValue(PatchSetting::VCO_2_FINE_TUNE, -1.0f, 1.0);
-                    interval = (float)(patchSettings->getIntValue(PatchSetting::VCO_2_INTERVAL) - 11);
-                    octave = (float)((patchSettings->getIntValue(PatchSetting::VCO_2_OCTAVE) - 2) * 12);
-                    break;
-                case 2:
-                    waveform = patchSettings->getIntValue(PatchSetting::VCO_3_WAVEFORM);
-                    pulseWidth = 0.53F - patchSettings->getFloatValue(PatchSetting::VCO_3_PULSE_WIDTH, 0.03F, 0.5F);
-                    level = patchSettings->getFloatValue(PatchSetting::VCO_3_LEVEL);
-                    fineTune = patchSettings->getFloatValue(PatchSetting::VCO_3_FINE_TUNE, -1.0f, 1.0);
-                    interval = (float)(patchSettings->getIntValue(PatchSetting::VCO_3_INTERVAL) - 11);
-                    octave = (float)((patchSettings->getIntValue(PatchSetting::VCO_3_OCTAVE) - 2) * 12);
-                    break;
+
+            waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
+            pulseWidth = 0.53F - patchSettings->getFloatValue((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03F, 0.5F);
+            level = patchSettings->getFloatValue((PatchSetting)(VCO_1_LEVEL + vcoNumber));
+            if (vcoNumber > 0) {
+                int vcoMod = vcoNumber - 1;
+                level = patchSettings->getFloatValue((PatchSetting)(VCO_2_LEVEL + vcoMod));
+                fineTune = patchSettings->getFloatValue((PatchSetting)(VCO_2_FINE_TUNE + vcoMod), -1.0f, 1.0);
+                interval = (float)(patchSettings->getIntValue((PatchSetting)(VCO_2_INTERVAL + vcoMod)) - 11);
+                octave = (float)((patchSettings->getIntValue((PatchSetting)(VCO_2_OCTAVE + vcoMod)) - 2) * 12);
             }
             switch (waveform) {
                 case 0:
@@ -75,11 +59,7 @@ namespace kiwi_synth
                     osc.SetWaveform(Oscillator::WAVE_POLYBLEP_TRI);
                     break;
             }
-            if (pulseWidth > 0.495f) {
-                waveFolderGain = 1.0f;
-            } else {
-                waveFolderGain = 1.0f + (0.495F - pulseWidth) * 55;
-            }
+            waveFolderGain = std::fmax(1.0f + (0.495F - pulseWidth) * 55, 1.0f);
 
             playingNote = midiNote + octave + interval + fineTune + masterTune;
         }
