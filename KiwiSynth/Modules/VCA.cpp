@@ -12,17 +12,11 @@ namespace kiwi_synth
         level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL);
     }
 
-    void VCA::Process(float* sample, float env1Mod, float mod, bool fullFunctionality)
+    void VCA::Process(float* sample, float env1Mod, float mod)
     {
         float levelSample = 0.0f;
-        if (fullFunctionality) {
-            if (level > 0.0015f) {
-                levelSample = *sample * (level + mod);
-            }
-        } else {
-            if (level > 0.0015f) {
-                levelSample = *sample * level;
-            }
+        if (level > 0.0015f) {
+            levelSample = *sample * (level + mod);
         }
         *sample = fclamp((*sample * env1Mod + levelSample) * VCA_ATTENTUATION_CONSTANT, 0.0F, 0.9999999F); // env1Mod is the only mod we multiple instead of add because it is also note triggering
     }

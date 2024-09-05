@@ -51,15 +51,11 @@ namespace kiwi_synth
         float computedFrequency = frequency;
         computedFrequency = computedFrequency + trackingMod * mtof(currentMidiNote);
 
-        if (mod != 0.0f) {
-            computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod / 4.0f;
-        }
+        computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod / 4.0f;
 
         float computedResonance = resonance;
         float output;
-        if (fullFunctionality) {
-            computedResonance = fclamp(resonance + resMod, 0.0f, 1.0f);
-        }
+        computedResonance = fclamp(resonance + resMod, 0.0f, 1.0f);
         /*if (fullFunctionality && mono) {
             switch (filterType) {
                 case LADDER_LOWPASS:

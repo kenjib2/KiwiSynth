@@ -161,7 +161,7 @@ namespace kiwi_synth
             sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE], fullFunctionality);
         }
 
-        vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL], fullFunctionality);
+        vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
         vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE], fullFunctionality, mono);
 
