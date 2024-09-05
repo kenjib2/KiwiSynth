@@ -28,8 +28,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Test Expression
- * Test Pedal
+ * Test Sustain Pedal
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion
@@ -37,6 +36,7 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * Modulation is currently 0.0 - 1.0. Can we also do -1.0 to 0.0?
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?

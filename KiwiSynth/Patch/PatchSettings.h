@@ -17,6 +17,7 @@ namespace kiwi_synth
     const static int NUM_MOD_SOURCES = 14; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 28; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
+    const static int NUM_PATCH_SETTINGS = 101;
 
     typedef enum {
         MULTIPOTS,
@@ -27,31 +28,31 @@ namespace kiwi_synth
      * All controls for the Kiwi Synth.
      */
     typedef enum {
-        VCO_VOICES,
+        VCO_VOICES,                 // 0
         VCO_MASTER_TUNE,
         VCO_PORTAMENTO_ON,
         VCO_PORTAMENTO_SPEED,
 
         VCO_1_WAVEFORM,
-        VCO_2_WAVEFORM,
+        VCO_2_WAVEFORM,             // 5
         VCO_3_WAVEFORM,
 
         VCO_1_PULSE_WIDTH,
         VCO_2_PULSE_WIDTH,
         VCO_3_PULSE_WIDTH,
 
-        VCO_1_LEVEL,
+        VCO_1_LEVEL,                // 10
         VCO_2_LEVEL,
         VCO_3_LEVEL,
 
         VCO_2_ON,
         VCO_3_ON,
-        VCO_2_OCTAVE,
+        VCO_2_OCTAVE,               // 15
         VCO_3_OCTAVE,
         VCO_2_INTERVAL,
         VCO_3_INTERVAL,
         VCO_2_FINE_TUNE,
-        VCO_3_FINE_TUNE,
+        VCO_3_FINE_TUNE,            // 20
 
 
         VCO_NOISE_ON,
@@ -59,92 +60,92 @@ namespace kiwi_synth
         VCO_NOISE_LEVEL,
         VCO_EXT_ON,
         // External gain is analog only
-        VCO_EXT_TRIGGER_GATE,
+        VCO_EXT_TRIGGER_GATE,       // 25
         VCO_EXT_LEVEL,
 
         VCF_FILTER_TYPE,
         VCF_CUTOFF,
         VCF_RESONANCE,
-        VCF_TRACKING,
+        VCF_TRACKING,               // 30
         VCF_ENV_1_DEPTH,
         VCF_ENV_2_DEPTH,
 
         VCA_LEVEL,
         VCA_ENV_1_DEPTH,
 
-        ENV_1_ATTACK,
+        ENV_1_ATTACK,               // 35
         ENV_2_ATTACK,
         ENV_1_DECAY,
         ENV_2_DECAY,
         ENV_1_SUSTAIN,
-        ENV_2_SUSTAIN,
+        ENV_2_SUSTAIN,              // 40
         ENV_1_RELEASE,
         ENV_2_RELEASE,
         ENV_1_REVERSE_PHASE_ON,
         ENV_2_REVERSE_PHASE_ON,
 
-        LFO_1_WAVEFORM,
+        LFO_1_WAVEFORM,             // 45
         LFO_2_WAVEFORM,
         LFO_1_PULSE_WIDTH,
         LFO_2_PULSE_WIDTH,
         LFO_1_RATE,
-        LFO_2_RATE,
+        LFO_2_RATE,                 // 50
         LFO_1_TRIGGER_RESET_ON,
         LFO_2_TRIGGER_RESET_ON,
         LFO_1_TRIGGER_PHASE,
         LFO_2_TRIGGER_PHASE,
-        LFO_1_TO_MASTER_TUNE,
+        LFO_1_TO_MASTER_TUNE,       // 55
         LFO_2_TO_VCF_CUTOFF,
 
         SH_TO_VCF_CUTOFF,
         SH_RATE,
 
         MOD_1_SOURCE,
-        MOD_2_SOURCE,
+        MOD_2_SOURCE,               // 60
         MOD_3_SOURCE,
         MOD_4_SOURCE,
         MOD_5_SOURCE,
         MOD_6_SOURCE,
-        MOD_7_SOURCE,
+        MOD_7_SOURCE,               // 65
         MOD_8_SOURCE,
 
         MOD_1_DESTINATION,
         MOD_2_DESTINATION,
         MOD_3_DESTINATION,
-        MOD_4_DESTINATION,
+        MOD_4_DESTINATION,          // 70
         MOD_5_DESTINATION,
         MOD_6_DESTINATION,
         MOD_7_DESTINATION,
         MOD_8_DESTINATION,
 
-        MOD_1_DEPTH,
+        MOD_1_DEPTH,                // 75
         MOD_2_DEPTH,
         MOD_3_DEPTH,
         MOD_4_DEPTH,
         MOD_5_DEPTH,
-        MOD_6_DEPTH,
+        MOD_6_DEPTH,                // 80
         MOD_7_DEPTH,
         MOD_8_DEPTH,
 
         FX_1,
         FX_2,
-        FX_3,
+        FX_3,                       // 85
         FX_4,
         FX_5,
         FX_REVERB,
 
         GEN_BALANCE,
-        GEN_SELECT,
+        GEN_SELECT,                 // 90
         GEN_SELECT_BUTTON,
         GEN_FX_SELECT,
         GEN_REVERB_SELECT,
         GEN_REVERB_DECAY,
-        GEN_NAME,
+        GEN_NAME,                   // 95
         GEN_AFTERTOUCH,
         GEN_MOD_WHEEL,
         GEN_PITCH_BEND,
         GEN_EXPRESSION,
-        GEN_SUSTAIN
+        GEN_SUSTAIN                 // 100
         
         // Headphones is analog only
         // Output Level is analog only
@@ -234,10 +235,15 @@ namespace kiwi_synth
     {
         private:
             // was global in PatchSettings.cpp and DSY_SDRAM_BSS
+            // We have a lot of unused array members in order to prevent branching code when setting and retrieving values of different data types.
             char name[MAX_PATCH_NAME_LENGTH + 1];
-            float floatValues[59];
-            int8_t intValues[31];
-            bool boolValues[10];
+            //float floatValues[59];
+            float floatValues[NUM_PATCH_SETTINGS];
+            //int8_t intValues[31];
+            int8_t intValues[NUM_PATCH_SETTINGS];
+            int8_t maxIntValues[NUM_PATCH_SETTINGS];
+            //bool boolValues[10];
+            bool boolValues[NUM_PATCH_SETTINGS];
             bool lastPinValues[4][16];
 
             static constexpr float minValue = 0.0f;
@@ -259,14 +265,13 @@ namespace kiwi_synth
             void updateGpioExpansionValues(int controlNumber);
 
         public:
+            PatchSetting lastChangedSetting;
+            float lastChangedValue;
+
             PatchSettings() {}
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
-            /*
-             * Converts a +/- number of octaves into a frequency multiplier
-             */
-            static float octaveToFrequencyMultiplier(int octave);
             /*
              * From ControlListener: Callback to update controls.
              */

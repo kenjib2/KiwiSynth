@@ -373,6 +373,11 @@ namespace kiwi_synth
             sprintf(buff, "ATouch: %d,  MWheel: %d,  PBend: %d,  Expr: %d,  Sus: %d", val1, val2, val3, val4, val5);
             hw->PrintLine(buff);
 
+            val1 = patchSettings.lastChangedSetting;
+            val2 = patchSettings.lastChangedValue * 1000;
+            sprintf(buff, "Last Changed Setting: %d,  Last Changed Value: %d", val1, val2);
+            hw->PrintLine(buff);
+
             /*val1 = voiceBank.modulations[0].source;
             val2 = voiceBank.modulations[0].destination;
             val3 = voiceBank.modulations[0].depth * 1000;
