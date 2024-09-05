@@ -32,7 +32,7 @@ namespace kiwi_synth
         }
 
         if (isOn) {
-            *sample = lastSample * std::fmax((level + mod), 0.0f);
+            *sample = lastSample * fclamp((level + mod), -1.0f, 1.0f);
         }
     }
 

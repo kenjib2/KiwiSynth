@@ -30,21 +30,21 @@ namespace kiwi_synth
         setValue(PatchSetting::VCF_FILTER_TYPE, (int8_t)0);
         setValue(PatchSetting::LFO_1_WAVEFORM, (int8_t)0);
         setValue(PatchSetting::LFO_2_WAVEFORM, (int8_t)0);
-        setValue(PatchSetting::MOD_1_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_1_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_1_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_2_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_2_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_2_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_3_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_3_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_3_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_4_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_4_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_4_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_5_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_5_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_5_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_6_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_6_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_6_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_7_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_7_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_7_DESTINATION, (int8_t)-1);
-        setValue(PatchSetting::MOD_8_SOURCE, (int8_t)-1);
+        setValue(PatchSetting::MOD_8_SOURCE, (int8_t)0);
         setValue(PatchSetting::MOD_8_DESTINATION, (int8_t)-1);
         setValue(PatchSetting::GEN_SELECT, (int8_t)0);
         setValue(PatchSetting::GEN_FX_SELECT, (int8_t)0);
@@ -751,7 +751,7 @@ namespace kiwi_synth
             if (pinBValue != pinAValue) {
                 if (currentValue > 0) {
                     setValue(setting, --currentValue);
-                } else if (currentValue == 0 && setting >= MOD_1_SOURCE && setting <= MOD_8_DESTINATION) {
+                } else if (currentValue == 0 && setting >= MOD_1_DESTINATION && setting <= MOD_8_DESTINATION) {
                     setValue(setting, --currentValue);
                 }
             } else {

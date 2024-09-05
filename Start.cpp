@@ -25,7 +25,7 @@ using namespace kiwi_synth;
 // 91/98/93 Set mono=false on voice startup 0  ****** added
 // 87/94/89 Rmv VCF switch & alt filters    4  ****** new baseline
 // ALSO TRY TRACKING WHICH MODS ARE NOT ZERO AND ONLY MULT THOSE COLS/ROWS
-// 82/96/86
+// 83/91/85
 
 /*
  * TO DO
@@ -42,6 +42,7 @@ using namespace kiwi_synth;
  * Flanger
  * Phaser
  * Modulating modulations and effects
+ * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Save / Load
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Can we optimize to get 3 voice working with 3 VCOs again?

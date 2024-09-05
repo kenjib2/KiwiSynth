@@ -101,35 +101,30 @@ namespace kiwi_synth
         SH_RATE,
 
         MOD_1_SOURCE,
-        MOD_1_DESTINATION,
-        MOD_1_DEPTH,
-        
         MOD_2_SOURCE,
-        MOD_2_DESTINATION,
-        MOD_2_DEPTH,
-        
         MOD_3_SOURCE,
-        MOD_3_DESTINATION,
-        MOD_3_DEPTH,
-        
         MOD_4_SOURCE,
-        MOD_4_DESTINATION,
-        MOD_4_DEPTH,
-        
         MOD_5_SOURCE,
-        MOD_5_DESTINATION,
-        MOD_5_DEPTH,
-        
         MOD_6_SOURCE,
-        MOD_6_DESTINATION,
-        MOD_6_DEPTH,
-        
         MOD_7_SOURCE,
-        MOD_7_DESTINATION,
-        MOD_7_DEPTH,
-        
         MOD_8_SOURCE,
+
+        MOD_1_DESTINATION,
+        MOD_2_DESTINATION,
+        MOD_3_DESTINATION,
+        MOD_4_DESTINATION,
+        MOD_5_DESTINATION,
+        MOD_6_DESTINATION,
+        MOD_7_DESTINATION,
         MOD_8_DESTINATION,
+
+        MOD_1_DEPTH,
+        MOD_2_DEPTH,
+        MOD_3_DEPTH,
+        MOD_4_DEPTH,
+        MOD_5_DEPTH,
+        MOD_6_DEPTH,
+        MOD_7_DEPTH,
         MOD_8_DEPTH,
 
         FX_1,
