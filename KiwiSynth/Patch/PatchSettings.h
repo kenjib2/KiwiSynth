@@ -71,15 +71,14 @@ namespace kiwi_synth
         VCA_ENV_1_DEPTH,
 
         ENV_1_ATTACK,
-        ENV_1_DECAY,
-        ENV_1_SUSTAIN,
-        ENV_1_RELEASE,
-        ENV_1_REVERSE_PHASE_ON,
-
         ENV_2_ATTACK,
+        ENV_1_DECAY,
         ENV_2_DECAY,
+        ENV_1_SUSTAIN,
         ENV_2_SUSTAIN,
+        ENV_1_RELEASE,
         ENV_2_RELEASE,
+        ENV_1_REVERSE_PHASE_ON,
         ENV_2_REVERSE_PHASE_ON,
 
         LFO_1_WAVEFORM,

@@ -60,21 +60,24 @@ namespace kiwi_synth
     void Voice::calculateMods(Modulation* modulations)
     {
         if (fullFunctionality) {
-            for (int i = 0; i < 8; i++) {
-                if (modulations[i].destination >= 0 && modulations[i].source >= 0) {
-                    modValues[modulations[i].destination] += prevSourceValues[modulations[i].source] * modulations[i].depth;
-                }
-            }
+            modValues[modulations[0].destination] += prevSourceValues[modulations[0].source] * modulations[0].depth;
+            modValues[modulations[1].destination] += prevSourceValues[modulations[1].source] * modulations[1].depth;
+            modValues[modulations[2].destination] += prevSourceValues[modulations[2].source] * modulations[2].depth;
+            modValues[modulations[3].destination] += prevSourceValues[modulations[3].source] * modulations[3].depth;
+            modValues[modulations[4].destination] += prevSourceValues[modulations[4].source] * modulations[4].depth;
+            modValues[modulations[5].destination] += prevSourceValues[modulations[5].source] * modulations[5].depth;
+            modValues[modulations[6].destination] += prevSourceValues[modulations[6].source] * modulations[6].depth;
+            modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;
         }
-        modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * modulations[8].depth;
 
+        modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * modulations[8].depth;
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
         // Also skipping 10 because VCF tracking needs to be handled in a special way.
-
-        for (int i = 11; i < NUM_MODULATIONS; i++) {
-            modValues[modulations[i].destination] += prevSourceValues[modulations[i].source] * modulations[i].depth;
-        }
+        modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * modulations[11].depth;
+        modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * modulations[12].depth;
+        modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * modulations[13].depth;
+        modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * modulations[14].depth;
     }
 
     /*
@@ -82,6 +85,14 @@ namespace kiwi_synth
      */
     void Voice::Process(float* sample, Modulation* modulations)
     {
+        // Turning off notes
+        if (noteOffNeeded) {
+            noteOffNeeded = false;
+            noteTriggered = false;
+            env1.NoteOff();
+            env2.NoteOff();
+        }
+
         // Triggering notes to play
         if (noteTriggerCount > 0) {
             noteTriggerCount--;
@@ -97,22 +108,18 @@ namespace kiwi_synth
             lfo2.NoteOn();
         }
 
-        // Turning off notes
-        if (noteOffNeeded) {
-            noteOffNeeded = false;
-            noteTriggered = false;
-            env1.NoteOff();
-            env2.NoteOff();
-        }
-
-        // Handling portamento
-        float fCurrentMidiNote = (float)currentMidiNote;
-        if (portamentoOn && currentPlayingNote < fCurrentMidiNote) {
-            currentPlayingNote = std::fmin(currentPlayingNote + portamentoSpeed, fCurrentMidiNote);
-        } else if (portamentoOn && currentPlayingNote > currentMidiNote) {
-            currentPlayingNote = std::fmax(currentPlayingNote - portamentoSpeed, fCurrentMidiNote);
+        if (portamentoOn) {
+            // Handling portamento
+            float fCurrentMidiNote = (float)currentMidiNote;
+            if (currentPlayingNote < fCurrentMidiNote) {
+                currentPlayingNote = std::fmin(currentPlayingNote + portamentoSpeed, fCurrentMidiNote);
+            } else if (currentPlayingNote > currentMidiNote) {
+                currentPlayingNote = std::fmax(currentPlayingNote - portamentoSpeed, fCurrentMidiNote);
+            } else {
+                currentPlayingNote = fCurrentMidiNote;
+            }
         } else {
-            currentPlayingNote = fCurrentMidiNote;
+            currentPlayingNote = (float)currentMidiNote;
         }
         for (int i = 0; i < maxVcos; i++) {
             vcos[i].midiNote = currentPlayingNote;

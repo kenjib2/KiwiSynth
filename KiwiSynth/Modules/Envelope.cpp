@@ -46,42 +46,23 @@ namespace kiwi_synth
     {
         if (fullFunctionality) {
             if (attackMod != prevAttackMod) {
-                if (envNumber == 0) {
-                    env.SetAttackTime(std::fmax((patchSettings->getFloatValue(PatchSetting::ENV_1_ATTACK) + attackMod), 0.0f) * 3.0f);
-                } else { // envNumber == 1
-                    env.SetAttackTime(std::fmax((patchSettings->getFloatValue(PatchSetting::ENV_2_ATTACK) + attackMod), 0.0f) * 3.0f);
-                }
+                env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + attackMod), 0.0f) * 3.0f);
                 prevAttackMod = attackMod;
             }
 
             if (decayMod != prevDecayMod) {
-                if (envNumber == 0) {
-                    env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_1_DECAY) + prevDecayMod), 0.0f) * 3.0f);
-                } else { // envNumber == 1
-                    env.SetDecayTime(std::fmax((patchSettings->getFloatValue(ENV_2_DECAY) + prevDecayMod), 0.0f) * 3.0f);
-                }
+                env.SetDecayTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_DECAY + envNumber)) + prevDecayMod), 0.0f) * 3.0f);
                 prevDecayMod = decayMod;
             }
 
             if (sustainMod != prevSustainMod) {
-                if (envNumber == 0) {
-                    env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_1_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
-                } else { // envNumber == 1
-                    env.SetSustainLevel(fclamp(patchSettings->getFloatValue(ENV_2_SUSTAIN) + prevSustainMod, 0.0f, 1.0f));
-                }
+                env.SetSustainLevel(fclamp(patchSettings->getFloatValue((PatchSetting)(ENV_1_SUSTAIN + envNumber)) + prevSustainMod, 0.0f, 1.0f));
                 prevSustainMod = sustainMod;
             }
 
             if (releaseMod != prevReleaseMod) {
-                float releaseValue;
-                if (envNumber == 0) {
-                    releaseValue = std::fmax((patchSettings->getFloatValue(ENV_1_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
-                } else { // envNumber == 1
-                    releaseValue = std::fmax((patchSettings->getFloatValue(ENV_2_RELEASE) + prevReleaseMod), 0.0f) * 3.0F;
-                }
-
                 if (!quickRelease) {
-                    env.SetReleaseTime(releaseValue);
+                    env.SetReleaseTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0F);
                 }
                 prevReleaseMod = releaseMod;
             }
@@ -92,8 +73,7 @@ namespace kiwi_synth
             if (!env.IsRunning()) { // We have to still process it first to keep it moving, despite *sample getting overwritten.
                 *sample = 0.0F;
             }
-        } else
-        {
+        } else {
             *sample = *sample * env.Process(noteTriggered);
         }
     }
