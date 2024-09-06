@@ -4,6 +4,8 @@
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 
+#include "../Patch/PatchSettings.h"
+
 using namespace daisy;
 using namespace daisy::seed;
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
@@ -46,13 +48,16 @@ namespace kiwi_synth
     class Display
     {
         public:
+            PatchSettings* patchSettings;
+
             Display(){}
             virtual ~Display(){};
 
             void Init();
             void Init(DisplayConfig *displayConfig);
 
-            void TestOutput(char* message);
+            void OutputMessage(char* message);
+            void Update();
 
         private:
             KiwiDisplay display;

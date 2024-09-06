@@ -94,11 +94,11 @@ int main(void)
 	if (kiwiSynth.BootLoaderRequested())
 	{
 		sprintf(message, "Ready for Update...");
-		display.TestOutput(message);
+		display.OutputMessage(message);
 		System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
 	}
 	sprintf(message, "Hello Kiwi!");
-	display.TestOutput(message);
+	display.OutputMessage(message);
 
 	#ifdef __CPU_LOAD__
 		load.Init(hw.AudioSampleRate(), 96);

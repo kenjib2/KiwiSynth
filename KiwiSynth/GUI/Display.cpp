@@ -23,11 +23,22 @@ namespace kiwi_synth
         display.Fill(false);
     }
 
-    void Display::TestOutput(char* message)
+    void Display::OutputMessage(char* message)
     {
         display.SetCursor(0, 0);
         display.WriteString(message, Font_6x8, true);
         display.Update();
     }
 
+    void Display::Update()
+    { 
+        static int counter = 0;
+        char buffer[16];
+        sprintf(buffer, "Count %d", counter++);
+        //sprintf(buffer, "Test %d", patchSettings->getIntValue(patchSettings->lastChangedSetting));
+        //display.SetCursor(xPos[patchSettings->lastChangedSetting], yPos[patchSettings->lastChangedSetting]);
+        display.SetCursor(0, 0);
+        display.WriteString(buffer, Font_6x8, true);
+        display.Update();
+    }
 } // namespace kiwi_synth

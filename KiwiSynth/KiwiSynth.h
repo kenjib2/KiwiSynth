@@ -26,7 +26,6 @@ namespace kiwi_synth
             DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
-            PatchSettings patchSettings;
             int numVoices;
             int midiChannel;
 	        GPIO gpioMidiActivity;
@@ -44,6 +43,8 @@ namespace kiwi_synth
             void HandleMidiMessage(MidiEvent* midiEvent);
 
         public:
+            PatchSettings patchSettings;
+
             KiwiSynth() {}
             ~KiwiSynth() {}
             void Init(DaisySeed* hw, float sampleRate);
