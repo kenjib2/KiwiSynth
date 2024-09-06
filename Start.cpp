@@ -29,23 +29,24 @@ using namespace kiwi_synth;
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * Test Sustain Pedal
- * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
- * ABS distortion like X-a(X*ABS(X))
- * Pre-filter vs output distortion
+ * Modulate panning (diff pan per voice!)
+ * Save / Load
+ * UI requires button push and stops audio processing during menu
+ * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Delay
  * Chorus
  * Flanger
  * Phaser
+ * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
+ * ABS distortion like X-a(X*ABS(X))
+ * Pre-filter vs output distortion
  * Modulation is currently 0.0 - 1.0. Can we also do -1.0 to 0.0?
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?
  * Dust noise has some clicks/pops
  * Re-implement additional VCF modes?
- * Save / Load
- * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Can we optimize to get 3 voice working with 3 VCOs again?
- * UI
  * L/R Output noise
  * Headphone out noise
  */
