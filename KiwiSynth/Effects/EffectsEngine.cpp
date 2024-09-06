@@ -17,7 +17,7 @@ namespace kiwi_synth
             reverb.set_opmix(0.0f);
         }
         gain = patchSettings->getFloatValue(PatchSetting::FX_1, 6.0f, 150.0f, LOGARHITHMIC);
-        level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.0f, 0.167f);
+        level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.04f, 0.19f);
     }
 
     void EffectsEngine::ProcessReverbOnly(float* sample)
@@ -45,7 +45,7 @@ namespace kiwi_synth
     void EffectsEngine::Process(float* sample)
     {
         // PROCESSING DISTORTION
-        if (gain > 6.05f) {
+        if (gain > 6.08f) {
             sample[0] = fclamp(atan(sample[0] * gain) * level, -1.0f, 1.0f);
             sample[1] = fclamp(atan(sample[1] * gain) * level, -1.0f, 1.0f);
         }
