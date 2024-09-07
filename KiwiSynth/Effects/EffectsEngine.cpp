@@ -18,6 +18,10 @@ namespace kiwi_synth
         }
         gain = patchSettings->getFloatValue(PatchSetting::FX_1, 6.0f, 150.0f, LOGARHITHMIC);
         level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.04f, 0.19f);
+
+        delay.SetDelaySamples((int)patchSettings->getFloatValue(PatchSetting::FX_3, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
+        delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_4));
+        delay.SetFeedback(patchSettings->getFloatValue(PatchSetting::FX_5, 0.0f, 0.9f));
     }
 
     void EffectsEngine::ProcessReverbOnly(float* sample)
@@ -49,6 +53,9 @@ namespace kiwi_synth
             sample[0] = fclamp(atan(sample[0] * gain) * level, -1.0f, 1.0f);
             sample[1] = fclamp(atan(sample[1] * gain) * level, -1.0f, 1.0f);
         }
+
+        //PROCESSING DELAY
+        delay.Process(sample);
 
         // PROCESSING REVERB
         float xl = sample[0];

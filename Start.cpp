@@ -7,7 +7,7 @@
 using namespace daisy;
 using namespace kiwi_synth;
 
-#define __CPU_LOAD__
+//#define __CPU_LOAD__
 // 83/90/85 all active
 // 78/87/80 no envelope processing          5 (was 7)
 // 73/80/84 no LFO processing               11 (was 15)
@@ -32,10 +32,11 @@ using namespace kiwi_synth;
  * Save / Load
  * UI requires button push and stops audio processing during menu
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
- * Delay
+ * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
  * Flanger
  * Phaser
+ * External audio in
  * VariableShapeOsc for saw > tri > ramp effect
  * VariableShapeSaw for notch etc. pw effect
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1

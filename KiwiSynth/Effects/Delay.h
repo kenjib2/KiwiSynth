@@ -1,0 +1,32 @@
+#ifndef __KIWI_SYNTH_DELAY_H__
+#define __KIWI_SYNTH_DELAY_H__
+
+#include "daisy_seed.h"
+
+namespace kiwi_synth
+{
+    const int MAX_DELAY_SAMPLES =   0b10000000000000000; // 65536
+    const int DELAY_POINTER_MASK =  0b01111111111111111;
+    const int MIN_DELAY_SAMPLES =   1200;
+    const int DEBOUNCE_RESOLUTION = 100;
+
+    class Delay
+    {
+        private:
+            int delaySamples;   // MIN_DELAY_SAMPLES to MAX_DELAY_SAMPLES
+            float level;        // 0.0f to 1.0f
+            float feedback;     // 0.0f to 1.0f
+            int writeIndex = 0;
+
+        public:
+            void Init();
+            void Process(float* input);  // input[0] = left, input[1] = right
+
+            void SetDelaySamples(int delaySamples);
+            void SetLevel(float level);
+            void SetFeedback(float feedback);
+    };
+}
+
+
+#endif // __KIWI_SYNTH_EFFECTS_ENGINE_H__

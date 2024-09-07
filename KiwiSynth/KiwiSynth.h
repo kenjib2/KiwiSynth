@@ -12,7 +12,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-//#define __DEBUG__
+#define __DEBUG__
 
 namespace kiwi_synth
 {

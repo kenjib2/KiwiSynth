@@ -3,7 +3,9 @@
 
 
 #include "daisysp.h"
+
 #include "../Patch/PatchSettings.h"
+#include "Delay.h"
 #include "Zita/reverb.h"
 
 using namespace daisysp;
@@ -18,6 +20,7 @@ namespace kiwi_synth
             float                   level;
             PatchSettings*          patchSettings;
             Reverb                  reverb;
+            Delay                   delay;
 
         public:
             EffectsEngine() {}
