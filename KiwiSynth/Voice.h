@@ -33,6 +33,7 @@ namespace kiwi_synth
             VCF vcf;
             VCA vca;
             PatchSettings* patchSettings;
+            int voiceNumber;
             int noteTriggerCount;
             bool noteOffNeeded;
             bool portamentoOn;
@@ -62,10 +63,10 @@ namespace kiwi_synth
 
             Voice() {}
             ~Voice() {}
-            void Init(int maxVcos, PatchSettings* patchSettings, float sampleRate);
+            void Init(int maxVcos, PatchSettings* patchSettings, float sampleRate, int voiceNumber);
 
             void UpdateSettings();
-            void Process(float* sample, Modulation* modulations);
+            void Process(float* sample, Modulation* modulations, int numVoices);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity, bool reset = true);

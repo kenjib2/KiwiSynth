@@ -2,8 +2,9 @@
 
 namespace kiwi_synth
 {
-    void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate)
+    void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate, int voiceNumber)
     {
+        this->voiceNumber = voiceNumber;
         fullFunctionality = true;
         mono = false;
         noteTriggered = false;
@@ -82,7 +83,7 @@ namespace kiwi_synth
     /*
      * All modulations are one sample behind due to circular dependencies.
      */
-    void Voice::Process(float* sample, Modulation* modulations)
+    void Voice::Process(float* sample, Modulation* modulations, int numVoices)
     {
         float voiceSample = 0.0f;
 
@@ -166,7 +167,7 @@ namespace kiwi_synth
 
         vcf.Process(&voiceSample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 
-        float balance = patchSettings->getFloatValue(GEN_BALANCE);
+        float balance = fclamp(patchSettings->getFloatValue(GEN_BALANCE) + modValues[DST_BALANCE], 0.0f, 1.0f);
         if (balance >= 0.5f) {
             sample[0] = voiceSample * (1.0f - balance) * 2.0F;
             sample[1] = voiceSample * 1.0F;
@@ -190,6 +191,7 @@ namespace kiwi_synth
         prevSourceValues[SRC_PITCH_BEND] = patchSettings->getFloatValue(GEN_PITCH_BEND);
         prevSourceValues[SRC_EXPRESSION] = patchSettings->getFloatValue(GEN_EXPRESSION);
         prevSourceValues[SRC_SUSTAIN] = patchSettings->getFloatValue(GEN_SUSTAIN);
+        prevSourceValues[SRC_VOICE_NO] = (float)voiceNumber / (float)(numVoices - 1);
     }
 
     bool Voice::IsAvailable()

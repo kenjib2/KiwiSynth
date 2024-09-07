@@ -9,7 +9,7 @@ namespace kiwi_synth
         for (uint8_t i = 0; i < maxVoices; i++)
         {
             Voice nextVoice;
-            nextVoice.Init(numVcos, patchSettings, sampleRate);
+            nextVoice.Init(numVcos, patchSettings, sampleRate, i);
             voices.push_back(nextVoice);
         }
         InitModulations();
@@ -61,7 +61,7 @@ namespace kiwi_synth
         sample[0] = 0.0f;
         sample[1] = 0.0f;
         for (int i = 0; i < numVoices; i++) {
-            voices[i].Process(nextVoice, modulations);
+            voices[i].Process(nextVoice, modulations, numVoices);
             if (i < numVoices) {
                 sample[0] += nextVoice[0];
                 sample[1] += nextVoice[1];
