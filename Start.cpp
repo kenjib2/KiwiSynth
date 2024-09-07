@@ -28,9 +28,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Check if we are sometimes clamping to 0.0, 1.0 when we should be using -1.0, 1.0
  * Test Sustain Pedal
- * Modulate panning (diff pan per voice!)
  * Save / Load
  * UI requires button push and stops audio processing during menu
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.

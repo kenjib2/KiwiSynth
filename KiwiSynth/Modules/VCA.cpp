@@ -18,7 +18,7 @@ namespace kiwi_synth
         if (level > 0.0015f) {
             levelSample = *sample * (level + mod);
         }
-        *sample = fclamp((*sample * env1Mod + levelSample) * VCA_ATTENTUATION_CONSTANT, 0.0F, 0.9999999F); // env1Mod is the only mod we multiple instead of add because it is also note triggering
+        *sample = fclamp((*sample * env1Mod + levelSample) * VCA_ATTENTUATION_CONSTANT, -0.9999999F, 0.9999999F); // env1Mod is the only mod we multiple instead of add because it is also note triggering
     }
 
 }
