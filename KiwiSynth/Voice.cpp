@@ -84,6 +84,8 @@ namespace kiwi_synth
      */
     void Voice::Process(float* sample, Modulation* modulations)
     {
+        float voiceSample = 0.0f;
+
         // Turning off notes
         if (noteOffNeeded) {
             noteOffNeeded = false;
@@ -143,7 +145,7 @@ namespace kiwi_synth
         for (int i = 0; i < numVcos; i++) {
             float vcoSample = 0.0f;
             vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH + 2 * i], fullFunctionality);
-            *sample = *sample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
         float sampleAndHoldSample = 0.0f;
@@ -151,18 +153,27 @@ namespace kiwi_synth
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
             if (patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE) == 0) {
-                fclamp(*sample = *sample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0F, 1.0F);
+                fclamp(voiceSample = voiceSample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0F, 1.0F);
             } else {
-                fclamp(*sample = *sample + noiseSample, -1.0f, 1.0f);
+                fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
             }
 
             sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE], fullFunctionality);
         }
 
-        vca.Process(sample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
+        vca.Process(&voiceSample, std::fmin(std::fmax(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f), 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
-        vcf.Process(sample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+        vcf.Process(&voiceSample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+
+        float balance = patchSettings->getFloatValue(GEN_BALANCE);
+        if (balance >= 0.5f) {
+            sample[0] = voiceSample * (1.0f - balance) * 2.0F;
+            sample[1] = voiceSample * 1.0F;
+        } else {
+            sample[0] = voiceSample * 1.0F;
+            sample[1] = voiceSample * balance * 2.0F;
+        }
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.

@@ -78,19 +78,9 @@ namespace kiwi_synth
         midiLEDOn = (midiCounter < MIDI_LED_DURATION);
         midiCounter++;
 
-        float nextSample = 0.0f;
         for(size_t i = 0; i < size; i += 2)
         {
-            nextSample = 0.0f;
-            voiceBank.Process(&nextSample);
-
-            if (balance >= 0.5f) {
-                out[i] = nextSample * (1.0f - balance) * 2.0F;
-                out[i + 1] = nextSample * 1.0F;
-            } else {
-                out[i] = nextSample * 1.0F;
-                out[i + 1] = nextSample * balance * 2.0F;
-            }
+            voiceBank.Process(&out[i]);
 
             if (voiceBank.numVoices == MAX_VOICES) {
                 effectsEngine.ProcessReverbOnly(&(out[i]));

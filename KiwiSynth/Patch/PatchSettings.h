@@ -14,8 +14,8 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     const int MAX_PATCH_NAME_LENGTH = 31;
-    const static int NUM_MOD_SOURCES = 14; // Including NONE
-    const static int NUM_MOD_DESTINATIONS = 28; // Not including NONE
+    const static int NUM_MOD_SOURCES = 15; // Including NONE
+    const static int NUM_MOD_DESTINATIONS = 29; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 101;
 
@@ -167,8 +167,9 @@ namespace kiwi_synth
         SRC_MOD_WHEEL,  // 10
         SRC_PITCH_BEND, // 11
         SRC_EXPRESSION, // 12
-        SRC_SUSTAIN     // 13
-    } ModulationSource; // 14 sources
+        SRC_SUSTAIN,    // 13
+        SRC_VOICE_NO    // 14
+    } ModulationSource; // 15 sources
 
     typedef enum
     {
@@ -206,6 +207,7 @@ namespace kiwi_synth
         DST_ENV_2_DECAY,        // 25
         DST_ENV_2_SUSTAIN,      // 26
         DST_ENV_2_RELEASE,      // 27
+        DST_BALANCE             // 28
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               // Could possibly modulate for sources 7-12 only
         //DST_FX_3,

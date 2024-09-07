@@ -28,6 +28,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
+ * Check if we are sometimes clamping to 0.0, 1.0 when we should be using -1.0, 1.0
  * Test Sustain Pedal
  * Modulate panning (diff pan per voice!)
  * Save / Load
@@ -37,6 +38,8 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * VariableShapeOsc for saw > tri > ramp effect
+ * VariableShapeSaw for notch etc. pw effect
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion

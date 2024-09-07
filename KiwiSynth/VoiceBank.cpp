@@ -56,13 +56,15 @@ namespace kiwi_synth
 
     void VoiceBank::Process(float* sample)
     {
-        float nextVoice = 0.0f;
-        *sample = 0.0f;
+        float nextVoice[2];
 
+        sample[0] = 0.0f;
+        sample[1] = 0.0f;
         for (int i = 0; i < numVoices; i++) {
-            voices[i].Process(&nextVoice, modulations);
+            voices[i].Process(nextVoice, modulations);
             if (i < numVoices) {
-                *sample += nextVoice;
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
             }
         }
     }
