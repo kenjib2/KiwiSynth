@@ -200,6 +200,13 @@ namespace kiwi_synth
         }
     }
 
+    void VoiceBank::AllNotesOff()
+    {
+        for (int i = 0; i < maxVoices; i++) {
+            voices[i].NoteOff(0, 0);
+        }
+    }
+
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)
     {
         uint8_t lowestIndex = 0;

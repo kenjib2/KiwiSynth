@@ -12,7 +12,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-#define __DEBUG__
+//#define __DEBUG__
 
 namespace kiwi_synth
 {
@@ -59,6 +59,7 @@ namespace kiwi_synth
             bool BootLoaderRequested();
             void UpdateSettings();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
+            void AllNotesOff();
             void TestOutput(DaisySeed* hw);
     };
 } // namespace kiwi_synth

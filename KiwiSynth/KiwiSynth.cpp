@@ -185,6 +185,11 @@ namespace kiwi_synth
         }
     }
 
+    void KiwiSynth::AllNotesOff()
+    {
+        voiceBank.AllNotesOff();
+    }
+
     bool KiwiSynth::BootLoaderRequested()
     {
         return patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);

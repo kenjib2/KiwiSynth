@@ -23,6 +23,11 @@ namespace kiwi_synth
         display.Fill(false);
     }
 
+    void Display::Clear()
+    {
+        display.Fill(false);
+    }
+
     void Display::OutputMessage(char* message)
     {
         display.SetCursor(0, 0);
@@ -30,13 +35,14 @@ namespace kiwi_synth
         display.Update();
     }
 
+    static int counter = 0;
+    static char buffer[32];
     void Display::Update()
     { 
-        static int counter = 0;
-        char buffer[16];
         sprintf(buffer, "Count %d", counter++);
         //sprintf(buffer, "Test %d", patchSettings->getIntValue(patchSettings->lastChangedSetting));
         //display.SetCursor(xPos[patchSettings->lastChangedSetting], yPos[patchSettings->lastChangedSetting]);
+        display.Fill(false);
         display.SetCursor(0, 0);
         display.WriteString(buffer, Font_6x8, true);
         display.Update();

@@ -38,7 +38,7 @@ namespace kiwi_synth
         void Defaults()
         {
             periph              = I2CHandle::Config::Peripheral::I2C_1;
-            speed               = I2CHandle::Config::Speed::I2C_100KHZ;
+            speed               = I2CHandle::Config::Speed::I2C_400KHZ;
             mode                = I2CHandle::Config::Mode::I2C_MASTER;
             sclPin              = seed::D12; // Pin 13 I2C1_SDA
             sdaPin              = seed::D11; // Pin 12 I2C1_SCL
@@ -56,6 +56,7 @@ namespace kiwi_synth
             void Init();
             void Init(DisplayConfig *displayConfig);
 
+            void Clear();
             void OutputMessage(char* message);
             void Update();
 

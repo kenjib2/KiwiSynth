@@ -58,6 +58,7 @@ namespace kiwi_synth
             void UpdateModulations();
             void NoteOn(uint8_t note, uint8_t velocity);
             void NoteOff(uint8_t note, uint8_t velocity);
+            void AllNotesOff();
     };
 }
 
