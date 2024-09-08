@@ -45,23 +45,36 @@ namespace kiwi_synth
         }
     };
 
+    typedef enum {
+        BOOTLOADER,
+        PLAY,
+        INTS
+    } DisplayMode;
+
     class Display
     {
         public:
             PatchSettings* patchSettings;
+            DisplayMode mode;
 
             Display(){}
             virtual ~Display(){};
-
             void Init();
             void Init(DisplayConfig *displayConfig);
 
             void Clear();
-            void OutputMessage(char* message);
             void Update();
 
         private:
+            char buffer[256];
             KiwiDisplay display;
+
+            void GetVoiceMode(char* buffer);
+            void GetWaveform(char* buffer, int vcoNumber);
+
+            void DisplayBootloader();
+            void DisplayWelcome();
+            void DisplayInts();
     };
 } // namespace kiwi_synth
 

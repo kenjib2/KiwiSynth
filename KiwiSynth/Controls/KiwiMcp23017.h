@@ -111,7 +111,7 @@ namespace kiwi_synth
             void              Defaults()
             {
                 i2c_config.periph         = daisy::I2CHandle::Config::Peripheral::I2C_1;
-                i2c_config.speed          = daisy::I2CHandle::Config::Speed::I2C_1MHZ;
+                i2c_config.speed          = daisy::I2CHandle::Config::Speed::I2C_400KHZ;
                 i2c_config.mode           = daisy::I2CHandle::Config::Mode::I2C_MASTER;
                 i2c_config.pin_config.scl = {DSY_GPIOB, 8}; // Pin 12 I2C1_SCL
                 i2c_config.pin_config.sda = {DSY_GPIOB, 9}; // Pin 13 I2C1_SDA
