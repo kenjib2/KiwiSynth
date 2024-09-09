@@ -115,10 +115,8 @@ int main(void)
 		hw.StartLog(false);
 	#endif // __CPU_LOAD__ || __DEBUG__
 
-	display.Init();
-
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
-	display.patchSettings = &kiwiSynth.patchSettings;
+	display.Init(&kiwiSynth.patchSettings);
 
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
@@ -148,7 +146,7 @@ int main(void)
 
 		checkGuiMode();
 		if (guiMode) {
-			if (tick_counter == 127) {
+			if (tick_counter == 255) {
 				display.Update();
 
 				#ifdef __DEBUG__
@@ -160,7 +158,7 @@ int main(void)
 				#endif // __DEBUG__
 			}
 			tick_counter++;
-			tick_counter &= 0b01111111;
+			tick_counter &= 0b011111111;
 		}
 	}
 }

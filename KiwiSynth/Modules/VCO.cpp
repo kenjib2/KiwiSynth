@@ -79,7 +79,7 @@ namespace kiwi_synth
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0F));
                     waveSample = wavefolder.Process(waveSample);
                 } else if (waveform == 1) { // Sawtooth
-                    waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0F, 1.0F);
+                    waveSample = fclamp(waveSample * (waveFolderGain + pwMod + 1.0f) / 2, -1.0F, 1.0F);
                 }
 
                 *sample = waveSample * level;

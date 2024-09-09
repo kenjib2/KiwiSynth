@@ -293,7 +293,7 @@ namespace kiwi_synth
             /*
              * Sets a string/char* setting value. If a non-string setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, std::string value);
+            void setValue(PatchSetting setting, char* value);
 
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
@@ -318,7 +318,7 @@ namespace kiwi_synth
             /*
              * Gets a string setting value. If a non-string setting is attempted, "" will be returned.
              */
-            std::string getStringValue(PatchSetting setting);
+            char* getStringValue(PatchSetting setting);
     }; // class PatchSettings
 } // namespace kiwi_synth
 

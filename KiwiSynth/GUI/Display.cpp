@@ -3,14 +3,14 @@
 namespace kiwi_synth
 {
 
-    void Display::Init()
+    void Display::Init(PatchSettings* patchSettings)
     {
         DisplayConfig cfg;
         cfg.Defaults();
-        Init(&cfg);
+        Init(&cfg, patchSettings);
     }
 
-    void Display::Init(DisplayConfig *displayConfig)
+    void Display::Init(DisplayConfig *displayConfig, PatchSettings* patchSettings)
     {
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -19,119 +19,53 @@ namespace kiwi_synth
         cfg.driver_config.transport_config.i2c_config.pin_config.scl = displayConfig->sclPin;
         cfg.driver_config.transport_config.i2c_config.pin_config.sda = displayConfig->sdaPin;
 
+        this->patchSettings = patchSettings;
         mode = PLAY;
+
+        welcomeScreen.Init(&display, patchSettings);
+        bootloaderScreen.Init(&display, patchSettings);
+        intValueScreen.Init(&display, patchSettings);
+        patchScreen.Init(&display, patchSettings);
 
         display.Init(cfg);
         display.Fill(false);
     }
 
-    void Display::Clear()
+    int Display::GetSelectValue(int numElements)
     {
-        display.Fill(false);
+        int8_t value = patchSettings->getIntValue(GEN_SELECT);
+        if (value < 0) {
+            value += numElements;
+        } else {
+            value %= numElements;
+        }
+
+        patchSettings->setValue(GEN_SELECT, value);
+
+        return value + 1;
     }
 
     void Display::Update()
     {
-        Clear();
         switch (mode) {
             case BOOTLOADER:
-                DisplayBootloader();
+                bootloaderScreen.Display();
                 break;
             case PLAY:
-                DisplayWelcome();
+                welcomeScreen.Display();
                 break;
             case INTS:
-                DisplayInts();
+                switch(GetSelectValue(2)) {
+                    case 0:
+                    default:
+                        intValueScreen.Display();
+                        break;
+                    case 1:
+                        patchScreen.Display();
+                        // Add a int getSelectValue(int max) that reads in GEN_SELECT and then sets it back in patchSettings within a fixed range then returns that modulus value.
+                        break;
+                }
                 break;
         }
     }
-
-    void Display::DisplayBootloader()
-    {
-        Clear();
-
-		sprintf(buffer, "Ready for Update...");
-        display.SetCursor(0, 0);
-        display.WriteString(buffer, Font_6x8, true);
-
-        display.Update();
-    }
-
-    void Display::DisplayWelcome()
-    {
-        Clear();
-
-	    sprintf(buffer, "KiwiSynth");
-        display.SetCursor(0, 0);
-        display.WriteString(buffer, Font_6x8, true);
-
-	    /*sprintf(buffer, "Kiwi Synth");
-        display.SetCursor(0, 0);
-        display.WriteString(buffer, Font_11x18, true);
-
-        display.SetCursor(0, 22);
-	    sprintf(buffer, "Version 1.0");
-        display.WriteString(buffer, Font_6x8, true);
-
-        display.SetCursor(36, 56);
-	    sprintf(buffer, "Bombastic Audio");
-        display.WriteString(buffer, Font_6x8, true);*/
-
-        display.Update();
-    }
-
-    // 2 character value
-    void Display::GetVoiceMode(char* buffer)
-    {
-        switch (patchSettings->getIntValue(VCO_VOICES)) {
-            case 0:
-                strcpy(buffer, "2v");
-                break;
-            case 1:
-                strcpy(buffer, "3v");
-                break;
-            case 2:
-                strcpy(buffer, "1v");
-                break;
-        }
-    }
-
-    // 2 character value
-    void Display::GetWaveform(char* buffer, int vcoNumber) {
-        switch (patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber))) {
-            case 0:
-                strcpy(buffer, "Sq");
-                break;
-            case 1:
-                strcpy(buffer, "Sa");
-                break;
-            case 2:
-                strcpy(buffer, "Tr");
-                break;
-        }
-    }
-
-    void Display::DisplayInts()
-    {
-        char val1[4], val2[4];
-
-        display.SetCursor(0, 0);
-        GetVoiceMode(val1);
-        GetWaveform(val2, 0);
-        sprintf(buffer, "vm %s w1 %s", val1, val2);
-        display.WriteString(buffer, Font_6x8, true);
-
-        display.SetCursor(0, 8);
-        GetWaveform(val1, 1);
-        sprintf(buffer, "w2 %s oct %d int %d", val1, patchSettings->getIntValue(VCO_2_OCTAVE) - 2, patchSettings->getIntValue(VCO_2_INTERVAL) - 11);
-        display.WriteString(buffer, Font_6x8, true);
-
-        display.SetCursor(0, 16);
-        GetWaveform(val1, 2);
-        sprintf(buffer, "w3 %s oct %d int %d", val1, patchSettings->getIntValue(VCO_3_OCTAVE) - 2, patchSettings->getIntValue(VCO_3_INTERVAL) - 11);
-        display.WriteString(buffer, Font_6x8, true);
-
-        display.Update();
-    }
-
 } // namespace kiwi_synth

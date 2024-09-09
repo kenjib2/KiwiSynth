@@ -5,6 +5,10 @@
 #include "dev/oled_ssd130x.h"
 
 #include "../Patch/PatchSettings.h"
+#include "WelcomeScreen.h"
+#include "BootloaderScreen.h"
+#include "IntValueScreen.h"
+#include "PatchScreen.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -54,27 +58,25 @@ namespace kiwi_synth
     class Display
     {
         public:
-            PatchSettings* patchSettings;
             DisplayMode mode;
 
             Display(){}
             virtual ~Display(){};
-            void Init();
-            void Init(DisplayConfig *displayConfig);
+            void Init(PatchSettings* patchSettings);
+            void Init(DisplayConfig *displayConfig, PatchSettings* patchSettings);
 
-            void Clear();
             void Update();
 
         private:
             char buffer[256];
+            PatchSettings* patchSettings;
             KiwiDisplay display;
+            WelcomeScreen welcomeScreen;
+            BootloaderScreen bootloaderScreen;
+            IntValueScreen intValueScreen;
+            PatchScreen patchScreen;
 
-            void GetVoiceMode(char* buffer);
-            void GetWaveform(char* buffer, int vcoNumber);
-
-            void DisplayBootloader();
-            void DisplayWelcome();
-            void DisplayInts();
+            int GetSelectValue(int numElements);
     };
 } // namespace kiwi_synth
 

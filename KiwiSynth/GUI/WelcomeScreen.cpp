@@ -1,0 +1,34 @@
+#include "WelcomeScreen.h"
+
+namespace kiwi_synth
+{
+
+    void WelcomeScreen::Init(KiwiDisplay* display, PatchSettings* patchSettings)
+    {
+        this->display = display;
+        this->patchSettings = patchSettings;
+    }
+
+    void WelcomeScreen::Display()
+    {
+        display->Fill(false);
+
+	    sprintf(buffer, "KiwiSynth");
+        display->SetCursor(0, 0);
+        display->WriteString(buffer, Font_6x8, true);
+
+	    /*sprintf(buffer, "Kiwi Synth");
+        display.SetCursor(0, 0);
+        display.WriteString(buffer, Font_11x18, true);
+
+        display.SetCursor(0, 22);
+	    sprintf(buffer, "Version 1.0");
+        display.WriteString(buffer, Font_6x8, true);
+
+        display.SetCursor(36, 56);
+	    sprintf(buffer, "Bombastic Audio");
+        display.WriteString(buffer, Font_6x8, true);*/
+
+        display->Update();
+    }
+} // namespace kiwi_synth
