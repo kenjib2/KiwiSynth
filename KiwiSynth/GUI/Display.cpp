@@ -20,6 +20,7 @@ namespace kiwi_synth
         cfg.driver_config.transport_config.i2c_config.pin_config.sda = displayConfig->sdaPin;
 
         this->patchSettings = patchSettings;
+        guiButton = false;
         mode = PLAY;
 
         welcomeScreen.Init(&display, patchSettings);
@@ -31,6 +32,26 @@ namespace kiwi_synth
         display.Fill(false);
     }
 
+    void Display::HandleInput()
+    {
+        bool prevGuiButton = guiButton;
+        guiButton = patchSettings->getBoolValue(GEN_SELECT_BUTTON);
+        if (prevGuiButton && !guiButton) {
+            switch (mode) {
+                case BOOTLOADER:
+                    break;
+                case PLAY:
+                    mode = GUI;
+                    patchSettings->setValue(GEN_SELECT, (int8_t)0);
+                    break;
+                case GUI:
+                    mode = PLAY;
+                    Update();
+                    break;
+            }
+        }
+    }
+    
     int Display::GetSelectValue(int numElements)
     {
         int8_t value = patchSettings->getIntValue(GEN_SELECT);
@@ -42,7 +63,7 @@ namespace kiwi_synth
 
         patchSettings->setValue(GEN_SELECT, value);
 
-        return value + 1;
+        return value;
     }
 
     void Display::Update()
@@ -54,7 +75,7 @@ namespace kiwi_synth
             case PLAY:
                 welcomeScreen.Display();
                 break;
-            case INTS:
+            case GUI:
                 switch(GetSelectValue(2)) {
                     case 0:
                     default:

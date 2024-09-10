@@ -21,8 +21,8 @@ namespace kiwi_synth
         gain = patchSettings->getFloatValueLogLookup(PatchSetting::FX_1);
         level = patchSettings->getFloatValueLinear(PatchSetting::FX_2, 0.04f, 0.22f);
 
-        delay.SetDelaySamples((int)patchSettings->getFloatValueLinear(PatchSetting::FX_3, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
-        delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_4));
+        delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_3));
+        delay.SetDelaySamples((int)patchSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
         delay.SetFeedback(patchSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
     }
 
@@ -52,8 +52,8 @@ namespace kiwi_synth
     {
         // PROCESSING DISTORTION
         if (gain > ATAN_DEBOUNCE_THRESHOLD) {
-            sample[0] = fclamp(atan(sample[0] * gain) * level, -1.0f, 1.0f);
-            sample[1] = fclamp(atan(sample[1] * gain) * level, -1.0f, 1.0f);
+            sample[0] = fclamp(atan(sample[0] * gain) * level, -0.9999999F, 0.9999999F);
+            sample[1] = fclamp(atan(sample[1] * gain) * level, -0.9999999F, 0.9999999F);
         }
 
         //PROCESSING DELAY

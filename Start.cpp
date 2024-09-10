@@ -64,9 +64,6 @@ const int AUDIO_BLOCK_SIZE = 96;
 	char DSY_SDRAM_BSS buff[256];
 #endif // __CPU_LOAD__
 
-bool guiButton;
-bool guiMode;
-
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
                    size_t                                size)
@@ -75,7 +72,8 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 		load.OnBlockStart();
 	#endif // __CPU_LOAD__
 
-	if (guiMode) {
+	if (display.mode) {
+		//kiwiSynth.AllNotesOff();
 		memset(out, 0, sizeof(float) * size * 2);
 	} else {
 		kiwiSynth.Process(out, size);
@@ -86,28 +84,9 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	#endif // __CPU_LOAD__
 }
 
-void checkGuiMode()
-{
-	bool prevGuiButton = guiButton;
-	guiButton = kiwiSynth.patchSettings.getBoolValue(GEN_SELECT_BUTTON);
-	if (prevGuiButton && !guiButton) {
-		kiwiSynth.AllNotesOff();
-		guiMode = !guiMode;
-		if (guiMode) {
-			display.mode = INTS;
-		} else {
-			display.mode = PLAY;
-		}
-		display.Update();
-	}
-}
-
 // Test chords: Am7 C/G F9 C/E
 int main(void)
 {
-	guiMode = false;
-	guiButton = false;
-
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
@@ -144,8 +123,8 @@ int main(void)
 		kiwiSynth.ProcessInputs();
 		kiwiSynth.UpdateSettings();
 
-		checkGuiMode();
-		if (guiMode) {
+		display.HandleInput();
+		if (display.mode) {
 			if (tick_counter == 255) {
 				display.Update();
 

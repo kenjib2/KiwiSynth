@@ -50,9 +50,9 @@ namespace kiwi_synth
     };
 
     typedef enum {
-        BOOTLOADER,
-        PLAY,
-        INTS
+        BOOTLOADER = -1,
+        PLAY = 0,
+        GUI = 1
     } DisplayMode;
 
     class Display
@@ -65,10 +65,12 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings);
             void Init(DisplayConfig *displayConfig, PatchSettings* patchSettings);
 
+            void HandleInput();
             void Update();
 
         private:
             char buffer[256];
+            bool guiButton;
             PatchSettings* patchSettings;
             KiwiDisplay display;
             WelcomeScreen welcomeScreen;

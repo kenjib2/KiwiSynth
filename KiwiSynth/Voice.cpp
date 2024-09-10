@@ -163,9 +163,9 @@ namespace kiwi_synth
             sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE], fullFunctionality);
         }
 
-        vca.Process(&voiceSample, fclamp(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
-
         vcf.Process(&voiceSample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+
+        vca.Process(&voiceSample, fclamp(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
         float balance = fclamp(patchSettings->getFloatValue(GEN_BALANCE) + modValues[DST_BALANCE], 0.0f, 1.0f);
         if (balance >= 0.5f) {
