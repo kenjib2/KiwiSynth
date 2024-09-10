@@ -28,9 +28,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Test Sustain Pedal
+ * Notes start playing before the frequency is set, causing a blip with short attacks.
  * Save / Load
- * UI requires button push and stops audio processing during menu
+ * UI
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
@@ -51,9 +51,11 @@ using namespace kiwi_synth;
  * Can we optimize to get 3 voice working with 3 VCOs again?
  * L/R Output noise
  * Headphone out noise
- * More text on display interferes with audio -- see DisplayWelcome
+ * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob.
  * Going out of GUI mode sometimes triggers note on(s)
  */
+
+// Patch idea -- very slow square LFO with super short PW. Have it trigger on short PW first, then "blip" up/down to the note. Chip-tunesy
 
 DaisySeed hw;
 KiwiSynth kiwiSynth;
@@ -73,7 +75,7 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	#endif // __CPU_LOAD__
 
 	if (display.mode) {
-		//kiwiSynth.AllNotesOff();
+		kiwiSynth.AllNotesOff();
 		memset(out, 0, sizeof(float) * size * 2);
 	} else {
 		kiwiSynth.Process(out, size);

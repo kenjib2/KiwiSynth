@@ -69,9 +69,6 @@ namespace kiwi_synth
     void Display::Update()
     {
         switch (mode) {
-            case BOOTLOADER:
-                bootloaderScreen.Display();
-                break;
             case PLAY:
                 welcomeScreen.Display();
                 break;
@@ -86,6 +83,9 @@ namespace kiwi_synth
                         // Add a int getSelectValue(int max) that reads in GEN_SELECT and then sets it back in patchSettings within a fixed range then returns that modulus value.
                         break;
                 }
+                break;
+           case BOOTLOADER:
+                bootloaderScreen.Display();
                 break;
         }
     }

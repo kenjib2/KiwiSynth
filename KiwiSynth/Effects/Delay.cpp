@@ -27,7 +27,8 @@ namespace kiwi_synth
         delaySamples = MIN_DELAY_SAMPLES;
         level = 0.0f;
         feedback = 0.0f;
-        memset(delayLine, 0, MAX_DELAY_SAMPLES * sizeof(float));
+        memset(delayLine[0], 0, MAX_DELAY_SAMPLES * sizeof(float));
+        memset(delayLine[1], 0, MAX_DELAY_SAMPLES * sizeof(float));
         writeIndex = 0;
     }
 

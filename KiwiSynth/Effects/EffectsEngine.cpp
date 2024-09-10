@@ -8,6 +8,7 @@ namespace kiwi_synth
     {
         this->patchSettings = patchSettings;
         reverb.init(sampleRate, false);
+        delay.Init();
     }
 
     void EffectsEngine::UpdateSettings()
