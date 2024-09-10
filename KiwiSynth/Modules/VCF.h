@@ -11,7 +11,7 @@ using namespace daisysp;
 namespace kiwi_synth
 {
     static const float      VCF_MIN_FREQUENCY = 40.0F;
-    static const float      VCF_MAX_FREQUENCY = 22000.0F;
+    static const float      VCF_MAX_FREQUENCY = 16000.0F;
 
     enum FilterType {
         LADDER_LOWPASS,

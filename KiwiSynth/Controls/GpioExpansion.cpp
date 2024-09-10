@@ -114,21 +114,16 @@ namespace kiwi_synth
 
     void GpioExpansion::Process()
     {
-        pinValues[mcps.at(0).i2c_address] = mcps.at(0).Read();
-        mcps.at(0).clearInterrupts();
-        controlListener->controlGpioUpdate(mcps.at(0).i2c_address);
+        // Read all mcps and write to pinValues
+        for (int i = 0; i < numGpioExpansions; i++) {
+            pinValues[mcps.at(i).i2c_address] = mcps.at(i).Read();
+            mcps.at(i).clearInterrupts();
 
-        pinValues[mcps.at(1).i2c_address] = mcps.at(1).Read();
-        mcps.at(1).clearInterrupts();
-        controlListener->controlGpioUpdate(mcps.at(1).i2c_address);
-
-        pinValues[mcps.at(2).i2c_address] = mcps.at(2).Read();
-        mcps.at(2).clearInterrupts();
-        controlListener->controlGpioUpdate(mcps.at(2).i2c_address);
-
-        pinValues[mcps.at(3).i2c_address] = mcps.at(3).Read();
-        mcps.at(3).clearInterrupts();
-        controlListener->controlGpioUpdate(mcps.at(3).i2c_address);
+            // Reinstate if not using a controlListener
+            //if (controlListener) {
+                controlListener->controlGpioUpdate(mcps.at(i).i2c_address);
+            //}
+        }
     }
 
     void GpioExpansion::ClearInterrupts()
