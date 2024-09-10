@@ -144,7 +144,7 @@ namespace kiwi_synth
         modulations[MODS_MOD_MATRIX_8].destination = (ModulationDestination)patchSettings->getIntValue(MOD_8_DESTINATION);
         modulations[MODS_MOD_MATRIX_8].depth = patchSettings->getFloatValue(MOD_8_DEPTH);
 
-        modulations[MODS_LFO_1_TO_VCOS].depth = patchSettings->getFloatValue(LFO_1_TO_MASTER_TUNE);
+        modulations[MODS_LFO_1_TO_VCOS].depth = patchSettings->getFloatValue(LFO_1_TO_MASTER_TUNE, EXPONENTIAL);
         modulations[MODS_ENV_1_TO_VCA].depth = patchSettings->getFloatValue(VCA_ENV_1_DEPTH);
         modulations[MODS_NOTE_TO_VCF_FREQ].depth = patchSettings->getFloatValue(VCF_TRACKING);
         modulations[MODS_ENV_1_TO_VCF_FREQ].depth = patchSettings->getFloatValue(VCF_ENV_1_DEPTH, EXPONENTIAL);

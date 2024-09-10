@@ -25,20 +25,7 @@ namespace kiwi_synth
     void LFO::UpdateSettings()
     {
         waveform = patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
-        switch (waveform) {
-            case 0:
-                osc.SetWaveform(Oscillator::WAVE_TRI);
-                break;
-            case 1:
-                osc.SetWaveform(Oscillator::WAVE_SQUARE);
-                break;
-            case 2:
-                osc.SetWaveform(Oscillator::WAVE_RAMP);
-                break;
-            case 3:
-                osc.SetWaveform(Oscillator::WAVE_SAW);
-                break;
-        }
+        osc.SetWaveform(waveform + 1); // WAVE_TRI = 1, WAVE_SAW = 2, WAVE_RAMP = 3, WAVE_SQUARE = 4
         freq = patchSettings->getFloatValue((PatchSetting)(LFO_1_RATE + lfoNumber), LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
         basePhase = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_PHASE + lfoNumber));
         noteOnReset = patchSettings->getBoolValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_RESET_ON + lfoNumber));

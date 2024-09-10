@@ -16,8 +16,8 @@ namespace kiwi_synth
         } else {
             reverb.set_opmix(0.0f);
         }
-        gain = patchSettings->getFloatValue(PatchSetting::FX_1, 6.0f, 150.0f, LOGARHITHMIC);
-        level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.04f, 0.19f);
+        gain = patchSettings->getFloatValue(PatchSetting::FX_1, 5.0f, 150.0f, LOGARHITHMIC);
+        level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.04f, 0.22f);
 
         delay.SetDelaySamples((int)patchSettings->getFloatValue(PatchSetting::FX_3, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
         delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_4));
@@ -49,7 +49,7 @@ namespace kiwi_synth
     void EffectsEngine::Process(float* sample)
     {
         // PROCESSING DISTORTION
-        if (gain > 6.08f) {
+        if (gain > 5.1f) {
             sample[0] = fclamp(atan(sample[0] * gain) * level, -1.0f, 1.0f);
             sample[1] = fclamp(atan(sample[1] * gain) * level, -1.0f, 1.0f);
         }

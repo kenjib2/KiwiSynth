@@ -24,17 +24,7 @@ namespace kiwi_synth
 
     void VCO::UpdateSettings()
     {
-        switch (vcoNumber) {
-            case 0:
-                isOn = true;
-                break;
-            case 1:
-                isOn = patchSettings->getBoolValue(PatchSetting::VCO_2_ON);
-                break;
-            case 2:
-                isOn = patchSettings->getBoolValue(PatchSetting::VCO_3_ON);
-                break;
-        }
+        isOn = patchSettings->getBoolValue((PatchSetting)(VCO_1_ON + vcoNumber));
         if (isOn) {
             masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
 
@@ -48,17 +38,8 @@ namespace kiwi_synth
                 interval = (float)(patchSettings->getIntValue((PatchSetting)(VCO_2_INTERVAL + vcoMod)) - 11);
                 octave = (float)((patchSettings->getIntValue((PatchSetting)(VCO_2_OCTAVE + vcoMod)) - 2) * 12);
             }
-            switch (waveform) {
-                case 0:
-                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
-                    break;
-                case 1:
-                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
-                    break;
-                case 2:
-                    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_TRI);
-                    break;
-            }
+
+            osc.SetWaveform(7 - waveform); // 7: WAVE_POLYBLEP_SQUARE, 6: WAVE_POLYBLEP_SAW, 5: WAVE_POLYBLEP_TRI
             waveFolderGain = std::fmax(1.0f + (0.495F - pulseWidth) * 55, 1.0f);
 
             playingNote = midiNote + octave + interval + fineTune + masterTune;

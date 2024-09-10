@@ -17,7 +17,7 @@ namespace kiwi_synth
     const static int NUM_MOD_SOURCES = 15; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 29; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
-    const static int NUM_PATCH_SETTINGS = 101;
+    const static int NUM_PATCH_SETTINGS = 102;
 
     /*
      * All controls for the Kiwi Synth.
@@ -40,107 +40,109 @@ namespace kiwi_synth
         VCO_2_LEVEL,
         VCO_3_LEVEL,
 
+        VCO_1_ON,
         VCO_2_ON,
-        VCO_3_ON,
-        VCO_2_OCTAVE,               // 15
+        VCO_3_ON,                   // 15
+        
+        VCO_2_OCTAVE,
         VCO_3_OCTAVE,
         VCO_2_INTERVAL,
         VCO_3_INTERVAL,
-        VCO_2_FINE_TUNE,
-        VCO_3_FINE_TUNE,            // 20
+        VCO_2_FINE_TUNE,            // 20
+        VCO_3_FINE_TUNE,
 
 
         VCO_NOISE_ON,
         VCO_NOISE_TYPE,
         VCO_NOISE_LEVEL,
-        VCO_EXT_ON,
+        VCO_EXT_ON,                 // 25
         // External gain is analog only
-        VCO_EXT_TRIGGER_GATE,       // 25
+        VCO_EXT_TRIGGER_GATE,
         VCO_EXT_LEVEL,
 
         VCF_FILTER_TYPE,
         VCF_CUTOFF,
-        VCF_RESONANCE,
-        VCF_TRACKING,               // 30
+        VCF_RESONANCE,              // 30
+        VCF_TRACKING,
         VCF_ENV_1_DEPTH,
         VCF_ENV_2_DEPTH,
 
         VCA_LEVEL,
-        VCA_ENV_1_DEPTH,
+        VCA_ENV_1_DEPTH,            // 35
 
-        ENV_1_ATTACK,               // 35
+        ENV_1_ATTACK,
         ENV_2_ATTACK,
         ENV_1_DECAY,
         ENV_2_DECAY,
-        ENV_1_SUSTAIN,
-        ENV_2_SUSTAIN,              // 40
+        ENV_1_SUSTAIN,              // 40
+        ENV_2_SUSTAIN,
         ENV_1_RELEASE,
         ENV_2_RELEASE,
         ENV_1_REVERSE_PHASE_ON,
-        ENV_2_REVERSE_PHASE_ON,
+        ENV_2_REVERSE_PHASE_ON,     // 45
 
-        LFO_1_WAVEFORM,             // 45
+        LFO_1_WAVEFORM,
         LFO_2_WAVEFORM,
         LFO_1_PULSE_WIDTH,
         LFO_2_PULSE_WIDTH,
-        LFO_1_RATE,
-        LFO_2_RATE,                 // 50
+        LFO_1_RATE,                 // 50
+        LFO_2_RATE,
         LFO_1_TRIGGER_RESET_ON,
         LFO_2_TRIGGER_RESET_ON,
         LFO_1_TRIGGER_PHASE,
-        LFO_2_TRIGGER_PHASE,
-        LFO_1_TO_MASTER_TUNE,       // 55
+        LFO_2_TRIGGER_PHASE,        // 55
+        LFO_1_TO_MASTER_TUNE,
         LFO_2_TO_VCF_CUTOFF,
 
         SH_TO_VCF_CUTOFF,
         SH_RATE,
 
-        MOD_1_SOURCE,
-        MOD_2_SOURCE,               // 60
+        MOD_1_SOURCE,               // 60
+        MOD_2_SOURCE,
         MOD_3_SOURCE,
         MOD_4_SOURCE,
         MOD_5_SOURCE,
-        MOD_6_SOURCE,
-        MOD_7_SOURCE,               // 65
+        MOD_6_SOURCE,               // 65
+        MOD_7_SOURCE,
         MOD_8_SOURCE,
 
         MOD_1_DESTINATION,
         MOD_2_DESTINATION,
-        MOD_3_DESTINATION,
-        MOD_4_DESTINATION,          // 70
+        MOD_3_DESTINATION,          // 70
+        MOD_4_DESTINATION,
         MOD_5_DESTINATION,
         MOD_6_DESTINATION,
         MOD_7_DESTINATION,
-        MOD_8_DESTINATION,
+        MOD_8_DESTINATION,          // 75
 
-        MOD_1_DEPTH,                // 75
+        MOD_1_DEPTH,
         MOD_2_DEPTH,
         MOD_3_DEPTH,
         MOD_4_DEPTH,
-        MOD_5_DEPTH,
-        MOD_6_DEPTH,                // 80
+        MOD_5_DEPTH,                // 80
+        MOD_6_DEPTH,
         MOD_7_DEPTH,
         MOD_8_DEPTH,
 
         FX_1,
-        FX_2,
-        FX_3,                       // 85
+        FX_2,                       // 85
+        FX_3,
         FX_4,
         FX_5,
         FX_REVERB,
 
-        GEN_BALANCE,
-        GEN_SELECT,                 // 90
+        GEN_BALANCE,                // 90
+        GEN_SELECT,
         GEN_SELECT_BUTTON,
         GEN_FX_SELECT,
         GEN_REVERB_SELECT,
-        GEN_REVERB_DECAY,
-        GEN_NAME,                   // 95
+        GEN_REVERB_DECAY,           // 95
+        GEN_NAME,
         GEN_AFTERTOUCH,
         GEN_MOD_WHEEL,
         GEN_PITCH_BEND,
-        GEN_EXPRESSION,
-        GEN_SUSTAIN                 // 100
+        GEN_EXPRESSION,             // 100
+        GEN_SUSTAIN
         
         // Headphones is analog only
         // Output Level is analog only

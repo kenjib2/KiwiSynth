@@ -56,6 +56,9 @@ namespace kiwi_synth
         strcpy(buffer, "New");
         setValue(GEN_NAME, buffer);
 
+        // Set default that does not change.
+        setValue(VCO_1_ON, true);
+
         // Set initial encoder values.
         setValue(VCO_VOICES, (int8_t)0);
         setValue(VCO_1_WAVEFORM, (int8_t)0);

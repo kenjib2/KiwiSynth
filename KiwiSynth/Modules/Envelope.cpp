@@ -61,13 +61,12 @@ namespace kiwi_synth
             }
         }
 
+        *sample = *sample * env.Process(noteTriggered);
         if (reversed) {
-            *sample = 1.0F - *sample * env.Process(noteTriggered);
+            *sample = 1.0F - *sample;
             if (!env.IsRunning()) { // We have to still process it first to keep it moving, despite *sample getting overwritten.
                 *sample = 0.0F;
             }
-        } else {
-            *sample = *sample * env.Process(noteTriggered);
         }
     }
 

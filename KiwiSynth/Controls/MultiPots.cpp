@@ -35,7 +35,9 @@ namespace kiwi_synth
     {
         // We read before selecting because reading will not use the new pin if we only just selected it. We need to cycle in between.
         ReadPots();
-        currentPot = (currentPot + 1) % std::max(NUM_CHANNELS, NUM_DIRECT_POTS);
+        // Put this back in if NUM_DIRECT_POTS gets larger than NUM_CHANNELS
+        //currentPot = (currentPot + 1) % std::max(NUM_CHANNELS, NUM_DIRECT_POTS);
+        currentPot = (currentPot + 1) % NUM_CHANNELS;
         // We are setting the pin for the *next* call of Process.
         SelectMpChannel(currentPot);
     }
@@ -131,10 +133,14 @@ namespace kiwi_synth
         // Put this back in if the number of channels is ever less than the number of direct pots
         //if (currentPot < NUM_CHANNELS)
         //{
-            for (int i = 0; i < NUM_MPS; i++)
-            {
-                mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
-            }
+            // Reinstate or updateif the NUM_MPS changes from 3
+            //for (int i = 0; i < NUM_MPS; i++)
+            //{
+                //mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
+                mpValueBuffer[0][currentPot] = hw->adc.GetFloat(0);
+                mpValueBuffer[1][currentPot] = hw->adc.GetFloat(1);
+                mpValueBuffer[2][currentPot] = hw->adc.GetFloat(2);
+            //}
         //}
 
         if (currentPot < NUM_DIRECT_POTS) {
