@@ -2,6 +2,8 @@
 
 namespace kiwi_synth
 {
+    const float ATAN_DEBOUNCE_THRESHOLD = 5.1f;
+
     void EffectsEngine::Init(PatchSettings* patchSettings, float sampleRate)
     {
         this->patchSettings = patchSettings;
@@ -16,12 +18,12 @@ namespace kiwi_synth
         } else {
             reverb.set_opmix(0.0f);
         }
-        gain = patchSettings->getFloatValue(PatchSetting::FX_1, 5.0f, 150.0f, LOGARHITHMIC);
-        level = patchSettings->getFloatValue(PatchSetting::FX_2, 0.04f, 0.22f);
+        gain = patchSettings->getFloatValueLogLookup(PatchSetting::FX_1);
+        level = patchSettings->getFloatValueLinear(PatchSetting::FX_2, 0.04f, 0.22f);
 
-        delay.SetDelaySamples((int)patchSettings->getFloatValue(PatchSetting::FX_3, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
+        delay.SetDelaySamples((int)patchSettings->getFloatValueLinear(PatchSetting::FX_3, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
         delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_4));
-        delay.SetFeedback(patchSettings->getFloatValue(PatchSetting::FX_5, 0.0f, 0.9f));
+        delay.SetFeedback(patchSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
     }
 
     void EffectsEngine::ProcessReverbOnly(float* sample)
@@ -49,7 +51,7 @@ namespace kiwi_synth
     void EffectsEngine::Process(float* sample)
     {
         // PROCESSING DISTORTION
-        if (gain > 5.1f) {
+        if (gain > ATAN_DEBOUNCE_THRESHOLD) {
             sample[0] = fclamp(atan(sample[0] * gain) * level, -1.0f, 1.0f);
             sample[1] = fclamp(atan(sample[1] * gain) * level, -1.0f, 1.0f);
         }

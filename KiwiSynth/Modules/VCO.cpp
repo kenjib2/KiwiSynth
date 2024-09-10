@@ -26,15 +26,15 @@ namespace kiwi_synth
     {
         isOn = patchSettings->getBoolValue((PatchSetting)(VCO_1_ON + vcoNumber));
         if (isOn) {
-            masterTune = patchSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
+            masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
 
             waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
-            pulseWidth = 0.53F - patchSettings->getFloatValue((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03F, 0.5F);
+            pulseWidth = 0.53F - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03F, 0.5F);
             level = patchSettings->getFloatValue((PatchSetting)(VCO_1_LEVEL + vcoNumber));
             if (vcoNumber > 0) {
                 int vcoMod = vcoNumber - 1;
                 level = patchSettings->getFloatValue((PatchSetting)(VCO_2_LEVEL + vcoMod));
-                fineTune = patchSettings->getFloatValue((PatchSetting)(VCO_2_FINE_TUNE + vcoMod), -1.0f, 1.0);
+                fineTune = patchSettings->getFloatValueLinear((PatchSetting)(VCO_2_FINE_TUNE + vcoMod), -1.0f, 1.0);
                 interval = (float)(patchSettings->getIntValue((PatchSetting)(VCO_2_INTERVAL + vcoMod)) - 11);
                 octave = (float)((patchSettings->getIntValue((PatchSetting)(VCO_2_OCTAVE + vcoMod)) - 2) * 12);
             }

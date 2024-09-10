@@ -17,6 +17,18 @@ namespace kiwi_synth
             }
         }
 
+        // Set the range for logarhithmic float variables
+        lMinLookup[VCO_PORTAMENTO_SPEED] = logf(0.0001f < 0.0000001f ? 0.0000001f : 0.0001f);
+        lMaxLookup[VCO_PORTAMENTO_SPEED] = logf(0.05f);
+        lMinLookup[FX_1] = logf(5.0f < 0.0000001f ? 0.0000001f : 5.0f);
+        lMaxLookup[FX_1] = logf(150.0f);
+        lMinLookup[LFO_1_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
+        lMaxLookup[LFO_1_RATE] = logf(20.0f);
+        lMinLookup[LFO_2_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
+        lMaxLookup[LFO_2_RATE] = logf(20.0f);
+        lMinLookup[SH_RATE] = logf(48.0f < 0.0000001f ? 0.0000001f : 48.0f);
+        lMaxLookup[SH_RATE] = logf(48000.0f);
+
         // Set the max values for int variables
         memset(&maxIntValues, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
         maxIntValues[VCO_VOICES] = 2;
@@ -137,73 +149,46 @@ namespace kiwi_synth
         return intValues[setting];
     }
 
+    /* In case we need OCTAVE scaling again later.
+    float range = max - min;
+    // For plus or minus one octave we want 2^(2x-1)
+    // More generally it's 2^(rangex - range/2)
+    // This only works if max + min = 0
+    return pow(2, range * value - range / 2);*/
     float PatchSettings::getFloatValue(PatchSetting setting) {
         return floatValues[setting];
     }
 
-    float PatchSettings::getFloatValue(PatchSetting setting, Scale scale)
+    float PatchSettings::getFloatValueExponential(PatchSetting setting)
     {
         float value = getFloatValue(setting);
 
-        switch(scale)
-        {
-            case EXPONENTIAL:
-                value = value * value;
-                break;
-            case OCTAVE:
-                {
-                    // For plus or minus one octave we want 2^(2x-1)
-                    // More generally it's 2^(rangex - range/2)
-                    // This only works if max + min = 0
-                    value = pow(2, value);
-
-                    break;
-                }
-            case LOGARHITHMIC:
-                value = expf(value);
-                break;
-            case LINEAR:
-            default:
-                value = value;
-                break;
-        }
-
-        return value;
+        return value * value;
     }
 
-    float PatchSettings::getFloatValue(PatchSetting setting, float min, float max, Scale scale)
+    float PatchSettings::getFloatValueLogLookup(PatchSetting setting)
     {
         float value = getFloatValue(setting);
 
-        float lmin;
-        float lmax;
-        switch(scale)
-        {
-            case EXPONENTIAL:
-                value = value * value * (max - min) + min;
-                break;
-            case OCTAVE:
-                {
-                    float range = max - min;
-                    // For plus or minus one octave we want 2^(2x-1)
-                    // More generally it's 2^(rangex - range/2)
-                    // This only works if max + min = 0
-                    value = pow(2, range * value - range / 2);
+        float lmin = lMinLookup[setting];
+        float lmax = lMaxLookup[setting];
+        return expf((value * (lmax - lmin)) + lmin);
+    }
 
-                    break;
-                }
-            case LOGARHITHMIC:
-                lmin = logf(min < 0.0000001f ? 0.0000001f : min);
-                lmax = logf(max);
-                value = expf((value * (lmax - lmin)) + lmin);
-                break;
-            case LINEAR:
-            default:
-                value = value * (max - min) + min;
-                break;
-        }
+    float PatchSettings::getFloatValueExponential(PatchSetting setting, float min, float max)
+    {
+        float value = getFloatValue(setting);
 
-        return value;
+        float range = max - min;
+        return value * value * range + min;
+    }
+
+    float PatchSettings::getFloatValueLinear(PatchSetting setting, float min, float max)
+    {
+        float value = getFloatValue(setting);
+
+        float range = max - min;
+        return value * range + min;
     }
 
     bool PatchSettings::getBoolValue(PatchSetting setting)

@@ -213,14 +213,6 @@ namespace kiwi_synth
         //DST_FX_REVERB
     } ModulationDestination; // 28 destinations not including None
 
-    typedef enum
-    {
-        LINEAR,
-        EXPONENTIAL,
-        LOGARHITHMIC,
-        OCTAVE
-    } Scale;
-
     /*
      * Manages update and access to all of the settings for the Kiwi Synth. PatchSettings maintains its own value buffers independent
      * of MultiPots. This is done to support saving and loading of patches. When a patch is loaded, it's state will be different from that
@@ -244,6 +236,8 @@ namespace kiwi_synth
             //bool boolValues[10];
             bool boolValues[NUM_PATCH_SETTINGS];
             bool lastPinValues[4][16];
+            float lMinLookup[NUM_PATCH_SETTINGS];
+            float lMaxLookup[NUM_PATCH_SETTINGS];
 
             static constexpr float minValue = 0.0f;
             static constexpr float maxValue = 1.0f;
@@ -305,13 +299,21 @@ namespace kiwi_synth
              */
             float getFloatValue(PatchSetting setting);
             /*
-             * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
+             * Gets a float setting value using exponential scale. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValue(PatchSetting setting, Scale scale);
+            float getFloatValueExponential(PatchSetting setting);
             /*
-             * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
+             * Gets a float setting using logarhithmic scale and lookup tables for min and max. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValue(PatchSetting setting, float min, float max, Scale scale = LINEAR);
+            float getFloatValueLogLookup(PatchSetting setting);
+            /*
+             * Gets a float setting using exponential scale and min and max. If a non-float setting is attempted, 0.0f will be returned.
+             */
+            float getFloatValueExponential(PatchSetting setting, float min, float max);
+            /*
+             * Gets a float setting value with linear scale and min and max. If a non-float setting is attempted, 0.0f will be returned.
+             */
+            float getFloatValueLinear(PatchSetting setting, float min, float max);
             /*
              * Gets a bool setting value. If a non-float setting is attempted, false will be returned.
              */

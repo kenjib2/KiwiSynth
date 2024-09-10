@@ -49,7 +49,7 @@ namespace kiwi_synth
         lfo2.UpdateSettings();
 
         portamentoOn = patchSettings->getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
-        portamentoSpeed = patchSettings->getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED, 0.0001F, 0.05F, Scale::LOGARHITHMIC);
+        portamentoSpeed = patchSettings->getFloatValueLogLookup(PatchSetting::VCO_PORTAMENTO_SPEED);
     }
 
     void Voice::initMods()

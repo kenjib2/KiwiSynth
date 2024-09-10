@@ -13,7 +13,7 @@ namespace kiwi_synth
 
     void VCF::UpdateSettings()
     {
-        frequency = patchSettings->getFloatValue(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY, kiwi_synth::EXPONENTIAL);
+        frequency = patchSettings->getFloatValueExponential(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY);
         resonance = patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE);
 
         filterType = (FilterType)patchSettings->getIntValue(PatchSetting::VCF_FILTER_TYPE);

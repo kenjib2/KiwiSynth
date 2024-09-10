@@ -26,10 +26,10 @@ namespace kiwi_synth
     {
         waveform = patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         osc.SetWaveform(waveform + 1); // WAVE_TRI = 1, WAVE_SAW = 2, WAVE_RAMP = 3, WAVE_SQUARE = 4
-        freq = patchSettings->getFloatValue((PatchSetting)(LFO_1_RATE + lfoNumber), LFO_MIN_FREQUENCY, LFO_MAX_FREQUENCY, LOGARHITHMIC);
+        freq = patchSettings->getFloatValueLogLookup((PatchSetting)(LFO_1_RATE + lfoNumber));
         basePhase = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_PHASE + lfoNumber));
         noteOnReset = patchSettings->getBoolValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_RESET_ON + lfoNumber));
-        pulseWidth = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03F, 0.97F);
+        pulseWidth = patchSettings->getFloatValueLinear((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03F, 0.97F);
         if (pulseWidth < 0.032F) {
             waveFolderGain = 1.0f;
         } else {

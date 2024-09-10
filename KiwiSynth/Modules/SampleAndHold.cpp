@@ -15,7 +15,7 @@ namespace kiwi_synth
 
     void SampleAndHold::UpdateSettings()
     {
-        rate = (int)patchSettings->getFloatValue(PatchSetting::SH_RATE, SAMPLE_AND_HOLD_MINIMUM_RATE, SAMPLE_AND_HOLD_MAXIMUM_RATE, LOGARHITHMIC);
+        rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE);
     }
 
     void SampleAndHold::Process(float* sample, float mod, bool fullFunctionality)
