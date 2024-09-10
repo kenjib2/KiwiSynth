@@ -16,8 +16,8 @@ namespace kiwi_synth
         ConfigureGpioExpansion();
 
         patchSettings.Init(&multiPots, &ge);
-        multiPots.RegisterControlListener(&patchSettings, ControlId::MULTIPOTS);
-        ge.RegisterControlListener(&patchSettings, ControlId::GPIO_EXPANSION);
+        multiPots.RegisterControlListener(&patchSettings);
+        ge.RegisterControlListener(&patchSettings);
 
         voiceBank.Init(numVoices, NUM_VCOS, &patchSettings, sampleRate);
         effectsEngine.Init(&patchSettings, sampleRate);

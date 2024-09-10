@@ -77,7 +77,6 @@ namespace kiwi_synth
             DaisySeed *hw;
             //TimerHandle timer;
             ControlListener* controlListener = nullptr;
-            int controlId;
 
             void InitMulti(MultiPotsConfig *multiPotsConfig);
             //void InitTimer(int refreshRate);
@@ -89,7 +88,7 @@ namespace kiwi_synth
             ~MultiPots() {};
             void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
-            void RegisterControlListener(ControlListener* controlListener, int controlId);
+            void RegisterControlListener(ControlListener* controlListener);
             /*
             * Starts the input read timer running.
             */

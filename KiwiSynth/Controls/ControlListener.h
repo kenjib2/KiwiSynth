@@ -10,7 +10,8 @@ namespace kiwi_synth
             ControlListener(){}
             virtual ~ControlListener(){};
 
-            virtual void controlUpdate(int controlNumber, int controlId);
+            virtual void controlMpUpdate(int controlNumber);
+            virtual void controlGpioUpdate(int controlNumber);
     };
 } // namespace kiwi_synth
 

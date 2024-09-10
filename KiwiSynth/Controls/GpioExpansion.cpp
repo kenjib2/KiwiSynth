@@ -107,10 +107,9 @@ namespace kiwi_synth
 
     }
 
-    void GpioExpansion::RegisterControlListener(ControlListener* controlListener, int controlId)
+    void GpioExpansion::RegisterControlListener(ControlListener* controlListener)
     {
         this->controlListener = controlListener;
-        this->controlId = controlId;
     }
 
     void GpioExpansion::Process()
@@ -120,9 +119,10 @@ namespace kiwi_synth
             pinValues[mcps.at(i).i2c_address] = mcps.at(i).Read();
             mcps.at(i).clearInterrupts();
 
-            if (controlListener) {
-                controlListener->controlUpdate(mcps.at(i).i2c_address, controlId);
-            }
+            // Reinstate if not using a controlListener
+            //if (controlListener) {
+                controlListener->controlGpioUpdate(mcps.at(i).i2c_address);
+            //}
         }
     }
 

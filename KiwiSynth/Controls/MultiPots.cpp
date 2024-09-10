@@ -21,10 +21,9 @@ namespace kiwi_synth
         }*/
     }
 
-    void MultiPots::RegisterControlListener(ControlListener* controlListener, int controlId)
+    void MultiPots::RegisterControlListener(ControlListener* controlListener)
     {
         this->controlListener = controlListener;
-        this->controlId = controlId;
     }
 
     /*void MultiPots::StartTimer()
@@ -115,14 +114,13 @@ namespace kiwi_synth
     {
         currentPot = channelNumber;
 
-        int a3Value = channelNumber / 8;
-        int a2Value = channelNumber % 8 / 4;
-        int a1Value = channelNumber % 4 / 2;
-        int a0Value = channelNumber % 2;
+        int a3Value = channelNumber >> 3; // same as / 8
+        int a2Value = (channelNumber & 7) >> 2; // same as % 8 / 4
+        int a1Value = (channelNumber & 3) >> 1; // same as % 4 / 2
+        int a0Value = channelNumber & 1; // same as / 2
 
-        if (NUM_CHANNELS > 8) {
-            a3.Write(a3Value); // channelNumber & 0b1000
-        }
+        // Remove a3 if num_channels <= 8
+        a3.Write(a3Value); // channelNumber & 0b1000
         a2.Write(a2Value); // channelNumber & 0b0100
         a1.Write(a1Value); // channelNumber & 0b0010
         a0.Write(a0Value); // channelNumber & 0b0001
@@ -130,21 +128,23 @@ namespace kiwi_synth
 
     void MultiPots::ReadPots()
     {
-        if (currentPot < NUM_CHANNELS)
-        {
+        // Put this back in if the number of channels is ever less than the number of direct pots
+        //if (currentPot < NUM_CHANNELS)
+        //{
             for (int i = 0; i < NUM_MPS; i++)
             {
                 mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
             }
-        }
+        //}
 
         if (currentPot < NUM_DIRECT_POTS) {
             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + NUM_MPS);
         }
 
-        if (controlListener) {
-            controlListener->controlUpdate(currentPot, controlId);
-        }
+        // Put this back in if there is no controlListener
+        //if (controlListener) {
+            controlListener->controlMpUpdate(currentPot);
+        //}
     }
 
 } // namespace kiwi_synth

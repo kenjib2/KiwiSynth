@@ -218,18 +218,14 @@ namespace kiwi_synth
         }
     }
 
-    void PatchSettings::controlUpdate(int controlNumber, int controlId)
+    void PatchSettings::controlMpUpdate(int controlNumber)
     {
-        switch (controlId)
-        {
-            case ControlId::MULTIPOTS:
-                updatePotValues(controlNumber);
-                break;
-            case ControlId::GPIO_EXPANSION:
-                updateGpioExpansionValues(controlNumber);
-            default:
-                break;
-        }
+        updatePotValues(controlNumber);
+    }
+
+    void PatchSettings::controlGpioUpdate(int controlNumber)
+    {
+        updateGpioExpansionValues(controlNumber);
     }
 
     void PatchSettings::processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB)

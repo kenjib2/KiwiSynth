@@ -19,11 +19,6 @@ namespace kiwi_synth
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 101;
 
-    typedef enum {
-        MULTIPOTS,
-        GPIO_EXPANSION
-    } ControlId;
-
     /*
      * All controls for the Kiwi Synth.
      */
@@ -275,9 +270,13 @@ namespace kiwi_synth
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             /*
-             * From ControlListener: Callback to update controls.
+             * From ControlListener: Callback to update MultiPot controls.
              */
-            void controlUpdate(int controlNumber, int controlId);
+            void controlMpUpdate(int controlNumber);
+            /*
+             * From ControlListener: Callback to update GPIO Expander controls.
+             */
+            void controlGpioUpdate(int controlNumber);
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.
              */

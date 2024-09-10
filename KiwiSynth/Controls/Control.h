@@ -12,7 +12,7 @@ namespace kiwi_synth
             Control(){}
             virtual ~Control(){};
 
-            virtual void RegisterControlListener(ControlListener* controlListener, int controlId);
+            virtual void RegisterControlListener(ControlListener* controlListener);
     };
 } // namespace kiwi_synth
 

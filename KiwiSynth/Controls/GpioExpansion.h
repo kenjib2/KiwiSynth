@@ -76,7 +76,6 @@ namespace kiwi_synth
             static const int NUM_PINS = 16;
             int numGpioExpansions = 4;
             ControlListener* controlListener = nullptr;
-            int controlId;
 
         public:
             std::map<uint8_t, uint16_t> pinValues;
@@ -87,7 +86,7 @@ namespace kiwi_synth
             void Init();
             void Init(GpioExpansionConfig *gpioExpansionConfig);
 
-            void RegisterControlListener(ControlListener* controlListener, int controlId);
+            void RegisterControlListener(ControlListener* controlListener);
             /*
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              */
