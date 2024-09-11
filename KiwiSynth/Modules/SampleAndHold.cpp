@@ -18,20 +18,13 @@ namespace kiwi_synth
         rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE);
     }
 
-    void SampleAndHold::Process(float* sample, float mod, bool fullFunctionality)
+    void SampleAndHold::Process(float* sample, float mod)
     {
         
         counter++;
-        if (fullFunctionality) {
-            if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0f) {
-                counter = 0;
-                currentSample = *sample;
-            }
-        } else {
-            if (counter >= rate) {
-                counter = 0;
-                currentSample = *sample;
-            }
+        if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0f) {
+            counter = 0;
+            currentSample = *sample;
         }
 
         *sample = currentSample;

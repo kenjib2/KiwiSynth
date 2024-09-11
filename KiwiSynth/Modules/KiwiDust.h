@@ -10,6 +10,7 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_DUST_H__
 
 #include "Utility/dsp.h"
+#include "../KUtils.h"
 
 /** @file KiwiDust.h */
 
@@ -27,35 +28,6 @@ namespace kiwi_synth
        Original code written by Emilie Gillet in 2016. \n
 
 */
-
-const static uint32_t MAX_XORSHIFT_VALUE = 4294967295;
-
-class xorshiftPRNG {
-  private:
-  struct xorshift_state {
-     uint64_t a32;
-  };
-  xorshift_state state;
-
-  public:
-  xorshiftPRNG(int seed)
-  {
-     state.a32 = seed;
-  }
-
-
-  uint32_t xorshift32()
-  {
-     uint32_t x = state.a32;
-     x ^= x <<17;
-     x ^= x >>7;
-     x ^= x <<5;
-     state.a32 = x;
-     return (x);
-  }
-
-
-};
 
 // Modified from the DaisySP version to use xorshift32 rng
 class KiwiDust

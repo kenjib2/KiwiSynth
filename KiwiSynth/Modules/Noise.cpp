@@ -26,7 +26,7 @@ namespace kiwi_synth
     void Noise::Process(float* sample, float mod)
     {
         if (noiseType == 0) {
-            lastSample = white.Process();
+            lastSample = white.Process() * 0.2;
         } else {
             lastSample = dust.Process();
         }

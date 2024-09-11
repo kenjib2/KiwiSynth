@@ -146,28 +146,19 @@ namespace kiwi_synth
         if (fullFunctionality) {
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
-            if (patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE) == 0) {
-                fclamp(voiceSample = voiceSample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0f, 1.0f);
-            } else {
-                fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
-            }
+            fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
 
             sampleAndHoldSample = noise.GetLastSample();
-            sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE], fullFunctionality);
+            sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE]);
         }
 
         vcf.Process(&voiceSample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 
         vca.Process(&voiceSample, fclamp(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
-        float balance = fclamp(patchSettings->getFloatValue(GEN_BALANCE) + modValues[DST_BALANCE], 0.0f, 1.0f);
-        if (balance >= 0.5f) {
-            sample[0] = voiceSample * (1.0f - balance) * 2.0f;
-            sample[1] = voiceSample * 1.0f;
-        } else {
-            sample[0] = voiceSample * 1.0f;
-            sample[1] = voiceSample * balance * 2.0f;
-        }
+        float balance = fclamp(patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f) + modValues[DST_BALANCE], -1.0f, 1.0f);
+        sample[0]  = voiceSample  * std::fmin(1.0f - balance, 1.0f);  // max gain = 1.0, pan = 0: left and right unchanged)
+        sample[1] = voiceSample * std::fmin(1.0f + balance, 1.0f);
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous
         // sample because of possible circular dependencies otherwise.
