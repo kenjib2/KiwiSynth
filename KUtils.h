@@ -1,6 +1,11 @@
 #ifndef __KIWI_SYNTH_KUTILS_H__
 #define __KIWI_SYNTH_KUTILS_H__
 
+// Compiler options
+//#define __CPU_LOAD__ // Output performance to serial console
+//#define __PATCH_SETTINGS__ // Output patch settings to serial console
+//#define __FUNCTIONALITY_OPTION__ // Creates an alternate voice mode with reduced functionality but 3 voices. Impacts performance of one and two voice mode and causes audible pops though.
+
 const static uint32_t MAX_XORSHIFT_VALUE = 4294967295;
 
 class xorshiftPRNG {

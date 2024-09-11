@@ -74,9 +74,11 @@ namespace kiwi_synth
                 strcpy(buffer, "2v");
                 break;
             case 1:
-                strcpy(buffer, "3v");
-                break;
-            case 2:
+            #ifdef __FUNCTIONALITY_OPTION__
+                    strcpy(buffer, "3v");
+                    break;
+                case 2:
+            #endif // __FUNCTIONALITY_OPTION__
                 strcpy(buffer, "1v");
                 break;
         }

@@ -1,4 +1,6 @@
 #include "daisy_seed.h"
+
+#include "KUtils.h"
 #include "KiwiSynth/KiwiSynth.h"
 #include "KiwiSynth/Controls/KiwiMcp23017.h"
 #include "KiwiSynth/Controls/GpioExpansion.h"
@@ -7,7 +9,6 @@
 using namespace daisy;
 using namespace kiwi_synth;
 
-//#define __CPU_LOAD__
 // 83/90/85 all active
 // 78/87/80 no envelope processing          5 (was 7)
 // 73/80/84 no LFO processing               11 (was 15)
@@ -46,12 +47,11 @@ using namespace kiwi_synth;
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?
- * Dust noise has some clicks/pops
  * Re-implement additional VCF modes?
- * Can we optimize to get 3 voice working with 3 VCOs again?
  * L/R Output noise
  * Headphone out noise
  * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob.
+ * Very occasional pops when distortion is on
  * Going out of GUI mode sometimes triggers note on(s)
  */
 
@@ -62,8 +62,8 @@ KiwiSynth kiwiSynth;
 Display display;
 const int AUDIO_BLOCK_SIZE = 96;
 #ifdef __CPU_LOAD__
-	CpuLoadMeter load;
-	char DSY_SDRAM_BSS buff[256];
+CpuLoadMeter load;
+char DSY_SDRAM_BSS buff[512];
 #endif // __CPU_LOAD__
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
@@ -71,7 +71,7 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    size_t                                size)
 {
 	#ifdef __CPU_LOAD__
-		load.OnBlockStart();
+	load.OnBlockStart();
 	#endif // __CPU_LOAD__
 
 	if (display.mode) {
@@ -82,7 +82,7 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	}
 
 	#ifdef __CPU_LOAD__
-		load.OnBlockEnd();
+	load.OnBlockEnd();
 	#endif // __CPU_LOAD__
 }
 
@@ -93,7 +93,7 @@ int main(void)
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	#if defined(__CPU_LOAD__) || defined(__DEBUG__)
-		hw.StartLog(false);
+	hw.StartLog(false);
 	#endif // __CPU_LOAD__ || __DEBUG__
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
@@ -110,7 +110,7 @@ int main(void)
 	display.Update();
 
 	#ifdef __CPU_LOAD__
-		load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
+	load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
 	#endif // __CPU_LOAD__
 
     //Start reading ADC values
@@ -131,11 +131,12 @@ int main(void)
 				display.Update();
 
 				#ifdef __DEBUG__
-					kiwiSynth.TestOutput(&hw);
+				kiwiSynth.TestOutput(&hw);
 				#endif // __DEBUG__
+
 				#ifdef __CPU_LOAD__
-					sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
-					hw.PrintLine(buff);
+				sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
+				hw.PrintLine(buff);
 				#endif // __DEBUG__
 			}
 			tick_counter++;

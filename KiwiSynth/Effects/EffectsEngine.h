@@ -4,6 +4,7 @@
 
 #include "daisysp.h"
 
+#include "../../KUtils.h"
 #include "../Patch/PatchSettings.h"
 #include "Delay.h"
 #include "Zita/reverb.h"
@@ -28,7 +29,9 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate);
 
             void UpdateSettings();
-            void ProcessReverbOnly(float* sample);
+            #ifdef __FUNCTIONALITY_OPTION__
+                void ProcessReverbOnly(float* sample);
+            #endif // __FUNCTIONALITY_OPTION__
             void Process(float* sample);
     };
 }

@@ -5,7 +5,9 @@ namespace kiwi_synth
     void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate, int voiceNumber)
     {
         this->voiceNumber = voiceNumber;
+        #ifdef __FUNCTIONALITY_OPTION__
         fullFunctionality = true;
+        #endif // __FUNCTIONALITY_OPTION__
         mono = false;
         noteTriggered = false;
         noteTriggerCount = -1;
@@ -59,7 +61,9 @@ namespace kiwi_synth
 
     void Voice::calculateMods(Modulation* modulations)
     {
+        #ifdef __FUNCTIONALITY_OPTION__
         if (fullFunctionality) {
+        #endif // __FUNCTIONALITY_OPTION__
             modValues[modulations[0].destination] += prevSourceValues[modulations[0].source] * modulations[0].depth;
             modValues[modulations[1].destination] += prevSourceValues[modulations[1].source] * modulations[1].depth;
             modValues[modulations[2].destination] += prevSourceValues[modulations[2].source] * modulations[2].depth;
@@ -68,7 +72,9 @@ namespace kiwi_synth
             modValues[modulations[5].destination] += prevSourceValues[modulations[5].source] * modulations[5].depth;
             modValues[modulations[6].destination] += prevSourceValues[modulations[6].source] * modulations[6].depth;
             modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;
+        #ifdef __FUNCTIONALITY_OPTION__
         }
+        #endif // __FUNCTIONALITY_OPTION__
 
         modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * modulations[8].depth;
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
@@ -124,6 +130,7 @@ namespace kiwi_synth
         initMods();
         calculateMods(modulations);
 
+        #ifdef __FUNCTIONALITY_OPTION__
         float env1Sample = 1.0f;
         env1.Process(&env1Sample, modValues[DST_ENV_1_ATTACK], modValues[DST_ENV_1_DECAY], modValues[DST_ENV_1_SUSTAIN], modValues[DST_ENV_1_RELEASE], fullFunctionality);
 
@@ -141,16 +148,39 @@ namespace kiwi_synth
             vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH + 2 * i], fullFunctionality);
             voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         }
+        #else
+        float env1Sample = 1.0f;
+        env1.Process(&env1Sample, modValues[DST_ENV_1_ATTACK], modValues[DST_ENV_1_DECAY], modValues[DST_ENV_1_SUSTAIN], modValues[DST_ENV_1_RELEASE]);
+
+        float env2Sample = 1.0f;
+        env2.Process(&env2Sample, modValues[DST_ENV_2_ATTACK], modValues[DST_ENV_2_DECAY], modValues[DST_ENV_2_SUSTAIN], modValues[DST_ENV_2_RELEASE]);
+
+        float lfo1Sample = 1.0f;
+        lfo1.Process(&lfo1Sample, modValues[DST_LFO_1_FREQ], modValues[DST_LFO_1_PULSE_WIDTH], modValues[DST_LFO_1_TRIGGER_PHASE]);
+
+        float lfo2Sample = 1.0f;
+        lfo2.Process(&lfo2Sample, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH], modValues[DST_LFO_2_TRIGGER_PHASE]);
+
+        for (int i = 0; i < numVcos; i++) {
+            float vcoSample = 0.0f;
+            vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH + 2 * i]);
+            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+        }
+        #endif // __FUNCTIONALITY_OPTION__
 
         float sampleAndHoldSample = 0.0f;
+        #ifdef __FUNCTIONALITY_OPTION__
         if (fullFunctionality) {
+        #endif // __FUNCTIONALITY_OPTION__
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
             fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
 
             sampleAndHoldSample = noise.GetLastSample();
             sampleAndHold.Process(&sampleAndHoldSample, modValues[DST_SH_RATE]);
+        #ifdef __FUNCTIONALITY_OPTION__
         }
+        #endif // __FUNCTIONALITY_OPTION__
 
         vcf.Process(&voiceSample, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 

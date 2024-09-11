@@ -3,6 +3,8 @@
 
 
 #include "daisysp.h"
+
+#include "../../KUtils.h"
 #include "../Patch/PatchSettings.h"
 
 using namespace daisysp;
@@ -33,7 +35,11 @@ namespace kiwi_synth
             void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
 
             void UpdateSettings();
-            void Process(float* sample, float mod, float pwMod, float tphaseMod, bool fold = true);
+            #ifdef __FUNCTIONALITY_OPTION__
+            void Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality = true);
+            #else
+            void Process(float* sample, float mod, float pwMod, float tphaseMod);
+            #endif // __FUNCTIONALITY_OPTION__
             void SetFreq(float frequency);
             void NoteOn();
     };

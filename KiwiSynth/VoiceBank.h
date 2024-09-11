@@ -3,6 +3,8 @@
 
 
 #include "daisysp.h"
+
+#include "../KUtils.h"
 #include "Voice.h"
 #include "Patch/PatchSettings.h"
 #include "Modulation.h"

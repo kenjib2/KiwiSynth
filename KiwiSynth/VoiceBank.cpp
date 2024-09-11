@@ -27,23 +27,29 @@ namespace kiwi_synth
             case 0:
             default:
                 for (int i = 0; i < maxVoices; i++) {
+                    #ifdef __FUNCTIONALITY_OPTION__
                     voices[i].fullFunctionality = true;
+                    #endif // __FUNCTIONALITY_OPTION__
                     voices[i].mono = false;
                     voices[i].numVcos = voices[i].maxVcos;
                 }
                 numVoices = 2;
                 break;
-            case 1:
+                case 1:
+                #ifdef __FUNCTIONALITY_OPTION__
+                    for (int i = 0; i < maxVoices; i++) {
+                        voices[i].fullFunctionality = false;
+                        voices[i].mono = false;
+                        voices[i].numVcos = 2;
+                    }
+                    numVoices = maxVoices;
+                    break;
+                case 2:
+                #endif // __FUNCTIONALITY_OPTION__
                 for (int i = 0; i < maxVoices; i++) {
-                    voices[i].fullFunctionality = false;
-                    voices[i].mono = false;
-                    voices[i].numVcos = 2;
-                }
-                numVoices = maxVoices;
-                break;
-            case 2:
-                for (int i = 0; i < maxVoices; i++) {
+                    #ifdef __FUNCTIONALITY_OPTION__
                     voices[i].fullFunctionality = true;
+                    #endif // __FUNCTIONALITY_OPTION__
                     voices[i].mono = true;
                     voices[i].numVcos = voices[i].maxVcos;
                 }
@@ -60,11 +66,24 @@ namespace kiwi_synth
 
         sample[0] = 0.0f;
         sample[1] = 0.0f;
+
+        #ifdef __FUNCTIONALITY_OPTION__
         for (int i = 0; i < numVoices; i++) {
             voices[i].Process(nextVoice, modulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
         }
+        #else
+        voices[0].Process(nextVoice, modulations, numVoices);
+        sample[0] += nextVoice[0];
+        sample[1] += nextVoice[1];
+
+        if (numVoices == 2) {
+            voices[1].Process(nextVoice, modulations, numVoices);
+            sample[0] += nextVoice[0];
+            sample[1] += nextVoice[1];
+        }
+        #endif // __FUNCTIONALITY_OPTION__
     }
 
     void VoiceBank::InitModulations() {

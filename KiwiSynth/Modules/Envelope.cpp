@@ -35,9 +35,15 @@ namespace kiwi_synth
         }
     }
 
+    #ifdef __FUNCTIONALITY_OPTION__
     void Envelope::Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod, bool fullFunctionality)
+    #else
+    void Envelope::Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod)
+    #endif // __FUNCTIONALITY_OPTION__
     {
+        #ifdef __FUNCTIONALITY_OPTION__
         if (fullFunctionality) {
+        #endif // __FUNCTIONALITY_OPTION__
             if (attackMod != prevAttackMod) {
                 env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + attackMod), 0.0f) * 3.0f);
                 prevAttackMod = attackMod;
@@ -59,7 +65,9 @@ namespace kiwi_synth
                 }
                 prevReleaseMod = releaseMod;
             }
+        #ifdef __FUNCTIONALITY_OPTION__
         }
+        #endif // __FUNCTIONALITY_OPTION__
 
         *sample = *sample * env.Process(noteTriggered);
         if (reversed) {

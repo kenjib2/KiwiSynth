@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "daisysp.h"
+
+#include "../KUtils.h"
 #include "Modulation.h"
 #include "Modules/VCO.h"
 #include "Modules/Noise.h"
@@ -53,7 +55,9 @@ namespace kiwi_synth
             float getModValue(ModulationSource source, float depth);
 
         public:
+            #ifdef __FUNCTIONALITY_OPTION__
             bool fullFunctionality;
+            #endif // __FUNCTIONALITY_OPTION__
             bool mono;
             int maxVcos;
             int numVcos;

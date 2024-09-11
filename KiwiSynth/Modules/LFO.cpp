@@ -37,9 +37,15 @@ namespace kiwi_synth
         }
     }
 
+    #ifdef __FUNCTIONALITY_OPTION__
     void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality)
+    #else
+    void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod)
+    #endif // __FUNCTIONALITY_OPTION__
     {
+        #ifdef __FUNCTIONALITY_OPTION__
         if (fullFunctionality) {
+        #endif // __FUNCTIONALITY_OPTION__
             phase = fmod(basePhase + tphaseMod, 1.0f);
             osc.SetPw(pulseWidth + pwMod);
             osc.SetFreq(freq * (1.0f + mod * 10.0f));
@@ -54,6 +60,7 @@ namespace kiwi_synth
             }
 
             *sample = waveSample;
+        #ifdef __FUNCTIONALITY_OPTION__
         } else {
             phase = basePhase;
             osc.SetPw(pulseWidth);
@@ -61,6 +68,7 @@ namespace kiwi_synth
 
             *sample = osc.Process();
         }
+        #endif // __FUNCTIONALITY_OPTION__
     }
 
     void LFO::NoteOn()

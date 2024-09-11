@@ -46,13 +46,19 @@ namespace kiwi_synth
         }
     }
 
+    #ifdef __FUNCTIONALITY_OPTION__
     void VCO::Process(float* sample, float mod, float pwMod, bool fullFunctionality)
+    #else
+    void VCO::Process(float* sample, float mod, float pwMod)
+    #endif // __FUNCTIONALITY_OPTION__
     {
         if (isOn) {
             float waveSample;
             osc.SetFreq(std::fmax(mtof(playingNote + mod * 12), 0.0f));
 
+            #ifdef __FUNCTIONALITY_OPTION__
             if (fullFunctionality) {
+            #endif // __FUNCTIONALITY_OPTION__
                 osc.SetPw(pulseWidth + pwMod);
 
                 waveSample = osc.Process();
@@ -64,10 +70,12 @@ namespace kiwi_synth
                 }
 
                 *sample = waveSample * level;
+            #ifdef __FUNCTIONALITY_OPTION__
             } else {
                 osc.SetPw(pulseWidth);
                 *sample = osc.Process() * level;
             }
+             #endif // __FUNCTIONALITY_OPTION__
         }
         else {
             *sample = 0.0f;

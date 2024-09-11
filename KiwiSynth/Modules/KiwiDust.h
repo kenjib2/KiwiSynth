@@ -10,7 +10,7 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_DUST_H__
 
 #include "Utility/dsp.h"
-#include "../KUtils.h"
+#include "../../KUtils.h"
 
 /** @file KiwiDust.h */
 

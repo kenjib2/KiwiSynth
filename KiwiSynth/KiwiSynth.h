@@ -4,6 +4,8 @@
 #include<vector>
 
 #include "daisy_seed.h"
+
+#include "../KUtils.h"
 #include "Controls/MultiPots.h"
 #include "Patch/PatchSettings.h"
 #include "VoiceBank.h"
@@ -11,8 +13,6 @@
 
 using namespace daisy;
 using namespace daisy::seed;
-
-//#define __DEBUG__
 
 namespace kiwi_synth
 {

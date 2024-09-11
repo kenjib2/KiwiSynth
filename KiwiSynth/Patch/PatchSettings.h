@@ -3,7 +3,10 @@
 
 
 #include <string>
+
 #include "daisy_seed.h"
+
+#include "../../KUtils.h"
 #include "../Controls/MultiPots.h"
 #include "../Controls/GpioExpansion.h"
 #include "../Controls/ControlListener.h"

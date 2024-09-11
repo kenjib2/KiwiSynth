@@ -31,7 +31,11 @@ namespace kiwi_synth
 
         // Set the max values for int variables
         memset(&maxIntValues, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
-        maxIntValues[VCO_VOICES] = 2;
+        #ifdef __FUNCTIONALITY_OPTION__
+            maxIntValues[VCO_VOICES] = 2;
+        #else
+            maxIntValues[VCO_VOICES] = 1;
+        #endif // __FUNCTIONALITY_OPTION__
         maxIntValues[VCO_1_WAVEFORM] = 2;
         maxIntValues[VCO_2_WAVEFORM] = 2;
         maxIntValues[VCO_2_OCTAVE] = 4;
