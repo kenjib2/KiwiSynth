@@ -7,11 +7,11 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         isOn = true;
         noiseType = 0;
-        level = 1.0F;
-        lastSample = 0.0F;
+        level = 1.0f;
+        lastSample = 0.0f;
         white.Init();
         white.SetSeed(std::rand());
-        white.SetAmp(1.0F);
+        white.SetAmp(1.0f);
         dust.Init();
         dust.SetDensity(0.015f);
     }

@@ -164,9 +164,9 @@ namespace kiwi_synth
                         case 64: // Sustain Pedal
                             midiCounter = 0;
                             if (cc.value < 64) {
-                                patchSettings.setValue(GEN_SUSTAIN, 0.0F); // Off
+                                patchSettings.setValue(GEN_SUSTAIN, 0.0f); // Off
                             } else {
-                                patchSettings.setValue(GEN_SUSTAIN, 1.0F);  // On
+                                patchSettings.setValue(GEN_SUSTAIN, 1.0f);  // On
                             }
                             break;
 

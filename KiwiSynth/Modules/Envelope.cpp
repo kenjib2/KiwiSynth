@@ -11,7 +11,7 @@ namespace kiwi_synth
         reversed = false;
         env.Init(sampleRate);
 
-        env.SetAttackTime(0.002F);
+        env.SetAttackTime(0.002f);
         env.SetDecayTime(0.0f);
         env.SetSustainLevel(1.0f);
         env.SetReleaseTime(0.002f);
@@ -28,7 +28,7 @@ namespace kiwi_synth
             env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + prevAttackMod), 0.0f) * 3.0f);
             env.SetDecayTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_DECAY + envNumber)) + prevDecayMod), 0.0f) * 3.0f);
             env.SetSustainLevel(fclamp(patchSettings->getFloatValue((PatchSetting)(ENV_1_SUSTAIN + envNumber)) + prevSustainMod, 0.0f, 1.0f));
-            releaseValue = std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0F;
+            releaseValue = std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0f;
             reversed = patchSettings->getBoolValue((PatchSetting)(ENV_1_REVERSE_PHASE_ON + envNumber));
 
             env.SetReleaseTime(releaseValue);
@@ -55,7 +55,7 @@ namespace kiwi_synth
 
             if (releaseMod != prevReleaseMod) {
                 if (!quickRelease) {
-                    env.SetReleaseTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0F);
+                    env.SetReleaseTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0f);
                 }
                 prevReleaseMod = releaseMod;
             }
@@ -63,9 +63,9 @@ namespace kiwi_synth
 
         *sample = *sample * env.Process(noteTriggered);
         if (reversed) {
-            *sample = 1.0F - *sample;
+            *sample = 1.0f - *sample;
             if (!env.IsRunning()) { // We have to still process it first to keep it moving, despite *sample getting overwritten.
-                *sample = 0.0F;
+                *sample = 0.0f;
             }
         }
     }
@@ -97,7 +97,7 @@ namespace kiwi_synth
     {
         this->quickRelease = quickRelease;
         if (quickRelease) {
-            env.SetReleaseTime(0.0015F);
+            env.SetReleaseTime(0.0015f);
         } else {
             env.SetReleaseTime(releaseValue);
         }

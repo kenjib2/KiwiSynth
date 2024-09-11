@@ -9,8 +9,8 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    static const float      LFO_MIN_FREQUENCY = 0.1F;
-    static const float      LFO_MAX_FREQUENCY = 20.0F;
+    static const float      LFO_MIN_FREQUENCY = 0.1f;
+    static const float      LFO_MAX_FREQUENCY = 20.0f;
     
     class LFO
     {

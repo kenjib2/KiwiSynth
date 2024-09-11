@@ -53,8 +53,8 @@ namespace kiwi_synth
     {
         // PROCESSING DISTORTION
         if (gain > ATAN_DEBOUNCE_THRESHOLD) {
-            sample[0] = fclamp(atan(sample[0] * gain) * level, -0.9999999F, 0.9999999F);
-            sample[1] = fclamp(atan(sample[1] * gain) * level, -0.9999999F, 0.9999999F);
+            sample[0] = fclamp(atan(sample[0] * gain) * level, -0.9999999f, 0.9999999f);
+            sample[1] = fclamp(atan(sample[1] * gain) * level, -0.9999999f, 0.9999999f);
         }
 
         //PROCESSING DELAY

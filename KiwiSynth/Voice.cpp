@@ -154,7 +154,7 @@ namespace kiwi_synth
             float noiseSample = 0.0f;
             noise.Process(&noiseSample, modValues[DST_NOISE_LEVEL]);
             if (patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE) == 0) {
-                fclamp(voiceSample = voiceSample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0F, 1.0F);
+                fclamp(voiceSample = voiceSample + noiseSample * VOICE_ATTENTUATION_CONSTANT, -1.0f, 1.0f);
             } else {
                 fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
             }
@@ -169,11 +169,11 @@ namespace kiwi_synth
 
         float balance = fclamp(patchSettings->getFloatValue(GEN_BALANCE) + modValues[DST_BALANCE], 0.0f, 1.0f);
         if (balance >= 0.5f) {
-            sample[0] = voiceSample * (1.0f - balance) * 2.0F;
-            sample[1] = voiceSample * 1.0F;
+            sample[0] = voiceSample * (1.0f - balance) * 2.0f;
+            sample[1] = voiceSample * 1.0f;
         } else {
-            sample[0] = voiceSample * 1.0F;
-            sample[1] = voiceSample * balance * 2.0F;
+            sample[0] = voiceSample * 1.0f;
+            sample[1] = voiceSample * balance * 2.0f;
         }
 
         // Setting up source values for the next round of modulations. We must modulate based on the previous

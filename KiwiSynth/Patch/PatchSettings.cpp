@@ -20,8 +20,8 @@ namespace kiwi_synth
         // Set the range for logarhithmic float variables
         lMinLookup[VCO_PORTAMENTO_SPEED] = logf(0.0001f < 0.0000001f ? 0.0000001f : 0.0001f);
         lMaxLookup[VCO_PORTAMENTO_SPEED] = logf(0.05f);
-        lMinLookup[FX_1] = logf(5.0f < 0.0000001f ? 0.0000001f : 5.0f);
-        lMaxLookup[FX_1] = logf(150.0f);
+        lMinLookup[FX_1] = logf(MIN_DISTORTION_GAIN < 0.0000001f ? 0.0000001f : MIN_DISTORTION_GAIN);
+        lMaxLookup[FX_1] = logf(MAX_DISTORTION_GAIN);
         lMinLookup[LFO_1_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
         lMaxLookup[LFO_1_RATE] = logf(20.0f);
         lMinLookup[LFO_2_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
@@ -112,10 +112,10 @@ namespace kiwi_synth
 
     void PatchSettings::setValue(PatchSetting setting, int8_t value)
     {
-        if (value != intValues[setting]) {
-            lastChangedSetting = setting;
-            lastChangedValue = value;
-        }
+        //if (value != intValues[setting]) {
+            //lastChangedSetting = setting;
+            //lastChangedValue = value;
+        //}
         intValues[setting] = std::min(value, maxIntValues[setting]);
     }
 

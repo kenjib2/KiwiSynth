@@ -13,11 +13,13 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    const int MAX_PATCH_NAME_LENGTH = 31;
+    const static int MAX_PATCH_NAME_LENGTH = 31;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 29; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 102;
+    const static float MIN_DISTORTION_GAIN = 5.0f;
+    const static float MAX_DISTORTION_GAIN = 150.0f;
 
     /*
      * All controls for the Kiwi Synth.
@@ -258,8 +260,8 @@ namespace kiwi_synth
             void updateGpioExpansionValues(int controlNumber);
 
         public:
-            PatchSetting lastChangedSetting;
-            float lastChangedValue;
+            //PatchSetting lastChangedSetting;
+            //float lastChangedValue;
 
             PatchSettings() {}
             ~PatchSettings() {}

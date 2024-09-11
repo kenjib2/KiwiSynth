@@ -9,8 +9,8 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    static const float      VCO_MIN_FREQUENCY = 30.0F;
-    static const float      VCO_MAX_FREQUENCY = 15000.0F;
+    static const float      VCO_MIN_FREQUENCY = 30.0f;
+    static const float      VCO_MAX_FREQUENCY = 15000.0f;
     
     class VCO
     {

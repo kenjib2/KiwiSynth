@@ -10,7 +10,7 @@ namespace kiwi_synth
 
         rate = SAMPLE_AND_HOLD_MINIMUM_RATE * 100;
         counter = 0;
-        currentSample = 0.0F;
+        currentSample = 0.0f;
     }
 
     void SampleAndHold::UpdateSettings()
@@ -23,7 +23,7 @@ namespace kiwi_synth
         
         counter++;
         if (fullFunctionality) {
-            if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0F) {
+            if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0f) {
                 counter = 0;
                 currentSample = *sample;
             }

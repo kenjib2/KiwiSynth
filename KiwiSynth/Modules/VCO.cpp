@@ -9,17 +9,17 @@ namespace kiwi_synth
         isOn = true;
         waveform = 0;
         pulseWidth = 0.5f;
-        level = 1.0F;
-        fineTune = 0.0F;
-        interval = 0.0F;
-        octave = 0.0F;
+        level = 1.0f;
+        fineTune = 0.0f;
+        interval = 0.0f;
+        octave = 0.0f;
         midiNote = 60;
     	osc.Init(sampleRate);
         osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
-        osc.SetFreq(220.0F);
-        osc.SetAmp(1.0F);
+        osc.SetFreq(220.0f);
+        osc.SetAmp(1.0f);
         wavefolder.Init();
-        wavefolder.SetGain(1.0F);
+        wavefolder.SetGain(1.0f);
     }
 
     void VCO::UpdateSettings()
@@ -29,7 +29,7 @@ namespace kiwi_synth
             masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
 
             waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
-            pulseWidth = 0.53F - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03F, 0.5F);
+            pulseWidth = 0.53f - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03f, 0.5f);
             level = patchSettings->getFloatValue((PatchSetting)(VCO_1_LEVEL + vcoNumber));
             if (vcoNumber > 0) {
                 int vcoMod = vcoNumber - 1;
@@ -40,7 +40,7 @@ namespace kiwi_synth
             }
 
             osc.SetWaveform(7 - waveform); // 7: WAVE_POLYBLEP_SQUARE, 6: WAVE_POLYBLEP_SAW, 5: WAVE_POLYBLEP_TRI
-            waveFolderGain = std::fmax(1.0f + (0.495F - pulseWidth) * 55, 1.0f);
+            waveFolderGain = std::fmax(1.0f + (0.495f - pulseWidth) * 55, 1.0f);
 
             playingNote = midiNote + octave + interval + fineTune + masterTune;
         }
@@ -57,10 +57,10 @@ namespace kiwi_synth
 
                 waveSample = osc.Process();
                 if (waveform == 2 && fullFunctionality) { // Triangle
-                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0F));
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0f));
                     waveSample = wavefolder.Process(waveSample);
                 } else if (waveform == 1) { // Sawtooth
-                    waveSample = fclamp(waveSample * (waveFolderGain + pwMod + 1.0f) / 2, -1.0F, 1.0F);
+                    waveSample = fclamp(waveSample * (waveFolderGain + pwMod + 1.0f) / 2, -1.0f, 1.0f);
                 }
 
                 *sample = waveSample * level;

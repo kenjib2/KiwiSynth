@@ -7,12 +7,12 @@ namespace kiwi_synth
         this->patchSettings = patchSettings;
         this->lfoNumber = lfoNumber;
         noteOnReset = false;
-        pulseWidth = 0.5F;
+        pulseWidth = 0.5f;
     	osc.Init(sampleRate);
         osc.SetWaveform(Oscillator::WAVE_TRI);
-        osc.SetFreq(2.0F);
-        osc.PhaseAdd(0.0F);
-        osc.SetAmp(1.0F);
+        osc.SetFreq(2.0f);
+        osc.PhaseAdd(0.0f);
+        osc.SetAmp(1.0f);
         wavefolder.Init();
         wavefolder.SetGain(1.0f);
     }
@@ -29,8 +29,8 @@ namespace kiwi_synth
         freq = patchSettings->getFloatValueLogLookup((PatchSetting)(LFO_1_RATE + lfoNumber));
         basePhase = patchSettings->getFloatValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_PHASE + lfoNumber));
         noteOnReset = patchSettings->getBoolValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_RESET_ON + lfoNumber));
-        pulseWidth = patchSettings->getFloatValueLinear((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03F, 0.97F);
-        if (pulseWidth < 0.032F) {
+        pulseWidth = patchSettings->getFloatValueLinear((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03f, 0.97f);
+        if (pulseWidth < 0.032f) {
             waveFolderGain = 1.0f;
         } else {
             waveFolderGain = 0.97f + pulseWidth * 5.0f;
@@ -40,9 +40,9 @@ namespace kiwi_synth
     void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality)
     {
         if (fullFunctionality) {
-            phase = fmod(basePhase + tphaseMod, 1.0F);
+            phase = fmod(basePhase + tphaseMod, 1.0f);
             osc.SetPw(pulseWidth + pwMod);
-            osc.SetFreq(freq * (1.0F + mod * 10.0F));
+            osc.SetFreq(freq * (1.0f + mod * 10.0f));
 
             float waveSample = osc.Process();
 
@@ -50,7 +50,7 @@ namespace kiwi_synth
                 wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 5.0f, 1.0f));
                 waveSample = wavefolder.Process(waveSample);
             } else if (waveform > 1) { // Sawtooth or Ramp
-                waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0F, 1.0F);
+                waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0f, 1.0f);
             }
 
             *sample = waveSample;
