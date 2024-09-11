@@ -62,10 +62,8 @@ namespace kiwi_synth
         sample[1] = 0.0f;
         for (int i = 0; i < numVoices; i++) {
             voices[i].Process(nextVoice, modulations, numVoices);
-            if (i < numVoices) {
-                sample[0] += nextVoice[0];
-                sample[1] += nextVoice[1];
-            }
+            sample[0] += nextVoice[0];
+            sample[1] += nextVoice[1];
         }
     }
 

@@ -4,6 +4,7 @@
 
 #include "daisysp.h"
 #include "../Patch/PatchSettings.h"
+#include "KiwiDust.h"
 
 using namespace daisysp;
 
@@ -19,7 +20,7 @@ namespace kiwi_synth
             bool       isOn;
             bool       noteTriggered;
             WhiteNoise white;
-            Dust       dust;
+            KiwiDust   dust;
 
         public:
             Noise() {}

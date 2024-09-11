@@ -56,7 +56,7 @@ namespace kiwi_synth
                 osc.SetPw(pulseWidth + pwMod);
 
                 waveSample = osc.Process();
-                if (waveform == 2 && fullFunctionality) { // Triangle
+                if (waveform == 2) { // Triangle
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0f));
                     waveSample = wavefolder.Process(waveSample);
                 } else if (waveform == 1) { // Sawtooth

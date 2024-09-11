@@ -87,27 +87,20 @@ namespace kiwi_synth
     {
         float voiceSample = 0.0f;
 
-        // Turning off notes
-        if (noteOffNeeded) {
-            noteOffNeeded = false;
-            noteTriggered = false;
-            env1.NoteOff();
-            env2.NoteOff();
-        }
-
-        // Triggering notes to play
-        if (noteTriggerCount > 0) {
+        // Triggering notes to play after a delay to shut down previous envelopes click-free (i.e. quickrelease)
+        if (noteTriggerCount >= 0) {
+            if (noteTriggerCount == 0) {
+                noteTriggerCount = -1;
+                currentMidiNote = triggerNote;
+                currentVelocity = triggerVelocity;
+                env1.SetQuickRelease(false);
+                env2.SetQuickRelease(false);
+                env1.NoteOn();
+                env2.NoteOn();
+                lfo1.NoteOn();
+                lfo2.NoteOn();
+            }
             noteTriggerCount--;
-        } else if (noteTriggerCount == 0) {
-            noteTriggerCount = -1;
-            currentMidiNote = triggerNote;
-            currentVelocity = triggerVelocity;
-            env1.SetQuickRelease(false);
-            env2.SetQuickRelease(false);
-            env1.NoteOn();
-            env2.NoteOn();
-            lfo1.NoteOn();
-            lfo2.NoteOn();
         }
 
         if (portamentoOn) {
@@ -222,7 +215,11 @@ namespace kiwi_synth
 
     void Voice::NoteOff(int note, int velocity)
     {
-        noteOffNeeded = true;
+        //noteOffNeeded = true;
+        noteOffNeeded = false;
+        noteTriggered = false;
+        env1.NoteOff();
+        env2.NoteOff();
     }
 
 }
