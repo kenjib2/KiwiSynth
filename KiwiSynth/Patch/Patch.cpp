@@ -37,11 +37,6 @@ namespace kiwi_synth
         ge->RegisterControlListener(*activeSettings);
     }
 
-    PatchSettings* Patch::getActiveSettings()
-    {
-        return *activeSettings;
-    }
-
     void Patch::UpdateSettings()
     {
         voiceMode = (VoiceMode)voice1Settings->getIntValue(VCO_VOICES);

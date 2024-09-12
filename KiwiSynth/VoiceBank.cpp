@@ -3,6 +3,16 @@
 namespace kiwi_synth
 {
     void VoiceBank::Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate) {
+        #ifdef __FUNCTIONALITY_OPTION__
+        modulations = new Modulation*[3];
+        modulations[2] = new Modulation[NUM_MODULATIONS];
+        #else
+        modulations = new Modulation*[2];
+        #endif // __FUNCTIONALITY_OPTION__
+        modulations[0] = new Modulation[NUM_MODULATIONS];
+        modulations[1] = new Modulation[NUM_MODULATIONS];
+        InitModulations();
+
         this->patch = patch;
         this->maxVoices = maxVoices;
         this->numVoices = maxVoices;
@@ -12,7 +22,6 @@ namespace kiwi_synth
             nextVoice.Init(numVcos, patch->getActiveSettings(), sampleRate, i);
             voices.push_back(nextVoice);
         }
-        InitModulations();
     }
 
     
@@ -67,19 +76,19 @@ namespace kiwi_synth
         sample[0] = 0.0f;
         sample[1] = 0.0f;
 
-        #ifdef __FUNCTIONALITY_OPTION__
-        for (int i = 0; i < numVoices; i++) {
-            voices[i].Process(nextVoice, modulations, numVoices);
-            sample[0] += nextVoice[0];
-            sample[1] += nextVoice[1];
-        }
-        #else
-        voices[0].Process(nextVoice, patch->getActiveSettings(), modulations, numVoices);
+        voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
         if (numVoices == 2) {
-            voices[1].Process(nextVoice, patch->getActiveSettings(), modulations, numVoices);
+            voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+            sample[0] += nextVoice[0];
+            sample[1] += nextVoice[1];
+        }
+
+        #ifdef __FUNCTIONALITY_OPTION__
+        if (numVoices == 3) {
+            voices[2].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
         }
@@ -87,87 +96,115 @@ namespace kiwi_synth
     }
 
     void VoiceBank::InitModulations() {
-        modulations[MODS_MOD_MATRIX_1].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_1].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_1].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_2].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_2].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_2].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_3].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_3].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_3].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_4].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_4].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_4].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_5].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_5].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_5].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_6].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_6].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_6].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_7].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_7].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_7].depth = 0.0f;
-        modulations[MODS_MOD_MATRIX_8].source = SRC_NONE;
-        modulations[MODS_MOD_MATRIX_8].destination = DST_NONE;
-        modulations[MODS_MOD_MATRIX_8].depth = 0.0f;
+        #ifdef __FUNCTIONALITY_OPTION__
+        for (int i = 0; i < 3; i++) {
+        #else
+        for (int i = 0; i < 2; i++) {
+        #endif // __FUNCTIONALITY_OPTION__
+            modulations[i][MODS_MOD_MATRIX_1].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_1].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_1].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_2].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_2].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_2].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_3].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_3].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_3].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_4].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_4].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_4].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_5].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_5].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_5].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_6].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_6].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_6].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_7].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_7].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_7].depth = 0.0f;
+            modulations[i][MODS_MOD_MATRIX_8].source = SRC_NONE;
+            modulations[i][MODS_MOD_MATRIX_8].destination = DST_NONE;
+            modulations[i][MODS_MOD_MATRIX_8].depth = 0.0f;
 
-        modulations[MODS_LFO_1_TO_VCOS].source = SRC_LFO_1;
-        modulations[MODS_LFO_1_TO_VCOS].destination = DST_VCOS_FREQ;
-        modulations[MODS_LFO_1_TO_VCOS].depth = 0.0f;
-        modulations[MODS_ENV_1_TO_VCA].source = SRC_ENV_1;
-        modulations[MODS_ENV_1_TO_VCA].destination = DST_VCA_LEVEL;
-        modulations[MODS_ENV_1_TO_VCA].depth = 0.0f;
-        modulations[MODS_NOTE_TO_VCF_FREQ].source = SRC_NOTE;
-        modulations[MODS_NOTE_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-        modulations[MODS_NOTE_TO_VCF_FREQ].depth = 0.0f;
-        modulations[MODS_ENV_1_TO_VCF_FREQ].source = SRC_ENV_1;
-        modulations[MODS_ENV_1_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-        modulations[MODS_ENV_1_TO_VCF_FREQ].depth = 0.0f;
-        modulations[MODS_ENV_2_TO_VCF_FREQ].source = SRC_ENV_2;
-        modulations[MODS_ENV_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-        modulations[MODS_ENV_2_TO_VCF_FREQ].depth = 0.0f;
-        modulations[MODS_LFO_2_TO_VCF_FREQ].source = SRC_LFO_2;
-        modulations[MODS_LFO_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-        modulations[MODS_LFO_2_TO_VCF_FREQ].depth = 0.0f;
-        modulations[MODS_SH_TO_VCF_FREQ].source = SRC_SH;
-        modulations[MODS_SH_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-        modulations[MODS_SH_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_LFO_1_TO_VCOS].source = SRC_LFO_1;
+            modulations[i][MODS_LFO_1_TO_VCOS].destination = DST_VCOS_FREQ;
+            modulations[i][MODS_LFO_1_TO_VCOS].depth = 0.0f;
+            modulations[i][MODS_ENV_1_TO_VCA].source = SRC_ENV_1;
+            modulations[i][MODS_ENV_1_TO_VCA].destination = DST_VCA_LEVEL;
+            modulations[i][MODS_ENV_1_TO_VCA].depth = 0.0f;
+            modulations[i][MODS_NOTE_TO_VCF_FREQ].source = SRC_NOTE;
+            modulations[i][MODS_NOTE_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
+            modulations[i][MODS_NOTE_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_ENV_1_TO_VCF_FREQ].source = SRC_ENV_1;
+            modulations[i][MODS_ENV_1_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
+            modulations[i][MODS_ENV_1_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_ENV_2_TO_VCF_FREQ].source = SRC_ENV_2;
+            modulations[i][MODS_ENV_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
+            modulations[i][MODS_ENV_2_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_LFO_2_TO_VCF_FREQ].source = SRC_LFO_2;
+            modulations[i][MODS_LFO_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
+            modulations[i][MODS_LFO_2_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_SH_TO_VCF_FREQ].source = SRC_SH;
+            modulations[i][MODS_SH_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
+            modulations[i][MODS_SH_TO_VCF_FREQ].depth = 0.0f;
+        }
     }
 
     void VoiceBank::UpdateModulations() {
-        modulations[MODS_MOD_MATRIX_1].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_1_SOURCE);
-        modulations[MODS_MOD_MATRIX_1].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_1_DESTINATION);
-        modulations[MODS_MOD_MATRIX_1].depth = patch->getActiveSettings()->getFloatValue(MOD_1_DEPTH);
-        modulations[MODS_MOD_MATRIX_2].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_2_SOURCE);
-        modulations[MODS_MOD_MATRIX_2].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_2_DESTINATION);
-        modulations[MODS_MOD_MATRIX_2].depth = patch->getActiveSettings()->getFloatValue(MOD_2_DEPTH);
-        modulations[MODS_MOD_MATRIX_3].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_3_SOURCE);
-        modulations[MODS_MOD_MATRIX_3].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_3_DESTINATION);
-        modulations[MODS_MOD_MATRIX_3].depth = patch->getActiveSettings()->getFloatValue(MOD_3_DEPTH);
-        modulations[MODS_MOD_MATRIX_4].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_4_SOURCE);
-        modulations[MODS_MOD_MATRIX_4].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_4_DESTINATION);
-        modulations[MODS_MOD_MATRIX_4].depth = patch->getActiveSettings()->getFloatValue(MOD_4_DEPTH);
-        modulations[MODS_MOD_MATRIX_5].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_5_SOURCE);
-        modulations[MODS_MOD_MATRIX_5].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_5_DESTINATION);
-        modulations[MODS_MOD_MATRIX_5].depth = patch->getActiveSettings()->getFloatValue(MOD_5_DEPTH);
-        modulations[MODS_MOD_MATRIX_6].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_6_SOURCE);
-        modulations[MODS_MOD_MATRIX_6].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_6_DESTINATION);
-        modulations[MODS_MOD_MATRIX_6].depth = patch->getActiveSettings()->getFloatValue(MOD_6_DEPTH);
-        modulations[MODS_MOD_MATRIX_7].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_7_SOURCE);
-        modulations[MODS_MOD_MATRIX_7].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_7_DESTINATION);
-        modulations[MODS_MOD_MATRIX_7].depth = patch->getActiveSettings()->getFloatValue(MOD_7_DEPTH);
-        modulations[MODS_MOD_MATRIX_8].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_8_SOURCE);
-        modulations[MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_8_DESTINATION);
-        modulations[MODS_MOD_MATRIX_8].depth = patch->getActiveSettings()->getFloatValue(MOD_8_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_1].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_1_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_1].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_1_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_1].depth = patch->getActiveSettings()->getFloatValue(MOD_1_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_2].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_2_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_2].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_2_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_2].depth = patch->getActiveSettings()->getFloatValue(MOD_2_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_3].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_3_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_3].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_3_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_3].depth = patch->getActiveSettings()->getFloatValue(MOD_3_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_4].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_4_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_4].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_4_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_4].depth = patch->getActiveSettings()->getFloatValue(MOD_4_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_5].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_5_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_5].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_5_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_5].depth = patch->getActiveSettings()->getFloatValue(MOD_5_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_6].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_6_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_6].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_6_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_6].depth = patch->getActiveSettings()->getFloatValue(MOD_6_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_7].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_7_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_7].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_7_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_7].depth = patch->getActiveSettings()->getFloatValue(MOD_7_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_8].source = (ModulationSource)patch->getActiveSettings()->getIntValue(MOD_8_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_8_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_8].depth = patch->getActiveSettings()->getFloatValue(MOD_8_DEPTH);
+        memcpy(modulations[1], modulations[0], sizeof(Modulations) * 8);
+        #ifdef __FUNCTIONALITY_OPTION__
+        memcpy(modulations[2], modulations[0], sizeof(Modulations) * 8);
+        #endif // __FUNCTIONALITY_OPTION__
 
-        modulations[MODS_LFO_1_TO_VCOS].depth = patch->getActiveSettings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[MODS_ENV_1_TO_VCA].depth = patch->getActiveSettings()->getFloatValue(VCA_ENV_1_DEPTH);
-        modulations[MODS_NOTE_TO_VCF_FREQ].depth = patch->getActiveSettings()->getFloatValue(VCF_TRACKING);
-        modulations[MODS_ENV_1_TO_VCF_FREQ].depth = patch->getActiveSettings()->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[MODS_ENV_2_TO_VCF_FREQ].depth = patch->getActiveSettings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[MODS_LFO_2_TO_VCF_FREQ].depth = patch->getActiveSettings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[MODS_SH_TO_VCF_FREQ].depth = patch->getActiveSettings()->getFloatValue(SH_TO_VCF_CUTOFF);
+        modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->getVoice1Settings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[0][MODS_ENV_1_TO_VCA].depth = patch->getVoice1Settings()->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->getVoice1Settings()->getFloatValue(VCF_TRACKING);
+        modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->getVoice1Settings()->getFloatValueExponential(VCF_ENV_1_DEPTH);
+        modulations[0][MODS_ENV_2_TO_VCF_FREQ].depth = patch->getVoice1Settings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
+        modulations[0][MODS_LFO_2_TO_VCF_FREQ].depth = patch->getVoice1Settings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
+        modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->getVoice1Settings()->getFloatValue(SH_TO_VCF_CUTOFF);
+
+        modulations[1][MODS_LFO_1_TO_VCOS].depth = patch->getVoice2Settings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[1][MODS_ENV_1_TO_VCA].depth = patch->getVoice2Settings()->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValue(VCF_TRACKING);
+        modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValueExponential(VCF_ENV_1_DEPTH);
+        modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
+        modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
+        modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValue(SH_TO_VCF_CUTOFF);
+
+        #ifdef __FUNCTIONALITY_OPTION__
+        modulations[2][MODS_LFO_1_TO_VCOS].depth = patch->getVoice3Settings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[2][MODS_ENV_1_TO_VCA].depth = patch->getVoice3Settings()->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[2][MODS_NOTE_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValue(VCF_TRACKING);
+        modulations[2][MODS_ENV_1_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(VCF_ENV_1_DEPTH);
+        modulations[2][MODS_ENV_2_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
+        modulations[2][MODS_LFO_2_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
+        modulations[2][MODS_SH_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValue(SH_TO_VCF_CUTOFF);
+        #endif // __FUNCTIONALITY_OPTION__
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)

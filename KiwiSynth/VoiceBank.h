@@ -47,7 +47,7 @@ namespace kiwi_synth
  
         public:
             std::vector<int> playingVoices;
-            Modulation modulations[NUM_MODULATIONS];
+            Modulation** modulations;
             uint8_t numVoices;
 
             VoiceBank() {}

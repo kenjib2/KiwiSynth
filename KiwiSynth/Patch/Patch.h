@@ -38,7 +38,20 @@ namespace kiwi_synth
             ~Patch() {}
             void Init(PatchSettings* voice1Settings, PatchSettings* voice2Settings, MultiPots* multiPots, GpioExpansion* ge);
 
-            PatchSettings* getActiveSettings();
+            inline PatchSettings* getActiveSettings() {
+                return *activeSettings;
+            }
+            inline PatchSettings* getVoice1Settings() {
+                return voice1Settings;
+            }
+            inline PatchSettings* getVoice2Settings() {
+                return voice2Settings;
+            }
+            #ifdef __FUNCTIONALITY_OPTION__
+            inline PatchSettings* getVoice3Settings() {
+                return voice3Settings;
+            }
+            #endif // __FUNCTIONALITY_OPTION__
             void UpdateSettings();
     };
 }
