@@ -5,7 +5,7 @@
 #include "daisysp.h"
 
 #include "../../KUtils.h"
-#include "../Patch/PatchSettings.h"
+#include "../Patch/Patch.h"
 #include "Delay.h"
 #include "Zita/reverb.h"
 
@@ -19,14 +19,14 @@ namespace kiwi_synth
             float                   reverbLevel;
             float                   gain;
             float                   level;
-            PatchSettings*          patchSettings;
+            Patch*                  patch;
             Reverb                  reverb;
             Delay                   delay;
 
         public:
             EffectsEngine() {}
             ~EffectsEngine() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(Patch* patch, float sampleRate);
 
             void UpdateSettings();
             #ifdef __FUNCTIONALITY_OPTION__

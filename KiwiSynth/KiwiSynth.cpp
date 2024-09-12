@@ -20,7 +20,7 @@ namespace kiwi_synth
         patch.Init(&voice1PatchSettings, &voice2PatchSettings, &multiPots, &ge);
 
         voiceBank.Init(numVoices, NUM_VCOS, patch.getActiveSettings(), sampleRate);
-        effectsEngine.Init(patch.getActiveSettings(), sampleRate);
+        effectsEngine.Init(&patch, sampleRate);
 
         InitMidi();
     }
