@@ -7,7 +7,7 @@
 
 #include "../KUtils.h"
 #include "Controls/MultiPots.h"
-#include "Patch/PatchSettings.h"
+#include "Patch/Patch.h"
 #include "VoiceBank.h"
 #include "Effects/EffectsEngine.h"
 
@@ -43,6 +43,7 @@ namespace kiwi_synth
             void HandleMidiMessage(MidiEvent* midiEvent);
 
         public:
+            Patch patch;
             PatchSettings patchSettings;
 
             KiwiSynth() {}

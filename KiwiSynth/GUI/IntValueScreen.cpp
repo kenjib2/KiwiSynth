@@ -11,14 +11,15 @@ namespace kiwi_synth
 
     void IntValueScreen::Display()
     {
-        char val1[8], val2[8], val3[8], val4[8];
+        char val1[8], val2[8], val3[8];
 
         display->Fill(false);
 
         display->SetCursor(0, 0);
         GetVoiceMode(val1);
         GetWaveform(val2, 0);
-        sprintf(buffer, "VM %s W1 %s", val1, val2);
+        GetVcfType(val3);
+        sprintf(buffer, "VM %s W1 %s VCF %s", val1, val2, val3);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
@@ -35,8 +36,7 @@ namespace kiwi_synth
         GetNoiseType(val1);
         GetLfoWaveform(val2, 0);
         GetLfoWaveform(val3, 1);
-        GetVcfType(val4);
-        sprintf(buffer, "N %s L1 %s L2 %s F %s", val1, val2, val3, val4);
+        sprintf(buffer, "N %s L1 %s L2 %s", val1, val2, val3);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
@@ -74,13 +74,16 @@ namespace kiwi_synth
                 strcpy(buffer, "2v");
                 break;
             case 1:
-            #ifdef __FUNCTIONALITY_OPTION__
-                    strcpy(buffer, "3v");
-                    break;
-                case 2:
-            #endif // __FUNCTIONALITY_OPTION__
                 strcpy(buffer, "1v");
                 break;
+            case 2:
+                strcpy(buffer, "Mt");
+                break;
+            #ifdef __FUNCTIONALITY_OPTION__
+            case 3:
+                strcpy(buffer, "3v");
+                break;
+            #endif // __FUNCTIONALITY_OPTION__
         }
     }
 
@@ -133,28 +136,28 @@ namespace kiwi_synth
     void IntValueScreen::GetVcfType(char* buffer) {
         switch (patchSettings->getIntValue((PatchSetting)(VCF_FILTER_TYPE))) {
             case 0:
-                strcpy(buffer, "Ld");
+                strcpy(buffer, "LdLP");
                 break;
             case 1:
-                strcpy(buffer, "Lp");
+                strcpy(buffer, "LoPa");
                 break;
             case 2:
-                strcpy(buffer, "Hp");
+                strcpy(buffer, "HiPa");
                 break;
             case 3:
-                strcpy(buffer, "Bp");
+                strcpy(buffer, "BndP");
                 break;
             case 4:
-                strcpy(buffer, "Nt");
+                strcpy(buffer, "Notc");
                 break;
             case 5:
-                strcpy(buffer, "Pk");
+                strcpy(buffer, "Peak");
                 break;
             case 6:
-                strcpy(buffer, "1h");
+                strcpy(buffer, "1PHP");
                 break;
             case 7:
-                strcpy(buffer, "1l");
+                strcpy(buffer, "1PLP");
                 break;
         }
     }

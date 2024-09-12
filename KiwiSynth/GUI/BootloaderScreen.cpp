@@ -3,10 +3,9 @@
 namespace kiwi_synth
 {
 
-    void BootloaderScreen::Init(KiwiDisplay* display, PatchSettings* patchSettings)
+    void BootloaderScreen::Init(KiwiDisplay* display)
     {
         this->display = display;
-        this->patchSettings = patchSettings;
     }
 
     void BootloaderScreen::Display()

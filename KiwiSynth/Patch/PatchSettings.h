@@ -230,22 +230,17 @@ namespace kiwi_synth
     class PatchSettings : public ControlListener
     {
         private:
-            // was global in PatchSettings.cpp and DSY_SDRAM_BSS
+            static int8_t* maxIntValues; // Set the max values for int variables
+            static float* lMinLookup; // Set the range for logarhithmic float variables
+            static float* lMaxLookup; // Set the range for logarhithmic float variables
+
             // We have a lot of unused array members in order to prevent branching code when setting and retrieving values of different data types.
             char name[MAX_PATCH_NAME_LENGTH + 1];
-            //float floatValues[59];
-            float floatValues[NUM_PATCH_SETTINGS];
-            //int8_t intValues[31];
-            int8_t intValues[NUM_PATCH_SETTINGS];
-            int8_t maxIntValues[NUM_PATCH_SETTINGS];
-            //bool boolValues[10];
-            bool boolValues[NUM_PATCH_SETTINGS];
-            bool lastPinValues[4][16];
-            float lMinLookup[NUM_PATCH_SETTINGS];
-            float lMaxLookup[NUM_PATCH_SETTINGS];
+            float floatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
+            int8_t intValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
+            bool boolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
+            bool lastPinValues[4][16]; // Used to track changes to the rotary encoder state
 
-            static constexpr float minValue = 0.0f;
-            static constexpr float maxValue = 1.0f;
             MultiPots* multiPots;
             GpioExpansion* ge;
 

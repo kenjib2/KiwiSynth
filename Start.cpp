@@ -33,6 +33,7 @@ using namespace kiwi_synth;
  * Save / Load
  * UI
  * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
+ * Can we make the data structures a little smaller without losing performance?
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
  * Flanger

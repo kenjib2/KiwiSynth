@@ -3,10 +3,9 @@
 namespace kiwi_synth
 {
 
-    void WelcomeScreen::Init(KiwiDisplay* display, PatchSettings* patchSettings)
+    void WelcomeScreen::Init(KiwiDisplay* display)
     {
         this->display = display;
-        this->patchSettings = patchSettings;
     }
 
     void WelcomeScreen::Display()

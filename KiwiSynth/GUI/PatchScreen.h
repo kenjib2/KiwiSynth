@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_PATCH_H__
-#define __KIWI_SYNTH_PATCH_H__
+#ifndef __KIWI_SYNTH_PATCH_SCREEN_H__
+#define __KIWI_SYNTH_PATCH_SCREEN_H__
 
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
@@ -27,4 +27,4 @@ namespace kiwi_synth
 } // namespace kiwi_synth
 
 
-#endif // __KIWI_SYNTH_BOOTLOADER_SCREEN_H__
+#endif // __KIWI_SYNTH_PATCH_SCREEN_H__

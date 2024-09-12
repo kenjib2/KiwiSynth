@@ -5,6 +5,79 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+    static int8_t* genMaxIntValues() {
+        int8_t* tmp = new int8_t[NUM_PATCH_SETTINGS];
+
+        // Set the max values for int variables
+        memset(tmp, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
+        #ifdef __FUNCTIONALITY_OPTION__
+            tmp[VCO_VOICES] = 3; // 3 is reduced functionality 3 voice
+        #else
+            tmp[VCO_VOICES] = 2; // 0 is duo-polyphonic, 1 is monophonic, 2 is duo-timbral monophonic
+        #endif // __FUNCTIONALITY_OPTION__
+        tmp[VCO_1_WAVEFORM] = 2;
+        tmp[VCO_2_WAVEFORM] = 2;
+        tmp[VCO_2_OCTAVE] = 4;
+        tmp[VCO_2_INTERVAL] = 22;
+        tmp[VCO_3_WAVEFORM] = 2;
+        tmp[VCO_3_OCTAVE] = 4;
+        tmp[VCO_3_INTERVAL] = 22;
+        tmp[VCO_NOISE_TYPE] = 1;
+        tmp[VCF_FILTER_TYPE] = 7;
+        tmp[LFO_1_WAVEFORM] = 3;
+        tmp[LFO_2_WAVEFORM] = 3;
+        tmp[MOD_1_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_1_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_2_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_2_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_3_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_3_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_4_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_4_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_5_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_5_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_6_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_6_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_7_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_7_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[MOD_8_SOURCE] = NUM_MOD_SOURCES - 1;
+        tmp[MOD_8_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
+        tmp[GEN_SELECT] = 50;
+        tmp[GEN_FX_SELECT] = 127;
+        tmp[GEN_REVERB_SELECT] = 2;
+
+        return tmp;
+    }
+    int8_t *PatchSettings::maxIntValues = genMaxIntValues();
+
+    static float* genLMinLookup() {
+        float* tmp = new float[NUM_PATCH_SETTINGS];
+
+        memset(tmp, 0, NUM_PATCH_SETTINGS * sizeof(float));
+        tmp[VCO_PORTAMENTO_SPEED] = logf(0.0001f < 0.0000001f ? 0.0000001f : 0.0001f);
+        tmp[FX_1] = logf(MIN_DISTORTION_GAIN < 0.0000001f ? 0.0000001f : MIN_DISTORTION_GAIN);
+        tmp[LFO_1_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
+        tmp[LFO_2_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
+        tmp[SH_RATE] = logf(48.0f < 0.0000001f ? 0.0000001f : 48.0f);
+
+        return tmp;
+    }
+    float *PatchSettings::lMinLookup = genLMinLookup();
+
+    static float* genLMaxLookup() {
+        float* tmp = new float[NUM_PATCH_SETTINGS];
+
+        memset(tmp, 0, NUM_PATCH_SETTINGS * sizeof(float));
+        tmp[VCO_PORTAMENTO_SPEED] = logf(0.05f);
+        tmp[FX_1] = logf(MAX_DISTORTION_GAIN);
+        tmp[LFO_1_RATE] = logf(20.0f);
+        tmp[LFO_2_RATE] = logf(20.0f);
+        tmp[SH_RATE] = logf(48000.0f);
+
+        return tmp;
+    }
+    float *PatchSettings::lMaxLookup = genLMaxLookup();
+
     void PatchSettings::Init(MultiPots* multiPots, GpioExpansion* ge)
     {
         this->multiPots = multiPots;
@@ -16,56 +89,6 @@ namespace kiwi_synth
                 lastPinValues[i][j] = false;
             }
         }
-
-        // Set the range for logarhithmic float variables
-        lMinLookup[VCO_PORTAMENTO_SPEED] = logf(0.0001f < 0.0000001f ? 0.0000001f : 0.0001f);
-        lMaxLookup[VCO_PORTAMENTO_SPEED] = logf(0.05f);
-        lMinLookup[FX_1] = logf(MIN_DISTORTION_GAIN < 0.0000001f ? 0.0000001f : MIN_DISTORTION_GAIN);
-        lMaxLookup[FX_1] = logf(MAX_DISTORTION_GAIN);
-        lMinLookup[LFO_1_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
-        lMaxLookup[LFO_1_RATE] = logf(20.0f);
-        lMinLookup[LFO_2_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
-        lMaxLookup[LFO_2_RATE] = logf(20.0f);
-        lMinLookup[SH_RATE] = logf(48.0f < 0.0000001f ? 0.0000001f : 48.0f);
-        lMaxLookup[SH_RATE] = logf(48000.0f);
-
-        // Set the max values for int variables
-        memset(&maxIntValues, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
-        #ifdef __FUNCTIONALITY_OPTION__
-            maxIntValues[VCO_VOICES] = 2;
-        #else
-            maxIntValues[VCO_VOICES] = 1;
-        #endif // __FUNCTIONALITY_OPTION__
-        maxIntValues[VCO_1_WAVEFORM] = 2;
-        maxIntValues[VCO_2_WAVEFORM] = 2;
-        maxIntValues[VCO_2_OCTAVE] = 4;
-        maxIntValues[VCO_2_INTERVAL] = 22;
-        maxIntValues[VCO_3_WAVEFORM] = 2;
-        maxIntValues[VCO_3_OCTAVE] = 4;
-        maxIntValues[VCO_3_INTERVAL] = 22;
-        maxIntValues[VCO_NOISE_TYPE] = 1;
-        maxIntValues[VCF_FILTER_TYPE] = 7;
-        maxIntValues[LFO_1_WAVEFORM] = 3;
-        maxIntValues[LFO_2_WAVEFORM] = 3;
-        maxIntValues[MOD_1_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_1_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_2_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_2_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_3_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_3_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_4_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_4_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_5_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_5_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_6_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_6_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_7_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_7_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[MOD_8_SOURCE] = NUM_MOD_SOURCES - 1;
-        maxIntValues[MOD_8_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        maxIntValues[GEN_SELECT] = 50;
-        maxIntValues[GEN_FX_SELECT] = 127;
-        maxIntValues[GEN_REVERB_SELECT] = 2;
 
         // Set default patch name.
         char buffer[4];

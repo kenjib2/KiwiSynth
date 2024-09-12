@@ -23,8 +23,8 @@ namespace kiwi_synth
         guiButton = false;
         mode = PLAY;
 
-        welcomeScreen.Init(&display, patchSettings);
-        bootloaderScreen.Init(&display, patchSettings);
+        welcomeScreen.Init(&display);
+        bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patchSettings);
         patchScreen.Init(&display, patchSettings);
 

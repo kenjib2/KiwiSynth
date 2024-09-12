@@ -15,6 +15,7 @@ namespace kiwi_synth
         ConfigureMultiPots(hw);
         ConfigureGpioExpansion();
 
+        //patch.Init(&multiPots, &ge);
         patchSettings.Init(&multiPots, &ge);
         multiPots.RegisterControlListener(&patchSettings);
         ge.RegisterControlListener(&patchSettings);
