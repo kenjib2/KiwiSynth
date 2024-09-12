@@ -23,19 +23,18 @@ namespace kiwi_synth
             float                   prevDecayMod;
             float                   prevSustainMod;
             float                   prevReleaseMod;
-            PatchSettings*          patchSettings;
             Adsr                    env;
             uint8_t                 envNumber;
 
         public:
             Envelope() {}
             ~Envelope() {}
-            void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
-            void UpdateSettings();
+            void Init(float sampleRate, uint8_t envNumber);
+            void UpdateSettings(PatchSettings* patchSettings);
             #ifdef __FUNCTIONALITY_OPTION__
             void Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod, bool fullFunctionality);
             #else
-            void Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod);
+            void Process(float* sample, PatchSettings* patchSettings, float attackMod, float decayMod, float sustainMod, float releaseMod);
             #endif // __FUNCTIONALITY_OPTION__
             void NoteOn();
             void NoteOff();

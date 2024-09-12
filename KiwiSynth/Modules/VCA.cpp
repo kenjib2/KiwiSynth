@@ -2,17 +2,16 @@
 
 namespace kiwi_synth
 {
-    void VCA::Init(PatchSettings* patchSettings, float sampleRate)
+    void VCA::Init(float sampleRate)
     {
-        this->patchSettings = patchSettings;
     }
 
-    void VCA::UpdateSettings()
+    void VCA::UpdateSettings(PatchSettings* patchSettings)
     {
         level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL);
     }
 
-    void VCA::Process(float* sample, float env1Mod, float mod)
+    void VCA::Process(float* sample, PatchSettings* patchSettings, float env1Mod, float mod)
     {
         float levelSample = 0.0f;
         if (level > 0.0015f) {

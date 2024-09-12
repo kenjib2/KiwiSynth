@@ -2,9 +2,8 @@
 
 namespace kiwi_synth
 {
-    void LFO::Init(PatchSettings* patchSettings, float sampleRate, uint8_t lfoNumber)
+    void LFO::Init(float sampleRate, uint8_t lfoNumber)
     {
-        this->patchSettings = patchSettings;
         this->lfoNumber = lfoNumber;
         noteOnReset = false;
         pulseWidth = 0.5f;
@@ -22,7 +21,7 @@ namespace kiwi_synth
         osc.SetFreq(frequency);
     }
 
-    void LFO::UpdateSettings()
+    void LFO::UpdateSettings(PatchSettings* patchSettings)
     {
         waveform = patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         osc.SetWaveform(waveform + 1); // WAVE_TRI = 1, WAVE_SAW = 2, WAVE_RAMP = 3, WAVE_SQUARE = 4
@@ -38,9 +37,9 @@ namespace kiwi_synth
     }
 
     #ifdef __FUNCTIONALITY_OPTION__
-    void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality)
+    void LFO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod, bool fullFunctionality)
     #else
-    void LFO::Process(float* sample, float mod, float pwMod, float tphaseMod)
+    void LFO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod)
     #endif // __FUNCTIONALITY_OPTION__
     {
         #ifdef __FUNCTIONALITY_OPTION__

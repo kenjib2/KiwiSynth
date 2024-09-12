@@ -17,7 +17,6 @@ namespace kiwi_synth
     class VCO
     {
         private:
-            PatchSettings* patchSettings;
             uint8_t    vcoNumber;
             float      pulseWidth;
             float      waveFolderGain;
@@ -38,13 +37,13 @@ namespace kiwi_synth
 
             VCO() {}
             ~VCO() {}
-            void Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber);
+            void Init(float sampleRate, uint8_t vcoNumber);
 
-            void UpdateSettings();
+            void UpdateSettings(PatchSettings* patchSettings);
             #ifdef __FUNCTIONALITY_OPTION__
-            void Process(float* sample, float mod, float pwMod, bool fullFunctionality = true);
+            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, bool fullFunctionality = true);
             #else
-            void Process(float* sample, float mod, float pwMod);
+            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod);
             #endif // __FUNCTIONALITY_OPTION__
     };
 }

@@ -2,9 +2,8 @@
 
 namespace kiwi_synth
 {
-    void SampleAndHold::Init(PatchSettings* patchSettings, float sampleRate)
+    void SampleAndHold::Init(float sampleRate)
     {
-        this->patchSettings = patchSettings;
         SAMPLE_AND_HOLD_MINIMUM_RATE = sampleRate / 1000; // 1 ms
         SAMPLE_AND_HOLD_MAXIMUM_RATE = sampleRate; // 1 sec
 
@@ -13,12 +12,12 @@ namespace kiwi_synth
         currentSample = 0.0f;
     }
 
-    void SampleAndHold::UpdateSettings()
+    void SampleAndHold::UpdateSettings(PatchSettings* patchSettings)
     {
         rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE);
     }
 
-    void SampleAndHold::Process(float* sample, float mod)
+    void SampleAndHold::Process(float* sample, PatchSettings* patchSettings, float mod)
     {
         
         counter++;

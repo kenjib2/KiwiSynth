@@ -15,15 +15,14 @@ namespace kiwi_synth
     {
         private:
             float                   level;
-            PatchSettings*          patchSettings;
 
         public:
             VCA() {}
             ~VCA() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(float sampleRate);
 
-            void UpdateSettings();
-            void Process(float* sample, float env1Mod, float mod);
+            void UpdateSettings(PatchSettings* patchSettings);
+            void Process(float* sample, PatchSettings* patchSettings, float env1Mod, float mod);
     };
 }
 

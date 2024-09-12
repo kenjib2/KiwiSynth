@@ -69,8 +69,8 @@ namespace kiwi_synth
             ~Voice() {}
             void Init(int maxVcos, PatchSettings* patchSettings, float sampleRate, int voiceNumber);
 
-            void UpdateSettings();
-            void Process(float* sample, Modulation* modulations, int numVoices);
+            void UpdateSettings(PatchSettings* patchSettings);
+            void Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, int numVoices);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity, bool reset = true);

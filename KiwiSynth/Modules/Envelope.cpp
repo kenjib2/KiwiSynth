@@ -2,9 +2,8 @@
 
 namespace kiwi_synth
 {
-    void Envelope::Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber)
+    void Envelope::Init(float sampleRate, uint8_t envNumber)
     {
-        this->patchSettings = patchSettings;
         this->envNumber = envNumber;
         noteTriggered = false;
         quickRelease = false;
@@ -22,7 +21,7 @@ namespace kiwi_synth
         prevReleaseMod = 0.0f;
     }
 
-    void Envelope::UpdateSettings()
+    void Envelope::UpdateSettings(PatchSettings* patchSettings)
     {
         if (!quickRelease) {
             env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + prevAttackMod), 0.0f) * 3.0f);
@@ -36,9 +35,9 @@ namespace kiwi_synth
     }
 
     #ifdef __FUNCTIONALITY_OPTION__
-    void Envelope::Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod, bool fullFunctionality)
+    void Envelope::Process(float* sample, PatchSettings* patchSettings, float attackMod, float decayMod, float sustainMod, float releaseMod, bool fullFunctionality)
     #else
-    void Envelope::Process(float* sample, float attackMod, float decayMod, float sustainMod, float releaseMod)
+    void Envelope::Process(float* sample, PatchSettings* patchSettings, float attackMod, float decayMod, float sustainMod, float releaseMod)
     #endif // __FUNCTIONALITY_OPTION__
     {
         #ifdef __FUNCTIONALITY_OPTION__

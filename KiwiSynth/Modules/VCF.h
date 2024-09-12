@@ -34,15 +34,14 @@ namespace kiwi_synth
             infrasonic::MoogLadder  filter;
             OnePole                 opFilter;
             Svf                     svFilter;
-            PatchSettings*          patchSettings;
 
         public:
             VCF() {}
             ~VCF() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(float sampleRate);
 
-            void UpdateSettings();
-            void Process(float* sample, float trackingMod, int currentMidiNote, float mod, float resMod);
+            void UpdateSettings(PatchSettings* patchSettings);
+            void Process(float* sample, PatchSettings* patchSettings, float trackingMod, int currentMidiNote, float mod, float resMod);
     };
 }
 

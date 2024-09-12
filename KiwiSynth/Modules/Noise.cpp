@@ -2,9 +2,8 @@
 
 namespace kiwi_synth
 {
-    void Noise::Init(PatchSettings* patchSettings, float sampleRate)
+    void Noise::Init(float sampleRate)
     {
-        this->patchSettings = patchSettings;
         isOn = true;
         noiseType = 0;
         level = 1.0f;
@@ -16,14 +15,14 @@ namespace kiwi_synth
         dust.SetDensity(0.015f);
     }
 
-    void Noise::UpdateSettings()
+    void Noise::UpdateSettings(PatchSettings* patchSettings)
     {
         isOn = patchSettings->getBoolValue(PatchSetting::VCO_NOISE_ON);
         noiseType = patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE);
         level = patchSettings->getFloatValue(PatchSetting::VCO_NOISE_LEVEL);
     }
 
-    void Noise::Process(float* sample, float mod)
+    void Noise::Process(float* sample, PatchSettings* patchSettings, float mod)
     {
         if (noiseType == 0) {
             lastSample = white.Process() * 0.2;

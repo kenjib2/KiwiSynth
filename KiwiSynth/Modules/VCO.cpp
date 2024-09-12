@@ -2,9 +2,8 @@
 
 namespace kiwi_synth
 {
-    void VCO::Init(PatchSettings* patchSettings, float sampleRate, uint8_t vcoNumber)
+    void VCO::Init(float sampleRate, uint8_t vcoNumber)
     {
-        this->patchSettings = patchSettings;
         this->vcoNumber = vcoNumber;
         isOn = true;
         waveform = 0;
@@ -22,7 +21,7 @@ namespace kiwi_synth
         wavefolder.SetGain(1.0f);
     }
 
-    void VCO::UpdateSettings()
+    void VCO::UpdateSettings(PatchSettings* patchSettings)
     {
         isOn = patchSettings->getBoolValue((PatchSetting)(VCO_1_ON + vcoNumber));
         if (isOn) {
@@ -47,9 +46,9 @@ namespace kiwi_synth
     }
 
     #ifdef __FUNCTIONALITY_OPTION__
-    void VCO::Process(float* sample, float mod, float pwMod, bool fullFunctionality)
+    void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, bool fullFunctionality)
     #else
-    void VCO::Process(float* sample, float mod, float pwMod)
+    void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
     #endif // __FUNCTIONALITY_OPTION__
     {
         if (isOn) {

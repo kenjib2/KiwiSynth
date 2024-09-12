@@ -14,7 +14,6 @@ namespace kiwi_synth
         private:
             float                   SAMPLE_AND_HOLD_MINIMUM_RATE;
             float                   SAMPLE_AND_HOLD_MAXIMUM_RATE;
-            PatchSettings*          patchSettings;
             int                     rate;
             int                     counter;
             float                   currentSample;
@@ -22,10 +21,10 @@ namespace kiwi_synth
         public:
             SampleAndHold() {}
             ~SampleAndHold() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(float sampleRate);
 
-            void UpdateSettings();
-            void Process(float* sample, float mod);
+            void UpdateSettings(PatchSettings* patchSettings);
+            void Process(float* sample, PatchSettings* patchSettings, float mod);
     };
 }
 

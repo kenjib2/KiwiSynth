@@ -19,7 +19,7 @@ namespace kiwi_synth
     void VoiceBank::UpdateSettings()
     {
         for (int i = 0; i < maxVoices; i++) {
-            voices[i].UpdateSettings();
+            voices[i].UpdateSettings(patch->getActiveSettings());
         }
 
         switch (patch->getActiveSettings()->getIntValue(PatchSetting::VCO_VOICES))
@@ -74,12 +74,12 @@ namespace kiwi_synth
             sample[1] += nextVoice[1];
         }
         #else
-        voices[0].Process(nextVoice, modulations, numVoices);
+        voices[0].Process(nextVoice, patch->getActiveSettings(), modulations, numVoices);
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
         if (numVoices == 2) {
-            voices[1].Process(nextVoice, modulations, numVoices);
+            voices[1].Process(nextVoice, patch->getActiveSettings(), modulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
         }

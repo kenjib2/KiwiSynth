@@ -13,7 +13,6 @@ namespace kiwi_synth
     class Noise
     {
         private:
-            PatchSettings* patchSettings;
             int        noiseType;
             float      level;
             float      lastSample;
@@ -25,10 +24,10 @@ namespace kiwi_synth
         public:
             Noise() {}
             ~Noise() {}
-            void Init(PatchSettings* patchSettings, float sampleRate);
+            void Init(float sampleRate);
 
-            void UpdateSettings();
-            void Process(float* sample, float mod);
+            void UpdateSettings(PatchSettings* patchSettings);
+            void Process(float* sample, PatchSettings* patchSettings, float mod);
 
             float GetLastSample();
     };

@@ -24,7 +24,6 @@ namespace kiwi_synth
             bool            noteOnReset;
             float           basePhase;
             float           phase;
-            PatchSettings*  patchSettings;
             Oscillator      osc;
             Wavefolder      wavefolder;
             uint8_t         lfoNumber;
@@ -32,13 +31,13 @@ namespace kiwi_synth
         public:
             LFO() {}
             ~LFO() {}
-            void Init(PatchSettings* patchSettings, float sampleRate, uint8_t envNumber);
+            void Init(float sampleRate, uint8_t envNumber);
 
-            void UpdateSettings();
+            void UpdateSettings(PatchSettings* patchSettings);
             #ifdef __FUNCTIONALITY_OPTION__
-            void Process(float* sample, float mod, float pwMod, float tphaseMod, bool fullFunctionality = true);
+            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod, bool fullFunctionality = true);
             #else
-            void Process(float* sample, float mod, float pwMod, float tphaseMod);
+            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod);
             #endif // __FUNCTIONALITY_OPTION__
             void SetFreq(float frequency);
             void NoteOn();
