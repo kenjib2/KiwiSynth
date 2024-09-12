@@ -31,12 +31,12 @@ namespace kiwi_synth
             PatchSettings           voice3Settings;
             #endif // __FUNCTIONALITY_OPTION__
 
-            void SetActivePatchSettings(int voiceNumber);
-
         public:
             Patch() {}
             ~Patch() {}
             void Init(PatchSettings* voice1Settings, PatchSettings* voice2Settings, MultiPots* multiPots, GpioExpansion* ge);
+
+            void SetActivePatchSettings(int voiceNumber);
 
             inline PatchSettings* getActiveSettings() {
                 return *activeSettings;

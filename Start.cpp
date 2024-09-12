@@ -30,8 +30,9 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
+ * Issues with multitimbral mode and patch-specific modulations
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Notes start playing before the frequency is set, causing a blip with short attacks. Sounds cool though: Can we fix but also keep this as an optional mode?
+ * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
  * Save / Load
  * UI

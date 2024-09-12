@@ -13,6 +13,9 @@ namespace kiwi_synth
         modulations[1] = new Modulation[NUM_MODULATIONS];
         voiceMode = 255;
         InitModulations();
+        for (int i = 0; i < maxVoices; i++) {
+            voices[i].numVcos = voices[i].maxVcos;
+        }
 
         this->patch = patch;
         this->maxVoices = maxVoices;
@@ -28,10 +31,6 @@ namespace kiwi_synth
     
     void VoiceBank::UpdateSettings()
     {
-        for (int i = 0; i < maxVoices; i++) {
-            voices[i].UpdateSettings(patch->getActiveSettings());
-        }
-
         int8_t newVoiceMode = patch->getActiveSettings()->getIntValue(PatchSetting::VCO_VOICES);
         if (newVoiceMode != voiceMode) {
             AllNotesOff();
@@ -41,62 +40,118 @@ namespace kiwi_synth
             {
                 case VOICE_MODE_POLY:
                 default:
+                    #ifdef __FUNCTIONALITY_OPTION__
                     for (int i = 0; i < maxVoices; i++) {
-                        #ifdef __FUNCTIONALITY_OPTION__
                         voices[i].fullFunctionality = true;
-                        #endif // __FUNCTIONALITY_OPTION__
                         voices[i].numVcos = voices[i].maxVcos;
                     }
+                    #endif // __FUNCTIONALITY_OPTION__
+                    patch->SetActivePatchSettings(0);
                     numVoices = 2;
                     break;
                 case VOICE_MODE_MONO:
+                    #ifdef __FUNCTIONALITY_OPTION__
                     for (int i = 0; i < maxVoices; i++) {
-                        #ifdef __FUNCTIONALITY_OPTION__
                         voices[i].fullFunctionality = true;
-                        #endif // __FUNCTIONALITY_OPTION__
                         voices[i].numVcos = voices[i].maxVcos;
                     }
+                    #endif // __FUNCTIONALITY_OPTION__
+                    patch->SetActivePatchSettings(0);
                     numVoices = 1;
                     break;
-                case VOICE_MODE_3V:
+                case VOICE_MODE_MULTI:
                     #ifdef __FUNCTIONALITY_OPTION__
+                    for (int i = 0; i < maxVoices; i++) {
+                        voices[i].fullFunctionality = true;
+                        voices[i].numVcos = voices[i].maxVcos;
+                    }
+                    #endif // __FUNCTIONALITY_OPTION__
+                    patch->SetActivePatchSettings(1);
+                    numVoices = 2;
+                    break;
+                #ifdef __FUNCTIONALITY_OPTION__
+                case VOICE_MODE_3V:
                         for (int i = 0; i < maxVoices; i++) {
                             voices[i].fullFunctionality = false;
                             voices[i].numVcos = 2;
                         }
+                        patch->SetActivePatchSettings(0);
                         numVoices = maxVoices;
-                    #endif // __FUNCTIONALITY_OPTION__
                     break;
+                #endif // __FUNCTIONALITY_OPTION__
             }
         }
 
         UpdateModulations();
+
+        switch (voiceMode)
+        {
+            case VOICE_MODE_POLY:
+            case VOICE_MODE_MONO:
+            default:
+                voices[0].UpdateSettings(patch->getActiveSettings());
+                voices[1].UpdateSettings(patch->getActiveSettings());
+                break;
+            #ifdef __FUNCTIONALITY_OPTION__
+            case VOICE_MODE_3V:
+                voices[0].UpdateSettings(patch->getActiveSettings());
+                voices[1].UpdateSettings(patch->getActiveSettings());
+                voices[2].UpdateSettings(patch->getActiveSettings());
+                break;
+            #endif // __FUNCTIONALITY_OPTION__
+            case VOICE_MODE_MULTI:
+                //voices[0].UpdateSettings(patch->getActiveSettings());
+                voices[1].UpdateSettings(patch->getActiveSettings());
+                break;
+        }
     }
 
     void VoiceBank::Process(float* sample)
     {
-        float nextVoice[2];
-
         sample[0] = 0.0f;
         sample[1] = 0.0f;
 
-        voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
-        sample[0] += nextVoice[0];
-        sample[1] += nextVoice[1];
+        float nextVoice[2];
 
-        if (numVoices == 2) {
-            voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
-            sample[0] += nextVoice[0];
-            sample[1] += nextVoice[1];
-        }
+        switch (voiceMode)
+        {
+            case VOICE_MODE_POLY:
+            #ifdef __FUNCTIONALITY_OPTION__
+            case VOICE_MODE_3V:
+            #endif // __FUNCTIONALITY_OPTION__
+            default:
+                voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
+    
+                voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
+    
+                #ifdef __FUNCTIONALITY_OPTION__
+                voices[2].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
+                #endif // __FUNCTIONALITY_OPTION__
+                
+                break;
+            case VOICE_MODE_MONO:
+                voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
+    
+                break;
+            case VOICE_MODE_MULTI:
+                voices[0].Process(nextVoice, patch->getVoice1Settings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
+    
+                voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                sample[0] += nextVoice[0];
+                sample[1] += nextVoice[1];
 
-        #ifdef __FUNCTIONALITY_OPTION__
-        if (numVoices == 3) {
-            voices[2].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
-            sample[0] += nextVoice[0];
-            sample[1] += nextVoice[1];
+                break;
         }
-        #endif // __FUNCTIONALITY_OPTION__
     }
 
     void VoiceBank::InitModulations() {
@@ -213,50 +268,86 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
-        if (voiceMode == VOICE_MODE_MONO) {
-            voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
-            monoNotes.push_back(note);
-            if (voices[0].noteTriggered) {
-                voices[0].NoteOn(note, velocity, false);
-            } else {
-                voices[0].NoteOn(note, velocity);
-            }
-        } else {
-            Voice* voice = RequestVoice(note);
-            if (voice != NULL) {
-                voice->NoteOn(note, velocity);
-            }
+        switch (voiceMode) {
+            case VOICE_MODE_MONO:
+                voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
+                monoNotes.push_back(note);
+                if (voices[0].noteTriggered) {
+                    voices[0].NoteOn(note, velocity, false);
+                } else {
+                    voices[0].NoteOn(note, velocity);
+                }
+                break;
+            case VOICE_MODE_MULTI:
+                monoNotes.push_back(note);
+                if (voices[0].noteTriggered) {
+                    voices[0].NoteOn(note, velocity, false);
+                    voices[1].NoteOn(note, velocity, false);
+                } else {
+                    voices[0].NoteOn(note, velocity);
+                    voices[1].NoteOn(note, velocity);
+                }
+                break;
+            default:
+                Voice* voice = RequestVoice(note);
+                if (voice != NULL) {
+                    voice->NoteOn(note, velocity);
+                }
+                break;
         }
     }
 
     void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
-        if (voiceMode == VOICE_MODE_MONO) {
-            voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
-            if (note == monoNotes.back()) {
-                monoNotes.pop_back();
-                if (monoNotes.size() > 0) {
-                    int prevNote = monoNotes.back();
-                    voices[0].NoteOn(prevNote, velocity, false);
+        switch (voiceMode) {
+            case VOICE_MODE_MONO:
+                voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
+                if (note == monoNotes.back()) {
+                    monoNotes.pop_back();
+                    if (monoNotes.size() > 0) {
+                        int prevNote = monoNotes.back();
+                        voices[0].NoteOn(prevNote, velocity, false);
+                    } else {
+                        voices[0].NoteOff(note, velocity);
+                    }
                 } else {
-                    voices[0].NoteOff(note, velocity);
+                    for(unsigned int i = 0; i < monoNotes.size(); i++) {
+                        if (monoNotes[i] == note) {
+                            monoNotes.erase(monoNotes.begin() + i);
+                            break;
+                        }
+                    }
                 }
-            } else {
-                for(unsigned int i = 0; i < monoNotes.size(); i++) {
-                    if (monoNotes[i] == note) {
-                        monoNotes.erase(monoNotes.begin() + i);
+                break;
+            case VOICE_MODE_MULTI:
+                if (note == monoNotes.back()) {
+                    monoNotes.pop_back();
+                    if (monoNotes.size() > 0) {
+                        int prevNote = monoNotes.back();
+                        voices[0].NoteOn(prevNote, velocity, false);
+                        voices[1].NoteOn(prevNote, velocity, false);
+                    } else {
+                        voices[0].NoteOff(note, velocity);
+                        voices[1].NoteOff(note, velocity);
+                    }
+                } else {
+                    for(unsigned int i = 0; i < monoNotes.size(); i++) {
+                        if (monoNotes[i] == note) {
+                            monoNotes.erase(monoNotes.begin() + i);
+                            break;
+                        }
+                    }
+                }
+                break;
+            default:
+                for (size_t i = 0; i < voices.size(); i++) {
+                    if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
+                        voices[i].NoteOff(note, velocity);
+                        RemovePlayingVoice(i);
                         break;
                     }
                 }
-            }
-        } else {
-            for (size_t i = 0; i < voices.size(); i++) {
-                if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
-                    voices[i].NoteOff(note, velocity);
-                    RemovePlayingVoice(i);
-                    break;
-                }
-            }
+                break;
         }
     }
 

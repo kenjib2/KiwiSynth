@@ -40,8 +40,6 @@ namespace kiwi_synth
 
             osc.SetWaveform(7 - waveform); // 7: WAVE_POLYBLEP_SQUARE, 6: WAVE_POLYBLEP_SAW, 5: WAVE_POLYBLEP_TRI
             waveFolderGain = std::fmax(1.0f + (0.495f - pulseWidth) * 55, 1.0f);
-
-            playingNote = midiNote + octave + interval + fineTune + masterTune;
         }
     }
 
@@ -52,6 +50,8 @@ namespace kiwi_synth
     #endif // __FUNCTIONALITY_OPTION__
     {
         if (isOn) {
+            playingNote = midiNote + octave + interval + fineTune + masterTune;
+
             float waveSample;
             osc.SetFreq(std::fmax(mtof(playingNote + mod * 12), 0.0f));
 
