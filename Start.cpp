@@ -32,7 +32,7 @@ using namespace kiwi_synth;
  * Notes start playing before the frequency is set, causing a blip with short attacks.
  * Save / Load
  * UI
- * Polytimbral modes -- one or two effects engines? to which voice does the mod matrix apply? Probably one fx and a shared mod matrix.
+ * Polytimbral modes -- fx and mod matrix both come from activeSettings. Permanent mods and all other settings come from voiceNSettings
  * Can we make the data structures a little smaller without losing performance?
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
@@ -51,7 +51,7 @@ using namespace kiwi_synth;
  * Re-implement additional VCF modes?
  * L/R Output noise
  * Headphone out noise
- * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob.
+ * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
  * Very occasional pops when distortion is on
  * Going out of GUI mode sometimes triggers note on(s)
  */
@@ -61,7 +61,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 96;
+const int AUDIO_BLOCK_SIZE = 48;
 #ifdef __CPU_LOAD__
 CpuLoadMeter load;
 char DSY_SDRAM_BSS buff[512];
@@ -118,7 +118,7 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	uint16_t tick_counter = 0;
+	uint16_t counter = 0;
     while(1)
 	{
 		System::DelayUs(5);
@@ -127,21 +127,21 @@ int main(void)
 		kiwiSynth.UpdateSettings();
 
 		display.HandleInput();
-		if (display.mode) {
-			if (tick_counter == 255) {
+		if (counter == 255) {
+			if (display.mode) {
 				display.Update();
-
-				#ifdef __DEBUG__
-				kiwiSynth.TestOutput(&hw);
-				#endif // __DEBUG__
-
-				#ifdef __CPU_LOAD__
-				sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
-				hw.PrintLine(buff);
-				#endif // __DEBUG__
 			}
-			tick_counter++;
-			tick_counter &= 0b011111111;
+
+			#ifdef __DEBUG__
+			kiwiSynth.TestOutput(&hw);
+			#endif // __DEBUG__
+
+			#ifdef __CPU_LOAD__
+			sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
+			hw.PrintLine(buff);
+			#endif // __DEBUG__
 		}
+		counter++;
+		counter &= 0b011111111;
 	}
 }
