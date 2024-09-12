@@ -6,7 +6,7 @@
 
 #include "../KUtils.h"
 #include "Voice.h"
-#include "Patch/PatchSettings.h"
+#include "Patch/Patch.h"
 #include "Modulation.h"
 
 using namespace daisysp;
@@ -36,7 +36,7 @@ namespace kiwi_synth
         private:
             uint8_t maxVoices;
             std::vector<Voice> voices;
-            PatchSettings* patchSettings;
+            Patch* patch;
              std::vector<uint8_t>     playingIndices;
             std::vector<uint8_t>     playingNotes;
             std::vector<uint8_t>     monoNotes;
@@ -52,7 +52,7 @@ namespace kiwi_synth
 
             VoiceBank() {}
             ~VoiceBank() {}
-            void Init(uint8_t maxVoices, uint8_t numVcos, PatchSettings* patchSettings, float sampleRate);
+            void Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate);
             void Process(float* sample);
 
             void UpdateSettings();
