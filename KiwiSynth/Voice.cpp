@@ -161,11 +161,17 @@ namespace kiwi_synth
         float lfo2Sample = 1.0f;
         lfo2.Process(&lfo2Sample, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH], modValues[DST_LFO_2_TRIGGER_PHASE]);
 
-        for (int i = 0; i < numVcos; i++) {
-            float vcoSample = 0.0f;
-            vcos[i].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ + 2 * i], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH + 2 * i]);
-            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
-        }
+        float vcoSample = 0.0f;
+        vcos[0].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+
+        vcoSample = 0.0f;
+        vcos[1].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+
+        vcoSample = 0.0f;
+        vcos[2].Process(&vcoSample, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
         #endif // __FUNCTIONALITY_OPTION__
 
         float sampleAndHoldSample = 0.0f;
