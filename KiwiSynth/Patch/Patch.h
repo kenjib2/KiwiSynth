@@ -4,6 +4,7 @@
 
 #include "daisysp.h"
 
+#include "../../KUtils.h"
 #include "../Patch/PatchSettings.h"
 
 using namespace daisysp;
@@ -23,19 +24,19 @@ namespace kiwi_synth
             VoiceMode               voiceMode;
             MultiPots*              multiPots;
             GpioExpansion*          ge;
-            PatchSettings*          activeSettings;
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;
+            PatchSettings**         activeSettings;
             #ifdef __FUNCTIONALITY_OPTION__
             PatchSettings           voice3Settings;
             #endif // __FUNCTIONALITY_OPTION__
 
-            //void SetActivePatchSettings(int voiceNumber);
+            void SetActivePatchSettings(int voiceNumber);
 
         public:
             Patch() {}
             ~Patch() {}
-            void Init(PatchSettings* activeSettings, MultiPots* multiPots, GpioExpansion* ge);
+            void Init(PatchSettings* voice1Settings, PatchSettings* voice2Settings, MultiPots* multiPots, GpioExpansion* ge);
 
             PatchSettings* getActiveSettings();
             void UpdateSettings();

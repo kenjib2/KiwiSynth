@@ -53,7 +53,6 @@ namespace kiwi_synth
 
         public:
             Patch patch;
-            PatchSettings patchSettings;
 
             KiwiSynth() {}
             ~KiwiSynth() {}

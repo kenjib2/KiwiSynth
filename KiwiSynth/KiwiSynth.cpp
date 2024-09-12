@@ -15,8 +15,9 @@ namespace kiwi_synth
         ConfigureMultiPots(hw);
         ConfigureGpioExpansion();
 
-        patchSettings.Init(&multiPots, &ge);
-        patch.Init(&patchSettings, &multiPots, &ge);
+        voice1PatchSettings.Init(&multiPots, &ge);
+        voice2PatchSettings.Init(&multiPots, &ge);
+        patch.Init(&voice1PatchSettings, &voice2PatchSettings, &multiPots, &ge);
 
         voiceBank.Init(numVoices, NUM_VCOS, patch.getActiveSettings(), sampleRate);
         effectsEngine.Init(patch.getActiveSettings(), sampleRate);
