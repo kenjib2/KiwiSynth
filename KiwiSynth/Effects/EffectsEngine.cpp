@@ -20,7 +20,7 @@ namespace kiwi_synth
             reverb.set_opmix(0.0f);
         }
         gain = patchSettings->getFloatValueLogLookup(PatchSetting::FX_1);
-        level = patchSettings->getFloatValueLinear(PatchSetting::FX_2, 0.04f, 0.22f);
+        level = patchSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
 
         delay.SetLevel(patchSettings->getFloatValue(PatchSetting::FX_3));
         delay.SetDelaySamples((int)patchSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));

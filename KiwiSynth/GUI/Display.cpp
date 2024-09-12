@@ -3,14 +3,14 @@
 namespace kiwi_synth
 {
 
-    void Display::Init(PatchSettings* patchSettings)
+    void Display::Init(Patch* patch)
     {
         DisplayConfig cfg;
         cfg.Defaults();
-        Init(&cfg, patchSettings);
+        Init(&cfg, patch);
     }
 
-    void Display::Init(DisplayConfig *displayConfig, PatchSettings* patchSettings)
+    void Display::Init(DisplayConfig *displayConfig, Patch* patch)
     {
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -19,14 +19,14 @@ namespace kiwi_synth
         cfg.driver_config.transport_config.i2c_config.pin_config.scl = displayConfig->sclPin;
         cfg.driver_config.transport_config.i2c_config.pin_config.sda = displayConfig->sdaPin;
 
-        this->patchSettings = patchSettings;
+        this->patch = patch;
         guiButton = false;
         mode = PLAY;
 
         welcomeScreen.Init(&display);
         bootloaderScreen.Init(&display);
-        intValueScreen.Init(&display, patchSettings);
-        patchScreen.Init(&display, patchSettings);
+        intValueScreen.Init(&display, patch);
+        patchScreen.Init(&display, patch);
 
         display.Init(cfg);
         display.Fill(false);
@@ -35,14 +35,14 @@ namespace kiwi_synth
     void Display::HandleInput()
     {
         bool prevGuiButton = guiButton;
-        guiButton = patchSettings->getBoolValue(GEN_SELECT_BUTTON);
+        guiButton = patch->getActiveSettings()->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
             switch (mode) {
                 case BOOTLOADER:
                     break;
                 case PLAY:
                     mode = GUI;
-                    patchSettings->setValue(GEN_SELECT, (int8_t)0);
+                    patch->getActiveSettings()->setValue(GEN_SELECT, (int8_t)0);
                     break;
                 case GUI:
                     mode = PLAY;
@@ -54,14 +54,14 @@ namespace kiwi_synth
     
     int Display::GetSelectValue(int numElements)
     {
-        int8_t value = patchSettings->getIntValue(GEN_SELECT);
+        int8_t value = patch->getActiveSettings()->getIntValue(GEN_SELECT);
         if (value < 0) {
             value += numElements;
         } else {
             value %= numElements;
         }
 
-        patchSettings->setValue(GEN_SELECT, value);
+        patch->getActiveSettings()->setValue(GEN_SELECT, value);
 
         return value;
     }

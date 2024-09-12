@@ -23,21 +23,21 @@ namespace kiwi_synth
             VoiceMode               voiceMode;
             MultiPots*              multiPots;
             GpioExpansion*          ge;
+            PatchSettings*          activeSettings;
+            PatchSettings*          voice1Settings;
+            PatchSettings*          voice2Settings;
+            #ifdef __FUNCTIONALITY_OPTION__
+            PatchSettings           voice3Settings;
+            #endif // __FUNCTIONALITY_OPTION__
 
-            void SetActivePatchSettings(int voiceNumber);
+            //void SetActivePatchSettings(int voiceNumber);
 
         public:
-            #ifdef __FUNCTIONALITY_OPTION__
-            PatchSettings           patchSettings[3];
-            #else
-            PatchSettings           patchSettings[2];
-            #endif // __FUNCTIONALITY_OPTION__
-            PatchSettings*          activeSettings;
-
             Patch() {}
             ~Patch() {}
-            void Init(MultiPots* multiPots, GpioExpansion* ge);
+            void Init(PatchSettings* activeSettings, MultiPots* multiPots, GpioExpansion* ge);
 
+            PatchSettings* getActiveSettings();
             void UpdateSettings();
     };
 }

@@ -22,10 +22,19 @@ namespace kiwi_synth
     {
         private:
             static const int NUM_VCOS = 3;
+            #ifdef __FUNCTIONALITY_OPTION__
             static const int MAX_VOICES = 3;
+            #else
+            static const int MAX_VOICES = 2;
+            #endif // __FUNCTIONALITY_OPTION__
             DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
+            PatchSettings voice1PatchSettings;
+            PatchSettings voice2PatchSettings;
+            #ifdef __FUNCTIONALITY_OPTION__
+            PatchSettings voice3PatchSettings;
+            #endif // __FUNCTIONALITY_OPTION__
             int numVoices;
             int midiChannel;
 	        GPIO gpioMidiActivity;

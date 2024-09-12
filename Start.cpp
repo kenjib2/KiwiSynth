@@ -98,7 +98,7 @@ int main(void)
 	#endif // __CPU_LOAD__ || __DEBUG__
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
-	display.Init(&kiwiSynth.patchSettings);
+	display.Init(&(kiwiSynth.patch));
 
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())

@@ -5,7 +5,7 @@
 #include "dev/oled_ssd130x.h"
 
 #include "../../KUtils.h"
-#include "../Patch/PatchSettings.h"
+#include "../Patch/Patch.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
@@ -16,14 +16,14 @@ namespace kiwi_synth
         public:
             IntValueScreen(){}
             virtual ~IntValueScreen(){};
-            void Init(KiwiDisplay* display, PatchSettings* patchSettings);
+            void Init(KiwiDisplay* display, Patch* patch);
 
             void Display();
 
         private:
             char buffer[256];
             KiwiDisplay* display;
-            PatchSettings* patchSettings;
+            Patch* patch;
 
             void GetVoiceMode(char* buffer);
             void GetWaveform(char* buffer, int vcoNumber);

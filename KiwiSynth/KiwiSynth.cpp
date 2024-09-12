@@ -15,13 +15,11 @@ namespace kiwi_synth
         ConfigureMultiPots(hw);
         ConfigureGpioExpansion();
 
-        //patch.Init(&multiPots, &ge);
         patchSettings.Init(&multiPots, &ge);
-        multiPots.RegisterControlListener(&patchSettings);
-        ge.RegisterControlListener(&patchSettings);
+        patch.Init(&patchSettings, &multiPots, &ge);
 
-        voiceBank.Init(numVoices, NUM_VCOS, &patchSettings, sampleRate);
-        effectsEngine.Init(&patchSettings, sampleRate);
+        voiceBank.Init(numVoices, NUM_VCOS, patch.getActiveSettings(), sampleRate);
+        effectsEngine.Init(patch.getActiveSettings(), sampleRate);
 
         InitMidi();
     }
@@ -104,8 +102,8 @@ namespace kiwi_synth
             HandleMidiMessage(&event);
         }
 
-        patchSettings.setValue(GEN_SUSTAIN, gpioSustain.Read() ? 0.0f : 1.0f);
-        patchSettings.setValue(GEN_EXPRESSION, multiPots.GetDirectValue(1));
+        patch.getActiveSettings()->setValue(GEN_SUSTAIN, gpioSustain.Read() ? 0.0f : 1.0f);
+        patch.getActiveSettings()->setValue(GEN_EXPRESSION, multiPots.GetDirectValue(1));
     }
 
     void KiwiSynth::ProcessInputs()
@@ -144,13 +142,13 @@ namespace kiwi_synth
 
                 case PitchBend:
                     midiCounter = 0;
-                    patchSettings.setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
+                    patch.getActiveSettings()->setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
                     break;
 
                 // Unimplemented message types
                 case ChannelPressure:
                     midiCounter = 0;
-                    patchSettings.setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
+                    patch.getActiveSettings()->setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
                     break;
 
                 case ControlChange:
@@ -158,20 +156,20 @@ namespace kiwi_synth
                     switch (cc.control_number) {
                         case 1:  // Mod Wheel
                             midiCounter = 0;
-                            patchSettings.setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
+                            patch.getActiveSettings()->setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
                             break;
 
                         case 11: // Expression
                             midiCounter = 0;
-                            patchSettings.setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
+                            patch.getActiveSettings()->setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
                             break;
 
                         case 64: // Sustain Pedal
                             midiCounter = 0;
                             if (cc.value < 64) {
-                                patchSettings.setValue(GEN_SUSTAIN, 0.0f); // Off
+                                patch.getActiveSettings()->setValue(GEN_SUSTAIN, 0.0f); // Off
                             } else {
-                                patchSettings.setValue(GEN_SUSTAIN, 1.0f);  // On
+                                patch.getActiveSettings()->setValue(GEN_SUSTAIN, 1.0f);  // On
                             }
                             break;
 
@@ -197,12 +195,12 @@ namespace kiwi_synth
 
     bool KiwiSynth::BootLoaderRequested()
     {
-        return patchSettings.getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
+        return patch.getActiveSettings()->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
     void KiwiSynth::UpdateSettings()
     {
-        balance = patchSettings.getFloatValue(PatchSetting::GEN_BALANCE);
+        balance = patch.getActiveSettings()->getFloatValue(PatchSetting::GEN_BALANCE);
         voiceBank.UpdateSettings();
         effectsEngine.UpdateSettings();
     }

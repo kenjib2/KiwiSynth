@@ -3,10 +3,10 @@
 namespace kiwi_synth
 {
 
-    void IntValueScreen::Init(KiwiDisplay* display, PatchSettings* patchSettings)
+    void IntValueScreen::Init(KiwiDisplay* display, Patch* patch)
     {
         this->display = display;
-        this->patchSettings = patchSettings;
+        this->patch = patch;
     }
 
     void IntValueScreen::Display()
@@ -24,12 +24,12 @@ namespace kiwi_synth
 
         display->SetCursor(0, 8);
         GetWaveform(val1, 1);
-        sprintf(buffer, "W2 %s OCT %d INT %d", val1, patchSettings->getIntValue(VCO_2_OCTAVE) - 2, patchSettings->getIntValue(VCO_2_INTERVAL) - 11);
+        sprintf(buffer, "W2 %s OCT %d INT %d", val1, patch->getActiveSettings()->getIntValue(VCO_2_OCTAVE) - 2, patch->getActiveSettings()->getIntValue(VCO_2_INTERVAL) - 11);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
         GetWaveform(val1, 2);
-        sprintf(buffer, "W3 %s OCT %d INT %d", val1, patchSettings->getIntValue(VCO_3_OCTAVE) - 2, patchSettings->getIntValue(VCO_3_INTERVAL) - 11);
+        sprintf(buffer, "W3 %s OCT %d INT %d", val1, patch->getActiveSettings()->getIntValue(VCO_3_OCTAVE) - 2, patch->getActiveSettings()->getIntValue(VCO_3_INTERVAL) - 11);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
@@ -69,7 +69,7 @@ namespace kiwi_synth
     // 2 character value
     void IntValueScreen::GetVoiceMode(char* buffer)
     {
-        switch (patchSettings->getIntValue(VCO_VOICES)) {
+        switch (patch->getActiveSettings()->getIntValue(VCO_VOICES)) {
             case 0:
                 strcpy(buffer, "2v");
                 break;
@@ -89,7 +89,7 @@ namespace kiwi_synth
 
     // 2 character value
     void IntValueScreen::GetWaveform(char* buffer, int vcoNumber) {
-        switch (patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber))) {
             case 0:
                 strcpy(buffer, "Sq");
                 break;
@@ -104,7 +104,7 @@ namespace kiwi_synth
 
     // 2 character value
     void IntValueScreen::GetNoiseType(char* buffer) {
-        switch (patchSettings->getIntValue((PatchSetting)(VCO_NOISE_TYPE))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(VCO_NOISE_TYPE))) {
             case 0:
                 strcpy(buffer, "Wh");
                 break;
@@ -116,7 +116,7 @@ namespace kiwi_synth
 
     // 2 character value
     void IntValueScreen::GetLfoWaveform(char* buffer, int lfoNumber) {
-        switch (patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber))) {
             case 0:
                 strcpy(buffer, "Tr");
                 break;
@@ -134,7 +134,7 @@ namespace kiwi_synth
 
     // 2 character value
     void IntValueScreen::GetVcfType(char* buffer) {
-        switch (patchSettings->getIntValue((PatchSetting)(VCF_FILTER_TYPE))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(VCF_FILTER_TYPE))) {
             case 0:
                 strcpy(buffer, "LdLP");
                 break;
@@ -164,7 +164,7 @@ namespace kiwi_synth
 
     // 5 character value
     void IntValueScreen::GetModSource(char* buffer, int modNumber) {
-        switch (patchSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber))) {
             case 0:
                 strcpy(buffer, "None ");
                 break;
@@ -215,7 +215,7 @@ namespace kiwi_synth
 
     // 2 character value
     void IntValueScreen::GetModDestination(char* buffer, int modNumber) {
-        switch (patchSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber))) {
+        switch (patch->getActiveSettings()->getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber))) {
             case -1:
                 strcpy(buffer, "None ");
                 break;
