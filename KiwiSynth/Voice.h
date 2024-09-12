@@ -58,7 +58,6 @@ namespace kiwi_synth
             #ifdef __FUNCTIONALITY_OPTION__
             bool fullFunctionality;
             #endif // __FUNCTIONALITY_OPTION__
-            bool mono;
             int maxVcos;
             int numVcos;
             int currentMidiNote;

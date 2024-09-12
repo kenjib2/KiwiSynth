@@ -28,7 +28,7 @@ namespace kiwi_synth
         float computedResonance = resonance;
         float output;
         computedResonance = fclamp(resonance + resMod, 0.0f, 1.0f);
-        /*if (fullFunctionality && mono) {
+        /*if (fullFunctionality) {
             switch (filterType) {
                 case LADDER_LOWPASS:
                     filter.SetFreq(computedFrequency);

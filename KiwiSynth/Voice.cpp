@@ -8,7 +8,6 @@ namespace kiwi_synth
         #ifdef __FUNCTIONALITY_OPTION__
         fullFunctionality = true;
         #endif // __FUNCTIONALITY_OPTION__
-        mono = false;
         noteTriggered = false;
         noteTriggerCount = -1;
         noteOffNeeded = false;
