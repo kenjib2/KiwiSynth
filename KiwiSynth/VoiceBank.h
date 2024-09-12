@@ -34,6 +34,7 @@ namespace kiwi_synth
     class VoiceBank
     {
         private:
+            int8_t voiceMode;
             uint8_t maxVoices;
             std::vector<Voice> voices;
             Patch* patch;

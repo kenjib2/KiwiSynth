@@ -11,6 +11,7 @@ namespace kiwi_synth
         #endif // __FUNCTIONALITY_OPTION__
         modulations[0] = new Modulation[NUM_MODULATIONS];
         modulations[1] = new Modulation[NUM_MODULATIONS];
+        voiceMode = 255;
         InitModulations();
 
         this->patch = patch;
@@ -31,36 +32,42 @@ namespace kiwi_synth
             voices[i].UpdateSettings(patch->getActiveSettings());
         }
 
-        switch (patch->getActiveSettings()->getIntValue(PatchSetting::VCO_VOICES))
-        {
-            case 0:
-            default:
-                for (int i = 0; i < maxVoices; i++) {
-                    #ifdef __FUNCTIONALITY_OPTION__
-                    voices[i].fullFunctionality = true;
-                    #endif // __FUNCTIONALITY_OPTION__
-                    voices[i].numVcos = voices[i].maxVcos;
-                }
-                numVoices = 2;
-                break;
-                case 1:
-                #ifdef __FUNCTIONALITY_OPTION__
+        int8_t newVoiceMode = patch->getActiveSettings()->getIntValue(PatchSetting::VCO_VOICES);
+        if (newVoiceMode != voiceMode) {
+            AllNotesOff();
+            voiceMode = newVoiceMode;
+
+            switch (voiceMode)
+            {
+                case VOICE_MODE_POLY:
+                default:
                     for (int i = 0; i < maxVoices; i++) {
-                        voices[i].fullFunctionality = false;
-                        voices[i].numVcos = 2;
+                        #ifdef __FUNCTIONALITY_OPTION__
+                        voices[i].fullFunctionality = true;
+                        #endif // __FUNCTIONALITY_OPTION__
+                        voices[i].numVcos = voices[i].maxVcos;
                     }
-                    numVoices = maxVoices;
+                    numVoices = 2;
                     break;
-                case 2:
-                #endif // __FUNCTIONALITY_OPTION__
-                for (int i = 0; i < maxVoices; i++) {
+                case VOICE_MODE_MONO:
+                    for (int i = 0; i < maxVoices; i++) {
+                        #ifdef __FUNCTIONALITY_OPTION__
+                        voices[i].fullFunctionality = true;
+                        #endif // __FUNCTIONALITY_OPTION__
+                        voices[i].numVcos = voices[i].maxVcos;
+                    }
+                    numVoices = 1;
+                    break;
+                case VOICE_MODE_3V:
                     #ifdef __FUNCTIONALITY_OPTION__
-                    voices[i].fullFunctionality = true;
+                        for (int i = 0; i < maxVoices; i++) {
+                            voices[i].fullFunctionality = false;
+                            voices[i].numVcos = 2;
+                        }
+                        numVoices = maxVoices;
                     #endif // __FUNCTIONALITY_OPTION__
-                    voices[i].numVcos = voices[i].maxVcos;
-                }
-                numVoices = 1;
-                break;
+                    break;
+            }
         }
 
         UpdateModulations();
@@ -206,7 +213,8 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
-        if (numVoices == 1) {
+        if (voiceMode == VOICE_MODE_MONO) {
+            voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
             monoNotes.push_back(note);
             if (voices[0].noteTriggered) {
                 voices[0].NoteOn(note, velocity, false);
@@ -223,7 +231,8 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
     {
-        if (numVoices == 1) {
+        if (voiceMode == VOICE_MODE_MONO) {
+            voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
             if (note == monoNotes.back()) {
                 monoNotes.pop_back();
                 if (monoNotes.size() > 0) {
@@ -254,8 +263,11 @@ namespace kiwi_synth
     void VoiceBank::AllNotesOff()
     {
         for (int i = 0; i < maxVoices; i++) {
-            voices[i].NoteOff(0, 0);
+            if (!voices[i].IsAvailable()) {
+                voices[i].NoteOff(0, 0);
+            }
         }
+        monoNotes.clear();
     }
 
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)

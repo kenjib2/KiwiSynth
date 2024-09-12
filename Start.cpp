@@ -31,7 +31,8 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * Notes start playing before the frequency is set, causing a blip with short attacks.
+ * Notes start playing before the frequency is set, causing a blip with short attacks. Sounds cool though: Can we fix but also keep this as an optional mode?
+ * Sometimes crashes when switching voice modes.
  * Save / Load
  * UI
  * Polytimbral modes -- fx and mod matrix both come from activeSettings. Permanent mods and all other settings come from voiceNSettings
