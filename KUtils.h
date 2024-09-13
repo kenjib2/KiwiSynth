@@ -5,6 +5,10 @@
 #define __CPU_LOAD__ // Output performance to serial console
 //#define __PATCH_SETTINGS__ // Output patch settings to serial console
 
+#include "daisy_seed.h"
+
+using namespace daisy;
+
 const static uint32_t MAX_XORSHIFT_VALUE = 4294967295;
 
 class xorshiftPRNG {
@@ -32,6 +36,23 @@ class xorshiftPRNG {
   }
 
 
+};
+
+class Performance {
+   public:
+      float avg;
+      float max;
+      int updatesPerSec;
+
+      void Update(CpuLoadMeter* load) {
+			avg = load->GetAvgCpuLoad();
+			max = load->GetMaxCpuLoad();
+      }
+
+   private:
+      const float ticksPerS   = float(System::GetTickFreq());
+
+      
 };
 
 #endif // __KIWI_SYNTH_KUTILS_H__

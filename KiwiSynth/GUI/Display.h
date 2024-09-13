@@ -5,6 +5,7 @@
 #include "dev/oled_ssd130x.h"
 
 #include "../Patch/Patch.h"
+#include "../../KUtils.h"
 #include "WelcomeScreen.h"
 #include "BootloaderScreen.h"
 #include "IntValueScreen.h"
@@ -70,8 +71,8 @@ namespace kiwi_synth
 
             Display(){}
             virtual ~Display(){};
-            void Init(Patch* patch);
-            void Init(DisplayConfig *displayConfig, Patch* patch);
+            void Init(Patch* patch, Performance* performance);
+            void Init(DisplayConfig *displayConfig, Patch* patch, Performance* performance);
 
             void HandleInput();
             void Update();
@@ -81,7 +82,9 @@ namespace kiwi_synth
             bool guiButton;
             DisplayScreen currentScreen;
             Patch* patch;
+            Performance* performance;
             KiwiDisplay display;
+
             WelcomeScreen welcomeScreen;
             BootloaderScreen bootloaderScreen;
             IntValueScreen intValueScreen;

@@ -3,33 +3,33 @@
 namespace kiwi_synth
 {
 
-    void Display::Init(Patch* patch)
+    void Display::Init(Patch* patch, Performance* performance)
     {
         DisplayConfig cfg;
         cfg.Defaults();
-        Init(&cfg, patch);
+        Init(&cfg, patch, performance);
     }
 
-    void Display::Init(DisplayConfig *displayConfig, Patch* patch)
+    void Display::Init(DisplayConfig *displayConfig, Patch* patch, Performance* performance)
     {
+        this->patch = patch;
+        this->performance = performance;
+        guiButton = false;
+        mode = PLAY;
+        currentScreen = INT_SCREEN;
+
+        welcomeScreen.Init(&display);
+        bootloaderScreen.Init(&display);
+        intValueScreen.Init(&display, patch);
+        patchScreen.Init(&display, patch);
+        systemScreen.Init(&display, performance);
+
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
         cfg.driver_config.transport_config.i2c_config.speed          = displayConfig->speed;
         cfg.driver_config.transport_config.i2c_config.mode           = displayConfig->mode;
         cfg.driver_config.transport_config.i2c_config.pin_config.scl = displayConfig->sclPin;
         cfg.driver_config.transport_config.i2c_config.pin_config.sda = displayConfig->sdaPin;
-
-        this->patch = patch;
-        guiButton = false;
-        mode = PLAY;
-
-        welcomeScreen.Init(&display);
-        bootloaderScreen.Init(&display);
-        intValueScreen.Init(&display, patch);
-        patchScreen.Init(&display, patch);
-        systemScreen.Init(&display);
-
-        currentScreen = INT_SCREEN;
 
         display.Init(cfg);
         display.Fill(false);

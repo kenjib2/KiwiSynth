@@ -30,6 +30,7 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
+ * S&H stopped working
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
@@ -70,10 +71,8 @@ DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
 const int AUDIO_BLOCK_SIZE = 256;
-#ifdef __CPU_LOAD__
+Performance performance;
 CpuLoadMeter load;
-char DSY_SDRAM_BSS buff[512];
-#endif // __CPU_LOAD__
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
@@ -101,12 +100,12 @@ int main(void)
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	#if defined(__CPU_LOAD__) || defined(__DEBUG__)
+	#if defined(__DEBUG__)
 	hw.StartLog(false);
-	#endif // __CPU_LOAD__ || __DEBUG__
+	#endif // __DEBUG__
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
-	display.Init(&(kiwiSynth.patch));
+	display.Init(&(kiwiSynth.patch), &performance);
 
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
@@ -138,15 +137,13 @@ int main(void)
 		if (counter == 255) {
 			if (display.mode) {
 				display.Update();
+			#ifdef __CPU_LOAD__
+			} else {
+				performance.Update(&load);
+			#endif // __DEBUG__
 			}
-
 			#ifdef __DEBUG__
 			kiwiSynth.TestOutput(&hw);
-			#endif // __DEBUG__
-
-			#ifdef __CPU_LOAD__
-			sprintf(buff, "Min: %d, Max: %d, Avg: %d", (int)(load.GetMinCpuLoad() * 100), (int)(load.GetMaxCpuLoad() * 100), (int)(load.GetAvgCpuLoad() * 100));
-			hw.PrintLine(buff);
 			#endif // __DEBUG__
 		}
 		counter++;
