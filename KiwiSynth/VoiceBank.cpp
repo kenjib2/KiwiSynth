@@ -146,7 +146,7 @@ namespace kiwi_synth
                 sample[0] += nextVoice[0];
                 sample[1] += nextVoice[1];
     
-                voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
+                voices[1].Process(nextVoice, patch->getActiveSettings(), modulations[1], numVoices);
                 sample[0] += nextVoice[0];
                 sample[1] += nextVoice[1];
 

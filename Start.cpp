@@ -30,13 +30,13 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
- * Issues with multitimbral mode and patch-specific modulations
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
  * Save / Load
  * UI
- * Polytimbral modes -- fx and mod matrix both come from activeSettings. Permanent mods and all other settings come from voiceNSettings
+ * Split polytimbral mode
+ * Alternate inputs to S&H (instead of noise)
  * Can we make the data structures a little smaller without losing performance?
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
