@@ -235,7 +235,6 @@ namespace kiwi_synth
             static float* lMaxLookup; // Set the range for logarhithmic float variables
 
             // We have a lot of unused array members in order to prevent branching code when setting and retrieving values of different data types.
-            char name[MAX_PATCH_NAME_LENGTH + 1];
             float floatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
             int8_t intValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
             bool boolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
@@ -284,10 +283,6 @@ namespace kiwi_synth
              * Sets a bool setting value. If a non-bool setting is attempted, no action will be performed.
              */
             void setValue(PatchSetting setting, bool value);
-            /*
-             * Sets a string/char* setting value. If a non-string setting is attempted, no action will be performed.
-             */
-            void setValue(PatchSetting setting, char* value);
 
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
@@ -317,10 +312,6 @@ namespace kiwi_synth
              * Gets a bool setting value. If a non-float setting is attempted, false will be returned.
              */
             bool getBoolValue(PatchSetting setting);
-            /*
-             * Gets a string setting value. If a non-string setting is attempted, "" will be returned.
-             */
-            char* getStringValue(PatchSetting setting);
     }; // class PatchSettings
 } // namespace kiwi_synth
 

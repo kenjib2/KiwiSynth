@@ -155,20 +155,6 @@ namespace kiwi_synth
         boolValues[setting] = value;
     }
 
-    void PatchSettings::setValue(PatchSetting setting, char* value)
-    {
-        switch(setting) {
-            case GEN_NAME:
-                if (strlen(value) > MAX_PATCH_NAME_LENGTH) {
-                    value[MAX_PATCH_NAME_LENGTH] = '\0';
-                }
-                strcpy(name, value);
-                break;
-            default:
-                break;
-        }
-    }
-
     int8_t PatchSettings::getIntValue(PatchSetting setting)
     {
         return intValues[setting];
@@ -219,16 +205,6 @@ namespace kiwi_synth
     bool PatchSettings::getBoolValue(PatchSetting setting)
     {
         return boolValues[setting];
-    }
-
-    char* PatchSettings::getStringValue(PatchSetting setting)
-    {
-        switch(setting) {
-            case GEN_NAME:
-                return name;
-            default:
-                return NULL;
-        }
     }
 
     void PatchSettings::controlMpUpdate(int controlNumber)

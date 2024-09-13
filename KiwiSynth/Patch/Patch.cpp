@@ -12,6 +12,8 @@ namespace kiwi_synth
 
         SetVoiceMode(VOICE_MODE_POLY);
 
+        strcpy(name, "Kiwi Sound");
+
         activeSettings = &settings1;
         voice1Settings = &settings1;
         multiPots->RegisterControlListener(activeSettings);
@@ -27,6 +29,16 @@ namespace kiwi_synth
         }
 
         this->voiceMode = voiceMode;
+    }
+
+    void Patch::getName(char* buffer)
+    {
+        strcpy(buffer, name);
+    }
+
+    void Patch::setValue(char* buffer)
+    {
+        strcpy(name, buffer);
     }
 
 }

@@ -25,6 +25,7 @@ namespace kiwi_synth
             GpioExpansion*          ge;
             PatchSettings           settings1;
             PatchSettings           settings2;
+            char                    name[MAX_PATCH_NAME_LENGTH + 1];
 
         public:
             PatchSettings*          activeSettings;
@@ -35,6 +36,9 @@ namespace kiwi_synth
             ~Patch() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
+            // BUFFER MUST BE MAX_PATCH_NAME_LENGTH IN SIZE!!! Not validating because we need speed
+            void getName(char* buffer);
+            void setValue(char* buffer);
             void SetVoiceMode(VoiceMode voiceMode);
     };
 }
