@@ -4,7 +4,6 @@
 
 #include "daisysp.h"
 
-#include "../KUtils.h"
 #include "Voice.h"
 #include "Patch/Patch.h"
 #include "Modulation.h"

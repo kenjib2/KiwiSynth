@@ -41,6 +41,7 @@ namespace kiwi_synth
 
         float readL = delayLine[0][readIndex];
         float readR = delayLine[1][readIndex];
+
         delayLine[0][writeIndex] = input[0] + readL * feedback;
         delayLine[1][writeIndex] = input[1] + readL * feedback;
 

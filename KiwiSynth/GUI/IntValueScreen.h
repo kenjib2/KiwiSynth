@@ -4,7 +4,6 @@
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 
-#include "../../KUtils.h"
 #include "../Patch/Patch.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;

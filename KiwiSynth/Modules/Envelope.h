@@ -4,7 +4,6 @@
 
 #include "daisysp.h"
 
-#include "../../KUtils.h"
 #include "../Patch/PatchSettings.h"
 
 using namespace daisysp;

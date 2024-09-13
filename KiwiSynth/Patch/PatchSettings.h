@@ -6,7 +6,6 @@
 
 #include "daisy_seed.h"
 
-#include "../../KUtils.h"
 #include "../Controls/MultiPots.h"
 #include "../Controls/GpioExpansion.h"
 #include "../Controls/ControlListener.h"
@@ -271,47 +270,70 @@ namespace kiwi_synth
              * From ControlListener: Callback to update GPIO Expander controls.
              */
             void controlGpioUpdate(int controlNumber);
+            
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, int8_t value);
+            inline void setValue(PatchSetting setting, int8_t value) { intValues[setting] = std::min(value, maxIntValues[setting]); }
             /*
              * Sets a float setting value. If a non-float setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, float value);
+            inline void setValue(PatchSetting setting, float value) { floatValues[setting] = value; }
             /*
              * Sets a bool setting value. If a non-bool setting is attempted, no action will be performed.
              */
-            void setValue(PatchSetting setting, bool value);
+            inline void setValue(PatchSetting setting, bool value) { boolValues[setting] = value; }
 
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
              */
-            int8_t getIntValue(PatchSetting setting);
+            inline int8_t getIntValue(PatchSetting setting) { return intValues[setting]; }
+            /* In case we need OCTAVE scaling again later.
+            float range = max - min;
+            // For plus or minus one octave we want 2^(2x-1)
+            // More generally it's 2^(rangex - range/2)
+            // This only works if max + min = 0
+            return pow(2, range * value - range / 2);*/
             /*
              * Gets a float setting value. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValue(PatchSetting setting);
+            inline float getFloatValue(PatchSetting setting) { return floatValues[setting]; }
             /*
              * Gets a float setting value using exponential scale. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValueExponential(PatchSetting setting);
+            inline float getFloatValueExponential(PatchSetting setting) { float value = getFloatValue(setting); return value * value; }
             /*
              * Gets a float setting using logarhithmic scale and lookup tables for min and max. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValueLogLookup(PatchSetting setting);
+            inline float getFloatValueLogLookup(PatchSetting setting)
+            {
+                float value = getFloatValue(setting);
+                float lmin = lMinLookup[setting];
+                float lmax = lMaxLookup[setting];
+                return expf((value * (lmax - lmin)) + lmin);
+            }
             /*
              * Gets a float setting using exponential scale and min and max. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValueExponential(PatchSetting setting, float min, float max);
+            inline float getFloatValueExponential(PatchSetting setting, float min, float max)
+            {
+                float value = getFloatValue(setting);
+                float range = max - min;
+                return value * value * range + min;
+            }
             /*
              * Gets a float setting value with linear scale and min and max. If a non-float setting is attempted, 0.0f will be returned.
              */
-            float getFloatValueLinear(PatchSetting setting, float min, float max);
+            inline float getFloatValueLinear(PatchSetting setting, float min, float max)
+            {
+                float value = getFloatValue(setting);
+                float range = max - min;
+                return value * range + min;
+            }
             /*
              * Gets a bool setting value. If a non-float setting is attempted, false will be returned.
              */
-            bool getBoolValue(PatchSetting setting);
+            inline bool getBoolValue(PatchSetting setting) { return boolValues[setting]; }
     }; // class PatchSettings
 } // namespace kiwi_synth
 

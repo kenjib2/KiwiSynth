@@ -93,7 +93,7 @@ namespace kiwi_synth
             HandleMidiMessage(&event);
         }
 
-        float sustain = gpioSustain.Read() ? 0.0f : 1.0f;
+        float sustain = (float)!gpioSustain.Read();
         patch.voice1Settings->setValue(GEN_SUSTAIN, sustain);
         patch.voice2Settings->setValue(GEN_SUSTAIN, sustain);
         

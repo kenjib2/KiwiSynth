@@ -5,7 +5,6 @@
 
 #include "daisysp.h"
 
-#include "../KUtils.h"
 #include "Modulation.h"
 #include "Modules/VCO.h"
 #include "Modules/Noise.h"

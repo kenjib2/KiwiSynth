@@ -31,8 +31,8 @@ namespace kiwi_synth
     {
         // PROCESSING DISTORTION
         if (gain > ATAN_DEBOUNCE_THRESHOLD) {
-            sample[0] = fclamp(atan(sample[0] * gain) * level, -0.9999999f, 0.9999999f);
-            sample[1] = fclamp(atan(sample[1] * gain) * level, -0.9999999f, 0.9999999f);
+            sample[0] = atan(sample[0] * gain) * level; // atan has a limit of pi/2 or @1.57. The max of level is 0.22 so total output will never exceed +/- 0.346
+            sample[1] = atan(sample[1] * gain) * level;
         }
 
         //PROCESSING DELAY

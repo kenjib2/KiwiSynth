@@ -4,7 +4,6 @@
 
 #include "daisysp.h"
 
-#include "../../KUtils.h"
 #include "../Patch/Patch.h"
 #include "Delay.h"
 #include "Zita/reverb.h"

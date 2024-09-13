@@ -35,6 +35,7 @@ using namespace kiwi_synth;
  * Sometimes crashes when switching voice modes.
  * Can we optimize more to get the audio buffer size lower?
  * Save / Load / Rename
+ * Add performance to system page: Avg/Max audio callback and setting updates per second
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * UI
  * Split polytimbral mode
@@ -47,6 +48,7 @@ using namespace kiwi_synth;
  * External audio in
  * VariableShapeOsc for saw > tri > ramp effect
  * VariableShapeSaw for notch etc. pw effect
+ * Bhāskara I's sine approximation formula
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion
