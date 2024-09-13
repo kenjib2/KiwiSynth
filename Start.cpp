@@ -67,7 +67,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 48;
+const int AUDIO_BLOCK_SIZE = 256;
 #ifdef __CPU_LOAD__
 CpuLoadMeter load;
 char DSY_SDRAM_BSS buff[512];

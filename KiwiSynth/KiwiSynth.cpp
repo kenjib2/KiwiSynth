@@ -93,8 +93,13 @@ namespace kiwi_synth
             HandleMidiMessage(&event);
         }
 
-        patch.getActiveSettings()->setValue(GEN_SUSTAIN, gpioSustain.Read() ? 0.0f : 1.0f);
-        patch.getActiveSettings()->setValue(GEN_EXPRESSION, multiPots.GetDirectValue(1));
+        float sustain = gpioSustain.Read() ? 0.0f : 1.0f;
+        patch.voice1Settings->setValue(GEN_SUSTAIN, sustain);
+        patch.voice2Settings->setValue(GEN_SUSTAIN, sustain);
+        
+        float expression = hw->adc.GetFloat(4);
+        patch.voice1Settings->setValue(GEN_EXPRESSION, expression);
+        patch.voice2Settings->setValue(GEN_EXPRESSION, expression);
     }
 
     void KiwiSynth::ProcessInputs()
@@ -113,6 +118,7 @@ namespace kiwi_synth
             NoteOnEvent on;
             NoteOffEvent off;
             ControlChangeEvent cc;
+            float value;
             switch(midiEvent->type)
             {
                 case NoteOn:
@@ -133,13 +139,17 @@ namespace kiwi_synth
 
                 case PitchBend:
                     midiCounter = 0;
-                    patch.getActiveSettings()->setValue(GEN_PITCH_BEND, (float)midiEvent->AsPitchBend().value / 8192.0f);
+                    value = (float)midiEvent->AsPitchBend().value / 8192.0f;
+                    patch.voice1Settings->setValue(GEN_PITCH_BEND, value);
+                    patch.voice2Settings->setValue(GEN_PITCH_BEND, value);
                     break;
 
                 // Unimplemented message types
                 case ChannelPressure:
                     midiCounter = 0;
-                    patch.getActiveSettings()->setValue(GEN_AFTERTOUCH, (float)midiEvent->AsChannelPressure().pressure / 127.0f);
+                    value = (float)midiEvent->AsChannelPressure().pressure / 127.0f;
+                    patch.voice1Settings->setValue(GEN_AFTERTOUCH, value);
+                    patch.voice2Settings->setValue(GEN_AFTERTOUCH, value);
                     break;
 
                 case ControlChange:
@@ -147,21 +157,24 @@ namespace kiwi_synth
                     switch (cc.control_number) {
                         case 1:  // Mod Wheel
                             midiCounter = 0;
-                            patch.getActiveSettings()->setValue(GEN_MOD_WHEEL, (float)cc.value / 127.0f);
+                            value = (float)cc.value / 127.0f;
+                            patch.voice1Settings->setValue(GEN_MOD_WHEEL, value);
+                            patch.voice2Settings->setValue(GEN_MOD_WHEEL, value);
                             break;
 
                         case 11: // Expression
                             midiCounter = 0;
-                            patch.getActiveSettings()->setValue(GEN_EXPRESSION, (float)cc.value / 127.0f);
+                            value = (float)cc.value / 127.0f;
+                            patch.voice1Settings->setValue(GEN_EXPRESSION, value);
+                            patch.voice2Settings->setValue(GEN_EXPRESSION, value);
                             break;
 
                         case 64: // Sustain Pedal
                             midiCounter = 0;
-                            if (cc.value < 64) {
-                                patch.getActiveSettings()->setValue(GEN_SUSTAIN, 0.0f); // Off
-                            } else {
-                                patch.getActiveSettings()->setValue(GEN_SUSTAIN, 1.0f);  // On
-                            }
+
+                            value = (float)((cc.value & 0b1000000) >> 6); // 0.0 if 0-63 or less, 1.0 if 64-127
+                            patch.voice1Settings->setValue(GEN_SUSTAIN, value); // Off
+                            patch.voice2Settings->setValue(GEN_SUSTAIN, value); // Off
                             break;
 
                     }
@@ -186,12 +199,11 @@ namespace kiwi_synth
 
     bool KiwiSynth::BootLoaderRequested()
     {
-        return patch.getActiveSettings()->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
+        return patch.activeSettings->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
     void KiwiSynth::UpdateSettings()
     {
-        balance = patch.getActiveSettings()->getFloatValue(PatchSetting::GEN_BALANCE);
         voiceBank.UpdateSettings();
         effectsEngine.UpdateSettings();
     }

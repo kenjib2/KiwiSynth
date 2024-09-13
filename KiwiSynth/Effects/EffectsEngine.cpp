@@ -13,18 +13,18 @@ namespace kiwi_synth
 
     void EffectsEngine::UpdateSettings()
     {
-        reverbLevel = patch->getActiveSettings()->getFloatValue(PatchSetting::FX_REVERB);
+        reverbLevel = patch->activeSettings->getFloatValue(PatchSetting::FX_REVERB);
         if (reverbLevel > 0.002f) {
             reverb.set_opmix(reverbLevel);
         } else {
             reverb.set_opmix(0.0f);
         }
-        gain = patch->getActiveSettings()->getFloatValueLogLookup(PatchSetting::FX_1);
-        level = patch->getActiveSettings()->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
+        gain = patch->activeSettings->getFloatValueLogLookup(PatchSetting::FX_1);
+        level = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
 
-        delay.SetLevel(patch->getActiveSettings()->getFloatValue(PatchSetting::FX_3));
-        delay.SetDelaySamples((int)patch->getActiveSettings()->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
-        delay.SetFeedback(patch->getActiveSettings()->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
+        delay.SetLevel(patch->activeSettings->getFloatValue(PatchSetting::FX_3));
+        delay.SetDelaySamples((int)patch->activeSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
+        delay.SetFeedback(patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
     }
 
     void EffectsEngine::Process(float* sample)

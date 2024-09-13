@@ -35,14 +35,14 @@ namespace kiwi_synth
     void Display::HandleInput()
     {
         bool prevGuiButton = guiButton;
-        guiButton = patch->getActiveSettings()->getBoolValue(GEN_SELECT_BUTTON);
+        guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
             switch (mode) {
                 case BOOTLOADER:
                     break;
                 case PLAY:
                     mode = GUI;
-                    patch->getActiveSettings()->setValue(GEN_SELECT, (int8_t)0);
+                    patch->activeSettings->setValue(GEN_SELECT, (int8_t)0);
                     break;
                 case GUI:
                     mode = PLAY;
@@ -54,14 +54,14 @@ namespace kiwi_synth
     
     int Display::GetSelectValue(int numElements)
     {
-        int8_t value = patch->getActiveSettings()->getIntValue(GEN_SELECT);
+        int8_t value = patch->activeSettings->getIntValue(GEN_SELECT);
         if (value < 0) {
             value += numElements;
         } else {
             value %= numElements;
         }
 
-        patch->getActiveSettings()->setValue(GEN_SELECT, value);
+        patch->activeSettings->setValue(GEN_SELECT, value);
 
         return value;
     }

@@ -14,7 +14,7 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        sprintf(buffer, "Name: %s", patch->getActiveSettings()->getStringValue(GEN_NAME));
+        sprintf(buffer, "Name: %s", patch->activeSettings->getStringValue(GEN_NAME));
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);

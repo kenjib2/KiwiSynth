@@ -86,11 +86,6 @@ namespace kiwi_synth
             }
         }
 
-        // Set default patch name.
-        char buffer[4];
-        strcpy(buffer, "New");
-        setValue(GEN_NAME, buffer);
-
         // Set default that does not change.
         setValue(VCO_1_ON, true);
 
@@ -126,11 +121,22 @@ namespace kiwi_synth
         setValue(GEN_SELECT, (int8_t)0);
         setValue(GEN_FX_SELECT, (int8_t)0);
         setValue(GEN_REVERB_SELECT, (int8_t)0);
+
+        // Set external controllers in case they are not in use
         setValue(GEN_PITCH_BEND, 0.0f);
         setValue(GEN_AFTERTOUCH, 0.0f);
         setValue(GEN_MOD_WHEEL, 0.0f);
         setValue(GEN_EXPRESSION, 0.0f);
         setValue(GEN_SUSTAIN, 0.0f);
+
+        DefaultSettings();
+    }
+
+    void PatchSettings::Copy(PatchSettings* patchSettings)
+    {
+        memcpy(boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+        memcpy(intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+        memcpy(floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
     }
 
     void PatchSettings::setValue(PatchSetting setting, int8_t value)
@@ -396,6 +402,127 @@ namespace kiwi_synth
                 processEncoder(VCO_NOISE_TYPE, controlNumber, 13, 12);
                 break;
         }
+    }
+
+    void PatchSettings::DefaultSettings()
+    {
+        setValue(VCO_VOICES, (int8_t)0);
+        setValue(VCO_MASTER_TUNE, 0.5f);
+        setValue(VCO_PORTAMENTO_ON, false);
+        setValue(VCO_PORTAMENTO_SPEED, 0.5f);
+
+        setValue(VCO_1_WAVEFORM, (int8_t)0);
+        setValue(VCO_2_WAVEFORM, (int8_t)0);
+        setValue(VCO_3_WAVEFORM, (int8_t)0);
+        setValue(VCO_1_PULSE_WIDTH, 0.0f);
+        setValue(VCO_2_PULSE_WIDTH, 0.0f);
+        setValue(VCO_3_PULSE_WIDTH, 0.0f);
+        setValue(VCO_1_LEVEL, 0.999f);
+        setValue(VCO_2_LEVEL, 0.999f);
+        setValue(VCO_3_LEVEL, 0.999f);
+        setValue(VCO_1_ON, true);
+        setValue(VCO_2_ON, false);
+        setValue(VCO_3_ON, false);
+        setValue(VCO_2_OCTAVE, (int8_t)2);
+        setValue(VCO_3_OCTAVE, (int8_t)2);
+        setValue(VCO_2_INTERVAL, (int8_t)11);
+        setValue(VCO_3_INTERVAL, (int8_t)11);
+        setValue(VCO_2_FINE_TUNE, 0.5f);
+        setValue(VCO_3_FINE_TUNE, 0.5f);
+
+        setValue(VCO_NOISE_ON, false);
+        setValue(VCO_NOISE_TYPE, (int8_t)0);
+        setValue(VCO_NOISE_LEVEL, 0.0f);
+
+        setValue(VCO_EXT_ON, false);
+        setValue(VCO_EXT_TRIGGER_GATE, 0.5f);
+        setValue(VCO_EXT_LEVEL, 0.0f);
+
+        setValue(VCF_FILTER_TYPE, (int8_t)0);
+        setValue(VCF_CUTOFF, 0.999f);
+        setValue(VCF_RESONANCE, 0.0f);
+        setValue(VCF_TRACKING, 0.999f);
+        setValue(VCF_ENV_1_DEPTH, 0.0f);
+        setValue(VCF_ENV_2_DEPTH, 0.0f);
+
+        setValue(VCA_LEVEL, 0.0f);
+        setValue(VCA_ENV_1_DEPTH, 0.999f);
+
+        setValue(ENV_1_ATTACK, 0.01f);
+        setValue(ENV_2_ATTACK, 0.01f);
+        setValue(ENV_1_DECAY, 0.01f);
+        setValue(ENV_2_DECAY, 0.01f);
+        setValue(ENV_1_SUSTAIN, 0.999f);
+        setValue(ENV_2_SUSTAIN, 0.999f);
+        setValue(ENV_1_RELEASE, 0.01f);
+        setValue(ENV_2_RELEASE, 0.01f);
+        setValue(ENV_1_REVERSE_PHASE_ON, false);
+        setValue(ENV_2_REVERSE_PHASE_ON, false);
+
+        setValue(LFO_1_WAVEFORM, (int8_t)0);
+        setValue(LFO_2_WAVEFORM, (int8_t)0);
+        setValue(LFO_1_PULSE_WIDTH, 0.0f);
+        setValue(LFO_2_PULSE_WIDTH, 0.0f);
+        setValue(LFO_1_RATE, 0.5f);
+        setValue(LFO_2_RATE, 0.5f);
+        setValue(LFO_1_TRIGGER_RESET_ON, false);
+        setValue(LFO_2_TRIGGER_RESET_ON, false);
+        setValue(LFO_1_TRIGGER_PHASE, 0.5f);
+        setValue(LFO_2_TRIGGER_PHASE, 0.5f);
+        setValue(LFO_1_TO_MASTER_TUNE, 0.0f);
+        setValue(LFO_2_TO_VCF_CUTOFF, 0.0f);
+
+        setValue(SH_TO_VCF_CUTOFF, 0.0f);
+        setValue(SH_RATE, 0.5f);
+
+        setValue(MOD_1_SOURCE, (int8_t)0);
+        setValue(MOD_2_SOURCE, (int8_t)0);
+        setValue(MOD_3_SOURCE, (int8_t)0);
+        setValue(MOD_4_SOURCE, (int8_t)0);
+        setValue(MOD_5_SOURCE, (int8_t)0);
+        setValue(MOD_6_SOURCE, (int8_t)0);
+        setValue(MOD_7_SOURCE, (int8_t)0);
+        setValue(MOD_8_SOURCE, (int8_t)0);
+
+        setValue(MOD_1_DESTINATION, (int8_t)-1);
+        setValue(MOD_2_DESTINATION, (int8_t)-1);
+        setValue(MOD_3_DESTINATION, (int8_t)-1);
+        setValue(MOD_4_DESTINATION, (int8_t)-1);
+        setValue(MOD_5_DESTINATION, (int8_t)-1);
+        setValue(MOD_6_DESTINATION, (int8_t)-1);
+        setValue(MOD_7_DESTINATION, (int8_t)-1);
+        setValue(MOD_8_DESTINATION, (int8_t)-1);
+
+        setValue(MOD_1_DEPTH, 0.0f);
+        setValue(MOD_2_DEPTH, 0.0f);
+        setValue(MOD_3_DEPTH, 0.0f);
+        setValue(MOD_4_DEPTH, 0.0f);
+        setValue(MOD_5_DEPTH, 0.0f);
+        setValue(MOD_6_DEPTH, 0.0f);
+        setValue(MOD_7_DEPTH, 0.0f);
+        setValue(MOD_8_DEPTH, 0.0f);
+
+        setValue(FX_1, 0.0f);
+        setValue(FX_2, 0.0f);
+        setValue(FX_3, 0.0f);
+        setValue(FX_4, 0.0f);
+        setValue(FX_5, 0.0f);
+        setValue(FX_REVERB, 0.0f);
+
+        setValue(GEN_BALANCE, 0.5f);
+        setValue(GEN_SELECT, (int8_t)0);
+        setValue(GEN_SELECT_BUTTON, false);
+        setValue(GEN_FX_SELECT, (int8_t)0);
+        setValue(GEN_REVERB_SELECT, (int8_t)0);
+        setValue(GEN_REVERB_DECAY, 0.5f);
+        char buffer[4];
+        strcpy(buffer, "New");
+        setValue(GEN_NAME, buffer);
+        setValue(GEN_AFTERTOUCH, 0.0f);
+        setValue(GEN_MOD_WHEEL, 0.0f);
+        setValue(GEN_PITCH_BEND, 0.0f);
+        setValue(GEN_EXPRESSION, 0.0f);
+        setValue(GEN_SUSTAIN, 0.0f);
     }
 
 } // namespace kiwi_synth

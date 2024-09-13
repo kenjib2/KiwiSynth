@@ -25,30 +25,17 @@ namespace kiwi_synth
             GpioExpansion*          ge;
             PatchSettings           settings1;
             PatchSettings           settings2;
+
+        public:
             PatchSettings*          activeSettings;
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;
 
-        public:
             Patch() {}
             ~Patch() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             void SetVoiceMode(VoiceMode voiceMode);
-
-            inline PatchSettings* getActiveSettings() {
-                return activeSettings;
-            }
-
-            inline PatchSettings* getVoice1Settings() {
-                return voice1Settings;
-            }
-
-            inline PatchSettings* getVoice2Settings() {
-                return voice2Settings;
-            }
-
-            void UpdateSettings();
     };
 }
 

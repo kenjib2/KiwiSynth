@@ -258,12 +258,11 @@ namespace kiwi_synth
             void updateGpioExpansionValues(int controlNumber);
 
         public:
-            //PatchSetting lastChangedSetting;
-            //float lastChangedValue;
-
             PatchSettings() {}
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
+            void DefaultSettings();
+            void Copy(PatchSettings* patchSettings);
 
             /*
              * From ControlListener: Callback to update MultiPot controls.

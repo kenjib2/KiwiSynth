@@ -37,9 +37,9 @@ namespace kiwi_synth
         env2.UpdateSettings(patchSettings);
         lfo1.UpdateSettings(patchSettings);
         lfo2.UpdateSettings(patchSettings);
-        for (int i = 0; i < maxVcos; i++) {
-            vcos[i].UpdateSettings(patchSettings);
-        }
+        vcos[0].UpdateSettings(patchSettings);
+        vcos[1].UpdateSettings(patchSettings);
+        vcos[2].UpdateSettings(patchSettings);
         noise.UpdateSettings(patchSettings);
         sampleAndHold.UpdateSettings(patchSettings);
         vcf.UpdateSettings(patchSettings);
