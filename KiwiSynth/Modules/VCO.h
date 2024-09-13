@@ -40,11 +40,7 @@ namespace kiwi_synth
             void Init(float sampleRate, uint8_t vcoNumber);
 
             void UpdateSettings(PatchSettings* patchSettings);
-            #ifdef __FUNCTIONALITY_OPTION__
-            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, bool fullFunctionality = true);
-            #else
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod);
-            #endif // __FUNCTIONALITY_OPTION__
     };
 }
 

@@ -10,11 +10,7 @@ namespace kiwi_synth
 
         // Set the max values for int variables
         memset(tmp, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
-        #ifdef __FUNCTIONALITY_OPTION__
-            tmp[VCO_VOICES] = 3; // 3 is reduced functionality 3 voice
-        #else
-            tmp[VCO_VOICES] = 2; // 0 is duo-polyphonic, 1 is monophonic, 2 is duo-timbral monophonic
-        #endif // __FUNCTIONALITY_OPTION__
+        tmp[VCO_VOICES] = 2; // 0 is duo-polyphonic, 1 is monophonic, 2 is duo-timbral monophonic
         tmp[VCO_1_WAVEFORM] = 2;
         tmp[VCO_2_WAVEFORM] = 2;
         tmp[VCO_2_OCTAVE] = 4;

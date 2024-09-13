@@ -54,9 +54,6 @@ namespace kiwi_synth
             float getModValue(ModulationSource source, float depth);
 
         public:
-            #ifdef __FUNCTIONALITY_OPTION__
-            bool fullFunctionality;
-            #endif // __FUNCTIONALITY_OPTION__
             int maxVcos;
             int numVcos;
             int currentMidiNote;

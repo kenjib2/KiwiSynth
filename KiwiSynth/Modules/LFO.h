@@ -34,15 +34,10 @@ namespace kiwi_synth
             void Init(float sampleRate, uint8_t envNumber);
 
             void UpdateSettings(PatchSettings* patchSettings);
-            #ifdef __FUNCTIONALITY_OPTION__
-            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod, bool fullFunctionality = true);
-            #else
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod);
-            #endif // __FUNCTIONALITY_OPTION__
             void SetFreq(float frequency);
             void NoteOn();
     };
 }
-
 
 #endif // __KIWI_SYNTH_LFO_H__

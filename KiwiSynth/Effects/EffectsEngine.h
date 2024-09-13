@@ -29,9 +29,6 @@ namespace kiwi_synth
             void Init(Patch* patch, float sampleRate);
 
             void UpdateSettings();
-            #ifdef __FUNCTIONALITY_OPTION__
-                void ProcessReverbOnly(float* sample);
-            #endif // __FUNCTIONALITY_OPTION__
             void Process(float* sample);
     };
 }

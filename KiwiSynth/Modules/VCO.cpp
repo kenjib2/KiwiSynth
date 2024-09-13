@@ -43,11 +43,7 @@ namespace kiwi_synth
         }
     }
 
-    #ifdef __FUNCTIONALITY_OPTION__
-    void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, bool fullFunctionality)
-    #else
     void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
-    #endif // __FUNCTIONALITY_OPTION__
     {
         if (isOn) {
             playingNote = midiNote + octave + interval + fineTune + masterTune;
@@ -55,26 +51,17 @@ namespace kiwi_synth
             float waveSample;
             osc.SetFreq(std::fmax(mtof(playingNote + mod * 12), 0.0f));
 
-            #ifdef __FUNCTIONALITY_OPTION__
-            if (fullFunctionality) {
-            #endif // __FUNCTIONALITY_OPTION__
-                osc.SetPw(pulseWidth + pwMod);
+            osc.SetPw(pulseWidth + pwMod);
 
-                waveSample = osc.Process();
-                if (waveform == 2) { // Triangle
-                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0f));
-                    waveSample = wavefolder.Process(waveSample);
-                } else if (waveform == 1) { // Sawtooth
-                    waveSample = fclamp(waveSample * (waveFolderGain + pwMod + 1.0f) / 2, -1.0f, 1.0f);
-                }
-
-                *sample = waveSample * level;
-            #ifdef __FUNCTIONALITY_OPTION__
-            } else {
-                osc.SetPw(pulseWidth);
-                *sample = osc.Process() * level;
+            waveSample = osc.Process();
+            if (waveform == 2) { // Triangle
+                wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27, 1.0f));
+                waveSample = wavefolder.Process(waveSample);
+            } else if (waveform == 1) { // Sawtooth
+                waveSample = fclamp(waveSample * (waveFolderGain + pwMod + 1.0f) / 2, -1.0f, 1.0f);
             }
-             #endif // __FUNCTIONALITY_OPTION__
+
+            *sample = waveSample * level;
         }
         else {
             *sample = 0.0f;

@@ -3,12 +3,7 @@
 namespace kiwi_synth
 {
     void VoiceBank::Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate) {
-        #ifdef __FUNCTIONALITY_OPTION__
-        modulations = new Modulation*[3];
-        modulations[2] = new Modulation[NUM_MODULATIONS];
-        #else
         modulations = new Modulation*[2];
-        #endif // __FUNCTIONALITY_OPTION__
         modulations[0] = new Modulation[NUM_MODULATIONS];
         modulations[1] = new Modulation[NUM_MODULATIONS];
         voiceMode = 255;
@@ -42,42 +37,14 @@ namespace kiwi_synth
             {
                 case VOICE_MODE_POLY:
                 default:
-                    #ifdef __FUNCTIONALITY_OPTION__
-                    for (int i = 0; i < maxVoices; i++) {
-                        voices[i].fullFunctionality = true;
-                        voices[i].numVcos = voices[i].maxVcos;
-                    }
-                    #endif // __FUNCTIONALITY_OPTION__
                     numVoices = 2;
                     break;
                 case VOICE_MODE_MONO:
-                    #ifdef __FUNCTIONALITY_OPTION__
-                    for (int i = 0; i < maxVoices; i++) {
-                        voices[i].fullFunctionality = true;
-                        voices[i].numVcos = voices[i].maxVcos;
-                    }
-                    #endif // __FUNCTIONALITY_OPTION__
                     numVoices = 1;
                     break;
                 case VOICE_MODE_MULTI:
-                    #ifdef __FUNCTIONALITY_OPTION__
-                    for (int i = 0; i < maxVoices; i++) {
-                        voices[i].fullFunctionality = true;
-                        voices[i].numVcos = voices[i].maxVcos;
-                    }
-                    #endif // __FUNCTIONALITY_OPTION__
                     numVoices = 2;
                     break;
-                #ifdef __FUNCTIONALITY_OPTION__
-                case VOICE_MODE_3V:
-                        for (int i = 0; i < maxVoices; i++) {
-                            voices[i].fullFunctionality = false;
-                            voices[i].numVcos = 2;
-                        }
-                        patch->SetActivePatchSettings(0);
-                        numVoices = maxVoices;
-                    break;
-                #endif // __FUNCTIONALITY_OPTION__
             }
         }
 
@@ -87,9 +54,6 @@ namespace kiwi_synth
             voices[0].UpdateSettings(patch->getVoice1Settings());
         }
         voices[1].UpdateSettings(patch->getVoice2Settings());
-        #ifdef __FUNCTIONALITY_OPTION__
-        voices[2].UpdateSettings(patch->getActiveSettings());
-        #endif // __FUNCTIONALITY_OPTION__
 
         /*switch (voiceMode)
         {
@@ -99,13 +63,6 @@ namespace kiwi_synth
                 voices[0].UpdateSettings(patch->getActiveSettings());
                 voices[1].UpdateSettings(patch->getActiveSettings());
                 break;
-            #ifdef __FUNCTIONALITY_OPTION__
-            case VOICE_MODE_3V:
-                voices[0].UpdateSettings(patch->getActiveSettings());
-                voices[1].UpdateSettings(patch->getActiveSettings());
-                voices[2].UpdateSettings(patch->getActiveSettings());
-                break;
-            #endif // __FUNCTIONALITY_OPTION__
             case VOICE_MODE_MULTI:
                 //voices[0].UpdateSettings(patch->getActiveSettings());
                 voices[1].UpdateSettings(patch->getActiveSettings());
@@ -124,15 +81,12 @@ namespace kiwi_synth
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
-        voices[1].Process(nextVoice, patch->getVoice2Settings(), modulations[0], numVoices);
+        voices[1].Process(nextVoice, patch->getVoice2Settings(), modulations[1], numVoices);
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
         /*switch (voiceMode)
         {
             case VOICE_MODE_POLY:
-            #ifdef __FUNCTIONALITY_OPTION__
-            case VOICE_MODE_3V:
-            #endif // __FUNCTIONALITY_OPTION__
             default:
                 voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
                 sample[0] += nextVoice[0];
@@ -142,12 +96,6 @@ namespace kiwi_synth
                 sample[0] += nextVoice[0];
                 sample[1] += nextVoice[1];
     
-                #ifdef __FUNCTIONALITY_OPTION__
-                voices[2].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
-                sample[0] += nextVoice[0];
-                sample[1] += nextVoice[1];
-                #endif // __FUNCTIONALITY_OPTION__
-                
                 break;
             case VOICE_MODE_MONO:
                 voices[0].Process(nextVoice, patch->getActiveSettings(), modulations[0], numVoices);
@@ -169,11 +117,7 @@ namespace kiwi_synth
     }
 
     void VoiceBank::InitModulations() {
-        #ifdef __FUNCTIONALITY_OPTION__
-        for (int i = 0; i < 3; i++) {
-        #else
         for (int i = 0; i < 2; i++) {
-        #endif // __FUNCTIONALITY_OPTION__
             modulations[i][MODS_MOD_MATRIX_1].source = SRC_NONE;
             modulations[i][MODS_MOD_MATRIX_1].destination = DST_NONE;
             modulations[i][MODS_MOD_MATRIX_1].depth = 0.0f;
@@ -249,9 +193,6 @@ namespace kiwi_synth
         modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->getActiveSettings()->getIntValue(MOD_8_DESTINATION);
         modulations[0][MODS_MOD_MATRIX_8].depth = patch->getActiveSettings()->getFloatValue(MOD_8_DEPTH);
         memcpy(modulations[1], modulations[0], sizeof(Modulations) * 8);
-        #ifdef __FUNCTIONALITY_OPTION__
-        memcpy(modulations[2], modulations[0], sizeof(Modulations) * 8);
-        #endif // __FUNCTIONALITY_OPTION__
 
         modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->getVoice1Settings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
         modulations[0][MODS_ENV_1_TO_VCA].depth = patch->getVoice1Settings()->getFloatValue(VCA_ENV_1_DEPTH);
@@ -268,16 +209,6 @@ namespace kiwi_synth
         modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
         modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
         modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->getVoice2Settings()->getFloatValue(SH_TO_VCF_CUTOFF);
-
-        #ifdef __FUNCTIONALITY_OPTION__
-        modulations[2][MODS_LFO_1_TO_VCOS].depth = patch->getVoice3Settings()->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[2][MODS_ENV_1_TO_VCA].depth = patch->getVoice3Settings()->getFloatValue(VCA_ENV_1_DEPTH);
-        modulations[2][MODS_NOTE_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValue(VCF_TRACKING);
-        modulations[2][MODS_ENV_1_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[2][MODS_ENV_2_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[2][MODS_LFO_2_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[2][MODS_SH_TO_VCF_FREQ].depth = patch->getVoice3Settings()->getFloatValue(SH_TO_VCF_CUTOFF);
-        #endif // __FUNCTIONALITY_OPTION__
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)

@@ -15,9 +15,7 @@ namespace kiwi_synth
         ConfigureMultiPots(hw);
         ConfigureGpioExpansion();
 
-        voice1PatchSettings.Init(&multiPots, &ge);
-        voice2PatchSettings.Init(&multiPots, &ge);
-        patch.Init(&voice1PatchSettings, &voice2PatchSettings, &multiPots, &ge);
+        patch.Init(&multiPots, &ge);
 
         voiceBank.Init(numVoices, NUM_VCOS, &patch, sampleRate);
         effectsEngine.Init(&patch, sampleRate);
@@ -82,15 +80,7 @@ namespace kiwi_synth
         {
             voiceBank.Process(&out[i]);
 
-            #ifdef __FUNCTIONALITY_OPTION__
-            if (voiceBank.numVoices == MAX_VOICES) {
-                effectsEngine.ProcessReverbOnly(&(out[i]));
-            } else {
-            #endif // __FUNCTIONALITY_OPTION__
-                effectsEngine.Process(&(out[i]));
-            #ifdef __FUNCTIONALITY_OPTION__
-            }
-            #endif // __FUNCTIONALITY_OPTION__
+            effectsEngine.Process(&(out[i]));
         }
     }
 

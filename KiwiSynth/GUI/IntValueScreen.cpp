@@ -79,11 +79,6 @@ namespace kiwi_synth
             case 2:
                 strcpy(buffer, "Mt");
                 break;
-            #ifdef __FUNCTIONALITY_OPTION__
-            case 3:
-                strcpy(buffer, "3v");
-                break;
-            #endif // __FUNCTIONALITY_OPTION__
         }
     }
 
