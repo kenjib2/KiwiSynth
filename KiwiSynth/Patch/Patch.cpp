@@ -2,55 +2,55 @@
 
 namespace kiwi_synth
 {
-    #ifdef __FUNCTIONALITY_OPTION__
-    void Patch::Init(PatchSettings* voice1Settings, PatchSettings* voice2Settings, PatchSettings* voice3Settings, MultiPots* multiPots, GpioExpansion* ge)
-    #else
-    void Patch::Init(PatchSettings* voice1Settings, PatchSettings* voice2Settings, MultiPots* multiPots, GpioExpansion* ge)
-    #endif // __FUNCTIONALITY_OPTION__
+    void Patch::Init(PatchSettings* settings1, PatchSettings* settings2, MultiPots* multiPots, GpioExpansion* ge)
     {
         this->multiPots = multiPots;
         this->ge = ge;
-        this->voice1Settings = voice1Settings;
-        this->voice2Settings = voice2Settings;
-        #ifdef __FUNCTIONALITY_OPTION__
-        this->voice3Settings = voice3Settings;
-        #endif // __FUNCTIONALITY_OPTION__
+        this->settings1 = settings1;
+        this->settings2 = settings2;
 
-        SetActivePatchSettings(0);
+        SetVoiceMode(VOICE_MODE_POLY);
     }
 
-    void Patch::SetActivePatchSettings(int voiceNumber) {
-        switch(voiceNumber) {
-            case (0):
-                activeSettings = &voice1Settings;
-                break;
-            case (1):
-                activeSettings = &voice2Settings;
-                break;
+    void Patch::SetVoiceMode(VoiceMode voiceMode) {
+        /*if (voiceMode == VOICE_MODE_MULTI) {
+            voice1Settings = &settings1;
+            voice2Settings = &settings2;
+            activeSettings = &settings2;
+        } else {*/
+            voice1Settings = &settings1;
+            voice2Settings = &settings1;
+            activeSettings = &settings1;
+        //}
+        /*switch(voiceMode) {
+            case VOICE_MODE_POLY:
             #ifdef __FUNCTIONALITY_OPTION__
-            case (2):
-                activeSettings = &voice2Settings;
-                break;
+            case VOICE_MODE_3V:
             #endif // __FUNCTIONALITY_OPTION__
-        }
+            case VOICE_MODE_MONO:
+                voice1Settings = &settings1;
+                voice2Settings = &settings1;
+                activeSettings = &settings1;
+                break;
+            case VOICE_MODE_MULTI:
+                voice1Settings = &settings1;
+                voice2Settings = &settings2;
+                activeSettings = &settings2;
+                break;
+        }*/
         multiPots->RegisterControlListener(*activeSettings);
         ge->RegisterControlListener(*activeSettings);
     }
 
     void Patch::UpdateSettings()
     {
-        voiceMode = (VoiceMode)voice1Settings->getIntValue(VCO_VOICES);
-        if (voice1Settings != *activeSettings) {
-            voice1Settings->setValue(VCO_VOICES, (int8_t)voiceMode);
+        voiceMode = (VoiceMode)getActiveSettings()->getIntValue(VCO_VOICES);
+        if (settings1 != *activeSettings) {
+            settings1->setValue(VCO_VOICES, (int8_t)voiceMode);
         }
-        if (voice2Settings != *activeSettings) {
-            voice2Settings->setValue(VCO_VOICES, (int8_t)voiceMode);
+        if (settings2 != *activeSettings) {
+            settings2->setValue(VCO_VOICES, (int8_t)voiceMode);
         }
-        #ifdef __FUNCTIONALITY_OPTION__
-        if (voice3Settings != *activeSettings) {
-            voice3Settings->setValue(VCO_VOICES, (int8_t)voiceMode);
-        }
-        #endif // __FUNCTIONALITY_OPTION__
     }
 
 }

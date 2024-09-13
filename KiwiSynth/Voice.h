@@ -34,7 +34,6 @@ namespace kiwi_synth
             LFO lfo1, lfo2;
             VCF vcf;
             VCA vca;
-            PatchSettings* patchSettings;
             int voiceNumber;
             int noteTriggerCount;
             bool noteOffNeeded;
@@ -66,7 +65,7 @@ namespace kiwi_synth
 
             Voice() {}
             ~Voice() {}
-            void Init(int maxVcos, PatchSettings* patchSettings, float sampleRate, int voiceNumber);
+            void Init(int maxVcos, float sampleRate, int voiceNumber);
 
             void UpdateSettings(PatchSettings* patchSettings);
             void Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, int numVoices);

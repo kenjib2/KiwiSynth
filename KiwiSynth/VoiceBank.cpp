@@ -23,7 +23,7 @@ namespace kiwi_synth
         for (uint8_t i = 0; i < maxVoices; i++)
         {
             Voice nextVoice;
-            nextVoice.Init(numVcos, patch->getActiveSettings(), sampleRate, i);
+            nextVoice.Init(numVcos, sampleRate, i);
             voices.push_back(nextVoice);
         }
     }
@@ -36,6 +36,8 @@ namespace kiwi_synth
             AllNotesOff();
             voiceMode = newVoiceMode;
 
+            patch->SetVoiceMode((VoiceMode)voiceMode);
+
             switch (voiceMode)
             {
                 case VOICE_MODE_POLY:
@@ -46,7 +48,6 @@ namespace kiwi_synth
                         voices[i].numVcos = voices[i].maxVcos;
                     }
                     #endif // __FUNCTIONALITY_OPTION__
-                    patch->SetActivePatchSettings(0);
                     numVoices = 2;
                     break;
                 case VOICE_MODE_MONO:
@@ -56,7 +57,6 @@ namespace kiwi_synth
                         voices[i].numVcos = voices[i].maxVcos;
                     }
                     #endif // __FUNCTIONALITY_OPTION__
-                    patch->SetActivePatchSettings(0);
                     numVoices = 1;
                     break;
                 case VOICE_MODE_MULTI:
@@ -66,7 +66,6 @@ namespace kiwi_synth
                         voices[i].numVcos = voices[i].maxVcos;
                     }
                     #endif // __FUNCTIONALITY_OPTION__
-                    patch->SetActivePatchSettings(1);
                     numVoices = 2;
                     break;
                 #ifdef __FUNCTIONALITY_OPTION__
@@ -84,7 +83,15 @@ namespace kiwi_synth
 
         UpdateModulations();
 
-        switch (voiceMode)
+        if (voiceMode != VOICE_MODE_MULTI) {
+            voices[0].UpdateSettings(patch->getVoice1Settings());
+        }
+        voices[1].UpdateSettings(patch->getVoice2Settings());
+        #ifdef __FUNCTIONALITY_OPTION__
+        voices[2].UpdateSettings(patch->getActiveSettings());
+        #endif // __FUNCTIONALITY_OPTION__
+
+        /*switch (voiceMode)
         {
             case VOICE_MODE_POLY:
             case VOICE_MODE_MONO:
@@ -103,7 +110,7 @@ namespace kiwi_synth
                 //voices[0].UpdateSettings(patch->getActiveSettings());
                 voices[1].UpdateSettings(patch->getActiveSettings());
                 break;
-        }
+        }*/
     }
 
     void VoiceBank::Process(float* sample)
@@ -113,7 +120,14 @@ namespace kiwi_synth
 
         float nextVoice[2];
 
-        switch (voiceMode)
+        voices[0].Process(nextVoice, patch->getVoice1Settings(), modulations[0], numVoices);
+        sample[0] += nextVoice[0];
+        sample[1] += nextVoice[1];
+
+        voices[1].Process(nextVoice, patch->getVoice2Settings(), modulations[0], numVoices);
+        sample[0] += nextVoice[0];
+        sample[1] += nextVoice[1];
+        /*switch (voiceMode)
         {
             case VOICE_MODE_POLY:
             #ifdef __FUNCTIONALITY_OPTION__
@@ -151,7 +165,7 @@ namespace kiwi_synth
                 sample[1] += nextVoice[1];
 
                 break;
-        }
+        }*/
     }
 
     void VoiceBank::InitModulations() {

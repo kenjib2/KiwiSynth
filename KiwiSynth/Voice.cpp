@@ -2,7 +2,7 @@
 
 namespace kiwi_synth
 {
-    void Voice::Init(int numVCOs, PatchSettings* patchSettings, float sampleRate, int voiceNumber)
+    void Voice::Init(int numVCOs, float sampleRate, int voiceNumber)
     {
         this->voiceNumber = voiceNumber;
         #ifdef __FUNCTIONALITY_OPTION__
@@ -15,7 +15,6 @@ namespace kiwi_synth
         currentPlayingNote = 64.0f;
         this->maxVcos = numVCOs;
         this->numVcos = maxVcos;
-        this->patchSettings = patchSettings;
 
         env1.Init(sampleRate, 0);
         env2.Init(sampleRate, 1);
