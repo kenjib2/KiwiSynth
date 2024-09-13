@@ -30,12 +30,6 @@ namespace kiwi_synth
     void Patch::UpdateSettings()
     {
         voiceMode = (VoiceMode)getActiveSettings()->getIntValue(VCO_VOICES);
-        if (&settings1 != activeSettings) {
-            settings1.setValue(VCO_VOICES, (int8_t)voiceMode);
-        }
-        if (&settings2 != activeSettings) {
-            settings2.setValue(VCO_VOICES, (int8_t)voiceMode);
-        }
     }
 
 }
