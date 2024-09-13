@@ -141,10 +141,6 @@ namespace kiwi_synth
 
     void PatchSettings::setValue(PatchSetting setting, int8_t value)
     {
-        //if (value != intValues[setting]) {
-            //lastChangedSetting = setting;
-            //lastChangedValue = value;
-        //}
         intValues[setting] = std::min(value, maxIntValues[setting]);
     }
 

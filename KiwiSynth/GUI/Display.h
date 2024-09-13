@@ -9,6 +9,7 @@
 #include "BootloaderScreen.h"
 #include "IntValueScreen.h"
 #include "PatchScreen.h"
+#include "SystemScreen.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -55,6 +56,13 @@ namespace kiwi_synth
         GUI = 1
     } DisplayMode;
 
+    typedef enum {
+        INT_SCREEN,
+        PATCH_SCREEN,
+        SYSTEM_SCREEN
+    } DisplayScreen;
+    const int NUM_SCREENS = 3;
+
     class Display
     {
         public:
@@ -71,12 +79,14 @@ namespace kiwi_synth
         private:
             char buffer[256];
             bool guiButton;
+            DisplayScreen currentScreen;
             Patch* patch;
             KiwiDisplay display;
             WelcomeScreen welcomeScreen;
             BootloaderScreen bootloaderScreen;
             IntValueScreen intValueScreen;
             PatchScreen patchScreen;
+            SystemScreen systemScreen;
 
             int GetSelectValue(int numElements);
     };

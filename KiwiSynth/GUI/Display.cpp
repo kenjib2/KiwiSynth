@@ -27,6 +27,9 @@ namespace kiwi_synth
         bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patch);
         patchScreen.Init(&display, patch);
+        systemScreen.Init(&display);
+
+        currentScreen = INT_SCREEN;
 
         display.Init(cfg);
         display.Fill(false);
@@ -45,8 +48,14 @@ namespace kiwi_synth
                     patch->activeSettings->setValue(GEN_SELECT, (int8_t)0);
                     break;
                 case GUI:
-                    mode = PLAY;
-                    Update();
+                    if (GetSelectValue(NUM_SCREENS) == SYSTEM_SCREEN) {
+                        mode = BOOTLOADER;
+                        Update();
+                        System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
+                    } else {
+                        mode = PLAY;
+                        Update();
+                    }
                     break;
             }
         }
@@ -73,14 +82,17 @@ namespace kiwi_synth
                 welcomeScreen.Display();
                 break;
             case GUI:
-                switch(GetSelectValue(2)) {
-                    case 0:
+                currentScreen = (DisplayScreen)GetSelectValue(NUM_SCREENS);
+                switch(currentScreen) {
+                    case INT_SCREEN:
                     default:
                         intValueScreen.Display();
                         break;
-                    case 1:
+                    case PATCH_SCREEN:
                         patchScreen.Display();
-                        // Add a int getSelectValue(int max) that reads in GEN_SELECT and then sets it back in patchSettings within a fixed range then returns that modulus value.
+                        break;
+                    case SYSTEM_SCREEN:
+                        systemScreen.Display();
                         break;
                 }
                 break;
