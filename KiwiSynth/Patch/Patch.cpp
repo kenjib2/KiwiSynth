@@ -31,14 +31,4 @@ namespace kiwi_synth
         this->voiceMode = voiceMode;
     }
 
-    void Patch::getName(char* buffer)
-    {
-        strcpy(buffer, name);
-    }
-
-    void Patch::setValue(char* buffer)
-    {
-        strcpy(name, buffer);
-    }
-
 }

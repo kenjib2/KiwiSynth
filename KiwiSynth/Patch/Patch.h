@@ -36,8 +36,8 @@ namespace kiwi_synth
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             // BUFFER MUST BE MAX_PATCH_NAME_LENGTH IN SIZE!!! Not validating because we need speed
-            void getName(char* buffer);
-            void setValue(char* buffer);
+            inline void getName(char* buffer) { strcpy(buffer, name); }
+            inline void setValue(char* buffer) { strcpy(name, buffer); }
             void SetVoiceMode(VoiceMode voiceMode);
     };
 }

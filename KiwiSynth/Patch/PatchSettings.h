@@ -265,11 +265,11 @@ namespace kiwi_synth
             /*
              * From ControlListener: Callback to update MultiPot controls.
              */
-            void controlMpUpdate(int controlNumber);
+            inline void controlMpUpdate(int controlNumber) { updatePotValues(controlNumber); }
             /*
              * From ControlListener: Callback to update GPIO Expander controls.
              */
-            void controlGpioUpdate(int controlNumber);
+            inline void controlGpioUpdate(int controlNumber) { updateGpioExpansionValues(controlNumber); }
             
             /*
              * Sets an integer setting value. If a non-integer setting is attempted, no action will be performed.

@@ -5,6 +5,7 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+    // -------------------- BEGIN INITIALIZE STATIC ARRAYS --------------------
     static int8_t* genMaxIntValues() {
         int8_t* tmp = new int8_t[NUM_PATCH_SETTINGS];
 
@@ -73,6 +74,7 @@ namespace kiwi_synth
         return tmp;
     }
     float *PatchSettings::lMaxLookup = genLMaxLookup();
+    // -------------------- END INITIALIZE STATIC ARRAYS --------------------
 
     void PatchSettings::Init(MultiPots* multiPots, GpioExpansion* ge)
     {
@@ -137,16 +139,6 @@ namespace kiwi_synth
         memcpy(boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
         memcpy(intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
         memcpy(floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
-    }
-
-    void PatchSettings::controlMpUpdate(int controlNumber)
-    {
-        updatePotValues(controlNumber);
-    }
-
-    void PatchSettings::controlGpioUpdate(int controlNumber)
-    {
-        updateGpioExpansionValues(controlNumber);
     }
 
     void PatchSettings::processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB)
