@@ -30,12 +30,13 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
- * System page: setting updates per second
  * Where can we replace division with multiplication of a precalculated inverse???
+ * Fix low Eb on MPK Mini
+ * Change UI screen so PLAY mode is just another screen to scroll left and right instead of clicking button to enter GUI
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
- * Can we optimize more to get the audio buffer size lower?
+ * Is there some way to read more than one channel per pass from the multiplexer???
  * Save / Load / Rename
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * UI
@@ -63,6 +64,7 @@ using namespace kiwi_synth;
  * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
  * Very occasional pops when distortion is on
  * Going out of GUI mode sometimes triggers note on(s)
+ * Can we optimize more to get the audio buffer size lower?
  */
 
 // Patch idea -- very slow square LFO with super short PW. Have it trigger on short PW first, then "blip" up/down to the note. Chip-tunesy

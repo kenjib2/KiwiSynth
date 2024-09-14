@@ -14,6 +14,7 @@ namespace kiwi_synth
 {
     const static int NUM_MPS = 3;
     const static int NUM_CHANNELS = 16;
+    const static int CHANNELS_MOD = 15;
     const static int NUM_DIRECT_POTS = 2;
 
     /*
@@ -98,7 +99,7 @@ namespace kiwi_synth
             {
                 // We read before selecting because reading will not use the new pin if we only just selected it. We need to cycle in between.
                 ReadPots();
-                currentPot = (currentPot + 1) % NUM_CHANNELS;
+                currentPot = (currentPot + 1) & CHANNELS_MOD; // Same as % NUM_CHANNELS
                 // We are setting the pin for the *next* call of Process.
                 SelectMpChannel(currentPot);
             }

@@ -111,9 +111,9 @@ namespace kiwi_synth
         } else {
             currentPlayingNote = (float)currentMidiNote;
         }
-        for (int i = 0; i < maxVcos; i++) {
-            vcos[i].midiNote = currentPlayingNote;
-        }
+        vcos[0].midiNote = currentPlayingNote;
+        vcos[1].midiNote = currentPlayingNote;
+        vcos[2].midiNote = currentPlayingNote;
 
         // Processing modules
         initMods();
