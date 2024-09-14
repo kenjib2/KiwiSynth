@@ -219,14 +219,15 @@ void Vdelay::write (float x)
 // -----------------------------------------------------------------------
 
 
-void Filt1::set_params (float del, float tmf, float tlo, float wlo, float thi, float chi)
+void Filt1::set_params (float del, float invtmf, float invtlo, float wlo, float invthi, float chi)
 {
     float g, t;
 
-    _gmf = powf (0.001f, del / tmf);
-    _glo = powf (0.001f, del / tlo) / _gmf - 1.0f;
+    _gmf = powf (0.001f, del * invtmf);
+    _invgmf = 1.0f / _gmf;
+    _glo = powf (0.001f, del * invtlo) * _invgmf - 1.0f;
     _wlo = wlo;    
-    g = powf (0.001f, del / thi) / _gmf;
+    g = powf (0.001f, del * invthi) * _invgmf;
     t = (1 - g * g) / (2 * g * g * chi);
     _whi = (sqrtf (1 + 4 * t) - 1) / (2 * t); 
 } 
@@ -295,6 +296,7 @@ void Reverb::init (float fsamp, bool ambis)
     int i, k1, k2;
 
     _fsamp = fsamp;
+    _finvsamp = 1.0f / fsamp;
     _ambis = ambis;
     _cntA1 = 1;
     _cntA2 = 0;
@@ -306,7 +308,9 @@ void Reverb::init (float fsamp, bool ambis)
     _ipdel = 0.04f;
     _xover = 200.0f;
     _rtlow = 3.0f;
+    _invrtlow = 1.0f / _rtlow;
     _rtmid = 2.0f;
+    _invrtmid = 1.0f / _rtmid;
     _fdamp = 3e3f;
     _opmix = 0.5f;
     _rgxyz = 0.0f;
@@ -341,7 +345,7 @@ void Reverb::fini (void)
 }
 
 
-void Reverb::prepare (int nfram)
+void Reverb::prepare (int invnfram)
 {
     int    a, b, c, i, k;
     float  t0, t1, wlo, chi;
@@ -361,12 +365,15 @@ void Reverb::prepare (int nfram)
 
     if (b != _cntB2)
     {
-         wlo = 6.2832f * _xover / _fsamp;
+         //wlo = 6.2832f * _xover / _fsamp;
+         wlo = 6.2832f * _xover * _finvsamp;
 	 if (_fdamp > 0.49f * _fsamp) chi = 2;
-	 else chi = 1 - cosf (6.2832f * _fdamp / _fsamp);
+	 //else chi = 1 - cosf (6.2832f * _fdamp / _fsamp);
+	 else chi = 1 - cosf (6.2832f * _fdamp * _finvsamp);
          for (i = 0; i < 8; i++)
 	 {
-             _filt1 [i].set_params (_tdelay [i], _rtmid, _rtlow, wlo, 0.5f * _rtmid, chi);
+             //_filt1 [i].set_params (_tdelay [i], _rtmid, _rtlow, wlo, 0.5f * _rtmid, chi);
+             _filt1 [i].set_params (_tdelay [i], _invrtmid, _invrtlow, wlo, 2.0f * _invrtmid, chi);
 	 }
          _cntB2 = b;
     }
@@ -375,21 +382,21 @@ void Reverb::prepare (int nfram)
     {
 	if (_ambis)
 	{
-	    t0 = 1.0f / sqrtf (_rtmid);
+	    t0 = 1.0f * sqrtf (_invrtmid);
 	    t1 = t0 * powf (10.0f, 0.05f * _rgxyz);
 	}
 	else
 	{
 	    t0 = (1 - _opmix) * (1 + _opmix);
-	    t1 = 0.7f * _opmix * (2 - _opmix) / sqrtf (_rtmid);
+	    t1 = 0.7f * _opmix * (2 - _opmix) * sqrtf (_invrtmid);
 	}
-        _d0 = (t0 - _g0) / nfram;
-        _d1 = (t1 - _g1) / nfram;
+        _d0 = (t0 - _g0) * invnfram;
+        _d1 = (t1 - _g1) * invnfram;
         _cntC2 = c;
     }
 
-    _pareq1.prepare (nfram);
-    _pareq2.prepare (nfram);
+    _pareq1.prepare (invnfram);
+    _pareq2.prepare (invnfram);
 }
 
 

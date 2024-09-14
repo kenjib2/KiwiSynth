@@ -49,10 +49,10 @@ namespace kiwi_synth
         float yl, yr;
         float *reverbOut[2] = {&yl, &yr};
 
-        // Prepare to process one sample.
+        // Prepare to process one sample. Due to changes in Zita we need to pass in the inverse of the number of frames. The inverse of 1 is 1.
         reverb.prepare(1);
 
-        // Process one sample (output can afterwards be read from yl and yr).
+        // Process one sample (output can afterwards be read from yl and yr). We pass in the normal number of frames. NOT the inverse this time.
         reverb.process(1, reverbIn, reverbOut);
 
         sample[0] = yl;

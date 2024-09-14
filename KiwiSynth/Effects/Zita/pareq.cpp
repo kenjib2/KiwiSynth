@@ -56,7 +56,7 @@ void Pareq::reset (void)
 }
 
 
-void Pareq::prepare (int nsamp)
+void Pareq::prepare (int invnsamp)
 {
     bool  upd = false;
     float g, f;
@@ -88,7 +88,7 @@ void Pareq::prepare (int nsamp)
 	    else
 	    {
 		_state = SMOOTH;
-		calcpar1 (nsamp, _g1, _f1);
+		calcpar1 (invnsamp, _g1, _f1);
 	    }
 	}
 	else
@@ -108,7 +108,7 @@ void Pareq::prepare (int nsamp)
 }
 
 
-void Pareq::calcpar1 (int nsamp, float g, float f)
+void Pareq::calcpar1 (int invnsamp, float g, float f)
 {
     float b, c1, c2, gg;
 
@@ -117,11 +117,11 @@ void Pareq::calcpar1 (int nsamp, float g, float f)
     gg = 0.5f * (g - 1);
     c1 = -cosf (2 * f);
     c2 = (1 - b) / (1 + b);
-    if (nsamp)
+    if (invnsamp)
     {
-	_dc1 = (c1 - _c1) / nsamp + 1e-30f;
-	_dc2 = (c2 - _c2) / nsamp + 1e-30f;
-	_dgg = (gg - _gg) / nsamp + 1e-30f;
+	_dc1 = (c1 - _c1) * invnsamp + 1e-30f;
+	_dc2 = (c2 - _c2) * invnsamp + 1e-30f;
+	_dgg = (gg - _gg) * invnsamp + 1e-30f;
     }
     else
     {

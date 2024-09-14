@@ -74,6 +74,7 @@ private:
 	return _gmf * _shi;
     }
     float   _gmf;
+    float   _invgmf;
     float   _glo;
     float   _wlo;
     float   _whi;
@@ -158,8 +159,8 @@ public:
 
     void set_delay (float v) { _ipdel = v; _cntA1++; }
     void set_xover (float v) { _xover = v; _cntB1++; }
-    void set_rtlow (float v) { _rtlow = v; _cntB1++; }
-    void set_rtmid (float v) { _rtmid = v; _cntB1++; _cntC1++; }
+    void set_rtlow (float v) { _rtlow = v; _invrtlow = 1.0f / v; _cntB1++; }
+    void set_rtmid (float v) { _rtmid = v; _invrtmid = 1.0f / v; _cntB1++; _cntC1++; }
     void set_fdamp (float v) { _fdamp = v; _cntB1++; }
     void set_opmix (float v) { _opmix = v; _cntC1++; }
     void set_rgxyz (float v) { _rgxyz = v; _cntC1++; }
@@ -170,6 +171,7 @@ private:
 
 
     float   _fsamp;
+    float   _finvsamp;
     bool    _ambis;
 
     Vdelay  _vdelay0;
@@ -188,7 +190,9 @@ private:
     float   _ipdel;
     float   _xover;
     float   _rtlow;
+    float   _invrtlow;
     float   _rtmid;
+    float   _invrtmid;
     float   _fdamp;
     float   _opmix;
     float   _rgxyz;
