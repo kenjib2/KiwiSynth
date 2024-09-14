@@ -18,11 +18,11 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
-        sprintf(buffer, "CPU Max: %d  Avg: %d", (int)(performance->max * 100), (int)(performance->avg * 100));
+        sprintf(buffer, "CPU Max: %d  Avg: %d", (int)(performance->Max() * 100), (int)(performance->Avg() * 100));
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
-        sprintf(buffer, "Updates per second: %d", performance->updatesPerSec);
+        sprintf(buffer, "Updates/Second: %d", performance->UpdatesPerSec());
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);

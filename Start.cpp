@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * System page: setting updates per second
+ * Where can we replace division with multiplication of a precalculated inverse???
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
@@ -104,6 +105,10 @@ int main(void)
 	#endif // __DEBUG__
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
+	#ifdef __CPU_LOAD__
+	load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
+	performance.Init(&load);
+	#endif // __CPU_LOAD__
 	display.Init(&(kiwiSynth.patch), &performance);
 
 	kiwiSynth.ProcessInputs();
@@ -115,10 +120,6 @@ int main(void)
 	}
 	display.mode = PLAY;
 	display.Update();
-
-	#ifdef __CPU_LOAD__
-	load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
-	#endif // __CPU_LOAD__
 
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
@@ -132,14 +133,16 @@ int main(void)
 		kiwiSynth.ProcessInputs();
 		kiwiSynth.UpdateSettings();
 
+		#ifdef __CPU_LOAD__
+		if (!display.mode) {
+			performance.Update();
+		}
+		#endif // __DEBUG__
+
 		display.HandleInput();
 		if (counter == 255) {
 			if (display.mode) {
 				display.Update();
-			#ifdef __CPU_LOAD__
-			} else {
-				performance.Update(&load);
-			#endif // __DEBUG__
 			}
 			#ifdef __DEBUG__
 			kiwiSynth.TestOutput(&hw);
