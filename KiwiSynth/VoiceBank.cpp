@@ -56,9 +56,11 @@ namespace kiwi_synth
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
-        voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], numVoices);
-        sample[0] += nextVoice[0];
-        sample[1] += nextVoice[1];
+        if (voiceMode != VOICE_MODE_MONO) {
+            voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], numVoices);
+            sample[0] += nextVoice[0];
+            sample[1] += nextVoice[1];
+        }
     }
 
     void VoiceBank::InitModulations() {
