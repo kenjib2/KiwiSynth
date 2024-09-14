@@ -66,37 +66,4 @@ namespace kiwi_synth
             }
         }
     }
-
-    void Envelope::NoteOn()
-    {
-        noteTriggered = true;
-        if (env.IsRunning()) {
-            env.Retrigger(false);
-        }
-    }
-
-    void Envelope::NoteOff()
-    {
-        noteTriggered = false;
-    }
-
-    bool Envelope::IsPlaying()
-    {
-        return env.IsRunning();
-    }
-
-    bool Envelope::IsReleasing()
-    {
-        return env.GetCurrentSegment() == ADSR_SEG_RELEASE;
-    }
-
-    void Envelope::SetQuickRelease(bool quickRelease)
-    {
-        this->quickRelease = quickRelease;
-        if (quickRelease) {
-            env.SetReleaseTime(0.0015f);
-        } else {
-            env.SetReleaseTime(releaseValue);
-        }
-    }
 }

@@ -41,6 +41,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include "daisysp.h"
 #ifdef __cplusplus
 
 namespace infrasonic
@@ -69,13 +70,22 @@ class MoogLadder
             Arguments
             @param freq Frequency value in Hz. Range: Any positive value.
         */
-        void SetFreq(float freq);
+        inline void SetFreq(float freq)
+        {
+            Fbase_ = freq;
+            compute_coeffs(freq);
+        }
 
         /** 
             Sets the resonance of the filter.
             @param res Range from 0 - 1.8, self-oscillates at highest values.
         */
-        void SetRes(float res);
+        inline void SetRes(float res)
+        {
+            // maps resonance = 0->1 to K = 0 -> 4
+            res = daisysp::fclamp(res, 0.0f, kMaxResonance);
+            K_ = 4.0f * res;
+        }
 
     private:
         static const uint8_t kInterpolation = 2;

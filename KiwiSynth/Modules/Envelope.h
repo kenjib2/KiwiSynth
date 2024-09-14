@@ -29,13 +29,29 @@ namespace kiwi_synth
             Envelope() {}
             ~Envelope() {}
             void Init(float sampleRate, uint8_t envNumber);
+
             void UpdateSettings(PatchSettings* patchSettings);
             void Process(float* sample, PatchSettings* patchSettings, float attackMod, float decayMod, float sustainMod, float releaseMod);
-            void NoteOn();
-            void NoteOff();
-            bool IsPlaying();
-            bool IsReleasing();
-            void SetQuickRelease(bool quickRelease);
+
+            inline void NoteOn()
+            {
+                noteTriggered = true;
+                if (env.IsRunning()) {
+                    env.Retrigger(false);
+                }
+            }
+            inline void NoteOff() { noteTriggered = false; }
+            inline bool IsPlaying() { return env.IsRunning(); }
+            inline bool IsReleasing() { return env.GetCurrentSegment() == ADSR_SEG_RELEASE; }
+            inline void SetQuickRelease(bool quickRelease)
+            {
+                this->quickRelease = quickRelease;
+                if (quickRelease) {
+                    env.SetReleaseTime(0.0015f);
+                } else {
+                    env.SetReleaseTime(releaseValue);
+                }
+            }
     };
 }
 

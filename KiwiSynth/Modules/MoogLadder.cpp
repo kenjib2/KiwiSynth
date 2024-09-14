@@ -22,7 +22,6 @@
  */
  
 #include "moogladder.h"
-#include "daisysp.h"
 
 
 using namespace infrasonic;
@@ -89,19 +88,6 @@ void MoogLadder::ProcessInPlace(float *buf, size_t size)
         oldinput_ = input;
         buf[i] = total;
     }
-}
-
-void MoogLadder::SetFreq(float freq)
-{
-    Fbase_ = freq;
-    compute_coeffs(freq);
-}
-
-void MoogLadder::SetRes(float res)
-{
-    // maps resonance = 0->1 to K = 0 -> 4
-    res = daisysp::fclamp(res, 0.0f, kMaxResonance);
-    K_ = 4.0f * res;
 }
 
 float MoogLadder::LPF(float s, int i)

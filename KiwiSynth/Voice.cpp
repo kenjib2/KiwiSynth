@@ -25,7 +25,7 @@ namespace kiwi_synth
         noise.Init(sampleRate);
         sampleAndHold.Init(sampleRate);
         vcf.Init(sampleRate);
-        vca.Init(sampleRate);
+        vca.Init();
         initMods();
         prevSourceValues[SRC_NONE] = 0.0f;
         prevSourceValues[SRC_FIXED] = 1.0f;

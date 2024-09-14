@@ -16,11 +16,6 @@ namespace kiwi_synth
         wavefolder.SetGain(1.0f);
     }
 
-    void LFO::SetFreq(float frequency)
-    {
-        osc.SetFreq(frequency);
-    }
-
     void LFO::UpdateSettings(PatchSettings* patchSettings)
     {
         waveform = patchSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
@@ -52,13 +47,6 @@ namespace kiwi_synth
         }
 
         *sample = waveSample;
-    }
-
-    void LFO::NoteOn()
-    {
-        if (noteOnReset) {
-            osc.Reset(phase);
-        }
     }
 
 }

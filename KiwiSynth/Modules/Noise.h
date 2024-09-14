@@ -27,9 +27,20 @@ namespace kiwi_synth
             void Init(float sampleRate);
 
             void UpdateSettings(PatchSettings* patchSettings);
-            void Process(float* sample, PatchSettings* patchSettings, float mod);
+            inline void Process(float* sample, PatchSettings* patchSettings, float mod)
+            {
+                if (noiseType == 0) {
+                    lastSample = white.Process() * 0.2;
+                } else {
+                    lastSample = dust.Process();
+                }
 
-            float GetLastSample();
+                if (isOn) {
+                    *sample = lastSample * fclamp((level + mod), -1.0f, 1.0f);
+                }
+            }
+
+            inline float GetLastSample() { return lastSample; }
     };
 }
 

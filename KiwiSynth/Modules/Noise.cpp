@@ -22,21 +22,4 @@ namespace kiwi_synth
         level = patchSettings->getFloatValue(PatchSetting::VCO_NOISE_LEVEL);
     }
 
-    void Noise::Process(float* sample, PatchSettings* patchSettings, float mod)
-    {
-        if (noiseType == 0) {
-            lastSample = white.Process() * 0.2;
-        } else {
-            lastSample = dust.Process();
-        }
-
-        if (isOn) {
-            *sample = lastSample * fclamp((level + mod), -1.0f, 1.0f);
-        }
-    }
-
-    float Noise::GetLastSample()
-    {
-        return lastSample;
-    }
 }

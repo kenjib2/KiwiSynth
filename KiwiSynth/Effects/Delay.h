@@ -22,9 +22,10 @@ namespace kiwi_synth
             void Init();
             void Process(float* input);  // input[0] = left, input[1] = right
 
-            void SetDelaySamples(int delaySamples);
-            void SetLevel(float level);
-            void SetFeedback(float feedback);
+            // We need to debounce these values here. Otherwise the pointer will jump around and cause pops.
+            inline void SetDelaySamples(int delaySamples) { if (abs(delaySamples - this->delaySamples) > DEBOUNCE_RESOLUTION) this->delaySamples = delaySamples; }
+            inline void SetLevel(float level) { this->level = level; }
+            inline void SetFeedback(float feedback) { this->feedback = feedback; }
     };
 }
 

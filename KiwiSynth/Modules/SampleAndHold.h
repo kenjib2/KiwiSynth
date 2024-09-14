@@ -23,7 +23,7 @@ namespace kiwi_synth
             ~SampleAndHold() {}
             void Init(float sampleRate);
 
-            void UpdateSettings(PatchSettings* patchSettings);
+            inline void UpdateSettings(PatchSettings* patchSettings) { rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE); }
             void Process(float* sample, PatchSettings* patchSettings, float mod);
     };
 }

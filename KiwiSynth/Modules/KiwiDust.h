@@ -41,7 +41,7 @@ class KiwiDust
         rng = new xorshiftPRNG(rand());
     }
 
-    float Process()
+    inline float Process()
     {
         float inv_density = 1.0f / density_;
         float u           = rng->xorshift32() * kRandFrac;

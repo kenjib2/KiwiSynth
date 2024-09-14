@@ -34,8 +34,8 @@ namespace kiwi_synth
 
             void UpdateSettings(PatchSettings* patchSettings);
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod);
-            void SetFreq(float frequency);
-            void NoteOn();
+            inline void SetFreq(float frequency) { osc.SetFreq(frequency); }
+            inline void NoteOn() { if (noteOnReset) osc.Reset(phase); }
     };
 }
 

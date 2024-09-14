@@ -12,14 +12,8 @@ namespace kiwi_synth
         currentSample = 0.0f;
     }
 
-    void SampleAndHold::UpdateSettings(PatchSettings* patchSettings)
-    {
-        rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE);
-    }
-
     void SampleAndHold::Process(float* sample, PatchSettings* patchSettings, float mod)
     {
-        
         counter++;
         if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0f) {
             counter = 0;

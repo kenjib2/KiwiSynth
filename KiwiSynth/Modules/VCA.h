@@ -19,9 +19,9 @@ namespace kiwi_synth
         public:
             VCA() {}
             ~VCA() {}
-            void Init(float sampleRate);
+            void Init() {};
 
-            void UpdateSettings(PatchSettings* patchSettings);
+            inline void UpdateSettings(PatchSettings* patchSettings) { level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL); }
             void Process(float* sample, PatchSettings* patchSettings, float env1Mod, float mod);
     };
 }

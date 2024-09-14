@@ -4,24 +4,6 @@ namespace kiwi_synth
 {
     float DSY_SDRAM_BSS delayLine[2][MAX_DELAY_SAMPLES];
 
-    // We need to debounce these values here. Otherwise the pointer will jump around and cause pops.
-    void Delay::SetDelaySamples(int delaySamples)
-    {
-        if (abs(delaySamples - this->delaySamples) > DEBOUNCE_RESOLUTION) {
-            this->delaySamples = delaySamples;
-        }
-    }
-
-    void Delay::SetLevel(float level)
-    {
-        this->level = level;
-    }
-
-    void Delay::SetFeedback(float feedback)
-    {
-        this->feedback = feedback;
-    }
-
     void Delay::Init()
     {
         delaySamples = MIN_DELAY_SAMPLES;
