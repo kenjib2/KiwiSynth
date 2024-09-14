@@ -82,11 +82,11 @@ namespace kiwi_synth
             std::vector<KiwiMcp23017> mcps;
             GPIO interrupt;
             GpioExpansion() {}
-            ~GpioExpansion();
+            ~GpioExpansion() {}
             void Init();
             void Init(GpioExpansionConfig *gpioExpansionConfig);
+            inline void RegisterControlListener(ControlListener* controlListener) { this->controlListener = controlListener; }
 
-            void RegisterControlListener(ControlListener* controlListener);
             /*
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              */
@@ -94,11 +94,9 @@ namespace kiwi_synth
             /*
              * Clears all interrupt flags.
              */
-            void ClearInterrupts();
-
-            uint16_t getPinValues(uint8_t address);
-            bool getPinValue(uint8_t address, uint8_t pin);
-            uint8_t getEncoderValue();
+            inline void ClearInterrupts() { for (int i = 0; i < numGpioExpansions; i++) { mcps.at(i).clearInterrupts(); } }
+            inline uint16_t getPinValues(uint8_t address) { return pinValues[address]; }
+            inline bool getPinValue(uint8_t address, uint8_t pin) { return (getPinValues(address) & (1 << (pin - 1))) > 0; }
 
     }; // class MultiPots
 

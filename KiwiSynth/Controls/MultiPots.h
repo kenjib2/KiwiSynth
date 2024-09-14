@@ -88,16 +88,20 @@ namespace kiwi_synth
             ~MultiPots() {};
             void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
-            void RegisterControlListener(ControlListener* controlListener);
-            /*
-            * Starts the input read timer running.
-            */
-            //void StartTimer();
+            inline void RegisterControlListener(ControlListener* controlListener) { this->controlListener = controlListener; }
+
             /*
             * Loads a single channel of pot values for all attached multiplexers and/or a single directly connected potentiometer
             * into the buffer. This function only needs to be called if the timer is not being used.
             */
-            void Process();
+            inline void Process()
+            {
+                // We read before selecting because reading will not use the new pin if we only just selected it. We need to cycle in between.
+                ReadPots();
+                currentPot = (currentPot + 1) % NUM_CHANNELS;
+                // We are setting the pin for the *next* call of Process.
+                SelectMpChannel(currentPot);
+            }
             /*
             * Returns a stored multiplexed pot value from the buffer.
             */

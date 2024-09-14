@@ -6,40 +6,10 @@ namespace kiwi_synth
     float DSY_SDRAM_BSS mpValueBuffer[NUM_MPS][NUM_CHANNELS];
     float DSY_SDRAM_BSS directValueBuffer[NUM_DIRECT_POTS];
 
-    /*void ProcessMultiPotsTimer(void* multiPots)
-    {
-        ((MultiPots*)multiPots)->Process();
-    }*/
-
     void MultiPots::Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig)
     {
         InitMulti(multiPotsConfig);
         currentPot = 0;
-
-        /*if (multiPotsConfig->useTimer) {
-            InitTimer(multiPotsConfig->refreshRate);
-        }*/
-    }
-
-    void MultiPots::RegisterControlListener(ControlListener* controlListener)
-    {
-        this->controlListener = controlListener;
-    }
-
-    /*void MultiPots::StartTimer()
-    {
-        timer.Start();
-    }*/
-
-    void MultiPots::Process()
-    {
-        // We read before selecting because reading will not use the new pin if we only just selected it. We need to cycle in between.
-        ReadPots();
-        // Put this back in if NUM_DIRECT_POTS gets larger than NUM_CHANNELS
-        //currentPot = (currentPot + 1) % std::max(NUM_CHANNELS, NUM_DIRECT_POTS);
-        currentPot = (currentPot + 1) % NUM_CHANNELS;
-        // We are setting the pin for the *next* call of Process.
-        SelectMpChannel(currentPot);
     }
 
     float MultiPots::GetMpValue(int boardNumber, int channelNumber)
@@ -80,38 +50,6 @@ namespace kiwi_synth
         free(adcConfig);
     }
 
-    /*
-     * (timer speed (Hz)) = (Arduino clock speed (16MHz)) / prescaler
-     * interrupt frequency (Hz) = (Arduino clock speed 480,000,000Hz) / (prescaler * (compare match register + 1))
-     * compare match register = [ 480,000,000/ (prescaler * desired interrupt frequency) ] - 1
-     * 
-     * The clock runs at 480MHz when boosted. TM_5 is a 32-bit timer with a max value of 4,294,967,295. For some
-     * reason the prescalar works against 240MHz instead of 480MHz.
-     * 
-     * A prescalar of 2,400 means:
-     * timer speed = 240,000,000 / 2,400 = 100,000 = 100KHz timer speed.
-     * 
-     * For a 1ms interrupt frequency
-     * Compare match register = (240,000,000Hz / (2,400 * 1000Hz)) = 100
-     * 
-     * This means that with a prescalar of 2,400, the refreshRate will be measured in hundreths of a millisecond.
-     * 
-     * 
-     * 10000 = @.25 seconds
-     */
-    /*void MultiPots::InitTimer(int refreshRate)
-    {
-        TimerHandle::Config config;
-        config.dir = TimerHandle::Config::CounterDir::UP;
-        config.enable_irq = true;
-        config.period = refreshRate;
-        config.periph = TimerHandle::Config::Peripheral::TIM_5;
-
-        timer.Init(config);
-        timer.SetPrescaler(2400);
-        timer.SetCallback((daisy::TimerHandle::PeriodElapsedCallback)&ProcessMultiPotsTimer, (void *)(this));
-    }*/
-
     void MultiPots::SelectMpChannel(int channelNumber)
     {
         currentPot = channelNumber;
@@ -130,27 +68,16 @@ namespace kiwi_synth
 
     void MultiPots::ReadPots()
     {
-        // Put this back in if the number of channels is ever less than the number of direct pots
-        //if (currentPot < NUM_CHANNELS)
-        //{
-            // Reinstate or updateif the NUM_MPS changes from 3
-            //for (int i = 0; i < NUM_MPS; i++)
-            //{
-                //mpValueBuffer[i][currentPot] = hw->adc.GetFloat(i);
-                mpValueBuffer[0][currentPot] = hw->adc.GetFloat(0);
-                mpValueBuffer[1][currentPot] = hw->adc.GetFloat(1);
-                mpValueBuffer[2][currentPot] = hw->adc.GetFloat(2);
-            //}
-        //}
+        mpValueBuffer[0][currentPot] = hw->adc.GetFloat(0);
+        mpValueBuffer[1][currentPot] = hw->adc.GetFloat(1);
+        mpValueBuffer[2][currentPot] = hw->adc.GetFloat(2);
 
         if (currentPot < NUM_DIRECT_POTS) {
             directValueBuffer[currentPot] = hw->adc.GetFloat(currentPot + NUM_MPS);
         }
 
-        // Put this back in if there is no controlListener
-        //if (controlListener) {
-            controlListener->controlMpUpdate(currentPot);
-        //}
+        // Check for NULL if there ever might not be a controlListener
+        controlListener->controlMpUpdate(currentPot);
     }
 
 } // namespace kiwi_synth
