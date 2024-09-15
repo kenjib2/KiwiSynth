@@ -16,7 +16,7 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-    static const int MIDI_LED_DURATION = 50;
+    static const int MIDI_LED_DURATION = 20;
 
     class KiwiSynth
     {

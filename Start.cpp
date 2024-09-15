@@ -33,6 +33,7 @@ using namespace kiwi_synth;
  * Fix low Eb on MPK Mini
  * Change UI screen so PLAY mode is just another screen to scroll left and right instead of clicking button to enter GUI
  * ^^ After above is done, in play mode UI button changes FX mode and/or reverb depth
+ * Modes: Current with diff. reverb lengths. Chorus-Delay-Reverb. Sonic Annihilator. Bitcrush-Distort-Reverb.
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
@@ -47,8 +48,10 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * Make attack longer or a slower curve?
  * Adjustable dust density
  * Adjustable reverb decay length
+ * Can we try three voices again?
  * External audio in
  * VariableShapeOsc for saw > tri > ramp effect
  * VariableShapeSaw for notch etc. pw effect
@@ -104,9 +107,10 @@ int main(void)
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	#if defined(__DEBUG__)
+
+	#if defined(__PATCH_SETTINGS__)
 	hw.StartLog(false);
-	#endif // __DEBUG__
+	#endif // __PATCH_SETTINGS__
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 	#ifdef __CPU_LOAD__
@@ -141,16 +145,16 @@ int main(void)
 		if (!display.mode) {
 			performance.Update();
 		}
-		#endif // __DEBUG__
+		#endif // __CPU_LOAD__
 
 		display.HandleInput();
 		if (counter == 255) {
 			if (display.mode) {
 				display.Update();
 			}
-			#ifdef __DEBUG__
+			#ifdef __PATCH_SETTINGS__
 			kiwiSynth.TestOutput(&hw);
-			#endif // __DEBUG__
+			#endif // __PATCH_SETTINGS__
 		}
 		counter++;
 		counter &= 0b011111111;
