@@ -168,7 +168,7 @@ namespace kiwi_synth
         prevSourceValues[SRC_ENV_2] = env2Sample;
         prevSourceValues[SRC_SH] = sampleAndHoldSample;
         prevSourceValues[SRC_NOTE] = currentMidiNote;
-        prevSourceValues[SRC_VELOCITY] = (float)currentVelocity / 127.0f;
+        prevSourceValues[SRC_VELOCITY] = (float)currentVelocity * 0.00787401574803149606f; // same as / 127.0f
         prevSourceValues[SRC_AFTERTOUCH] = patchSettings->getFloatValue(GEN_AFTERTOUCH);
         prevSourceValues[SRC_MOD_WHEEL] = patchSettings->getFloatValue(GEN_MOD_WHEEL);
         prevSourceValues[SRC_PITCH_BEND] = patchSettings->getFloatValue(GEN_PITCH_BEND);

@@ -37,6 +37,7 @@ static inline float fast_tanh(float x)
 void MoogLadder::Init(float sample_rate)
 {
     sample_rate_ = sample_rate;
+    inv_sample_rate_ = 1.0f / sample_rate;
     alpha_       = 1.0f;
     K_           = 1.0f;
     Fbase_       = 1000.0f;
@@ -102,7 +103,7 @@ float MoogLadder::LPF(float s, int i)
 void MoogLadder::compute_coeffs(float freq)
 {
     freq = daisysp::fclamp(freq, 5.0f, sample_rate_ * 0.425f);
-    float wc = freq * (float)(2.0f * PI_F / ((float)kInterpolation * sample_rate_));
+    float wc = freq * (float)(2.0f * PI_F * kInterpolationRecip * inv_sample_rate_);
     float wc2 = wc * wc;
     alpha_ = 0.9892f * wc - 0.4324f * wc2 + 0.1381f * wc * wc2 - 0.0202f * wc2 * wc2;
     Qadjust_ = 1.006f + 0.0536f * wc - 0.095f * wc2 - 0.05f * wc2 * wc2;

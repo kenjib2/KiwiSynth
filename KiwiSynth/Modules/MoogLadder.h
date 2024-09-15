@@ -93,6 +93,7 @@ class MoogLadder
         static constexpr float kMaxResonance = 1.8f;
 
         float sample_rate_;
+        float inv_sample_rate_;
         float alpha_;
         float beta_[4] = {0.0, 0.0, 0.0, 0.0};
         float z0_[4] = {0.0, 0.0, 0.0, 0.0};

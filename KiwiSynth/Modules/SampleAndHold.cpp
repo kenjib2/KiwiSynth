@@ -15,7 +15,7 @@ namespace kiwi_synth
     void SampleAndHold::Process(float* sample, PatchSettings* patchSettings, float mod)
     {
         counter++;
-        if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod / 4.0f) {
+        if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod * 0.25f) {
             counter = 0;
             currentSample = *sample;
         }

@@ -30,7 +30,6 @@ using namespace kiwi_synth;
 
 /*
  * TO DO
- * Where can we replace division with multiplication of a precalculated inverse???
  * Fix low Eb on MPK Mini
  * Change UI screen so PLAY mode is just another screen to scroll left and right instead of clicking button to enter GUI
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
@@ -47,6 +46,8 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * Adjustable dust density
+ * Adjustable reverb decay length
  * External audio in
  * VariableShapeOsc for saw > tri > ramp effect
  * VariableShapeSaw for notch etc. pw effect

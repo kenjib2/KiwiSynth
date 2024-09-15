@@ -43,7 +43,7 @@ namespace kiwi_synth
             wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 5.0f, 1.0f));
             waveSample = wavefolder.Process(waveSample);
         } else if (waveform > 1) { // Sawtooth or Ramp
-            waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) / 2, -1.0f, 1.0f);
+            waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) * 0.5f, -1.0f, 1.0f);
         }
 
         *sample = waveSample;

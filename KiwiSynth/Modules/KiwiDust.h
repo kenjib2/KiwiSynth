@@ -43,11 +43,10 @@ class KiwiDust
 
     inline float Process()
     {
-        float inv_density = 1.0f / density_;
         float u           = rng->xorshift32() * kRandFrac;
         if(u < density_)
         {
-            return u * inv_density;
+            return u * inv_density_;
         }
         return 0.0f;
     }
@@ -56,11 +55,13 @@ class KiwiDust
     {
         density_ = fclamp(density, 0.f, 1.f);
         density_ = density_ * .3f;
+        inv_density_ = 1.0f / density_;
     }
 
   private:
     xorshiftPRNG*          rng;
     float                  density_;
+    float                  inv_density_;
     static constexpr float kRandFrac = 1.f / MAX_XORSHIFT_VALUE;
 };
 } // namespace daisysp
