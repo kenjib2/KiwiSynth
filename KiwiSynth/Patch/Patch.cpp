@@ -11,8 +11,8 @@ namespace kiwi_synth
         settings2.Init(multiPots, ge);
 
         SetVoiceMode(VOICE_MODE_POLY);
-
         strcpy(name, "Kiwi Sound");
+        effectsMode = FX_DIST_DLY_HLRVB;
 
         activeSettings = &settings1;
         voice1Settings = &settings1;

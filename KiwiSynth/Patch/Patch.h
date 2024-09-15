@@ -4,7 +4,7 @@
 
 #include "daisysp.h"
 
-#include "../Patch/PatchSettings.h"
+#include "PatchSettings.h"
 
 using namespace daisysp;
 
@@ -16,6 +16,15 @@ namespace kiwi_synth
         VOICE_MODE_MULTI
     } VoiceMode;
 
+    typedef enum {
+        FX_DIST_DLY_HLRVB,
+        FX_DIST_DLY_CHRVB,
+        FX_DIST_DLY_CARVB,
+        FX_DIST_DLY_RMRVB,
+        FX_DIST_DLY_BLRVB
+    } EffectsMode;
+    static const int FX_MODE_MAX = 5;
+
     class Patch
     {
         private:
@@ -25,6 +34,7 @@ namespace kiwi_synth
             PatchSettings           settings1;
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
+            EffectsMode             effectsMode;
 
         public:
             PatchSettings*          activeSettings;
@@ -38,6 +48,11 @@ namespace kiwi_synth
             // BUFFER MUST BE MAX_PATCH_NAME_LENGTH IN SIZE!!! Not validating because we need speed
             inline void getName(char* buffer) { strcpy(buffer, name); }
             inline void setValue(char* buffer) { strcpy(name, buffer); }
+            inline EffectsMode getEffectsMode() { return effectsMode; }
+            inline void setEffectsMode(EffectsMode newEffectsMode) {
+                if (newEffectsMode < 0) effectsMode = (EffectsMode)(newEffectsMode + FX_MODE_MAX);
+                else effectsMode = (EffectsMode)(newEffectsMode % FX_MODE_MAX);
+            }
             void SetVoiceMode(VoiceMode voiceMode);
     };
 }

@@ -48,6 +48,9 @@ namespace kiwi_synth
             switch (mode) {
                 default:
                     break;
+                case PLAY:
+                    patch->setEffectsMode(EffectsMode(patch->getEffectsMode() + 1));
+                    break;
                 case SYSTEM_SCREEN:
                     mode = BOOTLOADER;
                     Update();

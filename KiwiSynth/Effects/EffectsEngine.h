@@ -12,9 +12,11 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
+
     class EffectsEngine
     {
         private:
+            EffectsMode             mode;
             float                   reverbLevel;
             float                   gain;
             float                   level;
@@ -28,9 +30,9 @@ namespace kiwi_synth
             void Init(Patch* patch, float sampleRate);
 
             void UpdateSettings();
+            void UpdateMode(EffectsMode newMode);
             void Process(float* sample);
     };
 }
-
 
 #endif // __KIWI_SYNTH_EFFECTS_ENGINE_H__
