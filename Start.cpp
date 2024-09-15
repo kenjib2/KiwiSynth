@@ -32,6 +32,7 @@ using namespace kiwi_synth;
  * TO DO
  * Fix low Eb on MPK Mini
  * Change UI screen so PLAY mode is just another screen to scroll left and right instead of clicking button to enter GUI
+ * ^^ After above is done, in play mode UI button changes FX mode and/or reverb depth
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Sometimes crashes when switching voice modes.
@@ -131,8 +132,8 @@ int main(void)
 	uint16_t counter = 0;
     while(1)
 	{
-		System::DelayUs(5);
-
+		// We used to need a System::DelayUs(5); here to give the Multiplexer time to switch channels. No longer needed because of
+		// display.HandleInput() taking some time to finish and serving the same purpose.
 		kiwiSynth.ProcessInputs();
 		kiwiSynth.UpdateSettings();
 
