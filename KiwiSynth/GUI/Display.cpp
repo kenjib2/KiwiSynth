@@ -16,7 +16,6 @@ namespace kiwi_synth
         this->performance = performance;
         guiButton = false;
         mode = PLAY;
-        currentScreen = INT_SCREEN;
 
         welcomeScreen.Init(&display);
         bootloaderScreen.Init(&display);
@@ -37,25 +36,22 @@ namespace kiwi_synth
 
     void Display::HandleInput()
     {
+        DisplayMode newMode = (DisplayMode)GetSelectValue(DISPLAY_MODE_MAX);
+        if (newMode != mode) {
+            mode = newMode;
+            Update();
+        }
+
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
             switch (mode) {
-                case BOOTLOADER:
+                default:
                     break;
-                case PLAY:
-                    mode = GUI;
-                    patch->activeSettings->setValue(GEN_SELECT, (int8_t)0);
-                    break;
-                case GUI:
-                    if (GetSelectValue(NUM_SCREENS) == SYSTEM_SCREEN) {
-                        mode = BOOTLOADER;
-                        Update();
-                        System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
-                    } else {
-                        mode = PLAY;
-                        Update();
-                    }
+                case SYSTEM_SCREEN:
+                    mode = BOOTLOADER;
+                    Update();
+                    System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
                     break;
             }
         }
@@ -79,24 +75,19 @@ namespace kiwi_synth
     {
         switch (mode) {
             case PLAY:
+            default:
                 welcomeScreen.Display();
                 break;
-            case GUI:
-                currentScreen = (DisplayScreen)GetSelectValue(NUM_SCREENS);
-                switch(currentScreen) {
-                    case INT_SCREEN:
-                    default:
-                        intValueScreen.Display();
-                        break;
-                    case PATCH_SCREEN:
-                        patchScreen.Display();
-                        break;
-                    case SYSTEM_SCREEN:
-                        systemScreen.Display();
-                        break;
-                }
+            case INT_SCREEN:
+                intValueScreen.Display();
                 break;
-           case BOOTLOADER:
+            case PATCH_SCREEN:
+                patchScreen.Display();
+                break;
+            case SYSTEM_SCREEN:
+                systemScreen.Display();
+                break;
+            case BOOTLOADER:
                 bootloaderScreen.Display();
                 break;
         }

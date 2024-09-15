@@ -54,15 +54,11 @@ namespace kiwi_synth
     typedef enum {
         BOOTLOADER = -1,
         PLAY = 0,
-        GUI = 1
-    } DisplayMode;
-
-    typedef enum {
         INT_SCREEN,
         PATCH_SCREEN,
         SYSTEM_SCREEN
-    } DisplayScreen;
-    const int NUM_SCREENS = 3;
+    } DisplayMode;
+    const int DISPLAY_MODE_MAX = 4;
 
     class Display
     {
@@ -80,7 +76,6 @@ namespace kiwi_synth
         private:
             char buffer[256];
             bool guiButton;
-            DisplayScreen currentScreen;
             Patch* patch;
             Performance* performance;
             KiwiDisplay display;
