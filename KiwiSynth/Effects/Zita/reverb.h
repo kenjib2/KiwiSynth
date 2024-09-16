@@ -17,6 +17,12 @@
 //
 // ----------------------------------------------------------------------------
 
+/* Undocumented MAX VALUES
+ * rtlow and rtmid: 8.0f
+ * delay: 0.1f
+ */
+
+
 
 #ifndef __REVERB_H
 #define __REVERB_H

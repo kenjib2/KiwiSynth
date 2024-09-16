@@ -44,13 +44,15 @@ namespace kiwi_synth
                 //reverb.set_eq2 (1e3f, 0.0f);
                 break;
             case FX_DIST_DLY_CHRVB: // Chamber Reverb
-                reverb.set_delay(0.08f);
+                reverb.set_delay(0.05f);
                 reverb.set_rtlow(4.5f);
                 reverb.set_rtmid(3.0f);
                 break;
             case FX_DIST_DLY_CARVB: // Cathedral Reverb
-                reverb.set_delay(0.15f);
-                reverb.set_rtlow(10.0f);
+                //reverb.set_delay(0.15f); Need to update Zita for larger than 0.1f
+                reverb.set_delay(0.06f);
+                //reverb.set_rtlow(10.0f); Need to update Zita for larger than 8 sec
+                reverb.set_rtlow(8.0f);
                 reverb.set_rtmid(6.0f);
                 break;
             case FX_DIST_DLY_RMRVB: // Room Reverb
@@ -59,9 +61,10 @@ namespace kiwi_synth
                 reverb.set_rtmid(1.5f);
                 break;
             case FX_DIST_DLY_BLRVB: // Bloom Reverb
-                reverb.set_delay(0.75f);
-                reverb.set_rtlow(4.0f);
-                reverb.set_rtmid(6.0f);
+                //reverb.set_delay(0.75f); Need to update Zita for larger than 0.1f
+                reverb.set_delay(0.1f);
+                reverb.set_rtlow(2.0f);
+                reverb.set_rtmid(5.0f);
                 break;
         }
     }

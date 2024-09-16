@@ -19,11 +19,16 @@ namespace kiwi_synth
         sprintf(buffer, "Name: %s", nameString);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 16);
+        display->SetCursor(0, 12);
+        GetFxType(value);
+        sprintf(buffer, "FX: %s", value);
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 24);
         sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 32);
+        display->SetCursor(0, 36);
         sprintf(buffer, "Load Patch");
         display->WriteString(buffer, Font_6x8, true);
 
@@ -33,4 +38,26 @@ namespace kiwi_synth
 
         display->Update();
     }
+
+    // 17 character value
+    void PatchScreen::GetFxType(char* buffer) {
+        switch (patch->getEffectsMode()) {
+            case FX_DIST_DLY_HLRVB:
+                strcpy(buffer, "Dist-Dly-HallRvb");
+                break;
+            case FX_DIST_DLY_CHRVB:
+                strcpy(buffer, "Dist-Dly-ChambRvb");
+                break;
+            case FX_DIST_DLY_CARVB:
+                strcpy(buffer, "Dist-Dly-CathdRvb");
+                break;
+            case FX_DIST_DLY_RMRVB:
+                strcpy(buffer, "Dist-Dly-RoomRvb");
+                break;
+            case FX_DIST_DLY_BLRVB:
+                strcpy(buffer, "Dist-Dly-BloomRvb");
+                break;
+        }
+    }
+
 } // namespace kiwi_synth

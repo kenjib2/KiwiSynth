@@ -20,9 +20,12 @@ namespace kiwi_synth
             void Display();
 
         private:
-            char buffer[256];
+            char buffer[41];
+            char value[18];
             KiwiDisplay* display;
             Patch* patch;
+
+            void GetFxType(char* buffer);
     };
 } // namespace kiwi_synth
 
