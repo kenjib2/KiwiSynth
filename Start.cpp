@@ -29,9 +29,8 @@ using namespace kiwi_synth;
 
 
 /*
- * TO DO
- * Fix low Eb on MPK Mini
- * FX Modes: Chorus-Delay-Reverb. Delay-Phaser-Reverb. Ensemble-Phaser-Reverb. Delay-Flanger-Reverb. Sonic Annihilator. Bitcrush-Distort-Reverb.
+ * TO DO                                                                                                                                                                                                               
+ * FX Modes: Chorus-Delay. Delay-Phaser. Ensemble-Phaser. Delay-Flanger. Sonic Annihilator. Bitcrush-Distort.
  * Update Zita to handle larger delay values for Bloom reverb
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;

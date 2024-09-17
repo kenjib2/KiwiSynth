@@ -17,13 +17,18 @@ namespace kiwi_synth
     } VoiceMode;
 
     typedef enum {
-        FX_DIST_DLY_HLRVB,
-        FX_DIST_DLY_CHRVB,
-        FX_DIST_DLY_CARVB,
-        FX_DIST_DLY_RMRVB,
-        FX_DIST_DLY_BLRVB
+        FX_DISTORTION_DELAY
     } EffectsMode;
-    static const int FX_MODE_MAX = 5;
+    static const int FX_MODE_MAX = 1;
+
+    typedef enum {
+        REVERB_ROOM,
+        REVERB_HALL,
+        REVERB_CHAMBER,
+        REVERB_CATHEDRAL,
+        REVERB_BLOOM
+    } ReverbMode;
+    static const int REVERB_MODE_MAX = 5;
 
     class Patch
     {
@@ -35,6 +40,7 @@ namespace kiwi_synth
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
             EffectsMode             effectsMode;
+            ReverbMode              reverbMode;
 
         public:
             PatchSettings*          activeSettings;
@@ -52,6 +58,11 @@ namespace kiwi_synth
             inline void setEffectsMode(EffectsMode newEffectsMode) {
                 if (newEffectsMode < 0) effectsMode = (EffectsMode)(newEffectsMode + FX_MODE_MAX);
                 else effectsMode = (EffectsMode)(newEffectsMode % FX_MODE_MAX);
+            }
+            inline ReverbMode getReverbMode() { return reverbMode; }
+            inline void setReverbMode(ReverbMode newReverbMode) {
+                if (newReverbMode < 0) reverbMode = (ReverbMode)(newReverbMode + REVERB_MODE_MAX);
+                else reverbMode = (ReverbMode)(newReverbMode % REVERB_MODE_MAX);
             }
             void SetVoiceMode(VoiceMode voiceMode);
     };

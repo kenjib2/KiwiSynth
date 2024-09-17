@@ -26,6 +26,7 @@ namespace kiwi_synth
             Patch* patch;
 
             void GetFxType(char* buffer);
+            void GetReverbType(char* buffer);
     };
 } // namespace kiwi_synth
 

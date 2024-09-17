@@ -12,7 +12,8 @@ namespace kiwi_synth
 
         SetVoiceMode(VOICE_MODE_POLY);
         strcpy(name, "Kiwi Sound");
-        effectsMode = FX_DIST_DLY_HLRVB;
+        effectsMode = FX_DISTORTION_DELAY;
+        reverbMode = REVERB_HALL;
 
         activeSettings = &settings1;
         voice1Settings = &settings1;

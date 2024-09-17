@@ -19,20 +19,25 @@ namespace kiwi_synth
         sprintf(buffer, "Name: %s", nameString);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 12);
+        display->SetCursor(0, 10);
         GetFxType(value);
         sprintf(buffer, "FX: %s", value);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 24);
+        display->SetCursor(0, 20);
+        GetReverbType(value);
+        sprintf(buffer, "Reverb: %s", value);
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 30);
         sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 36);
+        display->SetCursor(0, 40);
         sprintf(buffer, "Load Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 48);
+        display->SetCursor(0, 50);
         sprintf(buffer, "Manual Mode");
         display->WriteString(buffer, Font_6x8, true);
 
@@ -42,20 +47,29 @@ namespace kiwi_synth
     // 17 character value
     void PatchScreen::GetFxType(char* buffer) {
         switch (patch->getEffectsMode()) {
-            case FX_DIST_DLY_HLRVB:
-                strcpy(buffer, "Dist-Dly-HallRvb");
+            case FX_DISTORTION_DELAY:
+                strcpy(buffer, "Distortion-Delay");
                 break;
-            case FX_DIST_DLY_CHRVB:
-                strcpy(buffer, "Dist-Dly-ChambRvb");
+        }
+    }
+
+    // 13 character value
+    void PatchScreen::GetReverbType(char* buffer) {
+        switch (patch->getReverbMode()) {
+            case REVERB_ROOM:
+                strcpy(buffer, "Room");
                 break;
-            case FX_DIST_DLY_CARVB:
-                strcpy(buffer, "Dist-Dly-CathdRvb");
+            case REVERB_HALL:
+                strcpy(buffer, "Hall");
                 break;
-            case FX_DIST_DLY_RMRVB:
-                strcpy(buffer, "Dist-Dly-RoomRvb");
+            case REVERB_CHAMBER:
+                strcpy(buffer, "Chamber");
                 break;
-            case FX_DIST_DLY_BLRVB:
-                strcpy(buffer, "Dist-Dly-BloomRvb");
+            case REVERB_CATHEDRAL:
+                strcpy(buffer, "Cathedral");
+                break;
+            case REVERB_BLOOM:
+                strcpy(buffer, "Bloom");
                 break;
         }
     }

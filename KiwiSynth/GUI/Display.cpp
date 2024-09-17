@@ -49,10 +49,10 @@ namespace kiwi_synth
                 default:
                     break;
                 case PLAY:
-                    patch->setEffectsMode(EffectsMode(patch->getEffectsMode() + 1));
+                    patch->setReverbMode((ReverbMode)(patch->getReverbMode() + 1));
                     break;
                 case PATCH_SCREEN:
-                    patch->setEffectsMode(EffectsMode(patch->getEffectsMode() + 1));
+                    patch->setEffectsMode((EffectsMode)(patch->getEffectsMode() + 1));
                     Update();
                     break;
                 case SYSTEM_SCREEN:

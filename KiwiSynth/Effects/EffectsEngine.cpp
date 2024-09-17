@@ -26,15 +26,31 @@ namespace kiwi_synth
         delay.SetDelaySamples((int)patch->activeSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
         delay.SetFeedback(patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
 
-        if (patch->getEffectsMode() != mode) {
-            UpdateMode(patch->getEffectsMode());
+        if (patch->getEffectsMode() != effectsMode) {
+            UpdateEffectsMode(patch->getEffectsMode());
+        }
+        if (patch->getReverbMode() != reverbMode) {
+            UpdateReverbMode(patch->getReverbMode());
         }
     }
 
-    void EffectsEngine::UpdateMode(EffectsMode newMode) {
-        mode = newMode;
-        switch (mode) {
-            case FX_DIST_DLY_HLRVB: // Hall Reverb
+    void EffectsEngine::UpdateEffectsMode(EffectsMode newMode) {
+        effectsMode = newMode;
+        switch (effectsMode) {
+            case FX_DISTORTION_DELAY:
+                break;
+        }
+    }
+
+    void EffectsEngine::UpdateReverbMode(ReverbMode newMode) {
+        reverbMode = newMode;
+        switch (reverbMode) {
+            case REVERB_ROOM:
+                reverb.set_delay(0.02f);
+                reverb.set_rtlow(1.8f);
+                reverb.set_rtmid(1.5f);
+                break;
+            case REVERB_HALL:
                 reverb.set_delay(0.04f);
                 //reverb.set_xover(200.0f);
                 reverb.set_rtlow(3.0f);
@@ -43,24 +59,19 @@ namespace kiwi_synth
                 //reverb.set_eq1 (1e3f, 0.0f);
                 //reverb.set_eq2 (1e3f, 0.0f);
                 break;
-            case FX_DIST_DLY_CHRVB: // Chamber Reverb
+            case REVERB_CHAMBER:
                 reverb.set_delay(0.05f);
                 reverb.set_rtlow(4.5f);
                 reverb.set_rtmid(3.0f);
                 break;
-            case FX_DIST_DLY_CARVB: // Cathedral Reverb
+            case REVERB_CATHEDRAL:
                 //reverb.set_delay(0.15f); Need to update Zita for larger than 0.1f
                 reverb.set_delay(0.06f);
                 //reverb.set_rtlow(10.0f); Need to update Zita for larger than 8 sec
                 reverb.set_rtlow(8.0f);
                 reverb.set_rtmid(6.0f);
                 break;
-            case FX_DIST_DLY_RMRVB: // Room Reverb
-                reverb.set_delay(0.02f);
-                reverb.set_rtlow(1.8f);
-                reverb.set_rtmid(1.5f);
-                break;
-            case FX_DIST_DLY_BLRVB: // Bloom Reverb
+            case REVERB_BLOOM:
                 //reverb.set_delay(0.75f); Need to update Zita for larger than 0.1f
                 reverb.set_delay(0.1f);
                 reverb.set_rtlow(2.0f);

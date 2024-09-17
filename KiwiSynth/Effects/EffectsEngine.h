@@ -16,7 +16,8 @@ namespace kiwi_synth
     class EffectsEngine
     {
         private:
-            EffectsMode             mode;
+            EffectsMode             effectsMode;
+            ReverbMode              reverbMode;
             float                   reverbLevel;
             float                   gain;
             float                   level;
@@ -30,7 +31,8 @@ namespace kiwi_synth
             void Init(Patch* patch, float sampleRate);
 
             void UpdateSettings();
-            void UpdateMode(EffectsMode newMode);
+            void UpdateEffectsMode(EffectsMode newMode);
+            void UpdateReverbMode(ReverbMode newMode);
             void Process(float* sample);
     };
 }
