@@ -34,7 +34,7 @@ using namespace kiwi_synth;
  * Update Zita to handle larger delay values for Bloom reverb
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
- * Is there some way to read more than one channel per pass from the multiplexer???
+ * Is there some way to read more than one channel per pass from the multiplexer or speed it up in any other way???
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
@@ -46,8 +46,6 @@ using namespace kiwi_synth;
  * Flanger
  * Phaser
  * Make attack longer or a slower curve?
- * Adjustable dust density
- * Adjustable reverb decay length
  * Can we try three voices again?
  * External audio in
  * VariableShapeOsc for saw > tri > ramp effect
