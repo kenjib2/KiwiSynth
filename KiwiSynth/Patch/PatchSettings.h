@@ -17,9 +17,9 @@ namespace kiwi_synth
 {
     const static int MAX_PATCH_NAME_LENGTH = 31;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
-    const static int NUM_MOD_DESTINATIONS = 29; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
-    const static int NUM_PATCH_SETTINGS = 102;
+    const static int NUM_PATCH_SETTINGS = 103;
     const static float MIN_DISTORTION_GAIN = 5.0f;
     const static float MAX_DISTORTION_GAIN = 150.0f;
 
@@ -59,93 +59,94 @@ namespace kiwi_synth
         VCO_NOISE_ON,
         VCO_NOISE_TYPE,
         VCO_NOISE_LEVEL,
-        VCO_EXT_ON,                 // 25
+        VCO_DUST_DENSITY,           // 25
+        VCO_EXT_ON,
         // External gain is analog only
         VCO_EXT_TRIGGER_GATE,
         VCO_EXT_LEVEL,
 
         VCF_FILTER_TYPE,
-        VCF_CUTOFF,
-        VCF_RESONANCE,              // 30
+        VCF_CUTOFF,                 // 30
+        VCF_RESONANCE,
         VCF_TRACKING,
         VCF_ENV_1_DEPTH,
         VCF_ENV_2_DEPTH,
 
-        VCA_LEVEL,
-        VCA_ENV_1_DEPTH,            // 35
+        VCA_LEVEL,                  // 35
+        VCA_ENV_1_DEPTH,
 
         ENV_1_ATTACK,
         ENV_2_ATTACK,
         ENV_1_DECAY,
-        ENV_2_DECAY,
-        ENV_1_SUSTAIN,              // 40
+        ENV_2_DECAY,                // 40
+        ENV_1_SUSTAIN,
         ENV_2_SUSTAIN,
         ENV_1_RELEASE,
         ENV_2_RELEASE,
-        ENV_1_REVERSE_PHASE_ON,
-        ENV_2_REVERSE_PHASE_ON,     // 45
+        ENV_1_REVERSE_PHASE_ON,     // 45
+        ENV_2_REVERSE_PHASE_ON,
 
         LFO_1_WAVEFORM,
         LFO_2_WAVEFORM,
         LFO_1_PULSE_WIDTH,
-        LFO_2_PULSE_WIDTH,
-        LFO_1_RATE,                 // 50
+        LFO_2_PULSE_WIDTH,          // 50
+        LFO_1_RATE,
         LFO_2_RATE,
         LFO_1_TRIGGER_RESET_ON,
         LFO_2_TRIGGER_RESET_ON,
-        LFO_1_TRIGGER_PHASE,
-        LFO_2_TRIGGER_PHASE,        // 55
+        LFO_1_TRIGGER_PHASE,        // 55
+        LFO_2_TRIGGER_PHASE,
         LFO_1_TO_MASTER_TUNE,
         LFO_2_TO_VCF_CUTOFF,
 
         SH_TO_VCF_CUTOFF,
-        SH_RATE,
+        SH_RATE,                    // 60
 
-        MOD_1_SOURCE,               // 60
+        MOD_1_SOURCE,
         MOD_2_SOURCE,
         MOD_3_SOURCE,
         MOD_4_SOURCE,
-        MOD_5_SOURCE,
-        MOD_6_SOURCE,               // 65
+        MOD_5_SOURCE,               // 65
+        MOD_6_SOURCE,
         MOD_7_SOURCE,
         MOD_8_SOURCE,
 
         MOD_1_DESTINATION,
-        MOD_2_DESTINATION,
-        MOD_3_DESTINATION,          // 70
+        MOD_2_DESTINATION,          // 70
+        MOD_3_DESTINATION,
         MOD_4_DESTINATION,
         MOD_5_DESTINATION,
         MOD_6_DESTINATION,
-        MOD_7_DESTINATION,
-        MOD_8_DESTINATION,          // 75
+        MOD_7_DESTINATION,          // 75
+        MOD_8_DESTINATION,
 
         MOD_1_DEPTH,
         MOD_2_DEPTH,
         MOD_3_DEPTH,
-        MOD_4_DEPTH,
-        MOD_5_DEPTH,                // 80
+        MOD_4_DEPTH,                // 80
+        MOD_5_DEPTH,
         MOD_6_DEPTH,
         MOD_7_DEPTH,
         MOD_8_DEPTH,
 
-        FX_1,
-        FX_2,                       // 85
+        FX_1,                       // 85
+        FX_2,
         FX_3,
         FX_4,
         FX_5,
-        FX_REVERB,
+        FX_REVERB,                  // 90
 
-        GEN_BALANCE,                // 90
+        GEN_BALANCE,
         GEN_SELECT,
         GEN_SELECT_BUTTON,
         GEN_FX_SELECT,
-        GEN_REVERB_SELECT,
-        GEN_REVERB_DECAY,           // 95
+        GEN_REVERB_SELECT,          // 95
+        GEN_REVERB_DECAY,
         GEN_NAME,
         GEN_AFTERTOUCH,
         GEN_MOD_WHEEL,
-        GEN_PITCH_BEND,
-        GEN_EXPRESSION,             // 100
+        GEN_PITCH_BEND,             // 100
+        GEN_EXPRESSION,
         GEN_SUSTAIN
         
         // Headphones is analog only
@@ -183,39 +184,40 @@ namespace kiwi_synth
         DST_VCO_2_PULSE_WIDTH,  // 5
         DST_VCO_3_FREQ,         // 6
         DST_VCO_3_PULSE_WIDTH,  // 7
-        DST_NOISE_LEVEL,        // 8
-        DST_SH_RATE,            // 9
-        DST_VCF_CUTOFF,         // 10
-        DST_VCF_RESONANCE,      // 11
+        DST_NOISE_DENSITY,      // 8
+        DST_NOISE_LEVEL,        // 9
+        DST_SH_RATE,            // 10
+        DST_VCF_CUTOFF,         // 11
+        DST_VCF_RESONANCE,      // 12
         //DST_VCF_ENV_1_DEPTH,          // Modulating other modulations might be complicated
         //DST_VCF_ENV_2_DEPTH,
-        DST_VCA_LEVEL,          // 12
-        DST_VCA_ENV_1_DEPTH,    // 13
+        DST_VCA_LEVEL,          // 13
+        DST_VCA_ENV_1_DEPTH,    // 14
         //DST_VCA_ENV_2_DEPTH,
-        DST_LFO_1_FREQ,         // 14
-        DST_LFO_1_PULSE_WIDTH,  // 15
+        DST_LFO_1_FREQ,         // 15
+        DST_LFO_1_PULSE_WIDTH,  // 16
         //DST_LFO_1_TO_MASTER_TUNE,
-        DST_LFO_1_TRIGGER_PHASE,// 16
-        DST_LFO_2_FREQ,         // 17
-        DST_LFO_2_PULSE_WIDTH,  // 18
+        DST_LFO_1_TRIGGER_PHASE,// 17
+        DST_LFO_2_FREQ,         // 18
+        DST_LFO_2_PULSE_WIDTH,  // 19
         //DST_LFO_2_TO_VCF_CUTOFF,
-        DST_LFO_2_TRIGGER_PHASE,// 19
-        DST_ENV_1_ATTACK,       // 20
-        DST_ENV_1_DECAY,        // 21
-        DST_ENV_1_SUSTAIN,      // 22
-        DST_ENV_1_RELEASE,      // 23
-        DST_ENV_2_ATTACK,       // 24
-        DST_ENV_2_DECAY,        // 25
-        DST_ENV_2_SUSTAIN,      // 26
-        DST_ENV_2_RELEASE,      // 27
-        DST_BALANCE             // 28
+        DST_LFO_2_TRIGGER_PHASE,// 20
+        DST_ENV_1_ATTACK,       // 21
+        DST_ENV_1_DECAY,        // 22
+        DST_ENV_1_SUSTAIN,      // 23
+        DST_ENV_1_RELEASE,      // 24
+        DST_ENV_2_ATTACK,       // 25
+        DST_ENV_2_DECAY,        // 26
+        DST_ENV_2_SUSTAIN,      // 27
+        DST_ENV_2_RELEASE,      // 28
+        DST_BALANCE             // 29
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               // Could possibly modulate for sources 7-12 only or have only voice 1 apply or only in solo mode?
         //DST_FX_3,
         //DST_FX_4,
         //DST_FX_5,
         //DST_FX_REVERB
-    } ModulationDestination; // 28 destinations not including None
+    } ModulationDestination; // 29 destinations not including None
 
     /*
      * Manages update and access to all of the settings for the Kiwi Synth. PatchSettings maintains its own value buffers independent

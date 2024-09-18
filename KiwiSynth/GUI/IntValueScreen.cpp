@@ -70,14 +70,14 @@ namespace kiwi_synth
     void IntValueScreen::GetVoiceMode(char* buffer)
     {
         switch (patch->activeSettings->getIntValue(VCO_VOICES)) {
-            case 0:
-                strcpy(buffer, "2v");
+            case VOICE_MODE_POLY:
+                strcpy(buffer, "Pl");
                 break;
-            case 1:
-                strcpy(buffer, "1v");
+            case VOICE_MODE_MONO:
+                strcpy(buffer, "Mo");
                 break;
-            case 2:
-                strcpy(buffer, "Mt");
+            case VOICE_MODE_MULTI:
+                strcpy(buffer, "MT");
                 break;
         }
     }
@@ -160,49 +160,49 @@ namespace kiwi_synth
     // 5 character value
     void IntValueScreen::GetModSource(char* buffer, int modNumber) {
         switch (patch->activeSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber))) {
-            case 0:
+            case SRC_NONE:
                 strcpy(buffer, "None ");
                 break;
-            case 1:
+            case SRC_FIXED:
                 strcpy(buffer, "Fixed");
                 break;
-            case 2:
+            case SRC_LFO_1:
                 strcpy(buffer, "LFO 1");
                 break;
-            case 3:
+            case SRC_LFO_2:
                 strcpy(buffer, "LFO 2");
                 break;
-            case 4:
+            case SRC_ENV_1:
                 strcpy(buffer, "Env 1");
                 break;
-            case 5:
+            case SRC_ENV_2:
                 strcpy(buffer, "Env 2");
                 break;
-            case 6:
+            case SRC_SH:
                 strcpy(buffer, "SmHld");
                 break;
-            case 7:
+            case SRC_NOTE:
                 strcpy(buffer, "Note ");
                 break;
-            case 8:
+            case SRC_VELOCITY:
                 strcpy(buffer, "Veloc");
                 break;
-            case 9:
+            case SRC_AFTERTOUCH:
                 strcpy(buffer, "AftTo");
                 break;
-            case 10:
+            case SRC_MOD_WHEEL:
                 strcpy(buffer, "ModWh");
                 break;
-            case 11:
+            case SRC_PITCH_BEND:
                 strcpy(buffer, "PBend");
                 break;
-            case 12:
+            case SRC_EXPRESSION:
                 strcpy(buffer, "Expre");
                 break;
-            case 13:
+            case SRC_SUSTAIN:
                 strcpy(buffer, "Susta");
                 break;
-            case 14:
+            case SRC_VOICE_NO:
                 strcpy(buffer, "VcNum");
                 break;
         }
@@ -211,94 +211,97 @@ namespace kiwi_synth
     // 2 character value
     void IntValueScreen::GetModDestination(char* buffer, int modNumber) {
         switch (patch->activeSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber))) {
-            case -1:
+            case DST_NONE:
                 strcpy(buffer, "None ");
                 break;
-            case 0:
+            case DST_VCOS_FREQ:
                 strcpy(buffer, "Frequ");
                 break;
-            case 1:
+            case DST_VCOS_PULSE_WIDTH:
                 strcpy(buffer, "PWdth");
                 break;
-            case 2:
+            case DST_VCO_1_FREQ:
                 strcpy(buffer, "V1Frq");
                 break;
-            case 3:
+            case DST_VCO_1_PULSE_WIDTH:
                 strcpy(buffer, "V1Pwd");
                 break;
-            case 4:
+            case DST_VCO_2_FREQ:
                 strcpy(buffer, "V2Frq");
                 break;
-            case 5:
+            case DST_VCO_2_PULSE_WIDTH:
                 strcpy(buffer, "V2Pwd");
                 break;
-            case 6:
+            case DST_VCO_3_FREQ:
                 strcpy(buffer, "V3Frq");
                 break;
-            case 7:
+            case DST_VCO_3_PULSE_WIDTH:
                 strcpy(buffer, "V3Pwd");
                 break;
-            case 8:
+            case DST_NOISE_DENSITY:
+                strcpy(buffer, "NsDns");
+                break;
+            case DST_NOISE_LEVEL:
                 strcpy(buffer, "NsLvl");
                 break;
-            case 9:
+            case DST_SH_RATE:
                 strcpy(buffer, "SHRat");
                 break;
-            case 10:
+            case DST_VCF_CUTOFF:
                 strcpy(buffer, "VCFCt");
                 break;
-            case 11:
+            case DST_VCF_RESONANCE:
                 strcpy(buffer, "VCFRs");
                 break;
-            case 12:
+            case DST_VCA_LEVEL:
                 strcpy(buffer, "VCALv");
                 break;
-            case 13:
+            case DST_VCA_ENV_1_DEPTH:
                 strcpy(buffer, "VCAE1");
                 break;
-            case 14:
+            case DST_LFO_1_FREQ:
                 strcpy(buffer, "L1Frq");
                 break;
-            case 15:
+            case DST_LFO_1_PULSE_WIDTH:
                 strcpy(buffer, "L1Pwd");
                 break;
-            case 16:
+            case DST_LFO_1_TRIGGER_PHASE:
                 strcpy(buffer, "L1Phs");
                 break;
-            case 17:
+            case DST_LFO_2_FREQ:
                 strcpy(buffer, "L2Frq");
                 break;
-            case 18:
+            case DST_LFO_2_PULSE_WIDTH:
                 strcpy(buffer, "L2Pwd");
                 break;
-            case 19:
+            case DST_LFO_2_TRIGGER_PHASE:
                 strcpy(buffer, "L2Phs");
                 break;
-            case 20:
+            case DST_ENV_1_ATTACK:
                 strcpy(buffer, "E1Atk");
                 break;
-            case 21:
+            case DST_ENV_1_DECAY:
                 strcpy(buffer, "E1Dec");
                 break;
-            case 22:
+            case DST_ENV_1_SUSTAIN:
                 strcpy(buffer, "E1Sus");
                 break;
-            case 23:
+            case DST_ENV_1_RELEASE:
                 strcpy(buffer, "E1Rel");
                 break;
-            case 24:
+            case DST_ENV_2_ATTACK:
                 strcpy(buffer, "E2Atk");
                 break;
-            case 25:
+            case DST_ENV_2_DECAY:
                 strcpy(buffer, "E2Dec");
                 break;
-            case 26:
+            case DST_ENV_2_SUSTAIN:
                 strcpy(buffer, "E2Sus");
                 break;
-            case 27:
+            case DST_ENV_2_RELEASE:
                 strcpy(buffer, "E2Rel");
                 break;
-            case 28:
+            case DST_BALANCE:
                 strcpy(buffer, "Balnc");
                 break;
         }

@@ -20,6 +20,7 @@ namespace kiwi_synth
             bool       noteTriggered;
             WhiteNoise white;
             KiwiDust   dust;
+            static constexpr float DEFAULT_DENSITY = 0.008f;
 
         public:
             Noise() {}
@@ -27,11 +28,16 @@ namespace kiwi_synth
             void Init(float sampleRate);
 
             void UpdateSettings(PatchSettings* patchSettings);
-            inline void Process(float* sample, PatchSettings* patchSettings, float mod)
+            inline void Process(float* sample, PatchSettings* patchSettings, float mod, float densityMod)
             {
                 if (noiseType == 0) {
                     lastSample = white.Process() * 0.2;
                 } else {
+                    if (densityMod > 0.002f) {
+                        dust.SetDensity(densityMod * densityMod * densityMod);
+                    } else {
+                        dust.SetDensity(DEFAULT_DENSITY);
+                    }
                     lastSample = dust.Process();
                 }
 

@@ -12,7 +12,7 @@ namespace kiwi_synth
         white.SetSeed(std::rand());
         white.SetAmp(1.0f);
         dust.Init();
-        dust.SetDensity(0.015f);
+        dust.SetDensity(DEFAULT_DENSITY);
     }
 
     void Noise::UpdateSettings(PatchSettings* patchSettings)

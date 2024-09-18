@@ -145,7 +145,7 @@ namespace kiwi_synth
 
         float sampleAndHoldSample = 0.0f;
         float noiseSample = 0.0f;
-        noise.Process(&noiseSample, patchSettings, modValues[DST_NOISE_LEVEL]);
+        noise.Process(&noiseSample, patchSettings, modValues[DST_NOISE_LEVEL], modValues[DST_NOISE_DENSITY]);
         fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
 
         sampleAndHoldSample = noise.GetLastSample();
