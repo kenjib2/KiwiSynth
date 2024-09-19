@@ -23,6 +23,14 @@ namespace kiwi_synth
     const static float MIN_DISTORTION_GAIN = 5.0f;
     const static float MAX_DISTORTION_GAIN = 150.0f;
 
+    typedef enum {
+        WAVEFORM_SQUARE,
+        WAVEFORM_SAWTOOTH,
+        WAVEFORM_TRIANGLE,
+        WAVEFORM_VARISHAPE,
+        WAVEFORM_VARISAW
+    } Waveform;
+
     /*
      * All controls for the Kiwi Synth.
      */

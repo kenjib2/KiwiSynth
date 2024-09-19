@@ -25,9 +25,10 @@ namespace kiwi_synth
         noteOnReset = patchSettings->getBoolValue((PatchSetting)(PatchSetting::LFO_1_TRIGGER_RESET_ON + lfoNumber));
         pulseWidth = patchSettings->getFloatValueLinear((PatchSetting)(PatchSetting::LFO_1_PULSE_WIDTH + lfoNumber), 0.03f, 0.97f);
         if (pulseWidth < 0.032f) {
-            waveFolderGain = 1.0f;
+            sawtoothGain = waveFolderGain = 1.0f;
         } else {
-            waveFolderGain = 0.97f + pulseWidth * 5.0f;
+            waveFolderGain = 0.84f + pulseWidth * 5.0f;
+            sawtoothGain = 0.999606784f + pulseWidth * pulseWidth * pulseWidth * 12.0f;
         }
     }
 
@@ -43,7 +44,7 @@ namespace kiwi_synth
             wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 5.0f, 1.0f));
             waveSample = wavefolder.Process(waveSample);
         } else if (waveform > 1) { // Sawtooth or Ramp
-            waveSample = fclamp(waveSample * (waveFolderGain + 1.0f) * 0.5f, -1.0f, 1.0f);
+            waveSample = fclamp(waveSample * sawtoothGain, -1.0f, 1.0f);
         }
 
         *sample = waveSample;

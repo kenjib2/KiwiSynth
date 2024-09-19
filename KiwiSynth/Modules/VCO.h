@@ -18,7 +18,9 @@ namespace kiwi_synth
         private:
             uint8_t    vcoNumber;
             float      pulseWidth;
+            float      variShape;
             float      waveFolderGain;
+            float      sawtoothGain;
             float      level;
             float      fineTune; // mod to midi note -1 to 1
             float      interval; // mod to midi note -11 to 11
@@ -29,6 +31,8 @@ namespace kiwi_synth
             bool       noteTriggered;
             int        waveform;
             Oscillator osc;
+            VariableShapeOscillator variOsc;
+            VariableSawOscillator variSaw;
             Wavefolder wavefolder;
 
         public:

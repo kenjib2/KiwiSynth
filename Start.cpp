@@ -31,25 +31,23 @@ using namespace kiwi_synth;
 /*
  * TO DO                                                                                                                                                                                                               
  * FX Modes: Chorus-Delay. Delay-Phaser. Ensemble-Phaser. Delay-Flanger. Sonic Annihilator. Bitcrush-Distort.
- * Update Zita to handle larger delay values for Bloom reverb
- * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
- * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
- * Is there some way to read more than one channel per pass from the multiplexer or speed it up in any other way???
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * Split polytimbral mode
  * Alternate inputs to S&H (instead of noise)
- * Can we make the data structures a little smaller without losing performance?
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Chorus
  * Flanger
  * Phaser
+ * Can we make the data structures a little smaller without losing performance?
+ * Update Zita to handle larger delay values for Bloom reverb
+ * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
+ * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
+ * Is there some way to read more than one channel per pass from the multiplexer or speed it up in any other way???
  * Make attack longer or a slower curve?
  * Can we try three voices again?
  * External audio in
- * VariableShapeOsc for saw > tri > ramp effect
- * VariableShapeSaw for notch etc. pw effect
  * Bhāskara I's sine approximation formula
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))

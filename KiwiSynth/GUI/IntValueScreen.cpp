@@ -85,14 +85,20 @@ namespace kiwi_synth
     // 2 character value
     void IntValueScreen::GetWaveform(char* buffer, int vcoNumber) {
         switch (patch->activeSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber))) {
-            case 0:
+            case WAVEFORM_SQUARE:
                 strcpy(buffer, "Sq");
                 break;
-            case 1:
+            case WAVEFORM_SAWTOOTH:
                 strcpy(buffer, "Sa");
                 break;
-            case 2:
+            case WAVEFORM_TRIANGLE:
                 strcpy(buffer, "Tr");
+                break;
+            case WAVEFORM_VARISHAPE:
+                strcpy(buffer, "Sh");
+                break;
+            case WAVEFORM_VARISAW:
+                strcpy(buffer, "VS");
                 break;
         }
     }

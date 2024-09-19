@@ -19,6 +19,7 @@ namespace kiwi_synth
             int             waveform;
             float           pulseWidth;
             float           waveFolderGain;
+            float           sawtoothGain;
             float           freq;
             bool            noteOnReset;
             float           basePhase;
