@@ -30,7 +30,7 @@ using namespace kiwi_synth;
 
 /*
  * TO DO                                                                                                                                                                                                               
- * FX Modes: Chorus-Delay. Delay-Phaser. Ensemble-Phaser. Delay-Flanger. Sonic Annihilator. Bitcrush-Distort.
+ * FX Modes: Ensemble-Phaser. Sonic Annihilator. Bitcrush-Distort.
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)

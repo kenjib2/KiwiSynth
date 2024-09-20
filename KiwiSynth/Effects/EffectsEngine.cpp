@@ -3,10 +3,23 @@
 namespace kiwi_synth
 {
     const float ATAN_DEBOUNCE_THRESHOLD = 5.1f;
+    const float FREQ_DEBOUNCE_THRESHOLD = 0.05f;
 
     void EffectsEngine::Init(Patch* patch, float sampleRate)
     {
         this->patch = patch;
+        chorusL.Init(sampleRate, 0);
+        chorusR.Init(sampleRate, 1);
+        chorusL.SetPan(0.0f);
+        chorusR.SetPan(0.0f);
+        phaserL.Init(sampleRate, 2);
+        phaserR.Init(sampleRate, 3);
+        phaserL.SetPoles(6);
+        phaserR.SetPoles(6);
+        phaserL.SetFeedback(0.1);
+        phaserR.SetFeedback(0.1);
+        flangerL.Init(sampleRate, 4);
+        flangerR.Init(sampleRate, 5);
         reverb.init(sampleRate, false);
         delay.Init();
     }
@@ -22,23 +35,29 @@ namespace kiwi_synth
         gain = patch->activeSettings->getFloatValueLogLookup(PatchSetting::FX_1);
         level = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
 
+        freq = patch->activeSettings->getFloatValueLogLookup(PatchSetting::MOD_1_DEPTH);   // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
+        chorusL.SetLfoFreq(freq);
+        chorusR.SetLfoFreq(freq * 0.95f);
+        phaserL.SetLfoFreq(freq);
+        phaserR.SetLfoFreq(freq);
+        flangerL.SetLfoFreq(freq);
+        flangerR.SetLfoFreq(freq);
+        feedback = chorusDepth = patch->activeSettings->getFloatValue(PatchSetting::FX_2);
+        phaserDepth = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.2f, 1.0f);
+        chorusL.SetLfoDepth(chorusDepth);
+        chorusR.SetLfoDepth(chorusDepth);
+        phaserL.SetLfoDepth(phaserDepth);
+        phaserR.SetLfoDepth(phaserDepth);
+        flangerL.SetFeedback(feedback);
+        flangerR.SetFeedback(feedback);
+
         delay.SetLevel(patch->activeSettings->getFloatValue(PatchSetting::FX_3));
         delay.SetDelaySamples((int)patch->activeSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES));
         delay.SetFeedback(patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f));
 
-        if (patch->getEffectsMode() != effectsMode) {
-            UpdateEffectsMode(patch->getEffectsMode());
-        }
+        effectsMode = patch->getEffectsMode();
         if (patch->getReverbMode() != reverbMode) {
             UpdateReverbMode(patch->getReverbMode());
-        }
-    }
-
-    void EffectsEngine::UpdateEffectsMode(EffectsMode newMode) {
-        effectsMode = newMode;
-        switch (effectsMode) {
-            case FX_DISTORTION_DELAY:
-                break;
         }
     }
 
@@ -83,13 +102,31 @@ namespace kiwi_synth
     void EffectsEngine::Process(float* sample)
     {
         // PROCESSING DISTORTION
-        if (gain > ATAN_DEBOUNCE_THRESHOLD) {
+        if (effectsMode == FX_DISTORTION_DELAY && gain > ATAN_DEBOUNCE_THRESHOLD) {
             sample[0] = atan(sample[0] * gain) * level; // atan has a limit of pi/2 or @1.57. The max of level is 0.22 so total output will never exceed +/- 0.346
             sample[1] = atan(sample[1] * gain) * level;
         }
 
+        // PROCESSING CHORUS
+        if (effectsMode == FX_CHORUS_DELAY && freq > FREQ_DEBOUNCE_THRESHOLD) {
+            sample[0] = chorusL.Process(sample[0]);
+            sample[1] = chorusR.Process(sample[1]);
+        }
+
         //PROCESSING DELAY
         delay.Process(sample);
+
+        // PROCESSING FLANGER
+        if (effectsMode == FX_FLANGER_DELAY && freq > FREQ_DEBOUNCE_THRESHOLD) {
+            sample[0] = flangerL.Process(sample[0]);
+            sample[1] = flangerR.Process(sample[1]);
+        }
+
+        // PROCESSING PHASER
+        if (effectsMode == FX_PHASER_DELAY && freq > FREQ_DEBOUNCE_THRESHOLD) {
+            sample[0] = phaserL.Process(sample[0]);
+            sample[1] = phaserR.Process(sample[1]);
+        }
 
         // PROCESSING REVERB
         float xl = sample[0];

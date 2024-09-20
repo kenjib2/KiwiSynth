@@ -5,8 +5,11 @@
 #include "daisysp.h"
 
 #include "../Patch/Patch.h"
-#include "Delay.h"
 #include "Zita/reverb.h"
+#include "Delay.h"
+#include "KiwiChorus.h"
+#include "KiwiPhaser.h"
+#include "KiwiFlanger.h"
 
 using namespace daisysp;
 
@@ -21,9 +24,19 @@ namespace kiwi_synth
             float                   reverbLevel;
             float                   gain;
             float                   level;
+            float                   freq;
+            float                   chorusDepth;
+            float                   phaserDepth;
+            float                   feedback;
             Patch*                  patch;
             Reverb                  reverb;
             Delay                   delay;
+            KiwiChorus              chorusL;
+            KiwiChorus              chorusR;
+            KiwiPhaser              phaserL;
+            KiwiPhaser              phaserR;
+            KiwiFlanger             flangerL;
+            KiwiFlanger             flangerR;
 
         public:
             EffectsEngine() {}
@@ -31,7 +44,6 @@ namespace kiwi_synth
             void Init(Patch* patch, float sampleRate);
 
             void UpdateSettings();
-            void UpdateEffectsMode(EffectsMode newMode);
             void UpdateReverbMode(ReverbMode newMode);
             void Process(float* sample);
     };

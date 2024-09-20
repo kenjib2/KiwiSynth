@@ -328,7 +328,11 @@ namespace kiwi_synth
              */
             inline float getFloatValueLogLookup(PatchSetting setting)
             {
-                float value = getFloatValue(setting);
+                float value;
+                value = getFloatValue(setting);
+                if (setting == MOD_1_DEPTH) { // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
+                    value = getFloatValue(FX_1);
+                }
                 float lmin = lMinLookup[setting];
                 float lmax = lMaxLookup[setting];
                 return expf((value * (lmax - lmin)) + lmin);

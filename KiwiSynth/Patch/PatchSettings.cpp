@@ -56,6 +56,7 @@ namespace kiwi_synth
         tmp[LFO_1_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
         tmp[LFO_2_RATE] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.1f);
         tmp[SH_RATE] = logf(48.0f < 0.0000001f ? 0.0000001f : 48.0f);
+        tmp[MOD_1_DEPTH] = logf(0.1f < 0.0000001f ? 0.0000001f : 0.045f);  // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
 
         return tmp;
     }
@@ -70,6 +71,7 @@ namespace kiwi_synth
         tmp[LFO_1_RATE] = logf(20.0f);
         tmp[LFO_2_RATE] = logf(20.0f);
         tmp[SH_RATE] = logf(48000.0f);
+        tmp[MOD_1_DEPTH] = logf(12.0f);  // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
 
         return tmp;
     }

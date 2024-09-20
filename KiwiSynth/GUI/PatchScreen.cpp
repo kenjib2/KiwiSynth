@@ -50,6 +50,15 @@ namespace kiwi_synth
             case FX_DISTORTION_DELAY:
                 strcpy(buffer, "Distortion-Delay");
                 break;
+            case FX_CHORUS_DELAY:
+                strcpy(buffer, "Chorus-Delay");
+                break;
+            case FX_PHASER_DELAY:
+                strcpy(buffer, "Phaser-Delay");
+                break;
+            case FX_FLANGER_DELAY:
+                strcpy(buffer, "Flanger-Delay");
+                break;
         }
     }
 
