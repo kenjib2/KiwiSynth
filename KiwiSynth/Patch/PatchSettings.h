@@ -19,7 +19,7 @@ namespace kiwi_synth
     const static int NUM_MOD_SOURCES = 15; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
-    const static int NUM_PATCH_SETTINGS = 102;
+    const static int NUM_PATCH_SETTINGS = 99;
     const static float MIN_DISTORTION_GAIN = 5.0f;
     const static float MAX_DISTORTION_GAIN = 150.0f;
 
@@ -183,13 +183,10 @@ namespace kiwi_synth
         GEN_BALANCE,
         GEN_SELECT,
         GEN_SELECT_BUTTON,
-        GEN_FX_SELECT,
-        GEN_REVERB_SELECT,          // 95
-        GEN_REVERB_DECAY,
         GEN_AFTERTOUCH,
-        GEN_MOD_WHEEL,
+        GEN_MOD_WHEEL,              // 95
         GEN_PITCH_BEND,
-        GEN_EXPRESSION,             // 100
+        GEN_EXPRESSION,
         GEN_SUSTAIN
         
         // Headphones is analog only

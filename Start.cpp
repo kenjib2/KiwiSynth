@@ -29,8 +29,8 @@ using namespace kiwi_synth;
 
 
 /*
- * TO DO               
- * Move voiceMode & fx/reverb out of patchsettings?                                                                                                                                                                                                
+ * TO DO
+ * 
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)

@@ -40,8 +40,6 @@ namespace kiwi_synth
         tmp[MOD_8_SOURCE] = NUM_MOD_SOURCES - 1;
         tmp[MOD_8_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
         tmp[GEN_SELECT] = 50;
-        tmp[GEN_FX_SELECT] = 127;
-        tmp[GEN_REVERB_SELECT] = 2;
 
         return tmp;
     }
@@ -123,8 +121,6 @@ namespace kiwi_synth
         setValue(MOD_8_SOURCE, (int8_t)0);
         setValue(MOD_8_DESTINATION, (int8_t)-1);
         setValue(GEN_SELECT, (int8_t)0);
-        setValue(GEN_FX_SELECT, (int8_t)0);
-        setValue(GEN_REVERB_SELECT, (int8_t)0);
 
         // Set external controllers in case they are not in use
         setValue(GEN_PITCH_BEND, 0.0f);
@@ -410,9 +406,6 @@ namespace kiwi_synth
         setValue(GEN_BALANCE, 0.5f);
         setValue(GEN_SELECT, (int8_t)0);
         setValue(GEN_SELECT_BUTTON, false);
-        setValue(GEN_FX_SELECT, (int8_t)0);
-        setValue(GEN_REVERB_SELECT, (int8_t)0);
-        setValue(GEN_REVERB_DECAY, 0.5f);
         setValue(GEN_AFTERTOUCH, 0.0f);
         setValue(GEN_MOD_WHEEL, 0.0f);
         setValue(GEN_PITCH_BEND, 0.0f);
