@@ -5,41 +5,20 @@
 #include "daisysp.h"
 
 #include "PatchSettings.h"
+#include "SavedPatch.h"
 
 using namespace daisysp;
 
 namespace kiwi_synth
 {
-    typedef enum {
-        VOICE_MODE_POLY,
-        VOICE_MODE_MONO,
-        VOICE_MODE_MULTI
-    } VoiceMode;
-
-    typedef enum {
-        FX_DISTORTION_DELAY,
-        FX_CHORUS_DELAY,
-        FX_PHASER_DELAY,
-        FX_FLANGER_DELAY,
-        FX_DISTORTION_BITCRUSH
-    } EffectsMode;
-    static const int FX_MODE_MAX = 5;
-
-    typedef enum {
-        REVERB_ROOM,
-        REVERB_HALL,
-        REVERB_CHAMBER,
-        REVERB_CATHEDRAL,
-        REVERB_BLOOM
-    } ReverbMode;
-    static const int REVERB_MODE_MAX = 5;
-
     class Patch
     {
         private:
-            VoiceMode               voiceMode;
             MultiPots*              multiPots;
             GpioExpansion*          ge;
+
+            VoiceMode               voiceMode;
+            int                     splitNote;
             PatchSettings           settings1;
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
@@ -69,8 +48,9 @@ namespace kiwi_synth
                 else reverbMode = (ReverbMode)(newReverbMode % REVERB_MODE_MAX);
             }
             void SetVoiceMode(VoiceMode voiceMode);
+            void DefaultSettings();
+            void Load(SavedPatch savedPatch);
     };
-}
 
-
+} // namespace kiwi_synth
 #endif // __KIWI_SYNTH_VCA_H__

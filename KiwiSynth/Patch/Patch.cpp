@@ -32,4 +32,25 @@ namespace kiwi_synth
         this->voiceMode = voiceMode;
     }
 
+    void Patch::DefaultSettings() {
+        voiceMode = VOICE_MODE_POLY;
+        splitNote = 0;
+        strcpy(name, "New");
+        effectsMode = FX_DISTORTION_DELAY;
+        reverbMode = REVERB_HALL;
+
+        settings1.DefaultSettings();
+        settings2.DefaultSettings();
+    }
+
+    void Patch::Load(SavedPatch savedPatch) {
+        voiceMode = savedPatch.voiceMode;
+        splitNote = savedPatch.splitNote;
+        strcpy(name, savedPatch.name);
+        effectsMode = savedPatch.effectsMode;
+        reverbMode = savedPatch.reverbMode;
+
+        settings1.Copy((bool*)savedPatch.voice1BoolValues, (int*)savedPatch.voice1IntValues, (float*)savedPatch.voice1FloatValues);
+        settings2.Copy((bool*)savedPatch.voice2BoolValues, (int*)savedPatch.voice2IntValues, (float*)savedPatch.voice2FloatValues);
+    }
 }

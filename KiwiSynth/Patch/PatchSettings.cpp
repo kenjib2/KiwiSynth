@@ -136,11 +136,11 @@ namespace kiwi_synth
         DefaultSettings();
     }
 
-    void PatchSettings::Copy(PatchSettings* patchSettings)
+    void PatchSettings::Copy(bool* boolValues, int* intValues, float* floatValues)
     {
-        memcpy(boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
-        memcpy(intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-        memcpy(floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+        memcpy(this->boolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+        memcpy(this->intValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+        memcpy(this->floatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
     }
 
     void PatchSettings::processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB)
@@ -413,9 +413,6 @@ namespace kiwi_synth
         setValue(GEN_FX_SELECT, (int8_t)0);
         setValue(GEN_REVERB_SELECT, (int8_t)0);
         setValue(GEN_REVERB_DECAY, 0.5f);
-        char buffer[4];
-        strcpy(buffer, "New");
-        setValue(GEN_NAME, buffer);
         setValue(GEN_AFTERTOUCH, 0.0f);
         setValue(GEN_MOD_WHEEL, 0.0f);
         setValue(GEN_PITCH_BEND, 0.0f);

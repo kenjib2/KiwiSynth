@@ -55,6 +55,9 @@ namespace kiwi_synth
             void InitMidi();
             void SetMidiChannel(int midiChannel);
 
+            void PersistPatchBanks();
+            void RestorePatchBanks();
+
             bool BootLoaderRequested();
             void UpdateSettings();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);

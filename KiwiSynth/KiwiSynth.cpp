@@ -70,6 +70,16 @@ namespace kiwi_synth
         this->midiChannel = midiChannel;
     }
 
+    void KiwiSynth::PersistPatchBanks()
+    {
+
+    }
+
+    void KiwiSynth::RestorePatchBanks()
+    {
+        
+    }
+
     void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         ProcessMidi();

@@ -19,9 +19,33 @@ namespace kiwi_synth
     const static int NUM_MOD_SOURCES = 15; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
-    const static int NUM_PATCH_SETTINGS = 103;
+    const static int NUM_PATCH_SETTINGS = 102;
     const static float MIN_DISTORTION_GAIN = 5.0f;
     const static float MAX_DISTORTION_GAIN = 150.0f;
+
+    typedef enum {
+        VOICE_MODE_POLY,
+        VOICE_MODE_MONO,
+        VOICE_MODE_MULTI
+    } VoiceMode;
+
+    typedef enum {
+        FX_DISTORTION_DELAY,
+        FX_CHORUS_DELAY,
+        FX_PHASER_DELAY,
+        FX_FLANGER_DELAY,
+        FX_DISTORTION_BITCRUSH
+    } EffectsMode;
+    static const int FX_MODE_MAX = 5;
+
+    typedef enum {
+        REVERB_ROOM,
+        REVERB_HALL,
+        REVERB_CHAMBER,
+        REVERB_CATHEDRAL,
+        REVERB_BLOOM
+    } ReverbMode;
+    static const int REVERB_MODE_MAX = 5;
 
     typedef enum {
         WAVEFORM_SQUARE,
@@ -161,11 +185,10 @@ namespace kiwi_synth
         GEN_FX_SELECT,
         GEN_REVERB_SELECT,          // 95
         GEN_REVERB_DECAY,
-        GEN_NAME,
         GEN_AFTERTOUCH,
         GEN_MOD_WHEEL,
-        GEN_PITCH_BEND,             // 100
-        GEN_EXPRESSION,
+        GEN_PITCH_BEND,
+        GEN_EXPRESSION,             // 100
         GEN_SUSTAIN
         
         // Headphones is analog only
@@ -281,7 +304,8 @@ namespace kiwi_synth
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
             void DefaultSettings();
-            void Copy(PatchSettings* patchSettings);
+            inline void Copy(PatchSettings* patchSettings) { Copy((bool*)patchSettings->boolValues, (int*)patchSettings->intValues, (float*)patchSettings->floatValues); }
+            void Copy(bool* boolValues, int* intValues, float* floatValues);
 
             /*
              * From ControlListener: Callback to update MultiPot controls.
