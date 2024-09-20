@@ -6,8 +6,38 @@
 //#define __PATCH_SETTINGS__ // Output patch settings to serial console
 
 #include "daisy_seed.h"
+#include "daisysp.h"
 
 using namespace daisy;
+
+inline float fastCos(float x)
+{
+    constexpr float tp = 1.f/(2.f*M_PI);
+    x *= tp;
+    x -= .25f + std::floor(x + .25f);
+    x *= 16.f * (std::fabs(x) - .5f);
+    #ifdef EXTRA_PRECISION
+    x += .225f * x * (std::fabs(x) - 1.f);
+    #endif
+    return x;
+}
+
+inline float fastSine(float x)
+{
+    const float B = 4/M_PI;
+    const float C = -4/(M_PI*M_PI);
+
+    float y = B * x + C * x * std::fabs(x);
+
+    #ifdef EXTRA_PRECISION
+    //  const float Q = 0.775;
+        const float P = 0.225;
+
+        y = P * (y * abs(y) - y) + y;   // Q * y + P * y * abs(y)
+    #endif
+
+    return y;
+}
 
 const static uint32_t MAX_XORSHIFT_VALUE = 4294967295;
 

@@ -40,6 +40,7 @@ using namespace kiwi_synth;
  * Chorus
  * Flanger
  * Phaser
+ * Will fastSine work for LFOs and VCOs?
  * Can we make the data structures a little smaller without losing performance?
  * Update Zita to handle larger delay values for Bloom reverb
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
@@ -56,7 +57,6 @@ using namespace kiwi_synth;
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?
- * Re-implement additional VCF modes?
  * L/R Output noise
  * Headphone out noise
  * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.

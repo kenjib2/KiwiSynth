@@ -31,6 +31,17 @@ namespace kiwi_synth
         WAVEFORM_VARISAW
     } Waveform;
 
+    enum FilterType {
+        LADDER_LOWPASS,
+        SVF_LOWPASS,
+        SVF_HIGHPASS,
+        SVF_BANDPASS,
+        SVF_NOTCH,
+        SVF_PEAK,
+        ONE_POLE_LOWPASS,
+        ONE_POLE_HIGHPASS
+    };
+    
     /*
      * All controls for the Kiwi Synth.
      */
