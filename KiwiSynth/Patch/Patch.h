@@ -20,9 +20,10 @@ namespace kiwi_synth
         FX_DISTORTION_DELAY,
         FX_CHORUS_DELAY,
         FX_PHASER_DELAY,
-        FX_FLANGER_DELAY
+        FX_FLANGER_DELAY,
+        FX_DISTORTION_BITCRUSH
     } EffectsMode;
-    static const int FX_MODE_MAX = 4;
+    static const int FX_MODE_MAX = 5;
 
     typedef enum {
         REVERB_ROOM,

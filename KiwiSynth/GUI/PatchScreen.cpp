@@ -59,6 +59,9 @@ namespace kiwi_synth
             case FX_FLANGER_DELAY:
                 strcpy(buffer, "Flanger-Delay");
                 break;
+            case FX_DISTORTION_BITCRUSH:
+                strcpy(buffer, "Distort-Bitcrush");
+                break;
         }
     }
 

@@ -23,11 +23,14 @@ namespace kiwi_synth
             ReverbMode              reverbMode;
             float                   reverbLevel;
             float                   gain;
-            float                   level;
+            float                   distortionLevel;
             float                   freq;
             float                   chorusDepth;
             float                   phaserDepth;
             float                   feedback;
+            float                   downsampleFactor;
+            float                   bitcrushFactor;
+            float                   decimatorLevel;
             Patch*                  patch;
             Reverb                  reverb;
             Delay                   delay;
@@ -37,6 +40,8 @@ namespace kiwi_synth
             KiwiPhaser              phaserR;
             KiwiFlanger             flangerL;
             KiwiFlanger             flangerR;
+            Decimator               decimatorL;
+            Decimator               decimatorR;
 
         public:
             EffectsEngine() {}

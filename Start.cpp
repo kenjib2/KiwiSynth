@@ -30,17 +30,14 @@ using namespace kiwi_synth;
 
 /*
  * TO DO                                                                                                                                                                                                               
- * FX Modes: Ensemble-Phaser. Sonic Annihilator. Bitcrush-Distort.
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * Split polytimbral mode
  * Alternate inputs to S&H (instead of noise)
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
- * Chorus
- * Flanger
- * Phaser
  * Will fastSine work for LFOs and VCOs?
+ * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Can we make the data structures a little smaller without losing performance?
  * Update Zita to handle larger delay values for Bloom reverb
  * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.

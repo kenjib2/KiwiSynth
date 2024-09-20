@@ -8,6 +8,10 @@ namespace kiwi_synth
     void EffectsEngine::Init(Patch* patch, float sampleRate)
     {
         this->patch = patch;
+        decimatorL.Init();
+        decimatorR.Init();
+        decimatorL.SetSmoothCrushing(true);
+        decimatorR.SetSmoothCrushing(true);
         chorusL.Init(sampleRate, 0);
         chorusR.Init(sampleRate, 1);
         chorusL.SetPan(0.0f);
@@ -32,22 +36,34 @@ namespace kiwi_synth
         } else {
             reverb.set_opmix(0.0f);
         }
+
         gain = patch->activeSettings->getFloatValueLogLookup(PatchSetting::FX_1);
-        level = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
+        distortionLevel = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f);
+
+        bitcrushFactor = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_3, 0.0f, 0.8f);
+        downsampleFactor = patch->activeSettings->getFloatValue(PatchSetting::FX_4);
+        decimatorLevel = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.5f, 1.0f);
+        decimatorL.SetBitcrushFactor(bitcrushFactor);
+        decimatorR.SetBitcrushFactor(bitcrushFactor);
+        decimatorL.SetDownsampleFactor(downsampleFactor);
+        decimatorR.SetDownsampleFactor(downsampleFactor);
 
         freq = patch->activeSettings->getFloatValueLogLookup(PatchSetting::MOD_1_DEPTH);   // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
-        chorusL.SetLfoFreq(freq);
-        chorusR.SetLfoFreq(freq * 0.95f);
-        phaserL.SetLfoFreq(freq);
-        phaserR.SetLfoFreq(freq);
-        flangerL.SetLfoFreq(freq);
-        flangerR.SetLfoFreq(freq);
         feedback = chorusDepth = patch->activeSettings->getFloatValue(PatchSetting::FX_2);
         phaserDepth = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.2f, 1.0f);
+
+        chorusL.SetLfoFreq(freq);
+        chorusR.SetLfoFreq(freq * 0.95f);
         chorusL.SetLfoDepth(chorusDepth);
         chorusR.SetLfoDepth(chorusDepth);
+
+        phaserL.SetLfoFreq(freq);
+        phaserR.SetLfoFreq(freq);
         phaserL.SetLfoDepth(phaserDepth);
         phaserR.SetLfoDepth(phaserDepth);
+
+        flangerL.SetLfoFreq(freq);
+        flangerR.SetLfoFreq(freq);
         flangerL.SetFeedback(feedback);
         flangerR.SetFeedback(feedback);
 
@@ -101,10 +117,16 @@ namespace kiwi_synth
 
     void EffectsEngine::Process(float* sample)
     {
+        // PROCESSING BITCRUSHER
+        if (effectsMode == FX_DISTORTION_BITCRUSH && bitcrushFactor > 0.003f) {
+            sample[0] = decimatorL.Process(sample[0]) * decimatorLevel;
+            sample[1] = decimatorR.Process(sample[1]) * decimatorLevel;
+        }
+
         // PROCESSING DISTORTION
-        if (effectsMode == FX_DISTORTION_DELAY && gain > ATAN_DEBOUNCE_THRESHOLD) {
-            sample[0] = atan(sample[0] * gain) * level; // atan has a limit of pi/2 or @1.57. The max of level is 0.22 so total output will never exceed +/- 0.346
-            sample[1] = atan(sample[1] * gain) * level;
+        if ((effectsMode == FX_DISTORTION_DELAY || effectsMode == FX_DISTORTION_BITCRUSH) && gain > ATAN_DEBOUNCE_THRESHOLD) {
+            sample[0] = atan(sample[0] * gain) * distortionLevel; // atan has a limit of pi/2 or @1.57. The max of level is 0.22 so total output will never exceed +/- 0.346
+            sample[1] = atan(sample[1] * gain) * distortionLevel;
         }
 
         // PROCESSING CHORUS
@@ -114,7 +136,9 @@ namespace kiwi_synth
         }
 
         //PROCESSING DELAY
-        delay.Process(sample);
+        if (effectsMode != FX_DISTORTION_BITCRUSH) {
+            delay.Process(sample);
+        }
 
         // PROCESSING FLANGER
         if (effectsMode == FX_FLANGER_DELAY && freq > FREQ_DEBOUNCE_THRESHOLD) {
