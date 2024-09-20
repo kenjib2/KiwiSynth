@@ -17,15 +17,16 @@ namespace kiwi_synth
             MultiPots*              multiPots;
             GpioExpansion*          ge;
 
-            VoiceMode               voiceMode;
-            int                     splitNote;
             PatchSettings           settings1;
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
+
+        public:
+            int                     splitNote;
+            VoiceMode               voiceMode;
             EffectsMode             effectsMode;
             ReverbMode              reverbMode;
 
-        public:
             PatchSettings*          activeSettings;
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;

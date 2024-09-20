@@ -26,7 +26,8 @@ namespace kiwi_synth
     typedef enum {
         VOICE_MODE_POLY,
         VOICE_MODE_MONO,
-        VOICE_MODE_MULTI
+        VOICE_MODE_MULTI,
+        VOICE_MODE_SPLIT
     } VoiceMode;
 
     typedef enum {

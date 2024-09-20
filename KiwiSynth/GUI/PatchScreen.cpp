@@ -1,4 +1,5 @@
 #include "PatchScreen.h"
+#include "IntValueScreen.h"
 
 namespace kiwi_synth
 {
@@ -20,28 +21,67 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 10);
+        GetVoiceMode(value);
+        if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
+            GetMidiNote(nameString);
+            sprintf(buffer, "Voices: %s on %s", value, nameString);
+        } else {
+            sprintf(buffer, "Voices: %s", value);
+        }
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 20);
         GetFxType(value);
         sprintf(buffer, "FX: %s", value);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 20);
+        display->SetCursor(0, 30);
         GetReverbType(value);
         sprintf(buffer, "Reverb: %s", value);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 30);
+        display->SetCursor(0, 40);
         sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 40);
+        display->SetCursor(0, 50);
         sprintf(buffer, "Load Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 50);
+        display->SetCursor(0, 60);
         sprintf(buffer, "Manual Mode");
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();
+    }
+
+    // 11 character value
+    void PatchScreen::GetVoiceMode(char* buffer)
+    {
+        switch (patch->activeSettings->getIntValue(VCO_VOICES)) {
+            case VOICE_MODE_POLY:
+                strcpy(buffer, "Polyphonic");
+                break;
+            case VOICE_MODE_MONO:
+                strcpy(buffer, "Monophonic");
+                break;
+            case VOICE_MODE_MULTI:
+                strcpy(buffer, "Layered");
+                break;
+            case VOICE_MODE_SPLIT:
+                strcpy(buffer, "Split");
+                break;
+        }
+    }
+
+    // 3 character value
+    void PatchScreen::GetMidiNote(char* buffer)
+    {
+        char notes[12][3] = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+        int noteNum = patch->splitNote;
+        int octave = noteNum / 12 - 1;
+        char* note = notes[noteNum % 12];
+        sprintf(buffer, "%s%d", note, octave);
     }
 
     // 17 character value

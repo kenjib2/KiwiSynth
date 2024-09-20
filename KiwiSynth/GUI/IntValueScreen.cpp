@@ -77,7 +77,10 @@ namespace kiwi_synth
                 strcpy(buffer, "Mo");
                 break;
             case VOICE_MODE_MULTI:
-                strcpy(buffer, "MT");
+                strcpy(buffer, "La");
+                break;
+            case VOICE_MODE_SPLIT:
+                strcpy(buffer, "Sp");
                 break;
         }
     }

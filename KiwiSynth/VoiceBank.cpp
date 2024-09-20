@@ -180,6 +180,22 @@ namespace kiwi_synth
                     voices[1].NoteOn(note, velocity);
                 }
                 break;
+            case VOICE_MODE_SPLIT:
+                if (note < patch->splitNote) {
+                    if (voices[1].noteTriggered) {
+                        voices[1].NoteOn(note, velocity, false);
+                    } else {
+                        voices[1].NoteOn(note, velocity);
+                    }
+                } else {
+                    monoNotes.push_back(note);
+                    if (voices[0].noteTriggered) {
+                        voices[0].NoteOn(note, velocity, false);
+                    } else {
+                        voices[0].NoteOn(note, velocity);
+                    }
+                }
+                break;
             default:
                 Voice* voice = RequestVoice(note);
                 if (voice != NULL) {
@@ -227,6 +243,31 @@ namespace kiwi_synth
                         if (monoNotes[i] == note) {
                             monoNotes.erase(monoNotes.begin() + i);
                             break;
+                        }
+                    }
+                }
+                break;
+            case VOICE_MODE_SPLIT:
+                if (note < patch->splitNote) {
+                    if (voices[1].noteTriggered && voices[1].currentMidiNote == note) {
+                        voices[1].NoteOff(note, velocity);
+                        break;
+                    }
+                } else {
+                    if (note == monoNotes.back()) {
+                        monoNotes.pop_back();
+                        if (monoNotes.size() > 0) {
+                            int prevNote = monoNotes.back();
+                            voices[0].NoteOn(prevNote, velocity, false);
+                        } else {
+                            voices[0].NoteOff(note, velocity);
+                        }
+                    } else {
+                        for(unsigned int i = 0; i < monoNotes.size(); i++) {
+                            if (monoNotes[i] == note) {
+                                monoNotes.erase(monoNotes.begin() + i);
+                                break;
+                            }
                         }
                     }
                 }

@@ -14,6 +14,7 @@ namespace kiwi_synth
         strcpy(name, "Kiwi Sound");
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;
+        splitNote = 60;
 
         activeSettings = &settings1;
         voice1Settings = &settings1;
@@ -22,9 +23,13 @@ namespace kiwi_synth
     }
 
     void Patch::SetVoiceMode(VoiceMode voiceMode) {
-        if (voiceMode == VOICE_MODE_MULTI) {
+        if ((voiceMode == VOICE_MODE_MULTI && this->voiceMode != VOICE_MODE_SPLIT) ||
+            (voiceMode == VOICE_MODE_SPLIT && this->voiceMode != VOICE_MODE_MULTI)) {
             settings2.Copy(&settings1);
             voice2Settings = &settings2;
+        } else if ((voiceMode == VOICE_MODE_SPLIT && this->voiceMode == VOICE_MODE_MULTI) ||
+                   (voiceMode == VOICE_MODE_MULTI && this->voiceMode == VOICE_MODE_SPLIT)) {
+            // Do nothing when switching between MULTI and SPLIT. Only NoteOn and NoteOff change.
         } else {
             voice2Settings = &settings1;
         }
@@ -34,7 +39,7 @@ namespace kiwi_synth
 
     void Patch::DefaultSettings() {
         voiceMode = VOICE_MODE_POLY;
-        splitNote = 0;
+        splitNote = 60;
         strcpy(name, "New");
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;

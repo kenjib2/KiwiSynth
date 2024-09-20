@@ -25,6 +25,8 @@ namespace kiwi_synth
             KiwiDisplay* display;
             Patch* patch;
 
+            void GetVoiceMode(char* buffer);
+            void GetMidiNote(char* buffer);
             void GetFxType(char* buffer);
             void GetReverbType(char* buffer);
     };

@@ -11,7 +11,7 @@ namespace kiwi_synth
 
         // Set the max values for int variables
         memset(tmp, 0, NUM_PATCH_SETTINGS * sizeof(int8_t));
-        tmp[VCO_VOICES] = 2; // 0 is duo-polyphonic, 1 is monophonic, 2 is duo-timbral monophonic
+        tmp[VCO_VOICES] = 3; // 0 is duo-polyphonic, 1 is monophonic, 2 is duo-timbral layered monophonic, 3 is duo-timbral split monophonic
         tmp[VCO_1_WAVEFORM] = 4;
         tmp[VCO_2_WAVEFORM] = 4;
         tmp[VCO_2_OCTAVE] = 4;
