@@ -11,15 +11,14 @@ namespace kiwi_synth
 
     void IntValueScreen::Display()
     {
-        char val1[8], val2[8], val3[8];
+        char val1[12], val2[12], val3[12];
 
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        GetVoiceMode(val1);
-        GetWaveform(val2, 0);
-        GetVcfType(val3);
-        sprintf(buffer, "VM %s W1 %s VCF %s", val1, val2, val3);
+        GetWaveform(val1, 0);
+        GetVcfType(val2);
+        sprintf(buffer, "W1 %s   VCF %s", val1, val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
@@ -136,32 +135,32 @@ namespace kiwi_synth
         }
     }
 
-    // 2 character value
+    // 8 character value
     void IntValueScreen::GetVcfType(char* buffer) {
         switch (patch->activeSettings->getIntValue((PatchSetting)(VCF_FILTER_TYPE))) {
             case 0:
-                strcpy(buffer, "LdLP");
+                strcpy(buffer, "LddrLoPa");
                 break;
             case 1:
-                strcpy(buffer, "LoPa");
+                strcpy(buffer, "LowPass");
                 break;
             case 2:
-                strcpy(buffer, "HiPa");
+                strcpy(buffer, "HighPass");
                 break;
             case 3:
-                strcpy(buffer, "BndP");
+                strcpy(buffer, "BandPass");
                 break;
             case 4:
-                strcpy(buffer, "Notc");
+                strcpy(buffer, "Notch");
                 break;
             case 5:
                 strcpy(buffer, "Peak");
                 break;
             case 6:
-                strcpy(buffer, "1PHP");
+                strcpy(buffer, "1PoleHiP");
                 break;
             case 7:
-                strcpy(buffer, "1PLP");
+                strcpy(buffer, "1PoleLoP");
                 break;
         }
     }

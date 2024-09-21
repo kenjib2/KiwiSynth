@@ -33,7 +33,7 @@ namespace kiwi_synth
         display->SetCursor(0, 20);
         GetFxType(value);
         sprintf(buffer, "FX: %s", value);
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, false);
 
         display->SetCursor(0, 30);
         GetReverbType(value);
