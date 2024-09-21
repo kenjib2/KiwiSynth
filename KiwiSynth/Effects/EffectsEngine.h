@@ -28,8 +28,7 @@ namespace kiwi_synth
 
             Reverb                  reverb;
             KiwiDistortion          distortion;
-            KiwiDelay               delayL;
-            KiwiDelay               delayR;
+            KiwiDelay               delay;
             KiwiChorus              chorusL;
             KiwiChorus              chorusR;
             KiwiPhaser              phaserL;

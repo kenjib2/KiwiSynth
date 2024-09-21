@@ -4,27 +4,30 @@ namespace kiwi_synth
 {
     float DSY_SDRAM_BSS delayLine[2][MAX_DELAY_SAMPLES];
 
-    void KiwiDelay::Init(int bufferNumber)
+    void KiwiDelay::Init()
     {
-        this->bufferNumber = bufferNumber;
         delaySamples = MIN_DELAY_SAMPLES;
         level = 0.0f;
         feedback = 0.0f;
-        memset(delayLine[bufferNumber], 0, MAX_DELAY_SAMPLES * sizeof(float));
+        memset(delayLine[0], 0, MAX_DELAY_SAMPLES * sizeof(float));
+        memset(delayLine[1], 0, MAX_DELAY_SAMPLES * sizeof(float));
         writeIndex = 0;
     }
 
-    float KiwiDelay::Process(float input)
+    void KiwiDelay::Process(float* input)
     {
         writeIndex++;
         writeIndex &= DELAY_POINTER_MASK;
         int readIndex = (writeIndex - delaySamples);
         readIndex &= DELAY_POINTER_MASK;
 
-        float read = delayLine[bufferNumber][readIndex];
+        float readL = delayLine[0][readIndex];
+        float readR = delayLine[1][readIndex];
 
-        delayLine[bufferNumber][writeIndex] = input + read * feedback;
+        delayLine[0][writeIndex] = input[0] + readL * feedback;
+        delayLine[1][writeIndex] = input[1] + readL * feedback;
 
-        return input + read * level;
+        input[0] = input[0] + readL * level;
+        input[1] = input[1] + readR * level;
     }
 }

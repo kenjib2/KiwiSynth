@@ -9,8 +9,7 @@ namespace kiwi_synth
         this->patch = patch;
 
         distortion.Init();
-        delayL.Init(0);
-        delayR.Init(1);
+        delay.Init();
         chorusL.Init(sampleRate, 0);
         chorusR.Init(sampleRate, 1);
         chorusL.SetPan(0.0f);
@@ -74,14 +73,11 @@ namespace kiwi_synth
         flangerR.SetFeedback(feedback);
 
         float delayLevel = patch->activeSettings->getFloatValue(PatchSetting::FX_3);
-        delayL.SetLevel(delayLevel);
-        delayR.SetLevel(delayLevel);
+        delay.SetLevel(delayLevel);
         int delaySamples = (int)patch->activeSettings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES);
-        delayL.SetDelaySamples(delaySamples);
-        delayR.SetDelaySamples(delaySamples);
+        delay.SetDelaySamples(delaySamples);
         float delayFeedback = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f);
-        delayL.SetFeedback(delayFeedback);
-        delayR.SetFeedback(delayFeedback);
+        delay.SetFeedback(delayFeedback);
 
         effectsMode = patch->getEffectsMode();
         if (patch->getReverbMode() != reverbMode) {
@@ -133,26 +129,22 @@ namespace kiwi_synth
             case FX_PHASER_DELAY:
                 sample[0] = phaserL.Process(sample[0]);
                 sample[1] = phaserR.Process(sample[1]);
-                sample[0] = delayL.Process(sample[0]);
-                sample[1] = delayR.Process(sample[1]);
+                delay.Process(sample);
                 break;
             case FX_DISTORTION_DELAY:
                 sample[0] = distortion.Process(sample[0]);
                 sample[1] = distortion.Process(sample[1]);
-                sample[0] = delayL.Process(sample[0]);
-                sample[1] = delayR.Process(sample[1]);
+                delay.Process(sample);
                 break;
             case FX_CHORUS_DELAY:
                 sample[0] = chorusL.Process(sample[0]);
                 sample[1] = chorusR.Process(sample[1]);
-                sample[0] = delayL.Process(sample[0]);
-                sample[1] = delayR.Process(sample[1]);
+                delay.Process(sample);
                 break;
             case FX_FLANGER_DELAY:
                 sample[0] = flangerL.Process(sample[0]);
                 sample[1] = flangerR.Process(sample[1]);
-                sample[0] = delayL.Process(sample[0]);
-                sample[1] = delayR.Process(sample[1]);
+                delay.Process(sample);
                 break;
             case FX_DISTORTION_BITCRUSH:
                 sample[0] = decimatorL.Process(sample[0]);
