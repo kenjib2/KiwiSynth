@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "daisy_seed.h"
-#include "Control.h"
-#include "ControlListener.h"
+#include "IControl.h"
+#include "IControlListener.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -65,7 +65,7 @@ namespace kiwi_synth
     * are called, the value is read from the buffer, so the value therein could be as many as max(numChannels, numDirectPots)
     * iterations old. The refresh rate should be set with this in mind.
     */
-    class MultiPots : public Control
+    class MultiPots : public IControl
     {
         private:
             int currentPot = 0;
@@ -77,7 +77,7 @@ namespace kiwi_synth
             std::vector<Pin> pinsDirect;
             DaisySeed *hw;
             //TimerHandle timer;
-            ControlListener* controlListener = nullptr;
+            IControlListener* controlListener = nullptr;
 
             void InitMulti(MultiPotsConfig *multiPotsConfig);
             //void InitTimer(int refreshRate);
@@ -89,7 +89,7 @@ namespace kiwi_synth
             ~MultiPots() {};
             void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
-            inline void RegisterControlListener(ControlListener* controlListener) { this->controlListener = controlListener; }
+            inline void RegisterControlListener(IControlListener* controlListener) { this->controlListener = controlListener; }
 
             /*
             * Loads a single channel of pot values for all attached multiplexers and/or a single directly connected potentiometer

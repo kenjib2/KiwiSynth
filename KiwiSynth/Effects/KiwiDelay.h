@@ -3,6 +3,8 @@
 
 #include "daisy_seed.h"
 
+#include "IEffect.h"
+
 namespace kiwi_synth
 {
     const int MAX_DELAY_SAMPLES =   0b10000000000000000; // 65536
@@ -10,17 +12,18 @@ namespace kiwi_synth
     const int MIN_DELAY_SAMPLES =   1200;
     const int DEBOUNCE_RESOLUTION = 100;
 
-    class Delay
+    class KiwiDelay : public IEffect
     {
         private:
             int delaySamples;   // MIN_DELAY_SAMPLES to MAX_DELAY_SAMPLES
             float level;        // 0.0f to 1.0f
             float feedback;     // 0.0f to 1.0f
             int writeIndex = 0;
+            int bufferNumber;
 
         public:
-            void Init();
-            void Process(float* input);  // input[0] = left, input[1] = right
+            void Init(int bufferNumber);
+            float Process(float input);
 
             // We need to debounce these values here. Otherwise the pointer will jump around and cause pops.
             inline void SetDelaySamples(int delaySamples) { if (abs(delaySamples - this->delaySamples) > DEBOUNCE_RESOLUTION) this->delaySamples = delaySamples; }

@@ -5,8 +5,8 @@
 #include <map>
 
 #include "daisy_seed.h"
-#include "Control.h"
-#include "ControlListener.h"
+#include "IControl.h"
+#include "IControlListener.h"
 #include "KiwiMcp23017.h"
 
 using namespace daisy;
@@ -70,12 +70,12 @@ namespace kiwi_synth
         }
     };
 
-    class GpioExpansion : public Control
+    class GpioExpansion : public IControl
     {
         private:
             static const int NUM_PINS = 16;
             int numGpioExpansions = 4;
-            ControlListener* controlListener = nullptr;
+            IControlListener* controlListener = nullptr;
 
         public:
             std::map<uint8_t, uint16_t> pinValues;
@@ -85,7 +85,7 @@ namespace kiwi_synth
             ~GpioExpansion() {}
             void Init();
             void Init(GpioExpansionConfig *gpioExpansionConfig);
-            inline void RegisterControlListener(ControlListener* controlListener) { this->controlListener = controlListener; }
+            inline void RegisterControlListener(IControlListener* controlListener) { this->controlListener = controlListener; }
 
             /*
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.

@@ -6,10 +6,12 @@
 
 #include "../Patch/Patch.h"
 #include "Zita/reverb.h"
-#include "Delay.h"
+#include "KiwiDistortion.h"
+#include "KiwiDelay.h"
 #include "KiwiChorus.h"
 #include "KiwiPhaser.h"
 #include "KiwiFlanger.h"
+#include "KiwiDecimator.h"
 
 using namespace daisysp;
 
@@ -21,27 +23,21 @@ namespace kiwi_synth
         private:
             EffectsMode             effectsMode;
             ReverbMode              reverbMode;
-            float                   reverbLevel;
-            float                   gain;
-            float                   distortionLevel;
-            float                   freq;
-            float                   chorusDepth;
-            float                   phaserDepth;
-            float                   feedback;
-            float                   downsampleFactor;
-            float                   bitcrushFactor;
-            float                   decimatorLevel;
+
             Patch*                  patch;
+
             Reverb                  reverb;
-            Delay                   delay;
+            KiwiDistortion          distortion;
+            KiwiDelay               delayL;
+            KiwiDelay               delayR;
             KiwiChorus              chorusL;
             KiwiChorus              chorusR;
             KiwiPhaser              phaserL;
             KiwiPhaser              phaserR;
             KiwiFlanger             flangerL;
             KiwiFlanger             flangerR;
-            Decimator               decimatorL;
-            Decimator               decimatorR;
+            KiwiDecimator           decimatorL;
+            KiwiDecimator           decimatorR;
 
         public:
             EffectsEngine() {}

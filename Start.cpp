@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Phaser performance is really bad compared to flanger or chorus -- WHY???
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)

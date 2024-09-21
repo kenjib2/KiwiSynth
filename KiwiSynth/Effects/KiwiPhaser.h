@@ -12,6 +12,7 @@ https://opensource.org/licenses/MIT.
 #ifdef __cplusplus
 
 #include <stdint.h>
+#include "IEffect.h"
 #include "KiwiDelayLine.h"
 
 /** @file phaser.h */
@@ -87,7 +88,7 @@ class KiwiPhaserEngine
     @author Ben Sergentanis
     @date Jan 2021
 */
-class KiwiPhaser
+class KiwiPhaser : public IEffect
 {
   public:
     KiwiPhaser() {}

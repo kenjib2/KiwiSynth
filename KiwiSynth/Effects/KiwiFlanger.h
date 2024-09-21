@@ -12,6 +12,7 @@ https://opensource.org/licenses/MIT.
 #ifdef __cplusplus
 
 #include <stdint.h>
+#include "IEffect.h"
 #include "KiwiDelayLine.h"
 
 /** @file KiwiFlanger.h */
@@ -23,7 +24,7 @@ namespace kiwi_synth
  * Generates a modulating phase shifted copy of a signal, and recombines
  * with the original to create a 'flanging' sound effect.
  */
-class KiwiFlanger
+class KiwiFlanger : public IEffect
 {
   public:
     /** Initialize the modules

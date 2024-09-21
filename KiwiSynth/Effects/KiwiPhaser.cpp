@@ -95,10 +95,15 @@ float KiwiPhaser::Process(float in)
 {
     float sig = 0.f;
 
-    for(int i = 0; i < poles_; i++)
+    /*for(int i = 0; i < poles_; i++)
     {
         sig += engines_[i].Process(in) * inv_poles_; // Equal mix
-    }
+    }*/
+    // hard wiring for 4 pole
+    sig += engines_[0].Process(in) * inv_poles_; // Equal mix
+    sig += engines_[1].Process(in) * inv_poles_; // Equal mix
+    sig += engines_[2].Process(in) * inv_poles_; // Equal mix
+    sig += engines_[3].Process(in) * inv_poles_; // Equal mix
 
     return sig;
 }

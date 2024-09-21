@@ -8,7 +8,7 @@
 
 #include "../Controls/MultiPots.h"
 #include "../Controls/GpioExpansion.h"
-#include "../Controls/ControlListener.h"
+#include "../Controls/IControlListener.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -268,7 +268,7 @@ namespace kiwi_synth
      * When the synth first starts up, before a patch is loaded, all values will be constantly updated from the controls. The synth can also
      * be initialized to use all live control settings at any time via the menu.
      */
-    class PatchSettings : public ControlListener
+    class PatchSettings : public IControlListener
     {
         private:
             static int8_t* maxIntValues; // Set the max values for int variables

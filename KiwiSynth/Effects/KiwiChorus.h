@@ -12,6 +12,7 @@ https://opensource.org/licenses/MIT.
 #ifdef __cplusplus
 
 #include <stdint.h>
+#include "IEffect.h"
 #include "KiwiDelayLine.h"
 
 /** @file chorus.h */
@@ -90,7 +91,7 @@ class KiwiChorusEngine
     Based on https://www.izotope.com/en/learn/understanding-chorus-flangers-and-phasers-in-audio-production.html \n
     and https://www.researchgate.net/publication/236629475_Implementing_Professional_Audio_Effects_with_DSPs \n
 */
-class KiwiChorus
+class KiwiChorus : public IEffect
 {
   public:
     KiwiChorus() {}
