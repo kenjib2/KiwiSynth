@@ -16,8 +16,8 @@ namespace kiwi_synth
         chorusR.SetPan(0.0f);
         phaserL.Init(sampleRate, 2);
         phaserR.Init(sampleRate, 3);
-        phaserL.SetPoles(4);
-        phaserR.SetPoles(4);
+        phaserL.SetPoles(2);
+        phaserR.SetPoles(2);
         phaserL.SetFeedback(0.1);
         phaserR.SetFeedback(0.1);
         flangerL.Init(sampleRate, 4);

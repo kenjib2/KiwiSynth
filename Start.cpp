@@ -31,7 +31,8 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Phaser performance is really bad compared to flanger or chorus -- WHY???
+ * Phaser performance is really bad compared to flanger or chorus -- WHY??? Try converting to stereo to reduce repeated calcs between L and R...
+ * Can we get phaser back up to 4 or 6 pole?
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
