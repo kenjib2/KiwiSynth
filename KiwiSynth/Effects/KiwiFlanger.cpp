@@ -13,7 +13,7 @@ void KiwiFlanger::Init(float sample_rate, int bufferNumber)
 
     SetFeedback(.2f);
 
-    del_.Init(bufferNumber, kDelayLength);
+    del_.Init(bufferNumber);
     lfo_amp_ = 0.f;
     SetDelay(.75);
 

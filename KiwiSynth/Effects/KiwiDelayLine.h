@@ -16,7 +16,9 @@ https://opensource.org/licenses/MIT.
 namespace kiwi_synth
 {
 
-/** Simple Delay line.
+static const int DELAY_LINE_BUFFER_SIZE = 4096; // This must always be an exponent of 2
+
+/** Simple Delay line with a fixed 4k, or 4096 sample, max size.
 November 2019
 
 By: shensley
@@ -27,13 +29,14 @@ class KiwiDelayLine
     KiwiDelayLine() {}
     ~KiwiDelayLine() {}
     /** initializes the delay line by clearing the values within, and setting delay to 1 sample.
+     * The buffer size will be fixed at 4k in length, or 4096 samples.
     */
-    void Init(int bufferNumber, size_t maxSize);
+    void Init(int bufferNumber);
     /** clears buffer, sets write ptr to 0, and delay to 1 sample.
     */
     void Reset()
     {
-        for(size_t i = 0; i < max_size; i++)
+        for(size_t i = 0; i < DELAY_LINE_BUFFER_SIZE; i++)
         {
             line_[i] = 0.0f;
         }
@@ -47,7 +50,7 @@ class KiwiDelayLine
     inline void SetDelay(size_t delay)
     {
         frac_  = 0.0f;
-        delay_ = delay < max_size ? delay : max_size - 1;
+        delay_ = delay < DELAY_LINE_BUFFER_SIZE ? delay : DELAY_LINE_BUFFER_SIZE - 1;
     }
 
     /** sets the delay time in samples
@@ -57,8 +60,8 @@ class KiwiDelayLine
     {
         int32_t int_delay = static_cast<int32_t>(delay);
         frac_             = delay - static_cast<float>(int_delay);
-        delay_ = static_cast<size_t>(int_delay) < max_size ? int_delay
-                                                           : max_size - 1;
+        delay_ = static_cast<size_t>(int_delay) < DELAY_LINE_BUFFER_SIZE ? int_delay
+                                                           : DELAY_LINE_BUFFER_SIZE - 1;
     }
 
     /** writes the sample of type T to the delay line, and advances the write ptr
@@ -66,15 +69,15 @@ class KiwiDelayLine
     inline void Write(const float sample)
     {
         line_[write_ptr_] = sample;
-        write_ptr_        = (write_ptr_ - 1 + max_size) % max_size;
+        write_ptr_ = (write_ptr_ + 1) & size_mask;
     }
 
     /** returns the next sample of type T in the delay line, interpolated if necessary.
     */
     inline const float Read() const
     {
-        float a = line_[(write_ptr_ + delay_) % max_size];
-        float b = line_[(write_ptr_ + delay_ + 1) % max_size];
+        float a = line_[(write_ptr_ - delay_) & size_mask];
+        float b = line_[(write_ptr_ - (delay_ + 1)) & size_mask];
         return a + (b - a) * frac_;
     }
 
@@ -82,41 +85,22 @@ class KiwiDelayLine
     inline const float Read(float delay) const
     {
         int32_t delay_integral   = static_cast<int32_t>(delay);
-        float   delay_fractional = delay - static_cast<float>(delay_integral);
-        const float a = line_[(write_ptr_ + delay_integral) % max_size];
-        const float b = line_[(write_ptr_ + delay_integral + 1) % max_size];
+        float   delay_fractional = delay + static_cast<float>(delay_integral);
+        const float a = line_[(write_ptr_ - delay_integral) & size_mask];
+        const float b = line_[(write_ptr_ - delay_integral - 1) & size_mask];
         return a + (b - a) * delay_fractional;
-    }
-
-    inline const float ReadHermite(float delay) const
-    {
-        int32_t delay_integral   = static_cast<int32_t>(delay);
-        float   delay_fractional = delay - static_cast<float>(delay_integral);
-
-        int32_t     t     = (write_ptr_ + delay_integral + max_size);
-        const float xm1   = line_[(t - 1) % max_size];
-        const float x0    = line_[(t) % max_size];
-        const float x1    = line_[(t + 1) % max_size];
-        const float x2    = line_[(t + 2) % max_size];
-        const float c     = (x1 - xm1) * 0.5f;
-        const float v     = x0 - x1;
-        const float w     = c + v;
-        const float a     = w + v + (x2 - x0) * 0.5f;
-        const float b_neg = w + a;
-        const float f     = delay_fractional;
-        return (((a * f) - b_neg) * f + c) * f + x0;
     }
 
     inline const float Allpass(const float sample, size_t delay, const float coefficient)
     {
-        float read  = line_[(write_ptr_ + delay) % max_size];
+        float read  = line_[(write_ptr_ - delay) & size_mask];
         float write = sample + coefficient * read;
         Write(write);
         return -write * coefficient + read;
     }
 
   private:
-    size_t max_size;
+    size_t size_mask;
     float  frac_;
     size_t write_ptr_;
     size_t delay_;

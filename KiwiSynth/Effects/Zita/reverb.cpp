@@ -291,13 +291,12 @@ Reverb::~Reverb (void)
  */
 
 
-void Reverb::init (float fsamp, bool ambis)
+void Reverb::init (float fsamp)
 {
     int i, k1, k2;
 
     _fsamp = fsamp;
     _finvsamp = 1.0f / fsamp;
-    _ambis = ambis;
     _cntA1 = 1;
     _cntA2 = 0;
     _cntB1 = 1;
@@ -317,6 +316,7 @@ void Reverb::init (float fsamp, bool ambis)
 
     _g0 = _d0 = 0;
     _g1 = _d1 = 0;
+    _g = sqrtf (0.125f);
 
     // SRAM UPDATE
     //_vdelay0.init ((int)(0.1f * _fsamp));
@@ -345,7 +345,7 @@ void Reverb::fini (void)
 }
 
 
-void Reverb::prepare (int invnfram)
+void Reverb::prepare ()
 {
     int    a, b, c, i, k;
     float  t0, t1, wlo, chi;
@@ -380,46 +380,32 @@ void Reverb::prepare (int invnfram)
 
     if (c != _cntC2)
     {
-	if (_ambis)
-	{
-	    t0 = 1.0f * sqrtf (_invrtmid);
-	    t1 = t0 * powf (10.0f, 0.05f * _rgxyz);
-	}
-	else
-	{
 	    t0 = (1 - _opmix) * (1 + _opmix);
 	    t1 = 0.7f * _opmix * (2 - _opmix) * sqrtf (_invrtmid);
-	}
-        _d0 = (t0 - _g0) * invnfram;
-        _d1 = (t1 - _g1) * invnfram;
+        _d0 = (t0 - _g0);
+        _d1 = (t1 - _g1);
         _cntC2 = c;
     }
 
-    _pareq1.prepare (invnfram);
-    _pareq2.prepare (invnfram);
+    _pareq1.prepare ();
+    _pareq2.prepare ();
 }
 
 
-void Reverb::process (int nfram, float *inp [], float *out [])
+void Reverb::process (float *inp [], float *out [])
 {	
-    int   i, n;
+    int   n;
     float *p0, *p1;
-    float *q0, *q1, *q2, *q3;
-    float t, g, x0, x1, x2, x3, x4, x5, x6, x7;
-
-    g = sqrtf (0.125f);
+    float *q0, *q1;
+    float t, x0, x1, x2, x3, x4, x5, x6, x7;
 
     p0 = inp [0];
     p1 = inp [1];
     q0 = out [0];
     q1 = out [1];
-    q2 = out [2];
-    q3 = out [3];
 
-    for (i = 0; i < nfram; i++)
-    {
-	_vdelay0.write (p0 [i]);
-	_vdelay1.write (p1 [i]);
+	_vdelay0.write (p0 [0]);
+	_vdelay1.write (p1 [0]);
 
  	t = 0.3f * _vdelay0.read ();
 	x0 = _diff1 [0].process (_delay [0].read () + t);
@@ -432,57 +418,39 @@ void Reverb::process (int nfram, float *inp [], float *out [])
 	x6 = _diff1 [6].process (_delay [6].read () - t);
 	x7 = _diff1 [7].process (_delay [7].read () - t);
 
-        t = x0 - x1; x0 += x1;  x1 = t;
-        t = x2 - x3; x2 += x3;  x3 = t;
-        t = x4 - x5; x4 += x5;  x5 = t;
-        t = x6 - x7; x6 += x7;  x7 = t;
-        t = x0 - x2; x0 += x2;  x2 = t;
-        t = x1 - x3; x1 += x3;  x3 = t;
-        t = x4 - x6; x4 += x6;  x6 = t;
-        t = x5 - x7; x5 += x7;  x7 = t;
-        t = x0 - x4; x0 += x4;  x4 = t;
-        t = x1 - x5; x1 += x5;  x5 = t;
-        t = x2 - x6; x2 += x6;  x6 = t;
-        t = x3 - x7; x3 += x7;  x7 = t;
+    t = x0 - x1; x0 += x1;  x1 = t;
+    t = x2 - x3; x2 += x3;  x3 = t;
+    t = x4 - x5; x4 += x5;  x5 = t;
+    t = x6 - x7; x6 += x7;  x7 = t;
+    t = x0 - x2; x0 += x2;  x2 = t;
+    t = x1 - x3; x1 += x3;  x3 = t;
+    t = x4 - x6; x4 += x6;  x6 = t;
+    t = x5 - x7; x5 += x7;  x7 = t;
+    t = x0 - x4; x0 += x4;  x4 = t;
+    t = x1 - x5; x1 += x5;  x5 = t;
+    t = x2 - x6; x2 += x6;  x6 = t;
+    t = x3 - x7; x3 += x7;  x7 = t;
 
-	if (_ambis)
-	{
-            _g0 += _d0;
-            _g1 += _d1;
-	    q0 [i] = _g0 * x0;
-	    q1 [i] = _g1 * x1;
-	    q2 [i] = _g1 * x4;
-	    q3 [i] = _g1 * x2;
-	}
-	else
-	{
-            _g1 += _d1;
-	    q0 [i] = _g1 * (x1 + x2);
-	    q1 [i] = _g1 * (x1 - x2);
-	}
+    _g1 += _d1;
+    q0 [0] = _g1 * (x1 + x2);
+    q1 [0] = _g1 * (x1 - x2);
 
-	_delay [0].write (_filt1 [0].process (g * x0));
-	_delay [1].write (_filt1 [1].process (g * x1));
-	_delay [2].write (_filt1 [2].process (g * x2));
-        _delay [3].write (_filt1 [3].process (g * x3));
-        _delay [4].write (_filt1 [4].process (g * x4));
-        _delay [5].write (_filt1 [5].process (g * x5));
-        _delay [6].write (_filt1 [6].process (g * x6));
-        _delay [7].write (_filt1 [7].process (g * x7));
-    }
+    _delay [0].write (_filt1 [0].process (_g * x0));
+    _delay [1].write (_filt1 [1].process (_g * x1));
+    _delay [2].write (_filt1 [2].process (_g * x2));
+    _delay [3].write (_filt1 [3].process (_g * x3));
+    _delay [4].write (_filt1 [4].process (_g * x4));
+    _delay [5].write (_filt1 [5].process (_g * x5));
+    _delay [6].write (_filt1 [6].process (_g * x6));
+    _delay [7].write (_filt1 [7].process (_g * x7));
 
-    n = _ambis ? 4 : 2;
-    _pareq1.process (nfram, n, out);
-    _pareq2.process (nfram, n, out);
-    if (!_ambis)
-    {
-	for (i = 0; i < nfram; i++)
-	{
-	    _g0 += _d0;
-	    q0 [i] += _g0 * p0 [i];
-	    q1 [i] += _g0 * p1 [i];
-	}
-    }
+    n = 2;
+    _pareq1.process (n, out);
+    _pareq2.process (n, out);
+
+    _g0 += _d0;
+    q0 [0] += _g0 * p0 [0];
+    q1 [0] += _g0 * p1 [0];
 }
 
 

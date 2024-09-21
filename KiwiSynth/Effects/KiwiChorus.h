@@ -107,72 +107,25 @@ class KiwiChorus : public IEffect
     */
     float Process(float in);
 
-    /** Get the left channel's last sample */
-    float GetLeft();
-
-    /** Get the right channel's last sample */
-    float GetRight();
-
-    /** Pan both channels individually.
-        \param panl Pan the left channel. 0 is left, 1 is right.
-        \param panr Pan the right channel.
-    */
-    void SetPan(float panl, float panr);
-
-    /** Pan both channels.
-        \param pan Where to pan both channels to. 0 is left, 1 is right.
-    */
-    void SetPan(float pan);
-
-    /** Set both lfo depths individually.
-        \param depthl Left channel lfo depth. Works 0-1.
-        \param depthr Right channel lfo depth.
-    */
-    void SetLfoDepth(float depthl, float depthr);
-
     /** Set both lfo depths.
         \param depth Both channels lfo depth. Works 0-1.
     */
     void SetLfoDepth(float depth);
-
-    /** Set both lfo frequencies individually.
-        \param depthl Left channel lfo freq in Hz.
-        \param depthr Right channel lfo freq in Hz.
-    */
-    void SetLfoFreq(float freql, float freqr);
 
     /** Set both lfo frequencies.
         \param depth Both channel lfo freqs in Hz.
     */
     void SetLfoFreq(float freq);
 
-    /** Set both channel delay amounts individually.
-        \param delayl Left channel delay amount. Works 0-1.
-        \param delayr Right channel delay amount.
-    */
-    void SetDelay(float delayl, float delayr);
-
     /** Set both channel delay amounts.
         \param delay Both channel delay amount. Works 0-1.
     */
     void SetDelay(float delay);
 
-    /** Set both channel delay individually.
-        \param msl Left channel delay in ms.
-        \param msr Right channel delay in ms.
-    */
-    void SetDelayMs(float msl, float msr);
-
     /** Set both channel delay in ms.
         \param ms Both channel delay amounts in ms.
     */
     void SetDelayMs(float ms);
-
-    /** Set both channels feedback individually.
-        \param feedbackl Left channel feedback. Works 0-1.
-        \param feedbackr Right channel feedback.
-    */
-    void SetFeedback(float feedbackl, float feedbackr);
 
     /** Set both channels feedback.
         \param feedback Both channel feedback. Works 0-1.
@@ -182,9 +135,8 @@ class KiwiChorus : public IEffect
   private:
     KiwiChorusEngine engines_[2];
     float        gain_frac_;
-    float        pan_[2];
 
-    float sigl_, sigr_;
+    float sig_;
 };
 } //namespace kiwi_synth
 #endif // __cplusplus

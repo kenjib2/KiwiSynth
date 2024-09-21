@@ -12,14 +12,14 @@ namespace kiwi_synth
         delay.Init();
         chorusL.Init(sampleRate, 0);
         chorusR.Init(sampleRate, 1);
-        chorusL.SetPan(0.0f);
-        chorusR.SetPan(0.0f);
         phaserL.Init(sampleRate, 2);
         phaserR.Init(sampleRate, 3);
         phaserL.SetPoles(2);
         phaserR.SetPoles(2);
-        phaserL.SetFeedback(0.1);
-        phaserR.SetFeedback(0.1);
+        phaserL.SetFeedback(0.0);
+        phaserR.SetFeedback(0.0);
+        phaserL.SetFreq(300.0f);
+        phaserR.SetFreq(300.0f);
         flangerL.Init(sampleRate, 4);
         flangerR.Init(sampleRate, 5);
         decimatorL.Init();
@@ -27,7 +27,7 @@ namespace kiwi_synth
         decimatorL.SetSmoothCrushing(true);
         decimatorR.SetSmoothCrushing(true);
 
-        reverb.init(sampleRate, false);
+        reverb.init(sampleRate);
     }
 
     void EffectsEngine::UpdateSettings()
@@ -166,10 +166,10 @@ namespace kiwi_synth
         float *reverbOut[2] = {&yl, &yr};
 
         // Prepare to process one sample. Due to changes in Zita we need to pass in the inverse of the number of frames. The inverse of 1 is 1.
-        reverb.prepare(1);
+        reverb.prepare();
 
         // Process one sample (output can afterwards be read from yl and yr). We pass in the normal number of frames. NOT the inverse this time.
-        reverb.process(1, reverbIn, reverbOut);
+        reverb.process(reverbIn, reverbOut);
 
         sample[0] = yl;
         sample[1] = yr;

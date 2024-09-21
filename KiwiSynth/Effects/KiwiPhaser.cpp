@@ -11,7 +11,7 @@ void KiwiPhaserEngine::Init(float sample_rate, int bufferNumber)
 {
     sample_rate_ = sample_rate;
 
-    del_.Init(bufferNumber, kDelayLength);
+    del_.Init(bufferNumber);
     lfo_amp_  = 0.f;
     feedback_ = .2f;
     SetFreq(200.f);
@@ -30,6 +30,7 @@ void KiwiPhaserEngine::Init(float sample_rate, int bufferNumber)
 float KiwiPhaserEngine::Process(float in)
 {
     float lfo_sig = ProcessLfo();
+    
     fonepole(deltime_, sample_rate_ / (lfo_sig + ap_freq_ + os_), .0001f);
 
     last_sample_ = del_.Allpass(in + feedback_ * last_sample_, deltime_, .3f);
@@ -66,12 +67,12 @@ float KiwiPhaserEngine::ProcessLfo()
     //wrap around and flip direction
     if(lfo_phase_ > 1.f)
     {
-        lfo_phase_ = 1.f - (lfo_phase_ - 1.f);
+        lfo_phase_ = 2.f - lfo_phase_;
         lfo_freq_ *= -1.f;
     }
     else if(lfo_phase_ < -1.f)
     {
-        lfo_phase_ = -1.f - (lfo_phase_ + 1.f);
+        lfo_phase_ = -2.f - lfo_phase_;
         lfo_freq_ *= -1.f;
     }
 
@@ -93,19 +94,20 @@ void KiwiPhaser::Init(float sample_rate, int bufferNumber)
 
 float KiwiPhaser::Process(float in)
 {
-    float sig = 0.f;
+    //float sig = 0.f;
 
     /*for(int i = 0; i < poles_; i++)
     {
         sig += engines_[i].Process(in) * inv_poles_; // Equal mix
     }*/
-    // hard wiring for 4 pole
-    sig += engines_[0].Process(in) * inv_poles_; // Equal mix
-    sig += engines_[1].Process(in) * inv_poles_; // Equal mix
+    //sig += engines_[0].Process(in) * inv_poles_; // Equal mix
+    //sig += engines_[1].Process(in) * inv_poles_; // Equal mix
     //sig += engines_[2].Process(in) * inv_poles_; // Equal mix
     //sig += engines_[3].Process(in) * inv_poles_; // Equal mix
 
-    return sig;
+    // hard wiring for 2 pole
+    return engines_[0].Process(in) * inv_poles_
+         + engines_[1].Process(in) * inv_poles_;
 }
 
 void KiwiPhaser::SetPoles(int poles)

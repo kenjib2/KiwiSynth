@@ -11,7 +11,7 @@ void KiwiChorusEngine::Init(float sample_rate, int bufferNumber)
 {
     sample_rate_ = sample_rate;
 
-    del_.Init(bufferNumber, kDelayLength);
+    del_.Init(bufferNumber);
     lfo_amp_  = 0.f;
     feedback_ = .2f;
     SetDelay(.75);
@@ -88,103 +88,50 @@ void KiwiChorus::Init(float sample_rate, int bufferNumber)
 {
     engines_[0].Init(sample_rate, bufferNumber);
     engines_[1].Init(sample_rate, bufferNumber);
-    SetPan(.25f, .75f);
 
     gain_frac_ = .5f;
-    sigl_ = sigr_ = 0.f;
+    sig_ = 0.f;
 }
 
 float KiwiChorus::Process(float in)
 {
-    sigl_ = 0.f;
-    sigr_ = 0.f;
+    sig_ = 0.f;
 
     for(int i = 0; i < 2; i++)
     {
-        float sig = engines_[i].Process(in);
-        sigl_ += (1.f - pan_[i]) * sig;
-        sigr_ += pan_[i] * sig;
+        sig_ += engines_[i].Process(in) * gain_frac_;
     }
 
-    sigl_ *= gain_frac_;
-    sigr_ *= gain_frac_;
-
-    return sigl_;
-}
-
-float KiwiChorus::GetLeft()
-{
-    return sigl_;
-}
-
-float KiwiChorus::GetRight()
-{
-    return sigr_;
-}
-
-void KiwiChorus::SetPan(float panl, float panr)
-{
-    pan_[0] = daisysp::fclamp(panl, 0.f, 1.f);
-    pan_[1] = daisysp::fclamp(panr, 0.f, 1.f);
-}
-
-void KiwiChorus::SetPan(float pan)
-{
-    SetPan(pan, pan);
-}
-
-void KiwiChorus::SetLfoDepth(float depthl, float depthr)
-{
-    engines_[0].SetLfoDepth(depthl);
-    engines_[1].SetLfoDepth(depthr);
+    return sig_;
 }
 
 void KiwiChorus::SetLfoDepth(float depth)
 {
-    SetLfoDepth(depth, depth);
-}
-
-void KiwiChorus::SetLfoFreq(float freql, float freqr)
-{
-    engines_[0].SetLfoFreq(freql);
-    engines_[1].SetLfoFreq(freqr);
+    engines_[0].SetLfoDepth(depth);
+    engines_[1].SetLfoDepth(depth);
 }
 
 void KiwiChorus::SetLfoFreq(float freq)
 {
-    SetLfoFreq(freq, freq);
-}
-
-void KiwiChorus::SetDelay(float delayl, float delayr)
-{
-    engines_[0].SetDelay(delayl);
-    engines_[1].SetDelay(delayr);
+    engines_[0].SetLfoFreq(freq);
+    engines_[1].SetLfoFreq(freq);
 }
 
 void KiwiChorus::SetDelay(float delay)
 {
-    SetDelay(delay, delay);
-}
-
-void KiwiChorus::SetDelayMs(float msl, float msr)
-{
-    engines_[0].SetDelayMs(msl);
-    engines_[1].SetDelayMs(msr);
+    engines_[0].SetDelay(delay);
+    engines_[1].SetDelay(delay);
 }
 
 void KiwiChorus::SetDelayMs(float ms)
 {
-    SetDelayMs(ms, ms);
-}
-
-void KiwiChorus::SetFeedback(float feedbackl, float feedbackr)
-{
-    engines_[0].SetFeedback(feedbackl);
-    engines_[1].SetFeedback(feedbackr);
+    engines_[0].SetDelayMs(ms);
+    engines_[1].SetDelayMs(ms);
 }
 
 void KiwiChorus::SetFeedback(float feedback)
 {
-    SetFeedback(feedback, feedback);
+    engines_[0].SetFeedback(feedback);
+    engines_[1].SetFeedback(feedback);
 }
 } // namespace kiwi_synth

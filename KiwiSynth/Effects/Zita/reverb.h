@@ -157,11 +157,11 @@ public:
     Reverb (void);
     ~Reverb (void);
 
-    void init (float fsamp, bool ambis);
+    void init (float fsamp);
     void fini (void);
 
-    void prepare (int n);
-    void process (int n, float *inp [], float *out []);
+    void prepare ();
+    void process (float *inp [], float *out []);
 
     void set_delay (float v) { _ipdel = v; _cntA1++; }
     void set_xover (float v) { _xover = v; _cntB1++; }
@@ -178,7 +178,7 @@ private:
 
     float   _fsamp;
     float   _finvsamp;
-    bool    _ambis;
+    float   _g;
 
     Vdelay  _vdelay0;
     Vdelay  _vdelay1;
