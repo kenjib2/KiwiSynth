@@ -37,7 +37,7 @@ namespace kiwi_synth
             uint8_t maxVoices;
             std::vector<Voice> voices;
             Patch* patch;
-            std::vector<uint8_t>     monoNotes;
+            std::vector<uint8_t>     playingNotes;
 
             Voice* RequestVoice(uint8_t midiNote);
  

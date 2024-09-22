@@ -44,7 +44,6 @@ using namespace kiwi_synth;
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Is there some way to read more than one channel per pass from the multiplexer or speed it up in any other way???
  * Make attack longer or a slower curve?
- * Can we try three voices again?
  * External audio in
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Bhāskara I's sine approximation formula

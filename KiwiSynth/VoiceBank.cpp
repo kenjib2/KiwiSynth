@@ -163,7 +163,7 @@ namespace kiwi_synth
         switch (voiceMode) {
             case VOICE_MODE_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
-                monoNotes.push_back(note);
+                playingNotes.push_back(note);
                 if (voices[0].noteTriggered) {
                     voices[0].NoteOn(note, velocity, false);
                 } else {
@@ -171,7 +171,7 @@ namespace kiwi_synth
                 }
                 break;
             case VOICE_MODE_MULTI:
-                monoNotes.push_back(note);
+                playingNotes.push_back(note);
                 if (voices[0].noteTriggered) {
                     voices[0].NoteOn(note, velocity, false);
                     voices[1].NoteOn(note, velocity, false);
@@ -188,7 +188,7 @@ namespace kiwi_synth
                         voices[1].NoteOn(note, velocity);
                     }
                 } else {
-                    monoNotes.push_back(note);
+                    playingNotes.push_back(note);
                     if (voices[0].noteTriggered) {
                         voices[0].NoteOn(note, velocity, false);
                     } else {
@@ -199,6 +199,7 @@ namespace kiwi_synth
             default:
                 Voice* voice = RequestVoice(note);
                 if (voice != NULL) {
+                    playingNotes.push_back(note);
                     voice->NoteOn(note, velocity);
                 }
                 break;
@@ -210,28 +211,28 @@ namespace kiwi_synth
         switch (voiceMode) {
             case VOICE_MODE_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
-                if (note == monoNotes.back()) {
-                    monoNotes.pop_back();
-                    if (monoNotes.size() > 0) {
-                        int prevNote = monoNotes.back();
+                if (note == playingNotes.back()) {
+                    playingNotes.pop_back();
+                    if (playingNotes.size() > 0) {
+                        int prevNote = playingNotes.back();
                         voices[0].NoteOn(prevNote, velocity, false);
                     } else {
                         voices[0].NoteOff(note, velocity);
                     }
                 } else {
-                    for(unsigned int i = 0; i < monoNotes.size(); i++) {
-                        if (monoNotes[i] == note) {
-                            monoNotes.erase(monoNotes.begin() + i);
+                    for(unsigned int i = 0; i < playingNotes.size(); i++) {
+                        if (playingNotes[i] == note) {
+                            playingNotes.erase(playingNotes.begin() + i);
                             break;
                         }
                     }
                 }
                 break;
             case VOICE_MODE_MULTI:
-                if (note == monoNotes.back()) {
-                    monoNotes.pop_back();
-                    if (monoNotes.size() > 0) {
-                        int prevNote = monoNotes.back();
+                if (note == playingNotes.back()) {
+                    playingNotes.pop_back();
+                    if (playingNotes.size() > 0) {
+                        int prevNote = playingNotes.back();
                         voices[0].NoteOn(prevNote, velocity, false);
                         voices[1].NoteOn(prevNote, velocity, false);
                     } else {
@@ -239,9 +240,9 @@ namespace kiwi_synth
                         voices[1].NoteOff(note, velocity);
                     }
                 } else {
-                    for(unsigned int i = 0; i < monoNotes.size(); i++) {
-                        if (monoNotes[i] == note) {
-                            monoNotes.erase(monoNotes.begin() + i);
+                    for(unsigned int i = 0; i < playingNotes.size(); i++) {
+                        if (playingNotes[i] == note) {
+                            playingNotes.erase(playingNotes.begin() + i);
                             break;
                         }
                     }
@@ -254,18 +255,18 @@ namespace kiwi_synth
                         break;
                     }
                 } else {
-                    if (note == monoNotes.back()) {
-                        monoNotes.pop_back();
-                        if (monoNotes.size() > 0) {
-                            int prevNote = monoNotes.back();
+                    if (note == playingNotes.back()) {
+                        playingNotes.pop_back();
+                        if (playingNotes.size() > 0) {
+                            int prevNote = playingNotes.back();
                             voices[0].NoteOn(prevNote, velocity, false);
                         } else {
                             voices[0].NoteOff(note, velocity);
                         }
                     } else {
-                        for(unsigned int i = 0; i < monoNotes.size(); i++) {
-                            if (monoNotes[i] == note) {
-                                monoNotes.erase(monoNotes.begin() + i);
+                        for(unsigned int i = 0; i < playingNotes.size(); i++) {
+                            if (playingNotes[i] == note) {
+                                playingNotes.erase(playingNotes.begin() + i);
                                 break;
                             }
                         }
@@ -273,9 +274,40 @@ namespace kiwi_synth
                 }
                 break;
             default:
+                int numVoicesPlaying = 0;
+                int voiceFound = -1;
+
+                // Look for a voice playing the note
                 for (size_t i = 0; i < voices.size(); i++) {
-                    if (voices[i].noteTriggered && voices[i].triggerNote == note) {
-                        voices[i].NoteOff(note, velocity);
+                    if (!voices[i].IsAvailable()) {
+                        numVoicesPlaying++;
+                        if (voices[i].noteTriggered && voices[i].triggerNote == note) {
+                            voiceFound = i;
+                        }
+                    }
+                }
+
+                if (voiceFound == -1) {
+                    // We didn't find the voice. There is no note to stop.
+                } else if (numVoicesPlaying == 2 && playingNotes.size() > 2) {
+                    int otherNote = voices[voiceFound ? 0 : 1].triggerNote;
+
+                    // Go backward through the vector to find the last note that isn't playing
+                    for (size_t i = 0; i < playingNotes.size(); i++) {
+                        if (playingNotes[i] != note && playingNotes[i] != otherNote) {
+                            // We have found it. Switch to that note
+                            voices[voiceFound].NoteOn(playingNotes[i], velocity, false);
+                        }
+                    }
+                } else {
+                    // There are no extra notes on the stack. Just stop the note normally.
+                    voices[voiceFound] .NoteOff(note, velocity);
+                }
+
+                // Remove the note from the stack if it exists
+                for(unsigned int j = 0; j < playingNotes.size(); j++) {
+                    if (playingNotes[j] == note) {
+                        playingNotes.erase(playingNotes.begin() + j);
                         break;
                     }
                 }
@@ -290,7 +322,7 @@ namespace kiwi_synth
                 voices[i].NoteOff(0, 0);
             }
         }
-        monoNotes.clear();
+        playingNotes.clear();
     }
 
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)
