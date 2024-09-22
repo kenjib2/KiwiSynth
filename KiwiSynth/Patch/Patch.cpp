@@ -41,6 +41,7 @@ namespace kiwi_synth
         voiceMode = VOICE_MODE_POLY;
         splitNote = 60;
         strcpy(name, "New");
+        type = PATCH_SYNTH;
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;
 
@@ -52,6 +53,7 @@ namespace kiwi_synth
         voiceMode = savedPatch.voiceMode;
         splitNote = savedPatch.splitNote;
         strcpy(name, savedPatch.name);
+        type = savedPatch.type;
         effectsMode = savedPatch.effectsMode;
         reverbMode = savedPatch.reverbMode;
 
@@ -63,6 +65,7 @@ namespace kiwi_synth
         savedPatch->voiceMode = voiceMode;
         savedPatch->splitNote = splitNote;
         strcpy(savedPatch->name, name);
+        savedPatch->type = type;
         savedPatch->effectsMode = effectsMode;
         savedPatch->reverbMode = reverbMode;
 

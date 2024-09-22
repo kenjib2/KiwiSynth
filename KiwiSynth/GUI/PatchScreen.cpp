@@ -21,7 +21,12 @@ namespace kiwi_synth
         sprintf(buffer, "Name: %s", nameString);
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 10);
+        display->SetCursor(0, 8);
+        GetPatchType(value);
+        sprintf(buffer, "Type: %s", value);
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 16);
         GetVoiceMode(value);
         if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
             GetMidiNote(nameString);
@@ -31,12 +36,12 @@ namespace kiwi_synth
         }
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 20);
+        display->SetCursor(0, 24);
         GetFxType(value);
         sprintf(buffer, "FX: %s", value);
         display->WriteString(buffer, Font_6x8, false);
 
-        display->SetCursor(0, 30);
+        display->SetCursor(0, 32);
         GetReverbType(value);
         sprintf(buffer, "Reverb: %s", value);
         display->WriteString(buffer, Font_6x8, true);
@@ -45,15 +50,61 @@ namespace kiwi_synth
         sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 50);
+        display->SetCursor(0, 48);
         sprintf(buffer, "Load Patch");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 60);
+        display->SetCursor(0, 56);
         sprintf(buffer, "Manual Mode");
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();
+    }
+
+    // 13 character value
+    void PatchScreen::GetPatchType(char* buffer)
+    {
+        switch (patch->type) {
+            case PATCH_ARP:
+                strcpy(buffer, "Arpeggiated");
+                break;
+            case PATCH_BASS:
+                strcpy(buffer, "Bass");
+                break;
+            case PATCH_BRASS:
+                strcpy(buffer, "Brass");
+                break;
+            case PATCH_DRONE:
+                strcpy(buffer, "Drone");
+                break;
+            case PATCH_EFFECT:
+                strcpy(buffer, "Effect");
+                break;
+            case PATCH_KEY:
+                strcpy(buffer, "Key");
+                break;
+            case PATCH_LEAD:
+                strcpy(buffer, "Lead");
+                break;
+            case PATCH_OTHER:
+                strcpy(buffer, "Other");
+                break;
+            case PATCH_PAD:
+                strcpy(buffer, "Pad");
+                break;
+            case PATCH_PERCUSSION:
+                strcpy(buffer, "Percussion");
+                break;
+            case PATCH_PLUCK:
+                strcpy(buffer, "Pluck");
+                break;
+            case PATCH_STRING:
+                strcpy(buffer, "String");
+                break;
+            case PATCH_SYNTH:
+                strcpy(buffer, "Synth");
+                break;
+        }
     }
 
     // 11 character value

@@ -12,6 +12,22 @@ namespace kiwi_synth
     const static float MAX_DISTORTION_GAIN = 150.0f;
 
     typedef enum {
+        PATCH_LEAD,
+        PATCH_PAD,
+        PATCH_SYNTH,
+        PATCH_DRONE,
+        PATCH_BASS,
+        PATCH_PLUCK,
+        PATCH_KEY,
+        PATCH_BRASS,
+        PATCH_STRING,
+        PATCH_ARP,
+        PATCH_PERCUSSION,
+        PATCH_EFFECT,
+        PATCH_OTHER
+    } PatchType;
+
+    typedef enum {
         VOICE_MODE_POLY,
         VOICE_MODE_MONO,
         VOICE_MODE_MULTI,

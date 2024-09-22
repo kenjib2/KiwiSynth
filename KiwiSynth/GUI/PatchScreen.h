@@ -26,6 +26,7 @@ namespace kiwi_synth
             KiwiSynth* kiwiSynth;
             Patch* patch;
 
+            void GetPatchType(char* buffer);
             void GetVoiceMode(char* buffer);
             void GetMidiNote(char* buffer);
             void GetFxType(char* buffer);

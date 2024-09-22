@@ -29,6 +29,7 @@ namespace kiwi_synth
                 patch.Save(&(patchBanks[i][j]));
             }
         }
+        strcpy(patchBanks[0][0].name, "KiwiLead");
 
         InitMidi();
     }

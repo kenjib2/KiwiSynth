@@ -26,6 +26,7 @@ namespace kiwi_synth
             VoiceMode               voiceMode;
             EffectsMode             effectsMode;
             ReverbMode              reverbMode;
+            PatchType               type;
 
             PatchSettings*          activeSettings;
             PatchSettings*          voice1Settings;
