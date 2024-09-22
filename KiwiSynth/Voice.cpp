@@ -7,7 +7,6 @@ namespace kiwi_synth
         this->voiceNumber = voiceNumber;
         noteTriggered = false;
         noteTriggerCount = -1;
-        noteOffNeeded = false;
         currentMidiNote = 64;
         currentPlayingNote = 64.0f;
         this->maxVcos = numVCOs;
@@ -205,8 +204,6 @@ namespace kiwi_synth
 
     void Voice::NoteOff(int note, int velocity)
     {
-        //noteOffNeeded = true;
-        noteOffNeeded = false;
         noteTriggered = false;
         env1.NoteOff();
         env2.NoteOff();

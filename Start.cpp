@@ -38,7 +38,6 @@ using namespace kiwi_synth;
  * Will fastSine work for LFOs and VCOs?
  * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * 
- * When a voice is triggered but not on, a second note can steal the voice so only one of the two sounds.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
  * Update Zita to handle larger delay values for Bloom reverb

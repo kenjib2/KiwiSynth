@@ -274,9 +274,8 @@ namespace kiwi_synth
                 break;
             default:
                 for (size_t i = 0; i < voices.size(); i++) {
-                    if (voices[i].noteTriggered && voices[i].currentMidiNote == note) {
+                    if (voices[i].noteTriggered && voices[i].triggerNote == note) {
                         voices[i].NoteOff(note, velocity);
-                        RemovePlayingVoice(i);
                         break;
                     }
                 }
@@ -296,16 +295,12 @@ namespace kiwi_synth
 
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)
     {
-        uint8_t lowestIndex = 0;
-        uint8_t lowestNote = 128;
         uint8_t highestIndex = 0;
         uint8_t highestNote = 0;
 
         // First if that note is already playing, retrigger it to preserve envelope/lfo position.
         for (uint8_t i = 0; i < numVoices; i++) {
             if (!voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
-                RemovePlayingVoice(i);
-                AddPlayingVoice(i, midiNote);
                 return &voices[i];
             }
         }
@@ -313,7 +308,13 @@ namespace kiwi_synth
         // Else return first available voice.
         for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsAvailable()) {
-                AddPlayingVoice(i, midiNote);
+                return &voices[i];
+            }
+        }
+
+        // Else return first releasing voice that is not triggered.
+        for (size_t i = 0; i < numVoices; i++) {
+            if (voices[i].IsReleasing() && !voices[i].noteTriggered) {
                 return &voices[i];
             }
         }
@@ -321,16 +322,10 @@ namespace kiwi_synth
         // Else return first releasing voice.
         for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsReleasing()) {
-                RemovePlayingVoice(i);
-                AddPlayingVoice(i, midiNote);
                 return &voices[i];
             } else {
-                // Find the lowest and highest playing notes to make sure that we don't return them in the next step.
-                // These will be the most audibly conspicuous notes to steal.
-                if (voices[i].currentMidiNote < lowestNote) {
-                    lowestIndex = i;
-                    lowestNote = voices[i].currentMidiNote;
-                }
+                // Find the highest playing note to make sure that we return that note in the next step.
+                // The lowest note will be the most audibly conspicuous note to steal so we don't want that one.
                 if (voices[i].currentMidiNote > highestNote) {
                     highestIndex = i;
                     highestNote = voices[i].currentMidiNote;
@@ -338,40 +333,8 @@ namespace kiwi_synth
             }
         }
 
-        // If no voices are available, return the oldest note.
-        // We have to replace a playing note that is neither lowest nor highest.
-        for (uint8_t i = 0; i < numVoices; i++) {
-            uint8_t playingIndex = playingIndices[i];
-            if (playingIndex != lowestIndex && playingIndex != highestIndex) {
-                RemovePlayingVoice(playingIndex);
-                AddPlayingVoice(playingIndex, midiNote);
-                return &(voices[playingIndex]);
-            }
-        }
-
-        // If we get here it means we have 1 or 2 voice polyphony. Return the highest note.
-        RemovePlayingVoice(highestIndex);
-        AddPlayingVoice(highestIndex, midiNote);
+        // Return the highest note.
         return &(voices[highestIndex]); 
-    }
-
-
-    void VoiceBank::AddPlayingVoice(uint8_t index, uint8_t midiNote)
-    {
-        playingIndices.push_back(index);
-        playingNotes.push_back(midiNote);
-    }
-
-
-    void VoiceBank::RemovePlayingVoice(uint8_t index)
-    {
-        for (uint8_t i = 0; i < playingIndices.size(); i++) {
-            if (playingIndices[i] == index) {
-                playingIndices.erase(playingIndices.begin()+i);
-                playingNotes.erase(playingNotes.begin()+i);
-                break;
-            }
-        }
     }
 
 }

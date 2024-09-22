@@ -35,11 +35,9 @@ namespace kiwi_synth
             VCA vca;
             int voiceNumber;
             int noteTriggerCount;
-            bool noteOffNeeded;
             bool portamentoOn;
             float portamentoSpeed;
             float currentPlayingNote;
-            int triggerNote;
             int triggerVelocity;
             float mods[MAX_MODS];
             float vcoMods[MAX_MODS];
@@ -56,6 +54,7 @@ namespace kiwi_synth
             int maxVcos;
             int numVcos;
             int currentMidiNote;
+            int triggerNote;
             int currentVelocity;
             bool noteTriggered;
 
