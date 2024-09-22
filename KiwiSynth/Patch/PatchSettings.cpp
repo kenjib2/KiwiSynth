@@ -139,6 +139,19 @@ namespace kiwi_synth
         memcpy(this->floatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
     }
 
+    void PatchSettings::Load(SavedPatch* savedPatch, int voiceNumber)
+    {
+        if (voiceNumber == 0) {
+            memcpy(savedPatch->voice1BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice1IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice1FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+        } else if (voiceNumber == 1) {
+            memcpy(savedPatch->voice2BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice2IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice2FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+        }
+    }
+
     void PatchSettings::processEncoder(PatchSetting setting, int controlNumber, int pinA, int pinB)
     {
         int index = controlNumber - 0x20;

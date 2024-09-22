@@ -3,16 +3,17 @@
 namespace kiwi_synth
 {
 
-    void Display::Init(Patch* patch, Performance* performance)
+    void Display::Init(KiwiSynth* kiwiSynth, Performance* performance)
     {
         DisplayConfig cfg;
         cfg.Defaults();
-        Init(&cfg, patch, performance);
+        Init(&cfg, kiwiSynth, performance);
     }
 
-    void Display::Init(DisplayConfig *displayConfig, Patch* patch, Performance* performance)
+    void Display::Init(DisplayConfig *displayConfig, KiwiSynth* kiwiSynth, Performance* performance)
     {
-        this->patch = patch;
+        this->kiwiSynth = kiwiSynth;
+        patch = &(kiwiSynth->patch);
         this->performance = performance;
         guiButton = false;
         mode = PLAY;
@@ -20,7 +21,7 @@ namespace kiwi_synth
         welcomeScreen.Init(&display);
         bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patch);
-        patchScreen.Init(&display, patch);
+        patchScreen.Init(&display, kiwiSynth, patch);
         systemScreen.Init(&display, performance);
 
         KiwiDisplay::Config cfg;

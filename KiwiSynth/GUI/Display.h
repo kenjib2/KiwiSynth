@@ -4,7 +4,7 @@
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 
-#include "../Patch/Patch.h"
+#include "../KiwiSynth.h"
 #include "../../KUtils.h"
 #include "WelcomeScreen.h"
 #include "BootloaderScreen.h"
@@ -67,8 +67,8 @@ namespace kiwi_synth
 
             Display(){}
             virtual ~Display(){};
-            void Init(Patch* patch, Performance* performance);
-            void Init(DisplayConfig *displayConfig, Patch* patch, Performance* performance);
+            void Init(KiwiSynth* kiwiSynth, Performance* performance);
+            void Init(DisplayConfig *displayConfig, KiwiSynth* kiwiSynth, Performance* performance);
 
             void HandleInput();
             void Update();
@@ -76,6 +76,7 @@ namespace kiwi_synth
         private:
             char buffer[256];
             bool guiButton;
+            KiwiSynth* kiwiSynth;
             Patch* patch;
             Performance* performance;
             KiwiDisplay display;

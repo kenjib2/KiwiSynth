@@ -107,7 +107,7 @@ int main(void)
 	load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
 	performance.Init(&load);
 	#endif // __CPU_LOAD__
-	display.Init(&(kiwiSynth.patch), &performance);
+	display.Init(&kiwiSynth, &performance);
 
 	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())

@@ -4,9 +4,10 @@
 namespace kiwi_synth
 {
 
-    void PatchScreen::Init(KiwiDisplay* display, Patch* patch)
+    void PatchScreen::Init(KiwiDisplay* display, KiwiSynth* kiwiSynth, Patch* patch)
     {
         this->display = display;
+        this->kiwiSynth = kiwiSynth;
         this->patch = patch;
     }
 

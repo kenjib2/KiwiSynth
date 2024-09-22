@@ -1,7 +1,7 @@
 #ifndef __KIWI_SYNTH_SAVED_PATCH_H__
 #define __KIWI_SYNTH_SAVED_PATCH_H__
 
-#include "PatchSettings.h"
+#include "PatchTypes.h"
 
 namespace kiwi_synth
 {

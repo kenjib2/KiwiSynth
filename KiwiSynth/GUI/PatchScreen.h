@@ -4,7 +4,7 @@
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 
-#include "../Patch/Patch.h"
+#include "../KiwiSynth.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
@@ -15,7 +15,7 @@ namespace kiwi_synth
         public:
             PatchScreen(){}
             virtual ~PatchScreen(){};
-            void Init(KiwiDisplay* display, Patch* patch);
+            void Init(KiwiDisplay* display, KiwiSynth* kiwiSynth, Patch* patch);
 
             void Display();
 
@@ -23,6 +23,7 @@ namespace kiwi_synth
             char buffer[41];
             char value[18];
             KiwiDisplay* display;
+            KiwiSynth* kiwiSynth;
             Patch* patch;
 
             void GetVoiceMode(char* buffer);

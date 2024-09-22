@@ -16,6 +16,8 @@ using namespace daisy::seed;
 
 namespace kiwi_synth
 {
+    const static int NUM_PATCH_BANKS = 4;
+    const static int PATCHES_PER_BANK = 128;
     static const int MIDI_LED_DURATION = 20;
 
     class KiwiSynth
@@ -57,6 +59,7 @@ namespace kiwi_synth
 
             void PersistPatchBanks();
             void RestorePatchBanks();
+            SavedPatch GetSavedPatch(int bank, int patch);
 
             bool BootLoaderRequested();
             void UpdateSettings();

@@ -58,4 +58,16 @@ namespace kiwi_synth
         settings1.Copy((bool*)savedPatch.voice1BoolValues, (int*)savedPatch.voice1IntValues, (float*)savedPatch.voice1FloatValues);
         settings2.Copy((bool*)savedPatch.voice2BoolValues, (int*)savedPatch.voice2IntValues, (float*)savedPatch.voice2FloatValues);
     }
+
+    void Patch::Save(SavedPatch* savedPatch) {
+        savedPatch->voiceMode = voiceMode;
+        savedPatch->splitNote = splitNote;
+        strcpy(savedPatch->name, name);
+        savedPatch->effectsMode = effectsMode;
+        savedPatch->reverbMode = reverbMode;
+
+        settings1.Load(savedPatch, 0);
+        settings2.Load(savedPatch, 1);
+    }
+
 }

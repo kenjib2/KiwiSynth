@@ -51,6 +51,7 @@ namespace kiwi_synth
             void SetVoiceMode(VoiceMode voiceMode);
             void DefaultSettings();
             void Load(SavedPatch savedPatch);
+            void Save(SavedPatch* savedPatch);
     };
 
 } // namespace kiwi_synth
