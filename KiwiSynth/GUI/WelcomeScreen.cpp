@@ -12,21 +12,25 @@ namespace kiwi_synth
     {
         display->Fill(false);
 
-	    sprintf(buffer, "KiwiSynth");
         display->SetCursor(0, 0);
+	    sprintf(buffer, "Free Mode");
         display->WriteString(buffer, Font_6x8, true);
 
 	    /*sprintf(buffer, "Kiwi Synth");
-        display.SetCursor(0, 0);
-        display.WriteString(buffer, Font_11x18, true);
+        display->SetCursor(0, 0);
+        display->WriteString(buffer, Font_11x18, true);
 
-        display.SetCursor(0, 22);
+        display->SetCursor(0, 22);
 	    sprintf(buffer, "Version 1.0");
-        display.WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, true);
 
-        display.SetCursor(36, 56);
+        display->SetCursor(0, 36);
+	    sprintf(buffer, "Free Mode");
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(36, 56);
 	    sprintf(buffer, "Bombastic Audio");
-        display.WriteString(buffer, Font_6x8, true);*/
+        display->WriteString(buffer, Font_6x8, true);*/
 
         display->Update();
     }

@@ -55,7 +55,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        sprintf(buffer, "Manual Mode");
+        sprintf(buffer, "Free Mode");
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();

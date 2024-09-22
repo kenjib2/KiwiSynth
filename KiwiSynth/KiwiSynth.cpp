@@ -6,7 +6,7 @@ namespace kiwi_synth
     char DSY_SDRAM_BSS buff[512];
     #endif // __PATCH_SETTINGS__
 
-    SavedPatch DSY_SDRAM_BSS patchBanks[NUM_PATCH_BANKS][PATCHES_PER_BANK];
+    PatchBanks DSY_SDRAM_BSS patchBanks;
 
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
@@ -26,10 +26,10 @@ namespace kiwi_synth
         patch.DefaultSettings();
         for (int i = 0; i < NUM_PATCH_BANKS; i++) {
             for (int j = 0; j < PATCHES_PER_BANK; j++) {
-                patch.Save(&(patchBanks[i][j]));
+                patch.Save(&(patchBanks.patches[i][j]));
             }
         }
-        strcpy(patchBanks[0][0].name, "KiwiLead");
+        strcpy(patchBanks.patches[0][0].name, "KiwiLead");
 
         InitMidi();
     }
@@ -93,7 +93,7 @@ namespace kiwi_synth
 
     SavedPatch KiwiSynth::GetSavedPatch(int bank, int patch)
     {
-        return patchBanks[bank][patch];
+        return patchBanks.patches[bank][patch];
     }
 
     void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)

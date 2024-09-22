@@ -5,6 +5,10 @@
 
 namespace kiwi_synth
 {
+
+    const static int NUM_PATCH_BANKS = 4;
+    const static int PATCHES_PER_BANK = 128;
+
     struct SavedPatch
     {
         PatchType               type;
@@ -21,17 +25,16 @@ namespace kiwi_synth
         float voice2FloatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
         int8_t voice2IntValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
         bool voice2BoolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
-        
+    };
+
+    struct PatchBanks
+    {
+        SavedPatch patches[NUM_PATCH_BANKS][PATCHES_PER_BANK];
+
         //Overloading the != operator
         //This is necessary as this operator is used in the PersistentStorage source code
         bool operator!=(const SavedPatch& a) const {
-            return !(!strcmp(a.name, name) &&
-                     a.type==type &&
-                     a.voiceMode==voiceMode &&
-                     a.splitNote==splitNote &&
-                     a.effectsMode==effectsMode &&
-                     a.reverbMode==reverbMode
-                     );
+            return false;
         }
     };
 
