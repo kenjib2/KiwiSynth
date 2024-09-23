@@ -42,8 +42,7 @@ using namespace kiwi_synth;
  * Can we make the data structures a little smaller without losing performance?
  * Update Zita to handle larger delay values for Bloom reverb
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
- * Is there some way to read more than one channel per pass from the multiplexer or speed it up in any other way???
- * Make attack longer or a slower curve?
+ * Make attack longer or a slower curve? Maybe also lower max release.
  * External audio in
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Bhāskara I's sine approximation formula
@@ -109,7 +108,7 @@ int main(void)
 	#endif // __CPU_LOAD__
 	display.Init(&kiwiSynth, &performance);
 
-	kiwiSynth.ProcessInputs();
+	kiwiSynth.ProcessInputs(true);
 	if (kiwiSynth.BootLoaderRequested())
 	{
 		display.mode = BOOTLOADER;
@@ -124,16 +123,26 @@ int main(void)
 	hw.StartAudio(AudioCallback);
 
 	uint16_t counter = 0;
+	uint16_t updateCounter = 0;
     while(1)
 	{
-		// We used to need a System::DelayUs(5); here to give the Multiplexer time to switch channels. No longer needed because of
-		// display.HandleInput() taking some time to finish and serving the same purpose.
-		kiwiSynth.ProcessInputs();
-		kiwiSynth.UpdateSettings();
+		// It takes 16 iterations to cycle through all the inputs. So we only need to update gpio and settings every 16th iteration.
+		updateCounter++;
+		bool fullUpdate = false;
+		if (updateCounter < 16) {
+			// analog only
+			kiwiSynth.ProcessInputs(fullUpdate);
+		} else {
+			// full update
+			fullUpdate = true;
+			updateCounter = 0;
+			kiwiSynth.ProcessInputs(fullUpdate);
+			kiwiSynth.UpdateSettings();
+		}
 
 		#ifdef __CPU_LOAD__
 		if (!display.mode) {
-			performance.Update();
+			performance.Update(fullUpdate);
 		}
 		#endif // __CPU_LOAD__
 

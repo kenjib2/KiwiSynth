@@ -17,6 +17,7 @@ using namespace daisy::seed;
 namespace kiwi_synth
 {
     static const int MIDI_LED_DURATION = 20;
+    static const int MULTIPLEX_CHANNEL_DELAY = 550;
 
     class KiwiSynth
     {
@@ -48,7 +49,7 @@ namespace kiwi_synth
             ~KiwiSynth() {}
             void Init(DaisySeed* hw, float sampleRate);
 
-            void ProcessInputs();
+            void ProcessInputs(bool readGpio);
             void ConfigureMultiPots(DaisySeed* hw);
             void ConfigureGpioExpansion();
 

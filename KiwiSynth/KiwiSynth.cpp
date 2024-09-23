@@ -128,14 +128,20 @@ namespace kiwi_synth
         patch.voice2Settings->setValue(GEN_EXPRESSION, expression);
     }
 
-    void KiwiSynth::ProcessInputs()
+    void KiwiSynth::ProcessInputs(bool readGpio)
     {
         if (midiLEDOn != midiLEDState) {
             midiLEDState = midiLEDOn;
             gpioMidiActivity.Write(midiLEDOn);
         }
+
         multiPots.Process();
-        ge.Process();
+        if (readGpio) {
+            ge.Process();
+        } else {
+            // If not reading GPIO, we need to delay to give the Multiplexer time to switch channels.
+            System::DelayUs(MULTIPLEX_CHANNEL_DELAY);
+        }
     }
 
     void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)

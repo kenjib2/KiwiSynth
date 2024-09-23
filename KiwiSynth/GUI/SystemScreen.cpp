@@ -17,15 +17,19 @@ namespace kiwi_synth
         sprintf(buffer, "System Version: 1.0");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 16);
+        display->SetCursor(0, 14);
         sprintf(buffer, "CPU Max: %d  Avg: %d", (int)(performance->Max() * 100), (int)(performance->Avg() * 100));
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 32);
+        display->SetCursor(0, 28);
+        sprintf(buffer, "Reads/Second: %d", performance->ReadsPerSec());
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 42);
         sprintf(buffer, "Updates/Second: %d", performance->UpdatesPerSec());
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 48);
+        display->SetCursor(0, 56);
         sprintf(buffer, "Update System");
         display->WriteString(buffer, Font_6x8, false);
 
