@@ -40,7 +40,8 @@ using namespace kiwi_synth;
  * There are pops and other artifacts when using fx
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
- * Try 3 voice again with 384 buffer?
+ * Try 3 voice again with higher buffer?
+ * Can we get the buffer lower
  * 
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
@@ -71,7 +72,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 384;
+const int AUDIO_BLOCK_SIZE = 480;
 Performance performance;
 CpuLoadMeter load;
 
