@@ -83,7 +83,7 @@ class Performance {
 
          ticksPerS = System::GetTickFreq();
          nextReadTick = System::GetTick() + ticksPerS;
-         channelMultiplier = 1.0f / 16.0f;
+         channelMultiplier = 1.0f / 2.0f;
       }
 
       void Update(bool update) {
@@ -106,7 +106,7 @@ class Performance {
       inline float Avg() { return avg; }
       inline float Max() { return max; }
       inline int ReadsPerSec() { return readsPerSec; }
-      inline int UpdatesPerSec() { return updatesPerSec; }
+      inline int UpdatesPerSec() { return updatesPerSec * channelMultiplier; }
 
    private:
       float avg;

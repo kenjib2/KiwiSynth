@@ -51,7 +51,8 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        sprintf(buffer, "Load Patch");
+        //sprintf(buffer, "Load Patch");
+        kiwiSynth->Test(buffer);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);

@@ -9,7 +9,7 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    const static float VCA_ATTENTUATION_CONSTANT = 0.35f;
+    const static float VCA_ATTENTUATION_CONSTANT = 0.30f;
     
     class VCA
     {

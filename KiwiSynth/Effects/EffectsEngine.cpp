@@ -18,8 +18,8 @@ namespace kiwi_synth
         phaserR.SetPoles(2);
         phaserL.SetFeedback(0.0);
         phaserR.SetFeedback(0.0);
-        phaserL.SetFreq(300.0f);
-        phaserR.SetFreq(300.0f);
+        phaserL.SetFreq(250.0f);
+        phaserR.SetFreq(250.0f);
         flangerL.Init(sampleRate, 4);
         flangerR.Init(sampleRate, 5);
         decimatorL.Init();
@@ -40,7 +40,7 @@ namespace kiwi_synth
         }
 
         distortion.SetGain(patch->activeSettings->getFloatValueLogLookup(PatchSetting::FX_1));
-        distortion.SetLevel(patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.22f));
+        distortion.SetLevel(patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.25f));
 
         float bitcrushFactor = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_3, 0.0f, 0.8f);
         float downsampleFactor = patch->activeSettings->getFloatValue(PatchSetting::FX_4);
@@ -53,7 +53,7 @@ namespace kiwi_synth
         decimatorR.SetLevel(decimatorLevel);
 
         float freq = patch->activeSettings->getFloatValueLogLookup(PatchSetting::MOD_1_DEPTH);   // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
-        float feedback = patch->activeSettings->getFloatValue(PatchSetting::FX_2);
+        float feedback = patch->activeSettings->getFloatValue(PatchSetting::FX_2) * 0.9f;
         float chorusDepth = feedback;
         float phaserDepth = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_2, 0.2f, 1.0f);
 

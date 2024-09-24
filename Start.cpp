@@ -40,6 +40,7 @@ using namespace kiwi_synth;
  * There are pops and other artifacts when using fx
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
+ * Try 3 voice again with 384 buffer?
  * 
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
@@ -130,10 +131,11 @@ int main(void)
 	uint16_t updateCounter = 0;
     while(1)
 	{
-		// It takes 16 iterations to cycle through all the inputs. So we only need to update gpio and settings every 16th iteration.
+		// It takes 16 iterations to cycle through all the inputs. So we only need to update settings for pots every 16th iteration.
+		// However we will use 8 so knobs refresh more often.
 		updateCounter++;
 		bool fullUpdate = false;
-		if (updateCounter >= 16 || display.mode) {
+		if (updateCounter >= 8 || display.mode) {
 			fullUpdate = true;
 			updateCounter = 0;
 		}

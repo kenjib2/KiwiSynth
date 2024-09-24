@@ -10,6 +10,7 @@
 #include "Patch/Patch.h"
 #include "VoiceBank.h"
 #include "Effects/EffectsEngine.h"
+#include "Patch/Storage.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -27,6 +28,7 @@ namespace kiwi_synth
             DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
+            Storage storage;
             int numVoices;
             int midiChannel;
 	        GPIO gpioMidiActivity;
@@ -49,16 +51,13 @@ namespace kiwi_synth
             ~KiwiSynth() {}
             void Init(DaisySeed* hw, float sampleRate);
 
+            void Test(char* buffer);
             void ProcessInputs(bool readGpio);
             void ConfigureMultiPots(DaisySeed* hw);
             void ConfigureGpioExpansion();
 
             void InitMidi();
             void SetMidiChannel(int midiChannel);
-
-            void PersistPatchBanks();
-            void RestorePatchBanks();
-            SavedPatch GetSavedPatch(int bank, int patch);
 
             bool BootLoaderRequested();
             void UpdateSettings();
