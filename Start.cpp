@@ -31,12 +31,15 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Current Save / Load solutions don't work with SDRAM. So...need to manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
- * FX Modes: Ensemble-Phaser. Sonic Annihilator.
+ * There are pops and other artifacts when using fx
+ * Something is still popping faintly with note steal & retrigger
+ * Note steal with all voice keys still held down does not retrigger envelope
  * 
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
@@ -44,6 +47,7 @@ using namespace kiwi_synth;
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Make attack longer or a slower curve? Maybe also lower max release.
  * External audio in
+ * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Bhāskara I's sine approximation formula
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
@@ -66,7 +70,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 256;
+const int AUDIO_BLOCK_SIZE = 384;
 Performance performance;
 CpuLoadMeter load;
 
@@ -129,14 +133,13 @@ int main(void)
 		// It takes 16 iterations to cycle through all the inputs. So we only need to update gpio and settings every 16th iteration.
 		updateCounter++;
 		bool fullUpdate = false;
-		if (updateCounter < 16) {
-			// analog only
-			kiwiSynth.ProcessInputs(fullUpdate);
-		} else {
-			// full update
+		if (updateCounter >= 16 || display.mode) {
 			fullUpdate = true;
 			updateCounter = 0;
-			kiwiSynth.ProcessInputs(fullUpdate);
+		}
+
+		kiwiSynth.ProcessInputs(fullUpdate);
+		if (fullUpdate) {
 			kiwiSynth.UpdateSettings();
 		}
 

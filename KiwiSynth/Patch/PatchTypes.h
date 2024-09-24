@@ -3,7 +3,7 @@
 
 namespace kiwi_synth
 {
-    const static int MAX_PATCH_NAME_LENGTH = 31;
+    const static int MAX_PATCH_NAME_LENGTH = 15;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
     const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed

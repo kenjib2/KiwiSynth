@@ -82,20 +82,20 @@ namespace kiwi_synth
         float voiceSample = 0.0f;
 
         // Triggering notes to play after a delay to shut down previous envelopes click-free (i.e. quickrelease)
-        if (noteTriggerCount >= 0) {
-            if (noteTriggerCount == 0) {
-                noteTriggerCount = -1;
-                currentMidiNote = triggerNote;
-                currentVelocity = triggerVelocity;
-                env1.SetQuickRelease(false);
-                env2.SetQuickRelease(false);
-                env1.NoteOn();
-                env2.NoteOn();
-                lfo1.NoteOn();
-                lfo2.NoteOn();
+        if (noteTriggerCount == 0) {
+            for (int i = 0; i < numVcos; i++) {
+                vcos[i].midiNote = (float)triggerNote;
             }
-            noteTriggerCount--;
+            currentMidiNote = triggerNote;
+            currentVelocity = triggerVelocity;
+            env1.SetQuickRelease(false);
+            env2.SetQuickRelease(false);
+            env1.NoteOn();
+            env2.NoteOn();
+            lfo1.NoteOn();
+            lfo2.NoteOn();
         }
+        noteTriggerCount--;
 
         if (portamentoOn) {
             // Handling portamento
@@ -192,9 +192,6 @@ namespace kiwi_synth
         if (currentMidiNote != note && reset) {
             env1.SetQuickRelease(true);
             env2.SetQuickRelease(true);
-        }
-        for (int i = 0; i < numVcos; i++) {
-            vcos[i].midiNote = (float)note;
         }
         noteTriggerCount = NOTE_TRIGGER_SAMPLES;
         triggerNote = note;

@@ -19,7 +19,7 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    const static float VOICE_ATTENTUATION_CONSTANT = 0.2f;
+    const static float VOICE_ATTENTUATION_CONSTANT = 0.25f;
     const static int NOTE_TRIGGER_SAMPLES = 72;
     
     class Voice
@@ -34,7 +34,7 @@ namespace kiwi_synth
             VCF vcf;
             VCA vca;
             int voiceNumber;
-            int noteTriggerCount;
+            int32_t noteTriggerCount;
             bool portamentoOn;
             float portamentoSpeed;
             float currentPlayingNote;

@@ -73,4 +73,4 @@ namespace kiwi_synth
         settings2.Load(savedPatch, 1);
     }
 
-}
+} // namespace kiwi_synth

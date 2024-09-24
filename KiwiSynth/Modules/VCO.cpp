@@ -78,7 +78,7 @@ namespace kiwi_synth
                     break;
                 case WAVEFORM_VARISHAPE:
                     variOsc.SetSyncFreq(freq);
-                    variOsc.SetPW(variShape + pwMod);
+                    variOsc.SetPW((variShape + pwMod) * 0.25f);
                     waveSample = variOsc.Process();
                     break;
                 case WAVEFORM_VARISAW:
