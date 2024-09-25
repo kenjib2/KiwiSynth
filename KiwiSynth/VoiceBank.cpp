@@ -289,7 +289,7 @@ namespace kiwi_synth
 
                 if (voiceFound == -1) {
                     // We didn't find the voice. There is no note to stop.
-                } else if (numVoicesPlaying == 2 && playingNotes.size() > 2) {
+                } else if (numVoicesPlaying == maxVoices && playingNotes.size() > maxVoices) {
                     int otherNote = voices[voiceFound ? 0 : 1].triggerNote;
 
                     // Go backward through the vector to find the last note that isn't playing

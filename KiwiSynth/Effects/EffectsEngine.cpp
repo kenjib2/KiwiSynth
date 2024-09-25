@@ -18,8 +18,8 @@ namespace kiwi_synth
         phaserR.SetPoles(2);
         phaserL.SetFeedback(0.0);
         phaserR.SetFeedback(0.0);
-        phaserL.SetFreq(250.0f);
-        phaserR.SetFreq(250.0f);
+        phaserL.SetFreq(150.0f);
+        phaserR.SetFreq(150.0f);
         flangerL.Init(sampleRate, 4);
         flangerR.Init(sampleRate, 5);
         decimatorL.Init();

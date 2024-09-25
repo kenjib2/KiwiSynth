@@ -18,6 +18,7 @@ namespace kiwi_synth
 
         activeSettings = &settings1;
         voice1Settings = &settings1;
+        voice2Settings = &settings1;
         multiPots->RegisterControlListener(activeSettings);
         ge->RegisterControlListener(activeSettings);
     }

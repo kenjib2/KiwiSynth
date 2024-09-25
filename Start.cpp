@@ -31,7 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Current Save / Load solutions don't work with SDRAM. So...need to manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
+ * Manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
  * Save / Load / Rename
  * UI select and modify
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
@@ -40,7 +40,7 @@ using namespace kiwi_synth;
  * There are pops and other artifacts when using fx
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
- * Try 3 voice again with higher buffer?
+ * Performance % are off since we switched to 384 buffer
  * Can we get the buffer lower
  * 
  * Can we get phaser back up to 4 or 6 pole?
@@ -72,7 +72,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 480;
+const int AUDIO_BLOCK_SIZE = 384;
 Performance performance;
 CpuLoadMeter load;
 
