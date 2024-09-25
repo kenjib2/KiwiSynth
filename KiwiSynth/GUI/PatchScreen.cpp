@@ -176,6 +176,9 @@ namespace kiwi_synth
             case REVERB_BLOOM:
                 strcpy(buffer, "Bloom");
                 break;
+            case REVERB_BRIGHT:
+                strcpy(buffer, "Bright");
+                break;
         }
     }
 

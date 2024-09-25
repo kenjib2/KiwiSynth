@@ -48,9 +48,10 @@ namespace kiwi_synth
         REVERB_HALL,
         REVERB_CHAMBER,
         REVERB_CATHEDRAL,
-        REVERB_BLOOM
+        REVERB_BLOOM,
+        REVERB_BRIGHT
     } ReverbMode;
-    static const int REVERB_MODE_MAX = 5;
+    static const int REVERB_MODE_MAX = 6;
 
     typedef enum {
         WAVEFORM_SQUARE,

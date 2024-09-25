@@ -19,7 +19,7 @@
 
 /* Undocumented MAX VALUES
  * rtlow and rtmid: 8.0f
- * delay: 0.1f
+ * delay: 0.1f but I increased to 1.0f
  */
 
 

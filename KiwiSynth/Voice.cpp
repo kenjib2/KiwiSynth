@@ -173,7 +173,7 @@ namespace kiwi_synth
         prevSourceValues[SRC_PITCH_BEND] = patchSettings->getFloatValue(GEN_PITCH_BEND);
         prevSourceValues[SRC_EXPRESSION] = patchSettings->getFloatValue(GEN_EXPRESSION);
         prevSourceValues[SRC_SUSTAIN] = patchSettings->getFloatValue(GEN_SUSTAIN);
-        prevSourceValues[SRC_VOICE_NO] = (float)voiceNumber / (float)(numVoices - 1);
+        prevSourceValues[SRC_VOICE_NO] = (float)voiceNumber; // Assuming two voices max -- voice 0 is 0.0f, voice 1 is 1.0f
     }
 
     bool Voice::IsAvailable()

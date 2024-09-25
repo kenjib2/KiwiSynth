@@ -28,7 +28,7 @@
 
 
 // SRAM UPDATE
-float DSY_SDRAM_BSS vdelayLine[2][4800];
+float DSY_SDRAM_BSS vdelayLine[2][48000];
 float DSY_SDRAM_BSS diff1Line[8][1600];
 float DSY_SDRAM_BSS delayLine[8][12000];
 
@@ -293,6 +293,10 @@ Reverb::~Reverb (void)
 
 void Reverb::init (float fsamp)
 {
+    memset(vdelayLine, 0, 96000 * sizeof(float));
+    memset(diff1Line, 0, 12800 * sizeof(float));
+    memset(delayLine, 0, 96000 * sizeof(float));
+
     int i, k1, k2;
 
     _fsamp = fsamp;

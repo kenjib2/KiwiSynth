@@ -37,7 +37,7 @@ using namespace kiwi_synth;
  * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
- * There are pops and other artifacts when using fx
+ * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
  * Performance % are off since we switched to 384 buffer

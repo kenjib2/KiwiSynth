@@ -91,34 +91,56 @@ namespace kiwi_synth
             case REVERB_ROOM:
                 reverb.set_delay(0.02f);
                 reverb.set_rtlow(1.8f);
+                reverb.set_xover(200.0f);
                 reverb.set_rtmid(1.5f);
+                reverb.set_fdamp(3e3f);
+                reverb.set_eq1 (1e3f, 0.0f);
+                reverb.set_eq2 (1e3f, 0.0f);
                 break;
             case REVERB_HALL:
                 reverb.set_delay(0.04f);
-                //reverb.set_xover(200.0f);
                 reverb.set_rtlow(3.0f);
+                reverb.set_xover(200.0f);
                 reverb.set_rtmid(2.0f);
-                //reverb.set_fdamp(3e3f);
-                //reverb.set_eq1 (1e3f, 0.0f);
-                //reverb.set_eq2 (1e3f, 0.0f);
+                reverb.set_fdamp(3e3f);
+                reverb.set_eq1 (1e3f, 0.0f);
+                reverb.set_eq2 (1e3f, 0.0f);
                 break;
             case REVERB_CHAMBER:
                 reverb.set_delay(0.05f);
                 reverb.set_rtlow(4.5f);
+                reverb.set_xover(200.0f);
                 reverb.set_rtmid(3.0f);
+                reverb.set_fdamp(3e3f);
+                reverb.set_eq1 (1e3f, 0.0f);
+                reverb.set_eq2 (1e3f, 0.0f);
                 break;
             case REVERB_CATHEDRAL:
-                //reverb.set_delay(0.15f); Need to update Zita for larger than 0.1f
-                reverb.set_delay(0.06f);
+                reverb.set_delay(0.15f);
                 //reverb.set_rtlow(10.0f); Need to update Zita for larger than 8 sec
                 reverb.set_rtlow(8.0f);
+                reverb.set_xover(200.0f);
                 reverb.set_rtmid(6.0f);
+                reverb.set_fdamp(3e3f);
+                reverb.set_eq1 (1e3f, 0.0f);
+                reverb.set_eq2 (1e3f, 0.0f);
                 break;
             case REVERB_BLOOM:
-                //reverb.set_delay(0.75f); Need to update Zita for larger than 0.1f
-                reverb.set_delay(0.1f);
-                reverb.set_rtlow(2.0f);
+                reverb.set_delay(0.75f);
+                reverb.set_rtlow(3.0f);
+                reverb.set_xover(200.0f);
                 reverb.set_rtmid(5.0f);
+                reverb.set_fdamp(4e3f);
+                reverb.set_eq1 (1e3f, 0.0f);
+                reverb.set_eq2 (1e3f, 0.0f);
+            case REVERB_BRIGHT:
+                reverb.set_delay(0.02f);
+                reverb.set_rtlow(2.5f);
+                reverb.set_xover(350.0f);
+                reverb.set_rtmid(5.0f);
+                reverb.set_fdamp(4.8e3f);
+                reverb.set_eq1 (7e3f, 2.0f);
+                reverb.set_eq2 (200.0f, -2.0f);
                 break;
         }
     }
