@@ -51,12 +51,12 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        //sprintf(buffer, "Load Patch");
-        kiwiSynth->Test(buffer);
+        sprintf(buffer, "Load Patch");
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        sprintf(buffer, "Free Mode");
+        //sprintf(buffer, "Free Mode");
+        kiwiSynth->Test(buffer);
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();

@@ -6,7 +6,7 @@
 namespace kiwi_synth
 {
 
-    const static int NUM_PATCH_BANKS = 4;
+    const static int NUM_PATCH_BANKS = 8;
     const static int PATCHES_PER_BANK = 128;
     const static int TOTAL_PATCHES = NUM_PATCH_BANKS * PATCHES_PER_BANK;
 

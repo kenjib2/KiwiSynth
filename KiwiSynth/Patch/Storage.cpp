@@ -5,41 +5,32 @@ namespace kiwi_synth
 
     void Storage::Init(QSPIHandle qspi) {
         this->qspi = qspi;
-        qspi.Write(0, VALIDATION_SIZE, (uint8_t*)validationCode);
-        //InitializeIfNeeded();
+        InitializeIfNeeded();
+    }
+
+    // buffer must be 32 character length minimum
+    void Storage::ReadValidationCode(char* buffer) {
+        void* readPtr = qspi.GetData(VALIDATION_BASE_ADDRESS);
+        memcpy(buffer, readPtr, VALIDATION_SIZE);
+    }
+
+    void Storage::WriteValidationCode() {
+        qspi.Erase(VALIDATION_BASE_ADDRESS, VALIDATION_BASE_ADDRESS + 4096);
+        qspi.Write(VALIDATION_BASE_ADDRESS, VALIDATION_SIZE, (uint8_t*)VALIDATION_CODE);
     }
     
     void Storage::InitializeIfNeeded() {
         char checkCode[32];
-        void* dataRead = qspi.GetData(0);
+        ReadValidationCode(checkCode);
+        if (strcmp(checkCode, VALIDATION_CODE) != 0) {
+            WriteValidationCode();
 
-        memcpy(checkCode, dataRead, VALIDATION_SIZE);
-        if (strcmp(checkCode, validationCode) != 0) {
-            //qspi.Erase(0, 256);
-            //qspi.Write(0, VALIDATION_SIZE, (uint8_t*)validationCode);
-            
-        /*    PatchPreview patchPreview;
-            strcpy(patchPreview.name, "New");
-            patchPreview.type = PATCH_SYNTH;
-            for (int i = 0; i < TOTAL_PATCHES; i++) {
-                qspi.Write(PREVIEWS_ADDRESS + i * PREVIEWS_SIZE, PREVIEWS_SIZE, reinterpret_cast<uint8_t*>(&patchPreview));
-            }
-
-            Patch patch;
-            patch.DefaultSettings();
-            SavedPatch savedPatch;
-            patch.Save(&savedPatch);
-            for (int i = 0; i < TOTAL_PATCHES; i++) {
-                qspi.Write(PATCHES_ADDRESS + i * PATCHES_SIZE, PATCHES_SIZE, reinterpret_cast<uint8_t*>(&savedPatch));
-            }*/
+            // Write 8 banks of initialized patches, 4 at a time.
         }
     }
 
     void Storage::Test(char* buffer) {
-        void* dataRead = qspi.GetData(0);
-
-        memcpy(buffer, dataRead, VALIDATION_SIZE);
-        //memcpy(buffer, "BOMBASTIC_AUDIO_KIWI_DATA_0.0.X", VALIDATION_SIZE);
+        ReadValidationCode(buffer);
     }
 
 } // namespace kiwi_synth

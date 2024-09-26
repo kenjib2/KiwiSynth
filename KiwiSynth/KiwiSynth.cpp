@@ -24,7 +24,7 @@ namespace kiwi_synth
         voiceBank.Init(numVoices, NUM_VCOS, &patch, sampleRate);
         effectsEngine.Init(&patch, sampleRate);
 
-        //storage.Init(hw->qspi);
+        storage.Init(hw->qspi);
 
         InitMidi();
     }
