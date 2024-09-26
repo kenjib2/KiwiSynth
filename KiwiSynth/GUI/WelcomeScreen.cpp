@@ -3,9 +3,10 @@
 namespace kiwi_synth
 {
 
-    void WelcomeScreen::Init(KiwiDisplay* display)
+    void WelcomeScreen::Init(KiwiDisplay* display, Patch* patch)
     {
         this->display = display;
+        this->patch = patch;
     }
 
     void WelcomeScreen::Display()
@@ -13,7 +14,11 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-	    sprintf(buffer, "Free Mode");
+        if (patch->liveMode) {
+    	    sprintf(buffer, "Live Mode");
+        } else {
+            patch->getName(buffer);
+        }
         display->WriteString(buffer, Font_6x8, true);
 
 	    /*sprintf(buffer, "Kiwi Synth");

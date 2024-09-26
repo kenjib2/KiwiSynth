@@ -17,12 +17,21 @@ namespace kiwi_synth
 
         display->SetCursor(0, 0);
         char nameString[MAX_PATCH_NAME_LENGTH + 1];
-        patch->getName(nameString);
+        if (patch->liveMode) {
+    	    sprintf(nameString, "----");
+        } else {
+            patch->getName(nameString);
+        }
         sprintf(buffer, "Name: %s", nameString);
+        //kiwiSynth->Test(buffer);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
-        GetPatchType(value);
+        if (patch->liveMode) {
+    	    sprintf(value, "----");
+        } else {
+            GetPatchType(value);
+        }
         sprintf(buffer, "Type: %s", value);
         display->WriteString(buffer, Font_6x8, true);
 
@@ -47,7 +56,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
-        sprintf(buffer, "Save Patch");
+        sprintf(buffer, "Live Mode");
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
@@ -55,8 +64,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        //sprintf(buffer, "Free Mode");
-        kiwiSynth->Test(buffer);
+        sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();

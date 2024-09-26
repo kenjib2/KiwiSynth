@@ -22,6 +22,7 @@ namespace kiwi_synth
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
 
         public:
+            bool                    liveMode;
             int                     splitNote;
             VoiceMode               voiceMode;
             EffectsMode             effectsMode;

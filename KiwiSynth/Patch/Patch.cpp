@@ -10,6 +10,7 @@ namespace kiwi_synth
         settings1.Init(multiPots, ge);
         settings2.Init(multiPots, ge);
 
+        liveMode = true;
         SetVoiceMode(VOICE_MODE_POLY);
         strcpy(name, "Kiwi Sound");
         effectsMode = FX_DISTORTION_DELAY;

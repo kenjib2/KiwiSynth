@@ -18,7 +18,7 @@ namespace kiwi_synth
         guiButton = false;
         mode = PLAY;
 
-        welcomeScreen.Init(&display);
+        welcomeScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patch);
         patchScreen.Init(&display, kiwiSynth, patch);

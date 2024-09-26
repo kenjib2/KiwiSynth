@@ -211,7 +211,7 @@ namespace kiwi_synth
                 strcpy(buffer, "Susta");
                 break;
             case SRC_VOICE_NO:
-                strcpy(buffer, "VcNum");
+                strcpy(buffer, "Voice");
                 break;
         }
     }
