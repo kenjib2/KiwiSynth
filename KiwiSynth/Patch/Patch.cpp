@@ -25,18 +25,23 @@ namespace kiwi_synth
     }
 
     void Patch::SetVoiceMode(VoiceMode voiceMode) {
-        if ((voiceMode == VOICE_MODE_MULTI && this->voiceMode != VOICE_MODE_SPLIT) ||
-            (voiceMode == VOICE_MODE_SPLIT && this->voiceMode != VOICE_MODE_MULTI)) {
+        VoiceMode calculatedVoiceMode = voiceMode;
+        if (calculatedVoiceMode < 0) calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode + VOICE_MODE_MAX);
+            else calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode % VOICE_MODE_MAX);
+
+        if ((calculatedVoiceMode == VOICE_MODE_MULTI && this->voiceMode != VOICE_MODE_SPLIT) ||
+            (calculatedVoiceMode == VOICE_MODE_SPLIT && this->voiceMode != VOICE_MODE_MULTI)) {
             settings2.Copy(&settings1);
             voice2Settings = &settings2;
-        } else if ((voiceMode == VOICE_MODE_SPLIT && this->voiceMode == VOICE_MODE_MULTI) ||
-                   (voiceMode == VOICE_MODE_MULTI && this->voiceMode == VOICE_MODE_SPLIT)) {
+        } else if ((calculatedVoiceMode == VOICE_MODE_SPLIT && this->voiceMode == VOICE_MODE_MULTI) ||
+                   (calculatedVoiceMode == VOICE_MODE_MULTI && this->voiceMode == VOICE_MODE_SPLIT)) {
             // Do nothing when switching between MULTI and SPLIT. Only NoteOn and NoteOff change.
         } else {
             voice2Settings = &settings1;
         }
 
-        this->voiceMode = voiceMode;
+        activeSettings->setValue(VCO_VOICES, (int8_t)calculatedVoiceMode);
+        this->voiceMode = calculatedVoiceMode;
     }
 
     void Patch::DefaultSettings() {

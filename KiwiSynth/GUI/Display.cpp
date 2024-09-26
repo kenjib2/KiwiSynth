@@ -41,6 +41,7 @@ namespace kiwi_synth
     {
         bool updateNeeded = false;
 
+        // Handle encoder rotations
         int newValue = patch->activeSettings->getIntValue(GEN_SELECT);
         int direction = 0;
         if (newValue == prevSelectValue) {
@@ -100,6 +101,7 @@ namespace kiwi_synth
 
         prevSelectValue = newValue;
 
+        // Handle encoder button clicks
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
