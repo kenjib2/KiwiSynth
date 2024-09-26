@@ -30,13 +30,14 @@ namespace kiwi_synth
 
         display->SetCursor(0, 16);
         GetVoiceMode(value);
+        sprintf(buffer, "Voices: %s", value);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
         if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
             GetMidiNote(nameString);
-            sprintf(buffer, "Voices: %s on %s", value, nameString);
-        } else {
-            sprintf(buffer, "Voices: %s", value);
+            display->SetCursor(84, 16);
+            sprintf(buffer, "on %s", nameString);
+            display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SPLIT_NOTE);
         }
-        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
 
         display->SetCursor(0, 24);
         GetFxType(value);
@@ -77,6 +78,9 @@ namespace kiwi_synth
         if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_LIVE;
         }
+        if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
+            selected = (PatchScreenSelection)(selected + 1);
+        }
     }
 
     void PatchScreen::Decrement() {
@@ -86,6 +90,9 @@ namespace kiwi_synth
         }
         if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_TYPE;
+        }
+        if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
+            selected = (PatchScreenSelection)(selected - 1);
         }
     }
 
@@ -103,15 +110,14 @@ namespace kiwi_synth
                 }
                 return true;
             case PATCH_SCREEN_NAME:
-            case PATCH_SCREEN_TYPE:
+            case PATCH_SCREEN_SPLIT_NOTE:
             case PATCH_SCREEN_LOAD:
             case PATCH_SCREEN_SAVE:
                 // TO DO
                 return true;
-            case PATCH_SCREEN_LIVE:
-                patch->SetLiveMode(true);
-                selected = PATCH_SCREEN_NONE;
-                return false;
+            case PATCH_SCREEN_TYPE:
+                patch->SetPatchType((PatchType)(patch->GetPatchType() + 1));
+                return true;
             case PATCH_SCREEN_VOICES:
                 patch->SetVoiceMode((VoiceMode)(patch->GetVoiceMode() + 1));
                 return true;
@@ -121,6 +127,10 @@ namespace kiwi_synth
             case PATCH_SCREEN_REVERB:
                 patch->SetReverbMode((ReverbMode)(patch->GetReverbMode() + 1));
                 return true;
+            case PATCH_SCREEN_LIVE:
+                patch->SetLiveMode(true);
+                selected = PATCH_SCREEN_NONE;
+                return false;
             case PATCH_SCREEN_RETURN:
                 selected = PATCH_SCREEN_NONE;
                 return false;
@@ -132,7 +142,7 @@ namespace kiwi_synth
     // 13 character value
     void PatchScreen::GetPatchType(char* buffer)
     {
-        switch (patch->type) {
+        switch (patch->GetPatchType()) {
             case PATCH_ARP:
                 strcpy(buffer, "Arpeggiated");
                 break;
@@ -198,7 +208,7 @@ namespace kiwi_synth
     void PatchScreen::GetMidiNote(char* buffer)
     {
         char notes[12][3] = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-        int noteNum = patch->splitNote;
+        int noteNum = patch->GetSplitNote();
         int octave = noteNum / 12 - 1;
         char* note = notes[noteNum % 12];
         sprintf(buffer, "%s%d", note, octave);

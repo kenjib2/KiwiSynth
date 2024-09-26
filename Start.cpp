@@ -31,11 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Remove GEN_SELECT from saved patches
  * Manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
- * Save / Load / Rename
- * UI select and modify
- * Loaded patch mode (turns off panel input -- or only updates values when abs(potValue - settings1.value) > changeDelta)
+ * Patch Screen: Save / Load / Rename / Split Note
+ * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
  * There is weird distortion with KiwiPhaser
@@ -43,6 +41,9 @@ using namespace kiwi_synth;
  * Note steal with all voice keys still held down does not retrigger envelope
  * Performance % are off since we switched to 384 buffer
  * Can we get the buffer lower
+ * When exiting menus back to play mode, need to clear the MIDI event buffer
+ * Need to mod LFO1 to Pitch amount because of mod wheel
+ * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
  * 
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?

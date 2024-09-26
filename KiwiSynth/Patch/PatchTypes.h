@@ -27,6 +27,7 @@ namespace kiwi_synth
         PATCH_EFFECT,
         PATCH_OTHER
     } PatchType;
+    static const int PATCH_TYPE_MAX = 13;
 
     typedef enum {
         VOICE_MODE_POLY,

@@ -181,7 +181,7 @@ namespace kiwi_synth
                 }
                 break;
             case VOICE_MODE_SPLIT:
-                if (note < patch->splitNote) {
+                if (note < patch->GetSplitNote()) {
                     if (voices[1].noteTriggered) {
                         voices[1].NoteOn(note, velocity, false);
                     } else {
@@ -249,7 +249,7 @@ namespace kiwi_synth
                 }
                 break;
             case VOICE_MODE_SPLIT:
-                if (note < patch->splitNote) {
+                if (note < patch->GetSplitNote()) {
                     if (voices[1].noteTriggered && voices[1].currentMidiNote == note) {
                         voices[1].NoteOff(note, velocity);
                         break;

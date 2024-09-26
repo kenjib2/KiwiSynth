@@ -16,6 +16,7 @@ namespace kiwi_synth
         PATCH_SCREEN_NAME,
         PATCH_SCREEN_TYPE,
         PATCH_SCREEN_VOICES,
+        PATCH_SCREEN_SPLIT_NOTE,
         PATCH_SCREEN_FX,
         PATCH_SCREEN_REVERB,
         PATCH_SCREEN_LIVE,
@@ -23,7 +24,7 @@ namespace kiwi_synth
         PATCH_SCREEN_SAVE,
         PATCH_SCREEN_RETURN
     };
-    const static int PATCH_SCREEN_OPTIONS = 9;
+    const static int PATCH_SCREEN_OPTIONS = 10;
 
     class PatchScreen
     {
