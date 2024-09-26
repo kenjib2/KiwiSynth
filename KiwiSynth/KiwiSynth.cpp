@@ -216,7 +216,7 @@ namespace kiwi_synth
 
     void KiwiSynth::LoadPatch(int bankNumber, int patchNumber)
     {
-        patch.liveMode = false;
+        patch.SetLiveMode(false);
         SavedPatch savedPatch = storage.LoadPatch(0, 0);
         patch.Load(savedPatch);
         voiceBank.UpdateSettings();
@@ -225,7 +225,7 @@ namespace kiwi_synth
 
     void KiwiSynth::UpdateSettings()
     {
-        if (patch.liveMode) {
+        if (patch.GetLiveMode()) {
             voiceBank.UpdateSettings();
             effectsEngine.UpdateSettings();
         }

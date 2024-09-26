@@ -18,21 +18,13 @@ namespace kiwi_synth
 
         display->SetCursor(0, 0);
         char nameString[MAX_PATCH_NAME_LENGTH + 1];
-        if (patch->liveMode) {
-    	    sprintf(nameString, "----");
-        } else {
-            patch->GetName(nameString);
-        }
+        patch->GetName(nameString);
         sprintf(buffer, "Name: %s", nameString);
         //kiwiSynth->Test(buffer);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_NAME);
 
         display->SetCursor(0, 8);
-        if (patch->liveMode) {
-    	    sprintf(value, "----");
-        } else {
-            GetPatchType(value);
-        }
+        GetPatchType(value);
         sprintf(buffer, "Type: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_TYPE);
 
@@ -77,20 +69,20 @@ namespace kiwi_synth
 
     void PatchScreen::Increment() {
         selected = (PatchScreenSelection)((selected + 1) % PATCH_SCREEN_OPTIONS);
-        if (patch->liveMode && selected == PATCH_SCREEN_LIVE) {
+        if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_LOAD;
         }
-        if (!patch->liveMode && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+        if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_LIVE;
         }
     }
 
     void PatchScreen::Decrement() {
         selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
-        if (patch->liveMode && selected == PATCH_SCREEN_LIVE) {
+        if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_REVERB;
         }
-        if (!patch->liveMode && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+        if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
             selected = PATCH_SCREEN_TYPE;
         }
     }
@@ -102,7 +94,7 @@ namespace kiwi_synth
     {
         switch (selected) {
             case PATCH_SCREEN_NONE:
-                if (!patch->liveMode) {
+                if (!patch->GetLiveMode()) {
                     selected = PATCH_SCREEN_LIVE;
                 } else {
                     selected = PATCH_SCREEN_LOAD;
@@ -115,7 +107,7 @@ namespace kiwi_synth
                 return true;
             case PATCH_SCREEN_LIVE:
                 selected = PATCH_SCREEN_NONE;
-                patch->liveMode = true;
+                patch->SetLiveMode(true);
                 return false;
             case PATCH_SCREEN_VOICES:
                 // THIS IS NOT WORKING

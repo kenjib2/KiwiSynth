@@ -20,9 +20,9 @@ namespace kiwi_synth
             PatchSettings           settings1;
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
+            bool                    liveMode;
 
         public:
-            bool                    liveMode;
             int                     splitNote;
             VoiceMode               voiceMode;
             EffectsMode             effectsMode;
@@ -53,6 +53,8 @@ namespace kiwi_synth
             inline VoiceMode GetVoiceMode() { return voiceMode; }
             void SetVoiceMode(VoiceMode voiceMode);
             void DefaultSettings();
+            inline bool GetLiveMode() { return liveMode; }
+            void SetLiveMode(bool liveModeActive);
             void Load(SavedPatch savedPatch);
             void Save(SavedPatch* savedPatch);
     };

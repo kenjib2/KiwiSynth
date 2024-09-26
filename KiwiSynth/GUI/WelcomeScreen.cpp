@@ -14,7 +14,7 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        if (patch->liveMode) {
+        if (patch->GetLiveMode()) {
     	    sprintf(buffer, "Live Mode");
         } else {
             patch->GetName(buffer);

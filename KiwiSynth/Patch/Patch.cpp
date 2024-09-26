@@ -56,6 +56,13 @@ namespace kiwi_synth
         settings2.DefaultSettings();
     }
 
+    void Patch::SetLiveMode(bool liveModeActive) {
+        liveMode = liveModeActive;
+        if (liveModeActive) {
+            DefaultSettings();
+        }
+    }
+
     void Patch::Load(SavedPatch savedPatch) {
         voiceMode = savedPatch.voiceMode;
         splitNote = savedPatch.splitNote;
