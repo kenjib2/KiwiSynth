@@ -214,10 +214,21 @@ namespace kiwi_synth
         return patch.activeSettings->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
-    void KiwiSynth::UpdateSettings()
+    void KiwiSynth::LoadPatch(int bankNumber, int patchNumber)
     {
+        patch.liveMode = false;
+        SavedPatch savedPatch = storage.LoadPatch(0, 0);
+        patch.Load(savedPatch);
         voiceBank.UpdateSettings();
         effectsEngine.UpdateSettings();
+    }
+
+    void KiwiSynth::UpdateSettings()
+    {
+        if (patch.liveMode) {
+            voiceBank.UpdateSettings();
+            effectsEngine.UpdateSettings();
+        }
     }
 
     #ifdef __PATCH_SETTINGS__

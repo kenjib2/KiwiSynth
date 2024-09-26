@@ -45,11 +45,11 @@ namespace kiwi_synth
             void ReadValidationCode(char* buffer);
             void WriteValidationCode();
             void WritePatchGroup(int bankNumber, int groupNumber, SavedPatch patches[4]);
-            void ReadPatch(int bankNumber, int patchNumber, SavedPatch* patch);
 
         public:
             void Init(QSPIHandle qspi);
             void Test(char* buffer);
+            SavedPatch LoadPatch(int bankNumber, int patchNumber);
 
     };
 

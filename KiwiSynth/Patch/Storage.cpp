@@ -47,14 +47,15 @@ namespace kiwi_synth
         }
     }
 
-    void Storage::ReadPatch(int bankNumber, int patchNumber, SavedPatch* patch) {
+    SavedPatch Storage::LoadPatch(int bankNumber, int patchNumber) {
+        SavedPatch savedPatch;
         void* readPtr = qspi.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + patchNumber * PATCH_SIZE);
-        memcpy(patch, readPtr, sizeof(SavedPatch));
+        memcpy(&savedPatch, readPtr, sizeof(SavedPatch));
+        return savedPatch;
     }
 
     void Storage::Test(char* buffer) {
-        SavedPatch patch;
-        ReadPatch(3, 120, &patch);
+        SavedPatch patch = LoadPatch(3, 120);
         strcpy(buffer, patch.name);
     }
 
