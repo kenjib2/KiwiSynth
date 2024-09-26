@@ -16,7 +16,7 @@ namespace kiwi_synth
         patch = &(kiwiSynth->patch);
         this->performance = performance;
         guiButton = false;
-        mode = PLAY;
+        mode = MODE_PLAY;
         menuActive = false;
         prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT);
 
@@ -53,20 +53,21 @@ namespace kiwi_synth
             } else if (newValue < prevSelectValue || (newValue == 127 && prevSelectValue == -128)) {
                 direction = -1;
             }
+            prevSelectValue = newValue;
         }
 
         if (direction) {
             if (menuActive) {
                 switch (mode) {
-                    default:
-                        break;
-                    case PATCH_SCREEN:
+                    case MODE_PATCH_SCREEN:
                         if (direction == 1) {
                             patchScreen.Increment();
                         } else if (direction == -1) {
                             patchScreen.Decrement();
                         }
                         updateNeeded = true;
+                        break;
+                    default:
                         break;
                 }
             } else {
@@ -75,7 +76,7 @@ namespace kiwi_synth
                     if (mode + 1 < DISPLAY_MODE_OPTIONS) {
                         mode = (DisplayMode)(mode + 1);
                     } else {
-                        mode = PLAY;
+                        mode = MODE_PLAY;
                     }
                 } else if (direction == -1) {
                     if (mode - 1 < 0) {
@@ -86,20 +87,7 @@ namespace kiwi_synth
                 }
                 updateNeeded = true;
             }
-
-            display.Fill(false);
-            char buffer[256];
-            display.SetCursor(0, 0);
-            sprintf(buffer, "p %d n %d d %d", prevSelectValue, newValue, direction);
-            display.WriteString(buffer, Font_6x8, true);
-  
-            display.SetCursor(0, 8);
-            sprintf(buffer, "mode %d", mode);
-            display.WriteString(buffer, Font_6x8, true);
-            updateNeeded = true;
         }
-
-        prevSelectValue = newValue;
 
         // Handle encoder button clicks
         bool prevGuiButton = guiButton;
@@ -108,17 +96,17 @@ namespace kiwi_synth
             switch (mode) {
                 default:
                     break;
-                case PLAY:
+                case MODE_PLAY:
                     // Maybe load a patch?
                     break;
 
-                case PATCH_SCREEN:
+                case MODE_PATCH_SCREEN:
                     menuActive = patchScreen.Click();
                     updateNeeded = true;
                     break;
 
-                case SYSTEM_SCREEN:
-                    mode = BOOTLOADER;
+                case MODE_SYSTEM_SCREEN:
+                    mode = MODE_BOOTLOADER;
                     Update(); // Update now instead of using updateNeeded because the next line will halt program execution
                     System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
                     break;
@@ -147,20 +135,20 @@ namespace kiwi_synth
     void Display::Update()
     {
         switch (mode) {
-            case PLAY:
+            case MODE_PLAY:
             default:
                 welcomeScreen.Display();
                 break;
-            case INT_SCREEN:
+            case MODE_INT_SCREEN:
                 intValueScreen.Display();
                 break;
-            case PATCH_SCREEN:
+            case MODE_PATCH_SCREEN:
                 patchScreen.Display();
                 break;
-            case SYSTEM_SCREEN:
+            case MODE_SYSTEM_SCREEN:
                 systemScreen.Display();
                 break;
-            case BOOTLOADER:
+            case MODE_BOOTLOADER:
                 bootloaderScreen.Display();
                 break;
         }

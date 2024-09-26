@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Remove GEN_SELECT from saved patches
  * Manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
  * Save / Load / Rename
  * UI select and modify
@@ -117,11 +118,10 @@ int main(void)
 	kiwiSynth.ProcessInputs(true);
 	if (kiwiSynth.BootLoaderRequested())
 	{
-		display.mode = BOOTLOADER;
+		display.mode = MODE_BOOTLOADER;
 		display.Update();
 		System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
 	}
-	display.mode = PLAY;
 	display.Update();
 
     //Start reading ADC values

@@ -60,9 +60,11 @@ namespace kiwi_synth
         sprintf(buffer, "Save Patch");
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SAVE);
 
-        display->SetCursor(108, 56);
-        sprintf(buffer, "<--");
-        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_RETURN);
+        if (selected != PATCH_SCREEN_NONE) {
+            display->SetCursor(108, 56);
+            sprintf(buffer, "<--");
+            display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_RETURN);
+        }
 
         display->Update();
     }
@@ -104,13 +106,13 @@ namespace kiwi_synth
             case PATCH_SCREEN_TYPE:
             case PATCH_SCREEN_LOAD:
             case PATCH_SCREEN_SAVE:
+                // TO DO
                 return true;
             case PATCH_SCREEN_LIVE:
-                selected = PATCH_SCREEN_NONE;
                 patch->SetLiveMode(true);
+                selected = PATCH_SCREEN_NONE;
                 return false;
             case PATCH_SCREEN_VOICES:
-                // THIS IS NOT WORKING
                 patch->SetVoiceMode((VoiceMode)(patch->GetVoiceMode() + 1));
                 return true;
             case PATCH_SCREEN_FX:

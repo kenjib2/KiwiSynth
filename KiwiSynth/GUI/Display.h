@@ -52,11 +52,11 @@ namespace kiwi_synth
     };
 
     typedef enum {
-        BOOTLOADER = -1,
-        PLAY = 0,
-        INT_SCREEN,
-        PATCH_SCREEN,
-        SYSTEM_SCREEN
+        MODE_BOOTLOADER = -1,
+        MODE_PLAY = 0,
+        MODE_INT_SCREEN,
+        MODE_PATCH_SCREEN,
+        MODE_SYSTEM_SCREEN
     } DisplayMode;
     const int DISPLAY_MODE_OPTIONS = 4;
 
