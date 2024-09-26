@@ -35,9 +35,9 @@ namespace kiwi_synth
             static float* lMaxLookup; // Set the range for logarhithmic float variables
 
             // We have a lot of unused array members in order to prevent branching code when setting and retrieving values of different data types.
-            float floatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
-            int8_t intValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
-            bool boolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
+            float floatValues[NUM_PATCH_SETTINGS];
+            int8_t intValues[NUM_PATCH_SETTINGS];
+            bool boolValues[NUM_PATCH_SETTINGS];
             bool lastPinValues[4][16]; // Used to track changes to the rotary encoder state
 
             MultiPots* multiPots;

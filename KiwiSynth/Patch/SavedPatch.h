@@ -19,13 +19,13 @@ namespace kiwi_synth
         EffectsMode             effectsMode;
         ReverbMode              reverbMode;
 
-        float voice1FloatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
-        int8_t voice1IntValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
-        bool voice1BoolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
+        float voice1FloatValues[NUM_PATCH_SETTINGS_SAVED];
+        int8_t voice1IntValues[NUM_PATCH_SETTINGS_SAVED];
+        bool voice1BoolValues[NUM_PATCH_SETTINGS_SAVED];
 
-        float voice2FloatValues[NUM_PATCH_SETTINGS]; // was float floatValues[59];
-        int8_t voice2IntValues[NUM_PATCH_SETTINGS]; // was int8_t intValues[31];
-        bool voice2BoolValues[NUM_PATCH_SETTINGS]; // was bool boolValues[10];
+        float voice2FloatValues[NUM_PATCH_SETTINGS_SAVED];
+        int8_t voice2IntValues[NUM_PATCH_SETTINGS_SAVED];
+        bool voice2BoolValues[NUM_PATCH_SETTINGS_SAVED];
     };
 
 } // namespace kiwi_synth

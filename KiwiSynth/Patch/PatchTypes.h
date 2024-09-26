@@ -8,6 +8,7 @@ namespace kiwi_synth
     const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 99;
+    const static int NUM_PATCH_SETTINGS_SAVED = 92;
     const static float MIN_DISTORTION_GAIN = 5.0f;
     const static float MAX_DISTORTION_GAIN = 150.0f;
 

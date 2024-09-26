@@ -121,6 +121,7 @@ namespace kiwi_synth
         setValue(MOD_8_SOURCE, (int8_t)0);
         setValue(MOD_8_DESTINATION, (int8_t)-1);
         setValue(GEN_SELECT, (int8_t)0);
+        setValue(GEN_SELECT_BUTTON, false);
 
         // Set external controllers in case they are not in use
         setValue(GEN_PITCH_BEND, 0.0f);
@@ -420,13 +421,6 @@ namespace kiwi_synth
         setValue(FX_REVERB, 0.0f);
 
         setValue(GEN_BALANCE, 0.5f);
-        //setValue(GEN_SELECT, (int8_t)0); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_SELECT_BUTTON, false); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_AFTERTOUCH, 0.0f); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_MOD_WHEEL, 0.0f); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_PITCH_BEND, 0.0f); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_EXPRESSION, 0.0f); // Changing this value interferes with menus and is not patch data related.
-        //setValue(GEN_SUSTAIN, 0.0f); // Changing this value interferes with menus and is not patch data related.
     }
 
 } // namespace kiwi_synth

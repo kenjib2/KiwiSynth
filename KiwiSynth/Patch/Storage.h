@@ -14,16 +14,16 @@ namespace kiwi_synth
     const static uint32_t QSPI_BASE_ADDRESS = 0x90100000;
     const static uint32_t PATCHES_BASE_ADDRESS = QSPI_BASE_ADDRESS;
     const static uint32_t VALIDATION_BASE_ADDRESS = QSPI_BASE_ADDRESS + 2097152;
-    const static char VALIDATION_CODE[32] = "BOMBASTIC_AUDIO_KIWI___00.00.01"; // 32 characters including terminating null at the end
+    const static char VALIDATION_CODE[32] = "BOMBASTIC_AUDIO_KIWI___00.00.03"; // 32 characters including terminating null at the end
     const static int VALIDATION_SIZE = sizeof(VALIDATION_CODE); // 32;
     const static int PATCH_SIZE = 2048; // Storage set aside for one patch
-    const static int PATCH_WRITE_SIZE = 1228; // Actual write size for one patch
+    const static int PATCH_WRITE_SIZE = 1140; // Actual write size for one patch
     const static int PATCH_GROUP_SIZE = 4096; // Storage set aside for a group of four patches, and minimum eraseable size for flash
     const static int BANK_SIZE = 262144; // Storage set aside for 32 groups, or 128 patches.
 
     /*
      * Storage addresses:
-     * Single SavedPatch data size: 1228 but will pad out to 2048 bytes total
+     * Single SavedPatch data size: 1140 but will pad out to 2048 bytes total
      * Each 2 patches is 4096 -- the minimum required erase. This limits erase/write to only 2 patches at a time and extends flash memory lifespan. (100,000 erases)
      * Each bank is 256k, or 64 groups of 2 patches each
      *       0 -  262143: Patch bank 1

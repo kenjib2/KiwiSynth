@@ -12,7 +12,6 @@ namespace kiwi_synth
         char checkCode[32];
         ReadValidationCode(checkCode);
         if (strcmp(checkCode, VALIDATION_CODE) != 0) {
-            WriteValidationCode();
             SavedPatch patchGroup[2];
             Patch patch;
             patch.DefaultSettings();
@@ -23,6 +22,7 @@ namespace kiwi_synth
                     WritePatchGroup(i, j, patchGroup);
                 }
             }
+            WriteValidationCode();
         }
     }
 
