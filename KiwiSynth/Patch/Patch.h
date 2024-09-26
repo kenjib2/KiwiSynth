@@ -38,18 +38,19 @@ namespace kiwi_synth
             void Init(MultiPots* multiPots, GpioExpansion* ge);
 
             // BUFFER MUST BE MAX_PATCH_NAME_LENGTH IN SIZE!!! Not validating because we need speed
-            inline void getName(char* buffer) { strcpy(buffer, name); }
-            inline void setValue(char* buffer) { strcpy(name, buffer); }
-            inline EffectsMode getEffectsMode() { return effectsMode; }
-            inline void setEffectsMode(EffectsMode newEffectsMode) {
+            inline void GetName(char* buffer) { strcpy(buffer, name); }
+            inline void SetValue(char* buffer) { strcpy(name, buffer); }
+            inline EffectsMode GetEffectsMode() { return effectsMode; }
+            inline void SetEffectsMode(EffectsMode newEffectsMode) {
                 if (newEffectsMode < 0) effectsMode = (EffectsMode)(newEffectsMode + FX_MODE_MAX);
                 else effectsMode = (EffectsMode)(newEffectsMode % FX_MODE_MAX);
             }
-            inline ReverbMode getReverbMode() { return reverbMode; }
-            inline void setReverbMode(ReverbMode newReverbMode) {
+            inline ReverbMode GetReverbMode() { return reverbMode; }
+            inline void SetReverbMode(ReverbMode newReverbMode) {
                 if (newReverbMode < 0) reverbMode = (ReverbMode)(newReverbMode + REVERB_MODE_MAX);
                 else reverbMode = (ReverbMode)(newReverbMode % REVERB_MODE_MAX);
             }
+            inline VoiceMode GetVoiceMode() { return voiceMode; }
             void SetVoiceMode(VoiceMode voiceMode);
             void DefaultSettings();
             void Load(SavedPatch savedPatch);

@@ -58,7 +58,7 @@ namespace kiwi_synth
         PATCH_SCREEN,
         SYSTEM_SCREEN
     } DisplayMode;
-    const int DISPLAY_MODE_MAX = 4;
+    const int DISPLAY_MODE_OPTIONS = 4;
 
     class Display
     {
@@ -74,8 +74,9 @@ namespace kiwi_synth
             void Update();
 
         private:
-            char buffer[256];
             bool guiButton;
+            bool menuActive;
+            int prevSelectValue;
             KiwiSynth* kiwiSynth;
             Patch* patch;
             Performance* performance;

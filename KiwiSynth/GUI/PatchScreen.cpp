@@ -9,6 +9,7 @@ namespace kiwi_synth
         this->display = display;
         this->kiwiSynth = kiwiSynth;
         this->patch = patch;
+        selected = PATCH_SCREEN_NONE;
     }
 
     void PatchScreen::Display()
@@ -20,11 +21,11 @@ namespace kiwi_synth
         if (patch->liveMode) {
     	    sprintf(nameString, "----");
         } else {
-            patch->getName(nameString);
+            patch->GetName(nameString);
         }
         sprintf(buffer, "Name: %s", nameString);
         //kiwiSynth->Test(buffer);
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_NAME);
 
         display->SetCursor(0, 8);
         if (patch->liveMode) {
@@ -33,7 +34,7 @@ namespace kiwi_synth
             GetPatchType(value);
         }
         sprintf(buffer, "Type: %s", value);
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_TYPE);
 
         display->SetCursor(0, 16);
         GetVoiceMode(value);
@@ -43,31 +44,95 @@ namespace kiwi_synth
         } else {
             sprintf(buffer, "Voices: %s", value);
         }
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
 
         display->SetCursor(0, 24);
         GetFxType(value);
         sprintf(buffer, "FX: %s", value);
-        display->WriteString(buffer, Font_6x8, false);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_FX);
 
         display->SetCursor(0, 32);
         GetReverbType(value);
         sprintf(buffer, "Reverb: %s", value);
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_REVERB);
 
         display->SetCursor(0, 40);
         sprintf(buffer, "Live Mode");
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_LIVE);
 
         display->SetCursor(0, 48);
         sprintf(buffer, "Load Patch");
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_LOAD);
 
         display->SetCursor(0, 56);
         sprintf(buffer, "Save Patch");
-        display->WriteString(buffer, Font_6x8, true);
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SAVE);
+
+        display->SetCursor(108, 56);
+        sprintf(buffer, "<--");
+        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_RETURN);
 
         display->Update();
+    }
+
+    void PatchScreen::Increment() {
+        selected = (PatchScreenSelection)((selected + 1) % PATCH_SCREEN_OPTIONS);
+        if (patch->liveMode && selected == PATCH_SCREEN_LIVE) {
+            selected = PATCH_SCREEN_LOAD;
+        }
+        if (!patch->liveMode && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+            selected = PATCH_SCREEN_LIVE;
+        }
+    }
+
+    void PatchScreen::Decrement() {
+        selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
+        if (patch->liveMode && selected == PATCH_SCREEN_LIVE) {
+            selected = PATCH_SCREEN_REVERB;
+        }
+        if (!patch->liveMode && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+            selected = PATCH_SCREEN_TYPE;
+        }
+    }
+
+    /*
+     * Returns whether or not the menu should remain active.
+     */
+    bool PatchScreen::Click()
+    {
+        switch (selected) {
+            case PATCH_SCREEN_NONE:
+                if (!patch->liveMode) {
+                    selected = PATCH_SCREEN_LIVE;
+                } else {
+                    selected = PATCH_SCREEN_LOAD;
+                }
+                return true;
+            case PATCH_SCREEN_NAME:
+            case PATCH_SCREEN_TYPE:
+            case PATCH_SCREEN_LOAD:
+            case PATCH_SCREEN_SAVE:
+                return true;
+            case PATCH_SCREEN_LIVE:
+                selected = PATCH_SCREEN_NONE;
+                patch->liveMode = true;
+                return false;
+            case PATCH_SCREEN_VOICES:
+                // THIS IS NOT WORKING
+                patch->SetVoiceMode((VoiceMode)(patch->GetVoiceMode() + 1));
+                return true;
+            case PATCH_SCREEN_FX:
+                patch->SetEffectsMode((EffectsMode)(patch->GetEffectsMode() + 1));
+                return true;
+            case PATCH_SCREEN_REVERB:
+                patch->SetReverbMode((ReverbMode)(patch->GetReverbMode() + 1));
+                return true;
+            case PATCH_SCREEN_RETURN:
+                selected = PATCH_SCREEN_NONE;
+                return false;
+        }
+
+        return true;
     }
 
     // 13 character value
@@ -147,7 +212,7 @@ namespace kiwi_synth
 
     // 17 character value
     void PatchScreen::GetFxType(char* buffer) {
-        switch (patch->getEffectsMode()) {
+        switch (patch->GetEffectsMode()) {
             case FX_DISTORTION_DELAY:
                 strcpy(buffer, "Distortion-Delay");
                 break;
@@ -168,7 +233,7 @@ namespace kiwi_synth
 
     // 13 character value
     void PatchScreen::GetReverbType(char* buffer) {
-        switch (patch->getReverbMode()) {
+        switch (patch->GetReverbMode()) {
             case REVERB_ROOM:
                 strcpy(buffer, "Room");
                 break;

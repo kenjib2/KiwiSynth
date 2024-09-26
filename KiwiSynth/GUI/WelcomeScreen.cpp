@@ -17,7 +17,7 @@ namespace kiwi_synth
         if (patch->liveMode) {
     	    sprintf(buffer, "Live Mode");
         } else {
-            patch->getName(buffer);
+            patch->GetName(buffer);
         }
         display->WriteString(buffer, Font_6x8, true);
 

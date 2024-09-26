@@ -17,6 +17,8 @@ namespace kiwi_synth
         this->performance = performance;
         guiButton = false;
         mode = PLAY;
+        menuActive = false;
+        prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT);
 
         welcomeScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
@@ -37,11 +39,66 @@ namespace kiwi_synth
 
     void Display::HandleInput()
     {
-        DisplayMode newMode = (DisplayMode)GetSelectValue(DISPLAY_MODE_MAX);
-        if (newMode != mode) {
-            mode = newMode;
-            Update();
+        bool updateNeeded = false;
+
+        int newValue = patch->activeSettings->getIntValue(GEN_SELECT);
+        int direction = 0;
+        if (newValue == prevSelectValue) {
+            direction = 0;
+        } else {
+            if ((newValue > prevSelectValue || (newValue == -128 && prevSelectValue == 127))
+                && !(newValue == 127 && prevSelectValue == -128)) {
+                direction = 1;
+            } else if (newValue < prevSelectValue || (newValue == 127 && prevSelectValue == -128)) {
+                direction = -1;
+            }
         }
+
+        if (direction) {
+            if (menuActive) {
+                switch (mode) {
+                    default:
+                        break;
+                    case PATCH_SCREEN:
+                        if (direction == 1) {
+                            patchScreen.Increment();
+                        } else if (direction == -1) {
+                            patchScreen.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
+                }
+            } else {
+                // Cycle through display screens
+                if (direction == 1) {
+                    if (mode + 1 < DISPLAY_MODE_OPTIONS) {
+                        mode = (DisplayMode)(mode + 1);
+                    } else {
+                        mode = PLAY;
+                    }
+                } else if (direction == -1) {
+                    if (mode - 1 < 0) {
+                        mode = (DisplayMode)(DISPLAY_MODE_OPTIONS - 1);
+                    } else {
+                        mode = (DisplayMode)(mode - 1);
+                    }
+                }
+                updateNeeded = true;
+            }
+
+            display.Fill(false);
+            char buffer[256];
+            display.SetCursor(0, 0);
+            sprintf(buffer, "p %d n %d d %d", prevSelectValue, newValue, direction);
+            display.WriteString(buffer, Font_6x8, true);
+  
+            display.SetCursor(0, 8);
+            sprintf(buffer, "mode %d", mode);
+            display.WriteString(buffer, Font_6x8, true);
+            updateNeeded = true;
+        }
+
+        prevSelectValue = newValue;
 
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
@@ -50,18 +107,24 @@ namespace kiwi_synth
                 default:
                     break;
                 case PLAY:
-                    patch->setReverbMode((ReverbMode)(patch->getReverbMode() + 1));
+                    // Maybe load a patch?
                     break;
+
                 case PATCH_SCREEN:
-                    patch->setEffectsMode((EffectsMode)(patch->getEffectsMode() + 1));
-                    Update();
+                    menuActive = patchScreen.Click();
+                    updateNeeded = true;
                     break;
+
                 case SYSTEM_SCREEN:
                     mode = BOOTLOADER;
-                    Update();
+                    Update(); // Update now instead of using updateNeeded because the next line will halt program execution
                     System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
                     break;
             }
+        }
+
+        if (updateNeeded) {
+            Update();
         }
     }
     

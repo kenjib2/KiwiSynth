@@ -39,7 +39,7 @@ namespace kiwi_synth
         tmp[MOD_7_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
         tmp[MOD_8_SOURCE] = NUM_MOD_SOURCES - 1;
         tmp[MOD_8_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
-        tmp[GEN_SELECT] = 50;
+        tmp[GEN_SELECT] = 127;
 
         return tmp;
     }
@@ -166,7 +166,10 @@ namespace kiwi_synth
                 if (currentValue > 0) {
                     setValue(setting, --currentValue);
                 } else if (currentValue == 0 && ((setting >= MOD_1_DESTINATION && setting <= MOD_8_DESTINATION) || setting == GEN_SELECT)) {
-                    // Mod destination and gen select can go to -1
+                    // Mod destination can go to -1
+                    setValue(setting, --currentValue);
+                } else if (setting == GEN_SELECT) {
+                    // Gen select has no lower limit
                     setValue(setting, --currentValue);
                 }
             } else {

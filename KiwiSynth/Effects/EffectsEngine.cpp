@@ -79,9 +79,9 @@ namespace kiwi_synth
         float delayFeedback = patch->activeSettings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f);
         delay.SetFeedback(delayFeedback);
 
-        effectsMode = patch->getEffectsMode();
-        if (patch->getReverbMode() != reverbMode) {
-            UpdateReverbMode(patch->getReverbMode());
+        effectsMode = patch->GetEffectsMode();
+        if (patch->GetReverbMode() != reverbMode) {
+            UpdateReverbMode(patch->GetReverbMode());
         }
     }
 
