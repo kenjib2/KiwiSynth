@@ -41,7 +41,13 @@ namespace kiwi_synth
         GetVoiceMode(value);
         sprintf(buffer, "Voices: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
-        if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
+        int8_t voiceMode;
+        if (patch->GetLiveMode()) {
+            voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
+        } else {
+            voiceMode = patch->loadedPatch.getIntValue(VCO_VOICES);
+        }
+        if (voiceMode == VOICE_MODE_SPLIT) {
             GetMidiNote(value);
             if (editingSplitNote) {
                 display->SetCursor(84, 16);
@@ -250,7 +256,13 @@ namespace kiwi_synth
     // 11 character value
     void PatchScreen::GetVoiceMode(char* buffer)
     {
-        switch (patch->activeSettings->getIntValue(VCO_VOICES)) {
+        int8_t voiceMode;
+        if (patch->GetLiveMode()) {
+            voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
+        } else {
+            voiceMode = patch->loadedPatch.getIntValue(VCO_VOICES);
+        }
+        switch (voiceMode) {
             case VOICE_MODE_POLY:
                 strcpy(buffer, "Polyphonic");
                 break;
