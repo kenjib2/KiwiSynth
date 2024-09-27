@@ -54,9 +54,4 @@ namespace kiwi_synth
         return savedPatch;
     }
 
-    void Storage::Test(char* buffer) {
-        SavedPatch patch = LoadPatch(3, 120);
-        strcpy(buffer, patch.name);
-    }
-
 } // namespace kiwi_synth

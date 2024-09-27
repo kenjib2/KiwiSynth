@@ -16,12 +16,21 @@ namespace kiwi_synth
     {
         display->Fill(false);
 
-        display->SetCursor(0, 0);
-        char nameString[MAX_PATCH_NAME_LENGTH + 1];
-        patch->GetName(nameString);
-        sprintf(buffer, "Name: %s", nameString);
-        //kiwiSynth->Test(buffer);
-        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_NAME);
+        if (editingName) {
+            display->SetCursor(0, 0);
+            sprintf(buffer, "Name: ");
+            display->WriteString(buffer, Font_6x8, true);
+            for (int i = 0; i < MAX_PATCH_NAME_LENGTH; i++) {
+                display->SetCursor(36  + i * 6, 0);
+                sprintf(buffer, "%c", nameEditBuffer[i]);
+                display->WriteString(buffer, Font_6x8, letterSelected != i);
+            }
+        } else {
+            display->SetCursor(0, 0);
+            patch->GetName(value);
+            sprintf(buffer, "Name: %s", value);
+            display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_NAME);
+        }
 
         display->SetCursor(0, 8);
         GetPatchType(value);
@@ -33,9 +42,9 @@ namespace kiwi_synth
         sprintf(buffer, "Voices: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
         if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
-            GetMidiNote(nameString);
+            GetMidiNote(value);
             display->SetCursor(84, 16);
-            sprintf(buffer, "on %s", nameString);
+            sprintf(buffer, "on %s", value);
             display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SPLIT_NOTE);
         }
 
@@ -71,28 +80,50 @@ namespace kiwi_synth
     }
 
     void PatchScreen::Increment() {
-        selected = (PatchScreenSelection)((selected + 1) % PATCH_SCREEN_OPTIONS);
-        if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
-            selected = PATCH_SCREEN_LOAD;
-        }
-        if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
-            selected = PATCH_SCREEN_LIVE;
-        }
-        if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
-            selected = (PatchScreenSelection)(selected + 1);
+        if (editingName) {
+            nameEditBuffer[letterSelected] = nameEditBuffer[letterSelected] + 1;
+            if (nameEditBuffer[letterSelected] > 126) {
+                nameEditBuffer[letterSelected] = 32;
+            }
+        } else {
+            selected = (PatchScreenSelection)((selected + 1) % PATCH_SCREEN_OPTIONS);
+
+            // Valid patch name characters are 32-126 inclusive
+            if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
+                selected = PATCH_SCREEN_LOAD;
+            }
+
+            if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+                selected = PATCH_SCREEN_LIVE;
+            }
+            
+            if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
+                selected = (PatchScreenSelection)(selected + 1);
+            }
         }
     }
 
     void PatchScreen::Decrement() {
-        selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
-        if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
-            selected = PATCH_SCREEN_REVERB;
-        }
-        if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
-            selected = PATCH_SCREEN_TYPE;
-        }
-        if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
-            selected = (PatchScreenSelection)(selected - 1);
+
+        if (editingName) {
+            nameEditBuffer[letterSelected] = nameEditBuffer[letterSelected] - 1;
+            if (nameEditBuffer[letterSelected] < 32) {
+                nameEditBuffer[letterSelected] = 126;
+            }
+        } else {
+            selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
+            
+            if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
+                selected = PATCH_SCREEN_REVERB;
+            }
+            
+            if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
+                selected = PATCH_SCREEN_TYPE;
+            }
+            
+            if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
+                selected = (PatchScreenSelection)(selected - 1);
+            }
         }
     }
 
@@ -109,11 +140,22 @@ namespace kiwi_synth
                     selected = PATCH_SCREEN_LOAD;
                 }
                 return true;
-            case PATCH_SCREEN_NAME:
             case PATCH_SCREEN_SPLIT_NOTE:
             case PATCH_SCREEN_LOAD:
             case PATCH_SCREEN_SAVE:
                 // TO DO
+                return true;
+            case PATCH_SCREEN_NAME:
+                if (!editingName) { // Start editing
+                    editingName = true;
+                    patch->GetName(nameEditBuffer);
+                    letterSelected = 0;
+                } else if (letterSelected >= MAX_PATCH_NAME_LENGTH - 1) { // Done editing
+                    patch->SetName(nameEditBuffer);
+                    editingName = false;
+                } else { // Next letter
+                    letterSelected++;
+                }
                 return true;
             case PATCH_SCREEN_TYPE:
                 patch->SetPatchType((PatchType)(patch->GetPatchType() + 1));

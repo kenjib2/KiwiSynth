@@ -42,10 +42,13 @@ namespace kiwi_synth
 
         private:
             char buffer[41];
-            char value[18];
+            char value[32];
+            char nameEditBuffer[MAX_PATCH_NAME_LENGTH + 1];
             KiwiDisplay* display;
             KiwiSynth* kiwiSynth;
             Patch* patch;
+            int letterSelected;
+            bool editingName;
 
             void GetPatchType(char* buffer);
             void GetVoiceMode(char* buffer);

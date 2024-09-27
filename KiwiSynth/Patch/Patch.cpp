@@ -47,7 +47,7 @@ namespace kiwi_synth
     void Patch::DefaultSettings() {
         voiceMode = VOICE_MODE_POLY;
         splitNote = 60;
-        strcpy(name, "New");
+        strcpy(name, "New            ");
         type = PATCH_SYNTH;
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;

@@ -6,10 +6,6 @@ namespace kiwi_synth
     char DSY_SDRAM_BSS buff[512];
     #endif // __PATCH_SETTINGS__
 
-    void KiwiSynth::Test(char* buffer) {
-        storage.Test(buffer);
-    }
-
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
         this->hw = hw;
