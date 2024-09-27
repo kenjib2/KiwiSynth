@@ -4,10 +4,9 @@
 namespace kiwi_synth
 {
 
-    void PatchScreen::Init(KiwiDisplay* display, KiwiSynth* kiwiSynth, Patch* patch)
+    void PatchScreen::Init(KiwiDisplay* display, Patch* patch)
     {
         this->display = display;
-        this->kiwiSynth = kiwiSynth;
         this->patch = patch;
         selected = PATCH_SCREEN_NONE;
     }
@@ -160,10 +159,6 @@ namespace kiwi_synth
                     selected = PATCH_SCREEN_LOAD;
                 }
                 return PATCH_SCREEN_RESPONSE_EDIT;
-            case PATCH_SCREEN_LOAD:
-            case PATCH_SCREEN_SAVE:
-                // TO DO
-                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_NAME:
                 if (!editingName) { // Start editing
                     editingName = true;
@@ -199,6 +194,12 @@ namespace kiwi_synth
                 patch->SetLiveMode(true);
                 selected = PATCH_SCREEN_NONE;
                 return PATCH_SCREEN_RESPONSE_PLAY;
+            case PATCH_SCREEN_LOAD:
+                selected = PATCH_SCREEN_NONE;
+                return PATCH_SCREEN_RESPONSE_LOAD;
+            case PATCH_SCREEN_SAVE:
+                selected = PATCH_SCREEN_NONE;
+                return PATCH_SCREEN_RESPONSE_SAVE;
             case PATCH_SCREEN_RETURN:
                 selected = PATCH_SCREEN_NONE;
                 return PATCH_SCREEN_RESPONSE_NOEDIT;

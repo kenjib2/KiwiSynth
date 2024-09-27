@@ -23,7 +23,8 @@ namespace kiwi_synth
         welcomeScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patch);
-        patchScreen.Init(&display, kiwiSynth, patch);
+        patchScreen.Init(&display, patch);
+        selectScreen.Init(&display, kiwiSynth);
         systemScreen.Init(&display, performance);
 
         KiwiDisplay::Config cfg;
@@ -93,7 +94,9 @@ namespace kiwi_synth
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
-            PatchScreenResponse response;
+            PatchScreenResponse patchResponse;
+            SelectScreenResponse selectResponse;
+
             switch (mode) {
                 default:
                     break;
@@ -102,8 +105,8 @@ namespace kiwi_synth
                     break;
 
                 case MODE_PATCH_SCREEN:
-                    response = patchScreen.Click();
-                    switch (response) {
+                    patchResponse = patchScreen.Click();
+                    switch (patchResponse) {
                         case PATCH_SCREEN_RESPONSE_EDIT:
                             menuActive = true;
                             break;
@@ -111,8 +114,32 @@ namespace kiwi_synth
                         case PATCH_SCREEN_RESPONSE_NOEDIT:
                             menuActive = false;
                             break;
+                        case PATCH_SCREEN_RESPONSE_LOAD:
+                            menuActive = false;
+                            selectScreen.saving = false;
+                            mode = MODE_SELECT_SCREEN;
+                            break;
+                        case PATCH_SCREEN_RESPONSE_SAVE:
+                            menuActive = false;
+                            selectScreen.saving = true;
+                            mode = MODE_SELECT_SCREEN;
+                            break;
                         case PATCH_SCREEN_RESPONSE_PLAY:
                             menuActive = false;
+                            mode = MODE_PLAY;
+                            break;
+                    }
+                    updateNeeded = true;
+                    break;
+
+                case MODE_SELECT_SCREEN:
+                    selectResponse = selectScreen.Click();
+                    switch (selectResponse) {
+                        default:
+                        case SELECT_SCREEN_RESPONSE_CANCEL:
+                            mode = MODE_PATCH_SCREEN;
+                            break;
+                        case SELECT_SCREEN_RESPONSE_PLAY:
                             mode = MODE_PLAY;
                             break;
                     }
@@ -158,6 +185,9 @@ namespace kiwi_synth
                 break;
             case MODE_PATCH_SCREEN:
                 patchScreen.Display();
+                break;
+            case MODE_SELECT_SCREEN:
+                selectScreen.Display();
                 break;
             case MODE_SYSTEM_SCREEN:
                 systemScreen.Display();

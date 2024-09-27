@@ -10,6 +10,7 @@
 #include "BootloaderScreen.h"
 #include "IntValueScreen.h"
 #include "PatchScreen.h"
+#include "SelectScreen.h"
 #include "SystemScreen.h"
 
 using namespace daisy;
@@ -53,7 +54,7 @@ namespace kiwi_synth
 
     typedef enum {
         MODE_BOOTLOADER = -2,
-        MODE_PATCH_SELECT_SCREEN = -1,
+        MODE_SELECT_SCREEN = -1,
         MODE_PLAY = 0,
         MODE_INT_SCREEN,
         MODE_PATCH_SCREEN,
@@ -87,6 +88,7 @@ namespace kiwi_synth
             BootloaderScreen bootloaderScreen;
             IntValueScreen intValueScreen;
             PatchScreen patchScreen;
+            SelectScreen selectScreen;
             SystemScreen systemScreen;
 
             int GetSelectValue(int numElements);

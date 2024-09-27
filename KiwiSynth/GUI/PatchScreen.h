@@ -4,7 +4,7 @@
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 
-#include "../KiwiSynth.h"
+#include "../Patch/Patch.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
@@ -30,7 +30,9 @@ namespace kiwi_synth
     {
         PATCH_SCREEN_RESPONSE_EDIT,
         PATCH_SCREEN_RESPONSE_NOEDIT,
-        PATCH_SCREEN_RESPONSE_PLAY
+        PATCH_SCREEN_RESPONSE_PLAY,
+        PATCH_SCREEN_RESPONSE_LOAD,
+        PATCH_SCREEN_RESPONSE_SAVE
     };
 
     class PatchScreen
@@ -40,7 +42,7 @@ namespace kiwi_synth
 
             PatchScreen(){}
             virtual ~PatchScreen(){};
-            void Init(KiwiDisplay* display, KiwiSynth* kiwiSynth, Patch* patch);
+            void Init(KiwiDisplay* display, Patch* patch);
 
             void Display();
             void Increment();
@@ -52,7 +54,6 @@ namespace kiwi_synth
             char value[32];
             char nameEditBuffer[MAX_PATCH_NAME_LENGTH + 1];
             KiwiDisplay* display;
-            KiwiSynth* kiwiSynth;
             Patch* patch;
             int letterSelected;
             bool editingName;
@@ -64,7 +65,6 @@ namespace kiwi_synth
             void GetFxType(char* buffer);
             void GetReverbType(char* buffer);
     };
+
 } // namespace kiwi_synth
-
-
 #endif // __KIWI_SYNTH_PATCH_SCREEN_H__
