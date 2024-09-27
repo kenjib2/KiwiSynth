@@ -26,6 +26,13 @@ namespace kiwi_synth
     };
     const static int PATCH_SCREEN_OPTIONS = 10;
 
+    enum PatchScreenResponse
+    {
+        PATCH_SCREEN_RESPONSE_EDIT,
+        PATCH_SCREEN_RESPONSE_NOEDIT,
+        PATCH_SCREEN_RESPONSE_PLAY
+    };
+
     class PatchScreen
     {
         public:
@@ -38,7 +45,7 @@ namespace kiwi_synth
             void Display();
             void Increment();
             void Decrement();
-            bool Click();
+            PatchScreenResponse Click();
 
         private:
             char buffer[41];

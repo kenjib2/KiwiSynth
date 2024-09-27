@@ -93,6 +93,7 @@ namespace kiwi_synth
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
+            PatchScreenResponse response;
             switch (mode) {
                 default:
                     break;
@@ -101,7 +102,20 @@ namespace kiwi_synth
                     break;
 
                 case MODE_PATCH_SCREEN:
-                    menuActive = patchScreen.Click();
+                    response = patchScreen.Click();
+                    switch (response) {
+                        case PATCH_SCREEN_RESPONSE_EDIT:
+                            menuActive = true;
+                            break;
+                        default:
+                        case PATCH_SCREEN_RESPONSE_NOEDIT:
+                            menuActive = false;
+                            break;
+                        case PATCH_SCREEN_RESPONSE_PLAY:
+                            menuActive = false;
+                            mode = MODE_PLAY;
+                            break;
+                    }
                     updateNeeded = true;
                     break;
 

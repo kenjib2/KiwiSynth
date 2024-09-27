@@ -144,7 +144,7 @@ namespace kiwi_synth
     /*
      * Returns whether or not the menu should remain active.
      */
-    bool PatchScreen::Click()
+    PatchScreenResponse PatchScreen::Click()
     {
         switch (selected) {
             case PATCH_SCREEN_NONE:
@@ -153,11 +153,11 @@ namespace kiwi_synth
                 } else {
                     selected = PATCH_SCREEN_LOAD;
                 }
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_LOAD:
             case PATCH_SCREEN_SAVE:
                 // TO DO
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_NAME:
                 if (!editingName) { // Start editing
                     editingName = true;
@@ -169,36 +169,36 @@ namespace kiwi_synth
                 } else { // Next letter
                     letterSelected++;
                 }
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_TYPE:
                 patch->SetPatchType((PatchType)(patch->GetPatchType() + 1));
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_VOICES:
                 patch->SetVoiceMode((VoiceMode)(patch->GetVoiceMode() + 1));
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_SPLIT_NOTE:
                 if (!editingSplitNote) { // Start editing
                     editingSplitNote = true;
                 } else { // Next letter
                     editingSplitNote = false;
                 }
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_FX:
                 patch->SetEffectsMode((EffectsMode)(patch->GetEffectsMode() + 1));
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_REVERB:
                 patch->SetReverbMode((ReverbMode)(patch->GetReverbMode() + 1));
-                return true;
+                return PATCH_SCREEN_RESPONSE_EDIT;
             case PATCH_SCREEN_LIVE:
                 patch->SetLiveMode(true);
                 selected = PATCH_SCREEN_NONE;
-                return false;
+                return PATCH_SCREEN_RESPONSE_PLAY;
             case PATCH_SCREEN_RETURN:
                 selected = PATCH_SCREEN_NONE;
-                return false;
+                return PATCH_SCREEN_RESPONSE_NOEDIT;
         }
 
-        return true;
+        return PATCH_SCREEN_RESPONSE_EDIT;
     }
 
     // 13 character value
