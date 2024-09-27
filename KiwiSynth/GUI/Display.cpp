@@ -68,6 +68,14 @@ namespace kiwi_synth
                         }
                         updateNeeded = true;
                         break;
+                    case MODE_SELECT_SCREEN:
+                        if (direction == 1) {
+                            selectScreen.Increment();
+                        } else if (direction == -1) {
+                            selectScreen.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
                     default:
                         break;
                 }
@@ -101,7 +109,12 @@ namespace kiwi_synth
                 default:
                     break;
                 case MODE_PLAY:
-                    // Maybe load a patch?
+                    menuActive = true;
+                    selectScreen.saving = false;
+                    selectScreen.fromPlay = true;
+                    selectScreen.currentPage = SELECT_PAGE_BANKS;
+                    selectScreen.selection = 3;
+                    mode = MODE_SELECT_SCREEN;
                     break;
 
                 case MODE_PATCH_SCREEN:
@@ -115,8 +128,11 @@ namespace kiwi_synth
                             menuActive = false;
                             break;
                         case PATCH_SCREEN_RESPONSE_LOAD:
-                            menuActive = false;
+                            menuActive = true;
                             selectScreen.saving = false;
+                            selectScreen.fromPlay = false;
+                            selectScreen.currentPage = SELECT_PAGE_BANKS;
+                            selectScreen.selection = 3;
                             mode = MODE_SELECT_SCREEN;
                             break;
                         case PATCH_SCREEN_RESPONSE_SAVE:
@@ -137,9 +153,13 @@ namespace kiwi_synth
                     switch (selectResponse) {
                         default:
                         case SELECT_SCREEN_RESPONSE_CANCEL:
+                            menuActive = false;
                             mode = MODE_PATCH_SCREEN;
                             break;
+                        case SELECT_SCREEN_RESPONSE_REFRESH:
+                            break;
                         case SELECT_SCREEN_RESPONSE_PLAY:
+                            menuActive = false;
                             mode = MODE_PLAY;
                             break;
                     }
