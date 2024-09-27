@@ -31,8 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
- * Patch Screen: Save / Load
+ * Patch Screen: Save
+ * Patch type showing up as 0 (LEAD) in all loaded patches -- problem either in save or load. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
+ * Int Screen showing negatives for octave and interval with loaded patches
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
@@ -45,6 +46,7 @@ using namespace kiwi_synth;
  * Need to mod LFO1 to Pitch amount because of mod wheel
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
  * 
+ * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
  * Update Zita to handle larger delay values for Bloom reverb

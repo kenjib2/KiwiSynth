@@ -36,7 +36,7 @@ namespace kiwi_synth
                 patchBanks[i][j].type = nextPatch.type;
                 patchBanks[i][j].voiceMode = nextPatch.voiceMode;
 
-                patchTypes[patchBanks[i][j].voiceMode].push_back(&patchBanks[i][j]);
+                patchTypes[nextPatch.voiceMode].push_back(&patchBanks[i][j]);
             }
         }
 

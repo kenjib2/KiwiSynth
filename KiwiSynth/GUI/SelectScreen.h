@@ -39,6 +39,9 @@ namespace kiwi_synth
             int selection;
             int bankNumber;
             int patchNumber;
+            PatchType patchType;
+            int patchTypePage;
+            int patchTypeMax;
             SelectScreenPage currentPage;
 
             void Display();
