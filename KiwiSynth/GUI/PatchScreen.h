@@ -49,6 +49,7 @@ namespace kiwi_synth
             Patch* patch;
             int letterSelected;
             bool editingName;
+            bool editingSplitNote;
 
             void GetPatchType(char* buffer);
             void GetVoiceMode(char* buffer);

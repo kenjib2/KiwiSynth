@@ -43,9 +43,19 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);
         if (patch->activeSettings->getIntValue(VCO_VOICES) == VOICE_MODE_SPLIT) {
             GetMidiNote(value);
-            display->SetCursor(84, 16);
-            sprintf(buffer, "on %s", value);
-            display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SPLIT_NOTE);
+            if (editingSplitNote) {
+                display->SetCursor(84, 16);
+                sprintf(buffer, "on ");
+                display->WriteString(buffer, Font_6x8, true);
+
+                display->SetCursor(102, 16);
+                sprintf(buffer, "%s", value);
+                display->WriteString(buffer, Font_6x8, false);
+            } else {
+                display->SetCursor(84, 16);
+                sprintf(buffer, "on %s", value);
+                display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SPLIT_NOTE);
+            }
         }
 
         display->SetCursor(0, 24);
@@ -85,6 +95,8 @@ namespace kiwi_synth
             if (nameEditBuffer[letterSelected] > 126) {
                 nameEditBuffer[letterSelected] = 32;
             }
+        } else if (editingSplitNote) {
+            patch->SetSplitNote((patch->GetSplitNote() + 1) % 128);
         } else {
             selected = (PatchScreenSelection)((selected + 1) % PATCH_SCREEN_OPTIONS);
 
@@ -110,6 +122,8 @@ namespace kiwi_synth
             if (nameEditBuffer[letterSelected] < 32) {
                 nameEditBuffer[letterSelected] = 126;
             }
+        } else if (editingSplitNote) {
+            patch->SetSplitNote((patch->GetSplitNote() - 1 + 128) % 128);
         } else {
             selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
             
@@ -140,7 +154,6 @@ namespace kiwi_synth
                     selected = PATCH_SCREEN_LOAD;
                 }
                 return true;
-            case PATCH_SCREEN_SPLIT_NOTE:
             case PATCH_SCREEN_LOAD:
             case PATCH_SCREEN_SAVE:
                 // TO DO
@@ -162,6 +175,13 @@ namespace kiwi_synth
                 return true;
             case PATCH_SCREEN_VOICES:
                 patch->SetVoiceMode((VoiceMode)(patch->GetVoiceMode() + 1));
+                return true;
+            case PATCH_SCREEN_SPLIT_NOTE:
+                if (!editingSplitNote) { // Start editing
+                    editingSplitNote = true;
+                } else { // Next letter
+                    editingSplitNote = false;
+                }
                 return true;
             case PATCH_SCREEN_FX:
                 patch->SetEffectsMode((EffectsMode)(patch->GetEffectsMode() + 1));

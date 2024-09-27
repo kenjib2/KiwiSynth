@@ -32,7 +32,7 @@ using namespace kiwi_synth;
  * TO DO
  * 
  * Manage addresses directly for each patch. Copy patch data into regular RAM from SDRAM one by one and save each to QSPI. We can also load and save individual patches. Maybe don't load all data anymore? Just a list of names and PatchTypes into DTCRAM?
- * Patch Screen: Save / Load / Split Note
+ * Patch Screen: Save / Load
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
