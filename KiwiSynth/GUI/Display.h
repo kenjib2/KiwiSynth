@@ -6,7 +6,7 @@
 
 #include "../KiwiSynth.h"
 #include "../../KUtils.h"
-#include "WelcomeScreen.h"
+#include "PlayScreen.h"
 #include "BootloaderScreen.h"
 #include "IntValueScreen.h"
 #include "PatchScreen.h"
@@ -84,7 +84,7 @@ namespace kiwi_synth
             Performance* performance;
             KiwiDisplay display;
 
-            WelcomeScreen welcomeScreen;
+            PlayScreen playScreen;
             BootloaderScreen bootloaderScreen;
             IntValueScreen intValueScreen;
             PatchScreen patchScreen;

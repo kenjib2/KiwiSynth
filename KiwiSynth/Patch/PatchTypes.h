@@ -80,7 +80,7 @@ namespace kiwi_synth
      */
     typedef enum {
         VCO_VOICES,                 // 0
-        VCO_MASTER_TUNE,
+        VCO_MASTER_TUNE,                    // This does not get saved to patch settings or stored for patches. It is always loaded directly from live pot value
         VCO_PORTAMENTO_ON,
         VCO_PORTAMENTO_SPEED,
 

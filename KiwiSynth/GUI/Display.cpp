@@ -20,7 +20,7 @@ namespace kiwi_synth
         menuActive = false;
         prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT);
 
-        welcomeScreen.Init(&display, patch);
+        playScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
         intValueScreen.Init(&display, patch);
         patchScreen.Init(&display, patch);
@@ -159,6 +159,7 @@ namespace kiwi_synth
                         case SELECT_SCREEN_RESPONSE_REFRESH:
                             break;
                         case SELECT_SCREEN_RESPONSE_PLAY:
+                            prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
                             menuActive = false;
                             mode = MODE_PLAY;
                             break;
@@ -198,7 +199,7 @@ namespace kiwi_synth
         switch (mode) {
             case MODE_PLAY:
             default:
-                welcomeScreen.Display();
+                playScreen.Display();
                 break;
             case MODE_INT_SCREEN:
                 intValueScreen.Display();

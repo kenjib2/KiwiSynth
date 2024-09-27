@@ -21,6 +21,8 @@ namespace kiwi_synth
             PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
             bool                    liveMode;
+            int                     bankNumber;
+            int                     patchNumber;
             VoiceMode               voiceMode;
             int                     splitNote;
             EffectsMode             effectsMode;
@@ -66,7 +68,9 @@ namespace kiwi_synth
             inline void SetSplitNote(int newSplitNote) { splitNote = newSplitNote; }
 
             inline bool GetLiveMode() { return liveMode; }
-            void SetLiveMode(bool liveModeActive);
+            void SetLiveMode(bool liveModeActive, int bankNumber = -1, int patchNumber = -1);
+            inline int GetBankNumber() { return bankNumber; }
+            inline int GetPatchNumber() { return patchNumber; }
 
             void DefaultSettings();
             void Load(SavedPatch savedPatch);

@@ -47,18 +47,18 @@ namespace kiwi_synth
 
                 display->SetCursor(120, 0);
                 display->WriteString("^", Font_6x8, selection != 0);
-
                 display->SetCursor(120, 28);
                 display->WriteString("X", Font_6x8, selection != 1);
-
                 display->SetCursor(120, 56);
                 display->WriteString("v", Font_6x8, selection != 2);
                 break;
+
             case SELECT_PAGE_BANKS:
                 numSelections = 35;
+
                 for (int i = 0; i < 8; i++) {
                     display->SetCursor(0, i * 8);
-                    sprintf(buffer, "%d: ", i + 1);
+                    sprintf(buffer, "%c: ", 'A' + i);
                     display->WriteString(buffer, Font_6x8, true);
 
                     for (int j = 0; j < 4; j++) {
@@ -70,24 +70,33 @@ namespace kiwi_synth
 
                 display->SetCursor(120, 0);
                 display->WriteString("^", Font_6x8, selection != 0);
-
                 display->SetCursor(120, 28);
                 display->WriteString("X", Font_6x8, selection != 1);
-
                 display->SetCursor(120, 56);
                 display->WriteString("v", Font_6x8, selection != 2);
                 break;
+
+            case SELECT_PAGE_BANK_PATCHES:
+                numSelections = 11;
+
+                for (int i = 0; i < 8; i++) {
+                    display->SetCursor(0, i * 8);
+                    sprintf(buffer, "%c.%03d %s", 'A' + bankNumber, patchNumber + i + 1, kiwiSynth->patchBanks[bankNumber][patchNumber].name);
+                    display->WriteString(buffer, Font_6x8, i + 3 != selection);
+                }
+
+                display->SetCursor(120, 0);
+                display->WriteString("^", Font_6x8, selection != 0);
+                display->SetCursor(120, 28);
+                display->WriteString("X", Font_6x8, selection != 1);
+                display->SetCursor(120, 56);
+                display->WriteString("v", Font_6x8, selection != 2);
+                break;
+
+            case SELECT_PAGE_TYPE_PATCHES:
+                break;
         }
         display->Update();
-    }
-
-    // Patchnumber should be a multiple of 8 between 0 and 120
-    void SelectScreen::DisplayPatches(int bankNumber, int patchNumber) {
-        for (int i = 0; i < 8; i++) {
-            display->SetCursor(0, i * 8);
-            sprintf(buffer, "%d.%03d %s", bankNumber + 1, patchNumber + i + 1, "Patch Name 1234");
-            display->WriteString(buffer, Font_6x8, i != selection);
-        }
     }
 
     void SelectScreen::Increment() {
@@ -99,16 +108,48 @@ namespace kiwi_synth
     }
 
     SelectScreenResponse SelectScreen::Click() {
+        // Cancel
         if (selection == 1) {
             if (fromPlay) {
                 return SELECT_SCREEN_RESPONSE_PLAY;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;
             }
-        } else if (selection == 0) {
+
+        // Page down from bank/type screen
+        } else if (selection == 0 && currentPage >= 0) {
             currentPage = (SelectScreenPage)((currentPage + 1) % maxSelectScreenPage);
-        } else if (selection == 2) {
+
+        // Page up from bank/type screen
+        } else if (selection == 2 && currentPage >= 0) {
             currentPage = (SelectScreenPage)((currentPage - 1  + maxSelectScreenPage) % maxSelectScreenPage);
+
+        // Patch group selected from Bank select page
+        } else if (currentPage == SELECT_PAGE_BANKS) {
+            bankNumber = (selection - 3) / 4;
+            patchNumber = (selection - 3) % 4 * 32;
+            selection = 3;
+            currentPage = SELECT_PAGE_BANK_PATCHES;
+
+        } else if (currentPage == SELECT_PAGE_BANK_PATCHES) {
+            if (selection == 0) {
+                patchNumber = patchNumber - 8;
+                if (patchNumber < 0) {
+                    patchNumber = 120;
+                    bankNumber = (bankNumber - 1 + NUM_PATCH_BANKS) % NUM_PATCH_BANKS;
+                }
+            } else if (selection == 2) {
+                patchNumber = patchNumber + 8;
+                if (patchNumber > 120) {
+                    patchNumber = 0;
+                    bankNumber = (bankNumber + 1) % NUM_PATCH_BANKS;
+                }
+            } else {
+                kiwiSynth->LoadPatch(bankNumber, patchNumber + selection - 3);
+                return SELECT_SCREEN_RESPONSE_PLAY;
+            }
+
+        // Temp
         } else {
             if (saving) {
                 return SELECT_SCREEN_RESPONSE_CANCEL;

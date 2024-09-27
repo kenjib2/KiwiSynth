@@ -21,8 +21,32 @@ namespace kiwi_synth
         effectsEngine.Init(&patch, sampleRate);
 
         storage.Init(hw->qspi);
+        LoadPatchBanks();
 
         InitMidi();
+    }
+
+    void KiwiSynth::LoadPatchBanks() {
+        for (int i = 0; i < NUM_PATCH_BANKS; i++) {
+            for (int j = 0; j < PATCHES_PER_BANK; j++) {
+                SavedPatch nextPatch = storage.LoadPatch(i, j);
+                patchBanks[i][j].bankNumber = i;
+                patchBanks[i][j].patchNumber = j;
+                strcpy(patchBanks[i][j].name, nextPatch.name);
+                patchBanks[i][j].type = nextPatch.type;
+                patchBanks[i][j].voiceMode = nextPatch.voiceMode;
+
+                patchTypes[patchBanks[i][j].voiceMode].push_back(&patchBanks[i][j]);
+            }
+        }
+
+        for (int i = 0; i < PATCH_TYPE_MAX; i++) {
+            std::sort( patchTypes[i].begin(),
+                        patchTypes[i].end(),
+                        [](PatchHeader* a, PatchHeader* b) {
+                            return strcmp(a->name, b->name);
+                        });
+        }
     }
 
     void KiwiSynth::ConfigureMultiPots(DaisySeed* hw)
@@ -212,8 +236,8 @@ namespace kiwi_synth
 
     void KiwiSynth::LoadPatch(int bankNumber, int patchNumber)
     {
-        patch.SetLiveMode(false);
-        SavedPatch savedPatch = storage.LoadPatch(0, 0);
+        patch.SetLiveMode(false, bankNumber, patchNumber);
+        SavedPatch savedPatch = storage.LoadPatch(bankNumber, patchNumber);
         patch.Load(savedPatch);
         voiceBank.UpdateSettings();
         effectsEngine.UpdateSettings();

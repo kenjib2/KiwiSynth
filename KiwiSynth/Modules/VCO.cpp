@@ -31,8 +31,6 @@ namespace kiwi_synth
     {
         isOn = patchSettings->getBoolValue((PatchSetting)(VCO_1_ON + vcoNumber));
         if (isOn) {
-            masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
-
             waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
             pulseWidth = 0.53f - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03f, 0.5f);
             variShape = patchSettings->getFloatValue((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber));
@@ -54,6 +52,7 @@ namespace kiwi_synth
     void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
     {
         if (isOn) {
+            float masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
             playingNote = midiNote + octave + interval + fineTune + masterTune;
             float waveSample = 0.0f;
             float freq = std::fmax(mtof(playingNote + mod * 12.0f), 0.0f);

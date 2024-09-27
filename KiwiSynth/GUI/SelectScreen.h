@@ -14,7 +14,9 @@ namespace kiwi_synth
 
     enum SelectScreenPage
     {
-        SELECT_PAGE_BANKS,
+        SELECT_PAGE_BANK_PATCHES = -2,
+        SELECT_PAGE_TYPE_PATCHES = -1,
+        SELECT_PAGE_BANKS = 0,
         SELECT_PAGE_PATCH_TYPES
     };
     const static int maxSelectScreenPage = 2;
@@ -35,6 +37,8 @@ namespace kiwi_synth
             bool saving;
             bool fromPlay;
             int selection;
+            int bankNumber;
+            int patchNumber;
             SelectScreenPage currentPage;
 
             void Display();
@@ -47,8 +51,6 @@ namespace kiwi_synth
             int numSelections;
             KiwiSynth* kiwiSynth;
             KiwiDisplay* display;
-
-            void DisplayPatches(int bankNumber, int patchNumber);
     };
 
 } // namespace kiwi_synth

@@ -1,15 +1,15 @@
-#include "WelcomeScreen.h"
+#include "PlayScreen.h"
 
 namespace kiwi_synth
 {
 
-    void WelcomeScreen::Init(KiwiDisplay* display, Patch* patch)
+    void PlayScreen::Init(KiwiDisplay* display, Patch* patch)
     {
         this->display = display;
         this->patch = patch;
     }
 
-    void WelcomeScreen::Display()
+    void PlayScreen::Display()
     {
         display->Fill(false);
 
@@ -17,7 +17,9 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
     	    sprintf(buffer, "Live Mode");
         } else {
-            patch->GetName(buffer);
+            char name[MAX_PATCH_NAME_LENGTH + 1];
+            patch->GetName(name);
+            sprintf(buffer, "%c.%03d %s", 'A' + patch->GetBankNumber(), patch->GetPatchNumber() + 1, name);
         }
         display->WriteString(buffer, Font_6x8, true);
 

@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_WELCOME_SCREEN_H__
-#define __KIWI_SYNTH_WELCOME_SCREEN_H__
+#ifndef __KIWI_SYNTH_PLAY_SCREEN_H__
+#define __KIWI_SYNTH_PLAY_SCREEN_H__
 
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
@@ -11,11 +11,11 @@ using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
 namespace kiwi_synth
 {
-    class WelcomeScreen
+    class PlayScreen
     {
         public:
-            WelcomeScreen(){}
-            virtual ~WelcomeScreen(){};
+            PlayScreen(){}
+            virtual ~PlayScreen(){};
             void Init(KiwiDisplay* display, Patch* patch);
 
             void Display();
@@ -28,4 +28,4 @@ namespace kiwi_synth
 } // namespace kiwi_synth
 
 
-#endif // __KIWI_SYNTH_WELCOME_SCREEN_H__
+#endif // __KIWI_SYNTH_PLAY_SCREEN_H__

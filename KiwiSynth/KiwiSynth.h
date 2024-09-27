@@ -11,6 +11,7 @@
 #include "VoiceBank.h"
 #include "Effects/EffectsEngine.h"
 #include "Patch/Storage.h"
+#include "Patch/PatchHeader.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -25,6 +26,7 @@ namespace kiwi_synth
         private:
             static const int NUM_VCOS = 3;
             static const int MAX_VOICES = 2;
+
             DaisySeed* hw;
             MultiPots multiPots;
             GpioExpansion ge;
@@ -46,10 +48,13 @@ namespace kiwi_synth
 
         public:
             Patch patch;
+            PatchHeader patchBanks[NUM_PATCH_BANKS][PATCHES_PER_BANK];
+            std::vector<PatchHeader*> patchTypes[PATCH_TYPE_MAX];
 
             KiwiSynth() {}
             ~KiwiSynth() {}
             void Init(DaisySeed* hw, float sampleRate);
+            void LoadPatchBanks();
 
             void ProcessInputs(bool readGpio);
             void ConfigureMultiPots(DaisySeed* hw);

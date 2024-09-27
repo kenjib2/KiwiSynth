@@ -25,7 +25,6 @@ namespace kiwi_synth
             float      fineTune; // mod to midi note -1 to 1
             float      interval; // mod to midi note -11 to 11
             float      octave; // mod to midi note -24, -12, 0, 12, 24
-            float      masterTune; // mod to midi note -1.0f to 1.0f
             float      playingNote; // midiNote with fineTune, interval, octave, and masterTune applied.
             bool       isOn;
             bool       noteTriggered;

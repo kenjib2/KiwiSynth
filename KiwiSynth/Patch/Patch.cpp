@@ -11,6 +11,8 @@ namespace kiwi_synth
         settings2.Init(multiPots, ge);
 
         liveMode = true;
+        bankNumber = -1;
+        patchNumber = -1;
         SetVoiceMode(VOICE_MODE_POLY);
         strcpy(name, "Kiwi Sound");
         effectsMode = FX_DISTORTION_DELAY;
@@ -56,8 +58,11 @@ namespace kiwi_synth
         settings2.DefaultSettings();
     }
 
-    void Patch::SetLiveMode(bool liveModeActive) {
+    void Patch::SetLiveMode(bool liveModeActive, int bankNumber, int patchNumber) {
         liveMode = liveModeActive;
+        this->bankNumber = bankNumber;
+        this->patchNumber = patchNumber;
+
         if (liveModeActive) {
             DefaultSettings();
         }
