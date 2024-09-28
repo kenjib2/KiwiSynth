@@ -14,6 +14,7 @@ namespace kiwi_synth
 
     enum SelectScreenPage
     {
+        SELECT_PAGE_SAVE_CONFIRM = -3,
         SELECT_PAGE_BANK_PATCHES = -2,
         SELECT_PAGE_TYPE_PATCHES = -1,
         SELECT_PAGE_BANKS = 0,
@@ -39,6 +40,8 @@ namespace kiwi_synth
             int selection;
             int bankNumber;
             int patchNumber;
+            int saveBank;
+            int savePatch;
             PatchType patchType;
             int patchTypePage;
             int patchTypeMax;
@@ -54,6 +57,8 @@ namespace kiwi_synth
             int numSelections;
             KiwiSynth* kiwiSynth;
             KiwiDisplay* display;
+
+            void GetConfirmPatchType(char* buffer);
     };
 
 } // namespace kiwi_synth

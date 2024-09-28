@@ -12,6 +12,8 @@ namespace kiwi_synth
     }
 
     void SelectScreen::Display() {
+        char value[32];
+
         display->Fill(false);
         switch (currentPage) {
             default:
@@ -112,6 +114,35 @@ namespace kiwi_synth
                 display->SetCursor(120, 56);
                 display->WriteString("v", Font_6x8, selection != 2);
                 break;
+
+            case SELECT_PAGE_SAVE_CONFIRM:
+                numSelections = 2;
+
+                display->SetCursor(0, 0);
+                sprintf(buffer, "Overwrite patch?");
+                display->WriteString(buffer, Font_6x8, true);
+
+                display->SetCursor(0, 8);
+                sprintf(buffer, "Data will be lost.");
+                display->WriteString(buffer, Font_6x8, true);
+
+                display->SetCursor(0, 24);
+                sprintf(buffer, "%c.%03d %s", 'A' + saveBank, savePatch + 1, kiwiSynth->patchBanks[saveBank][savePatch].name);
+                display->WriteString(buffer, Font_6x8, true);
+
+                display->SetCursor(0, 32);
+                GetConfirmPatchType(value);
+                sprintf(buffer, "Type: %s", value);
+                display->WriteString(buffer, Font_6x8, true);
+
+                display->SetCursor(0, 48);
+                sprintf(buffer, "Yes");
+                display->WriteString(buffer, Font_6x8, selection != 0);
+
+                display->SetCursor(66, 48);
+                sprintf(buffer, "No");
+                display->WriteString(buffer, Font_6x8, selection != 1);
+                break;
         }
         display->Update();
     }
@@ -176,8 +207,10 @@ namespace kiwi_synth
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
             } else if (saving) {
-                kiwiSynth->SavePatch(bankNumber, patchNumber + selection - 3);
-                return SELECT_SCREEN_RESPONSE_PLAY;
+                saveBank = bankNumber;
+                savePatch = patchNumber + selection - 3;
+                selection = 0;
+                currentPage = SELECT_PAGE_SAVE_CONFIRM;
             }
 
         } else if (currentPage == SELECT_PAGE_TYPE_PATCHES) {
@@ -200,22 +233,67 @@ namespace kiwi_synth
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
             } else if (saving) {
-                bankNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->bankNumber;
-                patchNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->patchNumber;
-                kiwiSynth->SavePatch(bankNumber, patchNumber);
-                return SELECT_SCREEN_RESPONSE_PLAY;
+                saveBank = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->bankNumber;
+                savePatch = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->patchNumber;
+                selection = 0;
+                currentPage = SELECT_PAGE_SAVE_CONFIRM;
             }
-
-        // Temp
-        } else {
-            if (saving) {
-                return SELECT_SCREEN_RESPONSE_CANCEL;
-            } else {
+        } else if (currentPage == SELECT_PAGE_SAVE_CONFIRM) {
+            if (selection == 0) {
+                kiwiSynth->SavePatch(saveBank, savePatch);
                 return SELECT_SCREEN_RESPONSE_PLAY;
+            } else {
+                return SELECT_SCREEN_RESPONSE_CANCEL;
             }
         }
 
         return SELECT_SCREEN_RESPONSE_REFRESH;
+    }
+
+    // 13 character value
+    void SelectScreen::GetConfirmPatchType(char* buffer)
+    {
+        switch (kiwiSynth->patchBanks[saveBank][savePatch].type) {
+            case PATCH_ARP:
+                strcpy(buffer, "Arpeggiated");
+                break;
+            case PATCH_BASS:
+                strcpy(buffer, "Bass");
+                break;
+            case PATCH_BRASS:
+                strcpy(buffer, "Brass");
+                break;
+            case PATCH_DRONE:
+                strcpy(buffer, "Drone");
+                break;
+            case PATCH_EFFECT:
+                strcpy(buffer, "Effect");
+                break;
+            case PATCH_KEY:
+                strcpy(buffer, "Key");
+                break;
+            case PATCH_LEAD:
+                strcpy(buffer, "Lead");
+                break;
+            case PATCH_OTHER:
+                strcpy(buffer, "Other");
+                break;
+            case PATCH_PAD:
+                strcpy(buffer, "Pad");
+                break;
+            case PATCH_PERCUSSION:
+                strcpy(buffer, "Percussion");
+                break;
+            case PATCH_PLUCK:
+                strcpy(buffer, "Pluck");
+                break;
+            case PATCH_STRING:
+                strcpy(buffer, "String");
+                break;
+            case PATCH_SYNTH:
+                strcpy(buffer, "Synth");
+                break;
+        }
     }
 
 } // namespace kiwi_synth
