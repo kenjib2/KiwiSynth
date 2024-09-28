@@ -26,8 +26,8 @@ namespace kiwi_synth
             intVal1 = patch->activeSettings->getIntValue(VCO_2_OCTAVE) - 2;
             intVal2 = patch->activeSettings->getIntValue(VCO_2_INTERVAL) - 11;
         } else {
-            intVal1 = patch->loadedPatch.getIntValue(VCO_2_OCTAVE) - 2;
-            intVal2= patch->loadedPatch.getIntValue(VCO_2_INTERVAL) - 11;
+            intVal1 = patch->loadedPatchSettings.getIntValue(VCO_2_OCTAVE) - 2;
+            intVal2= patch->loadedPatchSettings.getIntValue(VCO_2_INTERVAL) - 11;
         }
         display->SetCursor(0, 8);
         GetWaveform(val1, 1);
@@ -38,8 +38,8 @@ namespace kiwi_synth
             intVal1 = patch->activeSettings->getIntValue(VCO_3_OCTAVE) - 2;
             intVal2 = patch->activeSettings->getIntValue(VCO_3_INTERVAL) - 11;
         } else {
-            intVal1 = patch->loadedPatch.getIntValue(VCO_3_OCTAVE) - 2;
-            intVal2= patch->loadedPatch.getIntValue(VCO_3_INTERVAL) - 11;
+            intVal1 = patch->loadedPatchSettings.getIntValue(VCO_3_OCTAVE) - 2;
+            intVal2= patch->loadedPatchSettings.getIntValue(VCO_3_INTERVAL) - 11;
         }
         display->SetCursor(0, 16);
         GetWaveform(val1, 2);
@@ -87,7 +87,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
         } else {
-            voiceMode = patch->loadedPatch.getIntValue(VCO_VOICES);
+            voiceMode = patch->loadedPatchSettings.getIntValue(VCO_VOICES);
         }
         switch (voiceMode) {
             case VOICE_MODE_POLY:
@@ -111,7 +111,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             waveForm = patch->activeSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
         } else {
-            waveForm = patch->loadedPatch.getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
+            waveForm = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
         }
         switch (waveForm) {
             case WAVEFORM_SQUARE:
@@ -138,7 +138,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             noiseType = patch->activeSettings->getIntValue((PatchSetting)(VCO_NOISE_TYPE));
         } else {
-            noiseType = patch->loadedPatch.getIntValue((PatchSetting)(VCO_NOISE_TYPE));
+            noiseType = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCO_NOISE_TYPE));
         }
         switch (noiseType) {
             case 0:
@@ -156,7 +156,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             lfoWaveform = patch->activeSettings->getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         } else {
-            lfoWaveform = patch->loadedPatch.getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
+            lfoWaveform = patch->loadedPatchSettings.getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         }
         switch (lfoWaveform) {
             case 0:
@@ -180,7 +180,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             vcfType = patch->activeSettings->getIntValue((PatchSetting)(VCF_FILTER_TYPE));
         } else {
-            vcfType = patch->loadedPatch.getIntValue((PatchSetting)(VCF_FILTER_TYPE));
+            vcfType = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCF_FILTER_TYPE));
         }
         switch (vcfType) {
             case 0:
@@ -216,7 +216,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             modSource = patch->activeSettings->getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber));
         } else {
-            modSource = patch->loadedPatch.getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber));
+            modSource = patch->loadedPatchSettings.getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber));
         }
         switch (modSource) {
             case SRC_NONE:
@@ -273,7 +273,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             modDestination = patch->activeSettings->getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber));
         } else {
-            modDestination = patch->loadedPatch.getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber));
+            modDestination = patch->loadedPatchSettings.getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber));
         }
         switch (modDestination) {
             case DST_NONE:

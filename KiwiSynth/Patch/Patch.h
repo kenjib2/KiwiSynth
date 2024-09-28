@@ -34,7 +34,7 @@ namespace kiwi_synth
             PatchSettings*          activeSettings;
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;
-            PatchSettings           loadedPatch;
+            PatchSettings           loadedPatchSettings;
             SavedPatch              loadedPatchData;
 
             Patch() {}

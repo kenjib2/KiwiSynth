@@ -44,7 +44,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
         } else {
-            voiceMode = patch->loadedPatch.getIntValue(VCO_VOICES);
+            voiceMode = patch->loadedPatchSettings.getIntValue(VCO_VOICES);
         }
         if (voiceMode == VOICE_MODE_SPLIT) {
             GetMidiNote(value);
@@ -261,7 +261,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
         } else {
-            voiceMode = patch->loadedPatch.getIntValue(VCO_VOICES);
+            voiceMode = patch->loadedPatchSettings.getIntValue(VCO_VOICES);
         }
         switch (voiceMode) {
             case VOICE_MODE_POLY:

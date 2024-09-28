@@ -31,8 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Get rid of loadedsettings?
- * Click in play mode remembering last load page and cancel goes back instead of exiting?
  * Patch type showing up as 0 (LEAD) in all loaded patches -- problem either in save or load. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
  * Int Screen showing negatives for octave and interval with loaded patches -- something to do with IntValueScreen Display lines 25-30 and how patch stores a PatchSettings loadedPatch;
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
@@ -47,7 +45,6 @@ using namespace kiwi_synth;
  * Need to mod LFO1 to Pitch amount because of mod wheel
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
  * 
- * Some kind of easier patch browser > load > play > keep browsing mode (need to fix line noise first???)
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?

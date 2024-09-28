@@ -112,9 +112,19 @@ namespace kiwi_synth
                     menuActive = true;
                     selectScreen.saving = false;
                     selectScreen.fromPlay = true;
-                    selectScreen.currentPage = SELECT_PAGE_BANKS;
-                    selectScreen.selection = 3;
+                    if (patch->GetLiveMode()) {
+                        selectScreen.bankNumber = 0;
+                        selectScreen.patchNumber = 0;
+                        selectScreen.selection = 3;
+                        selectScreen.currentPage = SELECT_PAGE_BANKS;
+                    } else {
+                        selectScreen.bankNumber = patch->GetBankNumber();
+                        selectScreen.patchNumber = patch->GetPatchNumber() & ~7;
+                        selectScreen.selection = patch->GetPatchNumber() % 8 + 3;
+                        selectScreen.currentPage = SELECT_PAGE_BANK_PATCHES;
+                    }
                     mode = MODE_SELECT_SCREEN;
+                    updateNeeded = true;
                     break;
 
                 case MODE_PATCH_SCREEN:
