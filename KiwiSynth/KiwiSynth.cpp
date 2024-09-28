@@ -263,7 +263,7 @@ namespace kiwi_synth
         std::sort( patchTypes[oldPatchHeader.type].begin(), patchTypes[oldPatchHeader.type].end(), patchHeaderSort );
 
         storage.SavePatch(&patch, bankNumber, patchNumber);
-        patch.SetLiveMode(patch.GetLiveMode(), bankNumber, patchNumber);
+        patch.SetLiveMode(false, bankNumber, patchNumber);
     }
 
     void KiwiSynth::UpdateSettings()

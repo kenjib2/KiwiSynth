@@ -31,7 +31,8 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Patch type showing up as 0 (LEAD) in all loaded patches -- problem either in save or load. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
+ * Patch type showing up as 0 (LEAD) in all loaded patches. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
+ * All intvals are not saving
  * Int Screen showing negatives for octave and interval with loaded patches -- something to do with IntValueScreen Display lines 25-30 and how patch stores a PatchSettings loadedPatch;
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
@@ -44,6 +45,7 @@ using namespace kiwi_synth;
  * When exiting menus back to play mode, need to clear the MIDI event buffer
  * Need to mod LFO1 to Pitch amount because of mod wheel
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
+ * Inverted amplitude envelope clicks when starting and stopping
  * 
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
