@@ -136,8 +136,11 @@ namespace kiwi_synth
                             mode = MODE_SELECT_SCREEN;
                             break;
                         case PATCH_SCREEN_RESPONSE_SAVE:
-                            menuActive = false;
+                            menuActive = true;
                             selectScreen.saving = true;
+                            selectScreen.fromPlay = false;
+                            selectScreen.currentPage = SELECT_PAGE_BANKS;
+                            selectScreen.selection = 3;
                             mode = MODE_SELECT_SCREEN;
                             break;
                         case PATCH_SCREEN_RESPONSE_PLAY:

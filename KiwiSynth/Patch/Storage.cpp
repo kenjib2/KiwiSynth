@@ -54,4 +54,43 @@ namespace kiwi_synth
         return savedPatch;
     }
 
+    void Storage::LoadPatch(SavedPatch* savedPatch, int bankNumber, int patchNumber) {
+        void* readPtr = qspi.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + patchNumber * PATCH_SIZE);
+        memcpy(&savedPatch, readPtr, sizeof(SavedPatch));
+    }
+
+    // Patches are always saved in pairs, so we have to load the corresponding partner and then save both patches together.
+    void Storage::SavePatch(Patch* patch, int bankNumber, int patchNumber) {
+        int patchGroup = patchNumber / 2;
+        SavedPatch patchGroupData[2];
+
+        // LIVE MODE SAVE IS WORKING -- NEED TO ADD LOADED PATCH SAVING
+        if (patchNumber % 2 == 0) {
+            // Save the first patch
+            if (patch->GetLiveMode()) {
+                patch->Save(patchGroupData);
+            } else {
+                memcpy(patchGroupData, &(patch->loadedPatchData), sizeof(SavedPatch));
+            }
+
+            // Copy the existing second patch
+            void* readPtr = qspi.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + (patchNumber + 1) * PATCH_SIZE);
+            memcpy(patchGroupData + 1, readPtr, sizeof(SavedPatch));
+
+        } else {
+            // Copy the existing first patch
+            void* readPtr = qspi.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + (patchNumber - 1) * PATCH_SIZE);
+            memcpy(patchGroupData, readPtr, sizeof(SavedPatch));
+
+            // Save the second patch
+            if (patch->GetLiveMode()) {
+                patch->Save(patchGroupData + 1);
+            } else {
+                memcpy(patchGroupData + 1, &(patch->loadedPatchData), sizeof(SavedPatch));
+            }
+        }
+
+        WritePatchGroup(bankNumber, patchGroup, patchGroupData);
+    }
+
 } // namespace kiwi_synth

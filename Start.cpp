@@ -31,9 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Patch Screen: Save
+ * Save confirmation
  * Patch type showing up as 0 (LEAD) in all loaded patches -- problem either in save or load. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
- * Int Screen showing negatives for octave and interval with loaded patches
+ * Int Screen showing negatives for octave and interval with loaded patches -- something to do with IntValueScreen Display lines 25-30 and how patch stores a PatchSettings loadedPatch;
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?

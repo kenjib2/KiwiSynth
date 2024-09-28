@@ -14,7 +14,7 @@ namespace kiwi_synth
         bankNumber = -1;
         patchNumber = -1;
         SetVoiceMode(VOICE_MODE_POLY);
-        strcpy(name, "Kiwi Sound");
+        strcpy(name, "New            ");
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;
         splitNote = 60;
@@ -59,16 +59,19 @@ namespace kiwi_synth
     }
 
     void Patch::SetLiveMode(bool liveModeActive, int bankNumber, int patchNumber) {
+        if (!liveMode && liveModeActive) {
+            DefaultSettings();
+        }
+
         liveMode = liveModeActive;
         this->bankNumber = bankNumber;
         this->patchNumber = patchNumber;
-
-        if (liveModeActive) {
-            DefaultSettings();
-        }
     }
 
     void Patch::Load(SavedPatch savedPatch) {
+        // Saving a copy of the loaded data in case we want to re-save the same patch
+        memcpy(&loadedPatchData, &savedPatch, sizeof(SavedPatch));
+
         voiceMode = savedPatch.voiceMode;
         splitNote = savedPatch.splitNote;
         strcpy(name, savedPatch.name);
@@ -91,6 +94,17 @@ namespace kiwi_synth
 
         settings1.Load(savedPatch, 0);
         settings2.Load(savedPatch, 1);
+    }
+
+    PatchHeader Patch::GetPatchHeader() {
+        PatchHeader patchHeader;
+        strcpy(patchHeader.name, name);
+        patchHeader.bankNumber = bankNumber;
+        patchHeader.patchNumber = patchNumber;
+        patchHeader.type = type;
+        patchHeader.voiceMode = voiceMode;
+
+        return patchHeader;
     }
 
 } // namespace kiwi_synth

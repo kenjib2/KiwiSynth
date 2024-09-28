@@ -65,6 +65,7 @@ namespace kiwi_synth
 
             bool BootLoaderRequested();
             void LoadPatch(int bankNumber, int patchNumber);
+            void SavePatch(int bankNumber, int patchNumber);
             void UpdateSettings();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             void AllNotesOff();

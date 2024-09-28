@@ -6,6 +6,10 @@ namespace kiwi_synth
     char DSY_SDRAM_BSS buff[512];
     #endif // __PATCH_SETTINGS__
 
+    int patchHeaderSort(PatchHeader* a, PatchHeader* b) {
+        return strcmp(a->name, b->name);
+    }
+
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
     {
         this->hw = hw;
@@ -41,11 +45,7 @@ namespace kiwi_synth
         }
 
         for (int i = 0; i < PATCH_TYPE_MAX; i++) {
-            std::sort( patchTypes[i].begin(),
-                        patchTypes[i].end(),
-                        [](PatchHeader* a, PatchHeader* b) {
-                            return strcmp(a->name, b->name);
-                        });
+            std::sort( patchTypes[i].begin(), patchTypes[i].end(), patchHeaderSort );
         }
     }
 
@@ -241,6 +241,29 @@ namespace kiwi_synth
         patch.Load(savedPatch);
         voiceBank.UpdateSettings();
         effectsEngine.UpdateSettings();
+    }
+
+    void KiwiSynth::SavePatch(int bankNumber, int patchNumber)
+    {
+        PatchHeader oldPatchHeader = patchBanks[bankNumber][patchNumber];
+        PatchHeader patchHeader = patch.GetPatchHeader();
+
+        // Update the patch bank header data
+        patchBanks[bankNumber][patchNumber] = patchHeader;
+
+        // Remove the element from the patch type vector using erase function and iterators
+        auto it = std::find(patchTypes[oldPatchHeader.type].begin(), patchTypes[oldPatchHeader.type].end(),
+                            &oldPatchHeader);
+        // If element is found found, erase it
+        if (it != patchTypes[oldPatchHeader.type].end()) {
+            patchTypes[oldPatchHeader.type].erase(it);
+        }
+        // Add the new element and sort it
+        patchTypes[oldPatchHeader.type].push_back(&patchHeader);
+        std::sort( patchTypes[oldPatchHeader.type].begin(), patchTypes[oldPatchHeader.type].end(), patchHeaderSort );
+
+        storage.SavePatch(&patch, bankNumber, patchNumber);
+        patch.SetLiveMode(patch.GetLiveMode(), bankNumber, patchNumber);
     }
 
     void KiwiSynth::UpdateSettings()

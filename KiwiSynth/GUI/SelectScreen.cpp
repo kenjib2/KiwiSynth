@@ -81,7 +81,7 @@ namespace kiwi_synth
 
                 for (int i = 0; i < 8; i++) {
                     display->SetCursor(0, i * 8);
-                    sprintf(buffer, "%c.%03d %s", 'A' + bankNumber, patchNumber + i + 1, kiwiSynth->patchBanks[bankNumber][patchNumber].name);
+                    sprintf(buffer, "%c.%03d %s", 'A' + bankNumber, patchNumber + i + 1, kiwiSynth->patchBanks[bankNumber][patchNumber + i].name);
                     display->WriteString(buffer, Font_6x8, i + 3 != selection);
                 }
 
@@ -176,6 +176,7 @@ namespace kiwi_synth
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
             } else if (saving) {
+                kiwiSynth->SavePatch(bankNumber, patchNumber + selection - 3);
                 return SELECT_SCREEN_RESPONSE_PLAY;
             }
 
@@ -199,6 +200,9 @@ namespace kiwi_synth
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
             } else if (saving) {
+                bankNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->bankNumber;
+                patchNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->patchNumber;
+                kiwiSynth->SavePatch(bankNumber, patchNumber);
                 return SELECT_SCREEN_RESPONSE_PLAY;
             }
 

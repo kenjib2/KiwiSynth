@@ -5,6 +5,7 @@
 #include "daisysp.h"
 
 #include "PatchSettings.h"
+#include "PatchHeader.h"
 #include "SavedPatch.h"
 
 using namespace daisysp;
@@ -34,6 +35,7 @@ namespace kiwi_synth
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;
             PatchSettings           loadedPatch;
+            SavedPatch              loadedPatchData;
 
             Patch() {}
             ~Patch() {}
@@ -75,6 +77,7 @@ namespace kiwi_synth
             void DefaultSettings();
             void Load(SavedPatch savedPatch);
             void Save(SavedPatch* savedPatch);
+            PatchHeader GetPatchHeader();
     };
 
 } // namespace kiwi_synth
