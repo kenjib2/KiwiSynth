@@ -79,9 +79,9 @@ namespace kiwi_synth
         effectsMode = savedPatch.effectsMode;
         reverbMode = savedPatch.reverbMode;
 
-        settings1.Copy((bool*)savedPatch.voice1BoolValues, (int8_t*)savedPatch.voice1IntValues, (float*)savedPatch.voice1FloatValues);
-        settings2.Copy((bool*)savedPatch.voice2BoolValues, (int8_t*)savedPatch.voice2IntValues, (float*)savedPatch.voice2FloatValues);
-        loadedPatchSettings.Copy((bool*)savedPatch.voice1BoolValues, (int8_t*)savedPatch.voice1IntValues, (float*)savedPatch.voice1FloatValues);
+        settings1.Copy(&savedPatch, 0);
+        settings2.Copy(&savedPatch, 1);
+        loadedPatchSettings.Copy(&savedPatch, 0);
     }
 
     void Patch::Save(SavedPatch* savedPatch) {

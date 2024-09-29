@@ -61,8 +61,8 @@ namespace kiwi_synth
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
             void DefaultSettings();
-            inline void Copy(PatchSettings* patchSettings) { Copy((bool*)patchSettings->boolValues, (int8_t*)patchSettings->intValues, (float*)patchSettings->floatValues); }
-            void Copy(bool* boolValues, int8_t* intValues, float* floatValues);
+            void Copy(SavedPatch* savedPatch, int voiceNumber);
+            void Copy(PatchSettings* patchSettings);
             void Load(SavedPatch* savedPatch, int voiceNumber);
 
             /*

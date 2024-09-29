@@ -133,23 +133,36 @@ namespace kiwi_synth
         DefaultSettings();
     }
 
-    void PatchSettings::Copy(bool* boolValues, int8_t* intValues, float* floatValues)
+    void PatchSettings::Copy(SavedPatch* savedPatch, int voiceNumber)
     {
-        memcpy(this->boolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
-        memcpy(this->intValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-        memcpy(this->floatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+        if (voiceNumber == 0) {
+            memcpy(this->boolValues, savedPatch->voice1BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(this->intValues, savedPatch->voice1IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(this->floatValues, savedPatch->voice1FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
+        } else {
+            memcpy(this->boolValues, savedPatch->voice2BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(this->intValues, savedPatch->voice2IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(this->floatValues, savedPatch->voice2FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
+        }
+    }
+
+    void PatchSettings::Copy(PatchSettings* patchSettings)
+    {
+        memcpy(this->boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+        memcpy(this->intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+        memcpy(this->floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
     }
 
     void PatchSettings::Load(SavedPatch* savedPatch, int voiceNumber)
     {
         if (voiceNumber == 0) {
-            memcpy(savedPatch->voice1BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
-            memcpy(savedPatch->voice1IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-            memcpy(savedPatch->voice1FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice1BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(savedPatch->voice1IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(savedPatch->voice1FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
         } else if (voiceNumber == 1) {
-            memcpy(savedPatch->voice2BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
-            memcpy(savedPatch->voice2IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-            memcpy(savedPatch->voice2FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+            memcpy(savedPatch->voice2BoolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(savedPatch->voice2IntValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(savedPatch->voice2FloatValues, floatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
         }
     }
 
