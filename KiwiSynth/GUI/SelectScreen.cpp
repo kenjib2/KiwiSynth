@@ -217,12 +217,12 @@ namespace kiwi_synth
             if (selection == 0) {
                 patchTypePage = patchTypePage - 1;
                 if (patchTypePage < 0) {
-                    patchTypePage = patchTypeMax / 8 - 1;
+                    patchTypePage = (patchTypeMax - 1) / 8;
                 }
 
             } else if (selection == 2) {
                 patchTypePage = patchTypePage + 1;
-                if (patchTypePage > patchTypeMax / 8 - 1) {
+                if (patchTypePage > (patchTypeMax - 1) / 8) {
                     patchTypePage = 0;
                 }
 

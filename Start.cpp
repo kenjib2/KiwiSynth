@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Patch type showing up as 0 (LEAD) in all loaded patches. Possibly related to octave/interval issue. Or maybe just a problem sorting them into vectors in LoadPatchBanks.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?

@@ -70,6 +70,8 @@ namespace kiwi_synth
                 patch->Save(patchGroupData);
             } else {
                 memcpy(patchGroupData, &(patch->loadedPatchData), sizeof(SavedPatch));
+                patch->GetName(patchGroupData[0].name);
+                patchGroupData[0].type = patch->GetPatchType();
             }
 
             // Copy the existing second patch
@@ -86,6 +88,8 @@ namespace kiwi_synth
                 patch->Save(patchGroupData + 1);
             } else {
                 memcpy(patchGroupData + 1, &(patch->loadedPatchData), sizeof(SavedPatch));
+                patch->GetName(patchGroupData[1].name);
+                patchGroupData[1].type = patch->GetPatchType();
             }
         }
 
