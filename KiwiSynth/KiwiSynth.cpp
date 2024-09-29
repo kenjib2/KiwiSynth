@@ -280,7 +280,12 @@ namespace kiwi_synth
         sprintf(buff, "----------------------");
         hw->PrintLine(buff);
 
-        int val1 = patch.activeSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH) * 1000;
+        if (!patch.GetLiveMode()) {
+            sprintf(buff, "VCO2 OCT: %d  INT: %d", patch.loadedPatchData.voice1IntValues[VCO_2_OCTAVE], patch.loadedPatchData.voice1IntValues[VCO_2_INTERVAL]);
+            sprintf(buff, "VCO3 OCT: %d  INT: %d", patch.loadedPatchData.voice1IntValues[VCO_3_OCTAVE], patch.loadedPatchData.voice1IntValues[VCO_3_INTERVAL]);
+        }
+
+        /*int val1 = patch.activeSettings->getFloatValue(PatchSetting::VCO_1_PULSE_WIDTH) * 1000;
         int val2 = patch.activeSettings->getFloatValue(PatchSetting::VCO_1_LEVEL) * 1000;
         int val3 = patch.activeSettings->getFloatValue(PatchSetting::VCO_MASTER_TUNE) * 1000;
         int val4 = patch.activeSettings->getFloatValue(PatchSetting::VCO_PORTAMENTO_SPEED) * 1000;
@@ -438,7 +443,7 @@ namespace kiwi_synth
         val4 = patch.activeSettings->getFloatValue(PatchSetting::GEN_EXPRESSION) * 1000;
         val5 = patch.activeSettings->getFloatValue(PatchSetting::GEN_SUSTAIN) * 1000;
         sprintf(buff, "ATouch: %d,  MWheel: %d,  PBend: %d,  Expr: %d,  Sus: %d", val1, val2, val3, val4, val5);
-        hw->PrintLine(buff);
+        hw->PrintLine(buff);*/
     }
     #endif // __PATCH_SETTINGS__
 } // namespace kiwi_synth

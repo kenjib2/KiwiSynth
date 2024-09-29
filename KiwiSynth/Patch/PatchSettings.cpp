@@ -133,7 +133,7 @@ namespace kiwi_synth
         DefaultSettings();
     }
 
-    void PatchSettings::Copy(bool* boolValues, int* intValues, float* floatValues)
+    void PatchSettings::Copy(bool* boolValues, int8_t* intValues, float* floatValues)
     {
         memcpy(this->boolValues, boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
         memcpy(this->intValues, intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);

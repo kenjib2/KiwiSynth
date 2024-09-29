@@ -2,7 +2,7 @@
 #define __KIWI_SYNTH_KUTILS_H__
 
 // Compiler options
-#define __CPU_LOAD__ // Output performance to serial console
+//#define __CPU_LOAD__ // Monitor performance in GUI
 //#define __PATCH_SETTINGS__ // Output patch settings to serial console
 
 #include "daisy_seed.h"

@@ -64,7 +64,6 @@ namespace kiwi_synth
         int patchGroup = patchNumber / 2;
         SavedPatch patchGroupData[2];
 
-        // LIVE MODE SAVE IS WORKING -- NEED TO ADD LOADED PATCH SAVING
         if (patchNumber % 2 == 0) {
             // Save the first patch
             if (patch->GetLiveMode()) {
