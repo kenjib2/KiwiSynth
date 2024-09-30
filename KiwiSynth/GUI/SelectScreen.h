@@ -6,6 +6,7 @@
 
 #include "../KiwiSynth.h"
 #include "../Patch/Patch.h"
+#include "EnumToText.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
@@ -29,6 +30,10 @@ namespace kiwi_synth
         SELECT_SCREEN_RESPONSE_PLAY
     };
 
+    /*
+     * Select a patch by either bank and patch number or patch type. This can be used for either loading or saving depending on
+     * how the saving member variable is set.
+     */
     class SelectScreen
     {
         public:
@@ -47,9 +52,25 @@ namespace kiwi_synth
             int patchTypeMax;
             SelectScreenPage currentPage;
 
+            /*
+            * There are five different display modes:
+            *
+            * SELECT_PAGE_PATCH_TYPES:  Lists all possible patch types, which when selected will drill down into a list
+            *     of all availabale patches of that type.
+            * SELECT_PAGE_BANKS: Lists all patch banks along with shortcuts to jump to certain ranges within each bank.
+            * SELECT_PAGE_BANK_PATCHES: Lists a set of eight patches within the bank, along with arrows for scrolling to
+            *     previous or subsequent sets of patches, and a cancel button.
+            * SELECT_PAGE_TYPE_PATCHES: Lists a set of eight patches of a given patch type, along with arrows for scrolling
+            *     to previous or subsequent sets of patches, and a cancel button.
+            * SELECT_PAGE_SAVE_CONFIRM: Prompts to user to confirm that they wish to overwrite an existing patch when
+            *     saving.
+            */
             void Display();
             void Increment();
             void Decrement();
+            /*
+            * Handles selecting menu items.
+            */
             SelectScreenResponse Click();
 
         private:
@@ -57,8 +78,6 @@ namespace kiwi_synth
             int numSelections;
             KiwiSynth* kiwiSynth;
             KiwiDisplay* display;
-
-            void GetConfirmPatchType(char* buffer);
     };
 
 } // namespace kiwi_synth

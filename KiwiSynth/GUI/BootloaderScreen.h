@@ -10,6 +10,10 @@ using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
 namespace kiwi_synth
 {
+    /*
+     * Simple message to be displayed when the Kiwi Synth reboots into update mode so that the bios
+     * can be updated.
+     */
     class BootloaderScreen
     {
         public:

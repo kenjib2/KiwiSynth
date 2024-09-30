@@ -42,7 +42,18 @@ namespace kiwi_synth
     {
         bool updateNeeded = false;
 
-        // Handle encoder rotations
+        updateNeeded = HandleEncoder();
+        updateNeeded = updateNeeded || HandleClick();
+
+        if (updateNeeded) {
+            Update();
+        }
+    }
+
+    bool Display::HandleEncoder() {
+        bool updateNeeded = false;
+
+        // Handle encoder rotations: Figure out if it changed. -1 is counterclockwise, 1 is clockwise, and 0 is no movement.
         int newValue = patch->activeSettings->getIntValue(GEN_SELECT);
         int direction = 0;
         if (newValue == prevSelectValue) {
@@ -59,6 +70,7 @@ namespace kiwi_synth
 
         if (direction) {
             if (menuActive) {
+                // Handle menus within screens
                 switch (mode) {
                     case MODE_PATCH_SCREEN:
                         if (direction == 1) {
@@ -68,6 +80,7 @@ namespace kiwi_synth
                         }
                         updateNeeded = true;
                         break;
+
                     case MODE_SELECT_SCREEN:
                         if (direction == 1) {
                             selectScreen.Increment();
@@ -76,6 +89,16 @@ namespace kiwi_synth
                         }
                         updateNeeded = true;
                         break;
+
+                    case MODE_SYSTEM_SCREEN:
+                        if (direction == 1) {
+                            systemScreen.Increment();
+                        } else if (direction == -1) {
+                            systemScreen.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
+
                     default:
                         break;
                 }
@@ -98,17 +121,25 @@ namespace kiwi_synth
             }
         }
 
+        return updateNeeded;
+    }
+
+    bool Display::HandleClick() {
+        bool updateNeeded = false;
+
         // Handle encoder button clicks
         bool prevGuiButton = guiButton;
         guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
+            SystemScreenResponse systemResponse;
 
             switch (mode) {
                 default:
                     break;
                 case MODE_PLAY:
+                    // From play mode we want to load patches, starting positioned at the current patch for convenience.
                     menuActive = true;
                     selectScreen.saving = false;
                     selectScreen.fromPlay = true;
@@ -128,6 +159,7 @@ namespace kiwi_synth
                     break;
 
                 case MODE_PATCH_SCREEN:
+                    // Send the click to the patch screen and then handle the response.
                     patchResponse = patchScreen.Click();
                     switch (patchResponse) {
                         case PATCH_SCREEN_RESPONSE_EDIT:
@@ -162,6 +194,7 @@ namespace kiwi_synth
                     break;
 
                 case MODE_SELECT_SCREEN:
+                    // Send the click to the patch select screen and then handle the response.
                     selectResponse = selectScreen.Click();
                     switch (selectResponse) {
                         default:
@@ -181,18 +214,29 @@ namespace kiwi_synth
                     break;
 
                 case MODE_SYSTEM_SCREEN:
-                    mode = MODE_BOOTLOADER;
-                    Update(); // Update now instead of using updateNeeded because the next line will halt program execution
-                    System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
+                    systemResponse = systemScreen.Click();
+
+                    switch (systemResponse)  {
+                        case SYSTEM_SCREEN_RESPONSE_EDIT:
+                            menuActive = true;
+                            break;
+                        case SYSTEM_SCREEN_RESPONSE_NOEDIT:
+                            menuActive = false;
+                            break;
+                        case SYSTEM_SCREEN_RESPONSE_UPDATE:
+                            // Enter bootloader mode to listen for a bios update
+                            mode = MODE_BOOTLOADER;
+                            Update(); // Update now instead of using updateNeeded because the next line will halt program execution
+                            System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
+                            break;
+                    }
                     break;
             }
         }
 
-        if (updateNeeded) {
-            Update();
-        }
+        return updateNeeded;
     }
-    
+
     int Display::GetSelectValue(int numElements)
     {
         int8_t value = patch->activeSettings->getIntValue(GEN_SELECT);
@@ -209,6 +253,7 @@ namespace kiwi_synth
 
     void Display::Update()
     {
+        // Pass on updating message to the relevant screen
         switch (mode) {
             case MODE_PLAY:
             default:
@@ -231,4 +276,5 @@ namespace kiwi_synth
                 break;
         }
     }
+
 } // namespace kiwi_synth

@@ -7,6 +7,7 @@ namespace kiwi_synth
     {
         this->display = display;
         this->performance = performance;
+        selected = SYSTEM_SCREEN_NONE;
     }
 
     void SystemScreen::Display()
@@ -32,9 +33,40 @@ namespace kiwi_synth
     	#endif // __CPU_LOAD__
 
         display->SetCursor(0, 56);
-        sprintf(buffer, "Update System");
-        display->WriteString(buffer, Font_6x8, false);
+        sprintf(buffer, "Flash BIOS");
+        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_UPDATE);
+
+        if (selected != SYSTEM_SCREEN_NONE) {
+            display->SetCursor(108, 56);
+            sprintf(buffer, "<--");
+            display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_RETURN);
+        }
 
         display->Update();
     }
+
+    void SystemScreen::Increment() {
+        selected = (SystemScreenSelection)((selected + 1) % SYSTEM_SCREEN_OPTIONS);
+    }
+
+    void SystemScreen::Decrement() {
+        selected = (SystemScreenSelection)((selected - 1 + SYSTEM_SCREEN_OPTIONS) % SYSTEM_SCREEN_OPTIONS);
+    }
+
+    SystemScreenResponse SystemScreen::Click() {
+        switch (selected) {
+            case SYSTEM_SCREEN_NONE:
+                selected = SYSTEM_SCREEN_UPDATE;
+                return SYSTEM_SCREEN_RESPONSE_EDIT;
+
+            case SYSTEM_SCREEN_UPDATE:
+                return SYSTEM_SCREEN_RESPONSE_UPDATE;
+
+            default:
+            case SYSTEM_SCREEN_RETURN:
+                selected = SYSTEM_SCREEN_NONE;
+                return SYSTEM_SCREEN_RESPONSE_NOEDIT;
+        }
+    }
+
 } // namespace kiwi_synth

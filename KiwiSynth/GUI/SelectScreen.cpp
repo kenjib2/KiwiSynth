@@ -131,7 +131,7 @@ namespace kiwi_synth
                 display->WriteString(buffer, Font_6x8, true);
 
                 display->SetCursor(0, 32);
-                GetConfirmPatchType(value);
+                EnumToText::GetPatchType(value, kiwiSynth->patchBanks[saveBank][savePatch].type);
                 sprintf(buffer, "Type: %s", value);
                 display->WriteString(buffer, Font_6x8, true);
 
@@ -248,52 +248,6 @@ namespace kiwi_synth
         }
 
         return SELECT_SCREEN_RESPONSE_REFRESH;
-    }
-
-    // 13 character value
-    void SelectScreen::GetConfirmPatchType(char* buffer)
-    {
-        switch (kiwiSynth->patchBanks[saveBank][savePatch].type) {
-            case PATCH_ARP:
-                strcpy(buffer, "Arpeggiated");
-                break;
-            case PATCH_BASS:
-                strcpy(buffer, "Bass");
-                break;
-            case PATCH_BRASS:
-                strcpy(buffer, "Brass");
-                break;
-            case PATCH_DRONE:
-                strcpy(buffer, "Drone");
-                break;
-            case PATCH_EFFECT:
-                strcpy(buffer, "Effect");
-                break;
-            case PATCH_KEY:
-                strcpy(buffer, "Key");
-                break;
-            case PATCH_LEAD:
-                strcpy(buffer, "Lead");
-                break;
-            case PATCH_OTHER:
-                strcpy(buffer, "Other");
-                break;
-            case PATCH_PAD:
-                strcpy(buffer, "Pad");
-                break;
-            case PATCH_PERCUSSION:
-                strcpy(buffer, "Percussion");
-                break;
-            case PATCH_PLUCK:
-                strcpy(buffer, "Pluck");
-                break;
-            case PATCH_STRING:
-                strcpy(buffer, "String");
-                break;
-            case PATCH_SYNTH:
-                strcpy(buffer, "Synth");
-                break;
-        }
     }
 
 } // namespace kiwi_synth

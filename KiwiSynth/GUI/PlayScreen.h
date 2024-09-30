@@ -11,6 +11,11 @@ using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
 namespace kiwi_synth
 {
+    /*
+     * The audio loop is only active when the display is showing the play screen. It will
+     * display "Live Mode" if live mode is active. If a patch is loaded it will display the
+     * bank number, patch number, and patch name.
+     */
     class PlayScreen
     {
         public:

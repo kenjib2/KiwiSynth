@@ -5,11 +5,20 @@
 #include "dev/oled_ssd130x.h"
 
 #include "../Patch/Patch.h"
+#include "EnumToText.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
 namespace kiwi_synth
 {
+    /*
+     * The int value screen displays all of the encoder based data for the patch while also listening
+     * for any changes to the values if in live mode. This allows you to see what is being changed and
+     * what the potential values are when using the encoders.
+     * 
+     * This screen does not have a menu and does not respond to clicks or internal scrolling. All
+     * updates are made using the standard physical patch controls.
+     */
     class IntValueScreen
     {
         public:
@@ -24,7 +33,7 @@ namespace kiwi_synth
             KiwiDisplay* display;
             Patch* patch;
 
-            void GetVoiceMode(char* buffer);
+            // Functions for translating code numbers into text representations.
             void GetWaveform(char* buffer, int vcoNumber);
             void GetNoiseType(char* buffer);
             void GetLfoWaveform(char* buffer, int lfoNumber);

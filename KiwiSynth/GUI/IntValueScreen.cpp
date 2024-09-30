@@ -81,55 +81,14 @@ namespace kiwi_synth
     }
 
     // 2 character value
-    void IntValueScreen::GetVoiceMode(char* buffer)
-    {
-        int8_t voiceMode;
-        if (patch->GetLiveMode()) {
-            voiceMode = patch->activeSettings->getIntValue(VCO_VOICES);
-        } else {
-            voiceMode = patch->loadedPatchSettings.getIntValue(VCO_VOICES);
-        }
-        switch (voiceMode) {
-            case VOICE_MODE_POLY:
-                strcpy(buffer, "Pl");
-                break;
-            case VOICE_MODE_MONO:
-                strcpy(buffer, "Mo");
-                break;
-            case VOICE_MODE_MULTI:
-                strcpy(buffer, "La");
-                break;
-            case VOICE_MODE_SPLIT:
-                strcpy(buffer, "Sp");
-                break;
-        }
-    }
-
-    // 2 character value
     void IntValueScreen::GetWaveform(char* buffer, int vcoNumber) {
-        int8_t waveForm;
+        Waveform waveform;
         if (patch->GetLiveMode()) {
-            waveForm = patch->activeSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
+            waveform = (Waveform)patch->activeSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
         } else {
-            waveForm = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
+            waveform = (Waveform)patch->loadedPatchSettings.getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
         }
-        switch (waveForm) {
-            case WAVEFORM_SQUARE:
-                strcpy(buffer, "Sq");
-                break;
-            case WAVEFORM_SAWTOOTH:
-                strcpy(buffer, "Sa");
-                break;
-            case WAVEFORM_TRIANGLE:
-                strcpy(buffer, "Tr");
-                break;
-            case WAVEFORM_VARISHAPE:
-                strcpy(buffer, "Sh");
-                break;
-            case WAVEFORM_VARISAW:
-                strcpy(buffer, "VS");
-                break;
-        }
+        EnumToText::GetWaveform(buffer, waveform);
     }
 
     // 2 character value
@@ -140,14 +99,7 @@ namespace kiwi_synth
         } else {
             noiseType = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCO_NOISE_TYPE));
         }
-        switch (noiseType) {
-            case 0:
-                strcpy(buffer, "Wh");
-                break;
-            case 1:
-                strcpy(buffer, "Ds");
-                break;
-        }
+        EnumToText::GetNoiseType(buffer, noiseType);
     }
 
     // 2 character value
@@ -158,20 +110,7 @@ namespace kiwi_synth
         } else {
             lfoWaveform = patch->loadedPatchSettings.getIntValue((PatchSetting)(LFO_1_WAVEFORM + lfoNumber));
         }
-        switch (lfoWaveform) {
-            case 0:
-                strcpy(buffer, "Tr");
-                break;
-            case 1:
-                strcpy(buffer, "Sq");
-                break;
-            case 2:
-                strcpy(buffer, "Sa");
-                break;
-            case 3:
-                strcpy(buffer, "Ra");
-                break;
-        }
+        EnumToText::GetLfoWaveform(buffer, lfoWaveform);
     }
 
     // 8 character value
@@ -182,32 +121,7 @@ namespace kiwi_synth
         } else {
             vcfType = patch->loadedPatchSettings.getIntValue((PatchSetting)(VCF_FILTER_TYPE));
         }
-        switch (vcfType) {
-            case 0:
-                strcpy(buffer, "LddrLoPa");
-                break;
-            case 1:
-                strcpy(buffer, "LowPass");
-                break;
-            case 2:
-                strcpy(buffer, "HighPass");
-                break;
-            case 3:
-                strcpy(buffer, "BandPass");
-                break;
-            case 4:
-                strcpy(buffer, "Notch");
-                break;
-            case 5:
-                strcpy(buffer, "Peak");
-                break;
-            case 6:
-                strcpy(buffer, "1PoleHiP");
-                break;
-            case 7:
-                strcpy(buffer, "1PoleLoP");
-                break;
-        }
+        EnumToText::GetVcfType(buffer, vcfType);
     }
 
     // 5 character value
@@ -218,53 +132,7 @@ namespace kiwi_synth
         } else {
             modSource = patch->loadedPatchSettings.getIntValue((PatchSetting)(MOD_1_SOURCE + modNumber));
         }
-        switch (modSource) {
-            case SRC_NONE:
-                strcpy(buffer, "None ");
-                break;
-            case SRC_FIXED:
-                strcpy(buffer, "Fixed");
-                break;
-            case SRC_LFO_1:
-                strcpy(buffer, "LFO 1");
-                break;
-            case SRC_LFO_2:
-                strcpy(buffer, "LFO 2");
-                break;
-            case SRC_ENV_1:
-                strcpy(buffer, "Env 1");
-                break;
-            case SRC_ENV_2:
-                strcpy(buffer, "Env 2");
-                break;
-            case SRC_SH:
-                strcpy(buffer, "SmHld");
-                break;
-            case SRC_NOTE:
-                strcpy(buffer, "Note ");
-                break;
-            case SRC_VELOCITY:
-                strcpy(buffer, "Veloc");
-                break;
-            case SRC_AFTERTOUCH:
-                strcpy(buffer, "AftTo");
-                break;
-            case SRC_MOD_WHEEL:
-                strcpy(buffer, "ModWh");
-                break;
-            case SRC_PITCH_BEND:
-                strcpy(buffer, "PBend");
-                break;
-            case SRC_EXPRESSION:
-                strcpy(buffer, "Expre");
-                break;
-            case SRC_SUSTAIN:
-                strcpy(buffer, "Susta");
-                break;
-            case SRC_VOICE_NO:
-                strcpy(buffer, "Voice");
-                break;
-        }
+        EnumToText::GetModSource(buffer, modSource);
     }
 
     // 2 character value
@@ -275,101 +143,7 @@ namespace kiwi_synth
         } else {
             modDestination = patch->loadedPatchSettings.getIntValue((PatchSetting)(MOD_1_DESTINATION + modNumber));
         }
-        switch (modDestination) {
-            case DST_NONE:
-                strcpy(buffer, "None ");
-                break;
-            case DST_VCOS_FREQ:
-                strcpy(buffer, "Frequ");
-                break;
-            case DST_VCOS_PULSE_WIDTH:
-                strcpy(buffer, "PWdth");
-                break;
-            case DST_VCO_1_FREQ:
-                strcpy(buffer, "V1Frq");
-                break;
-            case DST_VCO_1_PULSE_WIDTH:
-                strcpy(buffer, "V1Pwd");
-                break;
-            case DST_VCO_2_FREQ:
-                strcpy(buffer, "V2Frq");
-                break;
-            case DST_VCO_2_PULSE_WIDTH:
-                strcpy(buffer, "V2Pwd");
-                break;
-            case DST_VCO_3_FREQ:
-                strcpy(buffer, "V3Frq");
-                break;
-            case DST_VCO_3_PULSE_WIDTH:
-                strcpy(buffer, "V3Pwd");
-                break;
-            case DST_NOISE_DENSITY:
-                strcpy(buffer, "NsDns");
-                break;
-            case DST_NOISE_LEVEL:
-                strcpy(buffer, "NsLvl");
-                break;
-            case DST_SH_RATE:
-                strcpy(buffer, "SHRat");
-                break;
-            case DST_VCF_CUTOFF:
-                strcpy(buffer, "VCFCt");
-                break;
-            case DST_VCF_RESONANCE:
-                strcpy(buffer, "VCFRs");
-                break;
-            case DST_VCA_LEVEL:
-                strcpy(buffer, "VCALv");
-                break;
-            case DST_VCA_ENV_1_DEPTH:
-                strcpy(buffer, "VCAE1");
-                break;
-            case DST_LFO_1_FREQ:
-                strcpy(buffer, "L1Frq");
-                break;
-            case DST_LFO_1_PULSE_WIDTH:
-                strcpy(buffer, "L1Pwd");
-                break;
-            case DST_LFO_1_TRIGGER_PHASE:
-                strcpy(buffer, "L1Phs");
-                break;
-            case DST_LFO_2_FREQ:
-                strcpy(buffer, "L2Frq");
-                break;
-            case DST_LFO_2_PULSE_WIDTH:
-                strcpy(buffer, "L2Pwd");
-                break;
-            case DST_LFO_2_TRIGGER_PHASE:
-                strcpy(buffer, "L2Phs");
-                break;
-            case DST_ENV_1_ATTACK:
-                strcpy(buffer, "E1Atk");
-                break;
-            case DST_ENV_1_DECAY:
-                strcpy(buffer, "E1Dec");
-                break;
-            case DST_ENV_1_SUSTAIN:
-                strcpy(buffer, "E1Sus");
-                break;
-            case DST_ENV_1_RELEASE:
-                strcpy(buffer, "E1Rel");
-                break;
-            case DST_ENV_2_ATTACK:
-                strcpy(buffer, "E2Atk");
-                break;
-            case DST_ENV_2_DECAY:
-                strcpy(buffer, "E2Dec");
-                break;
-            case DST_ENV_2_SUSTAIN:
-                strcpy(buffer, "E2Sus");
-                break;
-            case DST_ENV_2_RELEASE:
-                strcpy(buffer, "E2Rel");
-                break;
-            case DST_BALANCE:
-                strcpy(buffer, "Balnc");
-                break;
-        }
+        EnumToText::GetModDestination(buffer, modDestination);
     }
 
 } // namespace kiwi_synth

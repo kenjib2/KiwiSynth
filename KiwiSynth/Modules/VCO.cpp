@@ -73,7 +73,7 @@ namespace kiwi_synth
                     osc.SetPw(pulseWidth + pwMod);
                     waveSample = osc.Process();
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
-                    waveSample = wavefolder.Process(waveSample);
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
                     break;
                 case WAVEFORM_VARISHAPE:
                     variOsc.SetSyncFreq(freq);

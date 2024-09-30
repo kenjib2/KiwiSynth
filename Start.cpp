@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Create a new patch type for initialized patches that does not show up in UI lists and can't be selected.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
@@ -44,6 +45,9 @@ using namespace kiwi_synth;
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
  * Inverted amplitude envelope clicks when starting and stopping
  * 
+ * Song mode! String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
+ * Appegiator? Sequencer?
+ * Can we get GPIO callbacks working?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?

@@ -52,6 +52,11 @@ namespace kiwi_synth
         }
     };
 
+    /*
+     * These are all of the possible screens of data that can be displayed on the Kiwi Synth. 
+     * values 0 and greater can be scrolled through with the select knob. The other two screens
+     * can only be entered when selected from other screens.
+     */
     typedef enum {
         MODE_BOOTLOADER = -2,
         MODE_SELECT_SCREEN = -1,
@@ -62,6 +67,10 @@ namespace kiwi_synth
     } DisplayMode;
     const int DISPLAY_MODE_OPTIONS = 4; // Not including MODE_LOAD_SCREEN or MODE_BOOTLOADER
 
+    /*
+     * The display class is the main controller for the synth GUI. It handles input, manages which
+     * pages are visible, and passes control messages on to whichever screen is active.
+     */
     class Display
     {
         public:
@@ -72,6 +81,9 @@ namespace kiwi_synth
             void Init(KiwiSynth* kiwiSynth, Performance* performance);
             void Init(DisplayConfig *displayConfig, KiwiSynth* kiwiSynth, Performance* performance);
 
+            /*
+             * Poll for input signals and then pass them on to whichever screen is active.
+             */
             void HandleInput();
             void Update();
 
@@ -91,9 +103,13 @@ namespace kiwi_synth
             SelectScreen selectScreen;
             SystemScreen systemScreen;
 
+            bool HandleEncoder();
+            bool HandleClick();
+            /*
+             * Manages the selection values for various screens.
+             */    
             int GetSelectValue(int numElements);
     };
+
 } // namespace kiwi_synth
-
-
 #endif // __KIWI_SYNTH_DISPLAY_H__
