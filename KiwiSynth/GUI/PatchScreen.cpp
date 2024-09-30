@@ -31,7 +31,7 @@ namespace kiwi_synth
         }
 
         display->SetCursor(0, 8);
-        EnumToText::GetPatchType(buffer, patch->GetPatchType());
+        EnumToText::GetPatchType(value, patch->GetPatchType());
         sprintf(buffer, "Type: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_TYPE);
 
