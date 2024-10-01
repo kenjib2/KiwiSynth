@@ -290,6 +290,9 @@ namespace kiwi_synth
             case VOICE_MODE_SPLIT:
                 strcpy(buffer, "Split");
                 break;
+            case VOICE_MODE_PARA:
+                strcpy(buffer, "Paraphonic");
+                break;
         }
     }
 

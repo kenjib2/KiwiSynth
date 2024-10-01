@@ -34,9 +34,10 @@ namespace kiwi_synth
         VOICE_MODE_POLY,
         VOICE_MODE_MONO,
         VOICE_MODE_MULTI,
-        VOICE_MODE_SPLIT
+        VOICE_MODE_SPLIT,
+        VOICE_MODE_PARA
     } VoiceMode;
-    static const int VOICE_MODE_MAX = 4;
+    static const int VOICE_MODE_MAX = 5;
 
     typedef enum {
         FX_DISTORTION_DELAY,
