@@ -50,7 +50,7 @@ namespace kiwi_synth
         voiceMode = VOICE_MODE_POLY;
         splitNote = 60;
         strcpy(name, "New            ");
-        type = PATCH_OTHER;
+        type = PATCH_INIT;
         effectsMode = FX_DISTORTION_DELAY;
         reverbMode = REVERB_HALL;
 

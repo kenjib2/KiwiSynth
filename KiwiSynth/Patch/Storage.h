@@ -14,7 +14,7 @@ namespace kiwi_synth
     const static uint32_t QSPI_BASE_ADDRESS = 0x90100000;
     const static uint32_t PATCHES_BASE_ADDRESS = QSPI_BASE_ADDRESS;
     const static uint32_t VALIDATION_BASE_ADDRESS = QSPI_BASE_ADDRESS + 2097152;
-    const static char VALIDATION_CODE[32] = "BOMBASTIC_AUDIO_KIWI___00.00.08"; // 32 characters including terminating null at the end
+    const static char VALIDATION_CODE[32] = "BOMBASTIC_AUDIO_KIWI___00.00.09"; // 32 characters including terminating null at the end
     const static int VALIDATION_SIZE = sizeof(VALIDATION_CODE); // 32;
     const static int PATCH_SIZE = 2048; // Storage set aside for one patch
     const static int PATCH_WRITE_SIZE = 1140; // Actual write size for one patch

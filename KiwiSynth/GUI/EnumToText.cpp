@@ -246,6 +246,9 @@ namespace kiwi_synth
             case PATCH_EFFECT:
                 strcpy(buffer, "Effect");
                 break;
+            case PATCH_INIT:
+                strcpy(buffer, "Initialized");
+                break;
             case PATCH_KEY:
                 strcpy(buffer, "Key");
                 break;

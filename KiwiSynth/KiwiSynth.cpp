@@ -40,7 +40,10 @@ namespace kiwi_synth
                 patchBanks[i][j].type = nextPatch.type;
                 patchBanks[i][j].voiceMode = nextPatch.voiceMode;
 
-                patchTypes[nextPatch.type].push_back(&patchBanks[i][j]);
+                // Ignore initialized default patches
+                if (nextPatch.type != PATCH_INIT) {
+                    patchTypes[nextPatch.type].push_back(&patchBanks[i][j]);
+                }
             }
         }
 

@@ -13,6 +13,7 @@ namespace kiwi_synth
     const static float MAX_DISTORTION_GAIN = 150.0f;
 
     typedef enum {
+        PATCH_INIT = -1, // Initialized default patches
         PATCH_LEAD,
         PATCH_PAD,
         PATCH_SYNTH,

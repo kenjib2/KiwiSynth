@@ -240,6 +240,10 @@ namespace kiwi_synth
             }
         } else if (currentPage == SELECT_PAGE_SAVE_CONFIRM) {
             if (selection == 0) {
+                // If the patch we are saving was an initialized patch, set it to type other by default.
+                if (kiwiSynth->patch.GetPatchType() == PATCH_INIT) {
+                    kiwiSynth->patch.SetPatchType(PATCH_OTHER);
+                }
                 kiwiSynth->SavePatch(saveBank, savePatch);
                 return SELECT_SCREEN_RESPONSE_PLAY;
             } else {

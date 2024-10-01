@@ -31,21 +31,24 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Create a new patch type for initialized patches that does not show up in UI lists and can't be selected.
+ * Can we move any global or class vars to local stack vars?
+ * Can we convert any ops into bitwise ops?
+ * Can we use compiler hints to optimize branching code toward the most expensive paths?
+ * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
+ * Paraphonic modes with six notes. One mode with both voices mirroring env/lfo/etc. One with six notes and two independent voices kinda split by pitch.
+ * Need to mod LFO1 to Pitch amount because of mod wheel
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
+ * Inverted amplitude envelope clicks when starting and stopping
+ * When exiting menus back to play mode, need to clear the MIDI event buffer (if we can remove OLED sourced noise and let process always run then will this still be an issue?)
  * Performance % are off since we switched to 384 buffer
  * Can we get the buffer lower
- * When exiting menus back to play mode, need to clear the MIDI event buffer
- * Need to mod LFO1 to Pitch amount because of mod wheel
- * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.)
- * Inverted amplitude envelope clicks when starting and stopping
  * 
- * Song mode! String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
+ * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * Can we get GPIO callbacks working?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
