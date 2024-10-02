@@ -452,15 +452,25 @@ namespace kiwi_synth
             }
         }
         // Find a note to return/replace
-        for (int i = 0; i < 6; i++) {
-            if (i != highestIndex && i != lowestIndex) {
-                paraVcoNotes[i] = note;
-                paraVcoPlaying[i] = true;
-                return i;
+        if (delta0 < delta3) {
+            for (int i = 0; i < 6; i++) {
+                if (i != highestIndex && i != lowestIndex) {
+                    paraVcoNotes[i] = note;
+                    paraVcoPlaying[i] = true;
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 5; i >= 0; i--) {
+                if (i != highestIndex && i != lowestIndex) {
+                    paraVcoNotes[i] = note;
+                    paraVcoPlaying[i] = true;
+                    return i;
+                }
             }
         }
 
-        // We should never reach this point
+        // We should never reach this point since there are six vcos and only 2 highest/lowest
         return 0;
     }
 
