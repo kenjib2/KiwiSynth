@@ -398,31 +398,70 @@ namespace kiwi_synth
     }
 
     int VoiceBank::RequestVco(uint8_t note) {
-         // First if that note is already playing, retrigger it to preserve envelope/lfo position.
-        for (int i = 0; i < 6; i++) {
-            if (paraVcoNotes[i] == note) {
-                paraVcoPlaying[i] = true;
-                return i;
+        // First use the first vcos of each patch.
+        if (!paraVcoPlaying[0]) {
+            paraVcoNotes[0] = note;
+            paraVcoPlaying[0] = true;
+            return 0;
+        }
+        if (!paraVcoPlaying[3]) {
+            paraVcoNotes[3] = note;
+            paraVcoPlaying[3] = true;
+            return 3;
+        }
+
+        // Find whether the note is closer in pitch to the first or second voice and try to get
+        // a voice from that vco if possible, but get a voice from the other one if necessary.
+        // This will help to cluster three note chords played on one hand together in one voice
+        // so that they can release together.
+        int delta0 = std::abs(paraVcoNotes[0] - note);
+        int delta3 = std::abs(paraVcoNotes[3] - note);
+        if (delta0 < delta3) {
+            for (int i = 1; i < 6; i++) {
+                if (!paraVcoPlaying[i]) {
+                    paraVcoNotes[i] = note;
+                    paraVcoPlaying[i] = true;
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 5; i > 0; i--) {
+                if (!paraVcoPlaying[i]) {
+                    paraVcoNotes[i] = note;
+                    paraVcoPlaying[i] = true;
+                    return i;
+                }
             }
         }
 
-        // Else return first available voice.
+        // All voices are used, so steal a note that is neither the highest nor lowest
+        uint8_t highestIndex = 0;
+        uint8_t highestNote = 0;
+        uint8_t lowestIndex = 0;
+        uint8_t lowestNote = 127;
         for (int i = 0; i < 6; i++) {
-            if (!paraVcoPlaying[i]) {
+            // Find the highest
+            if (paraVcoNotes[i] > highestNote) {
+                highestNote = paraVcoNotes[i];
+                highestIndex = i;
+            }
+            // Find the lowest
+            if (paraVcoNotes[i] < lowestNote) {
+                lowestNote = paraVcoNotes[i];
+                lowestIndex = i;
+            }
+        }
+        // Find a note to return/replace
+        for (int i = 0; i < 6; i++) {
+            if (i != highestIndex && i != lowestIndex) {
                 paraVcoNotes[i] = note;
                 paraVcoPlaying[i] = true;
                 return i;
             }
         }
-        return 0;
 
-        // Else return first releasing voice.
-        /*for (int i = 0; i < 6; i++) {
-            if (voices[i].IsReleasing() && !voices[i].noteTriggered) {
-                vcoNotes[i] = note;
-                return &voices[i];
-            }
-        }*/
+        // We should never reach this point
+        return 0;
     }
 
 }
