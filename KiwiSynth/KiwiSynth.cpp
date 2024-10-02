@@ -273,6 +273,11 @@ namespace kiwi_synth
     void KiwiSynth::UpdateSettings()
     {
         if (patch.GetLiveMode()) {
+            int8_t newVoiceMode = patch.activeSettings->getIntValue(PatchSetting::VCO_VOICES);
+            if (newVoiceMode != voiceBank.GetVoiceMode()) {
+                AllNotesOff();
+            }
+            
             voiceBank.UpdateSettings();
             effectsEngine.UpdateSettings();
         }

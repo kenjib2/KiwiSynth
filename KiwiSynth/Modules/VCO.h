@@ -35,7 +35,8 @@ namespace kiwi_synth
             Wavefolder wavefolder;
 
         public:
-            float        midiNote; // 0 to 127 with portamento applied. Needs mtof to make a frequency.
+            float      midiNote; // 0 to 127 with portamento applied. Needs mtof to make a frequency.
+            float      paraOffset; // Midi note for this specific VCO relative to 0
 
             VCO() {}
             ~VCO() {}

@@ -33,13 +33,16 @@ namespace kiwi_synth
     class VoiceBank
     {
         private:
-            int8_t voiceMode;
+            VoiceMode voiceMode;
             uint8_t maxVoices;
             std::vector<Voice> voices;
             Patch* patch;
             std::vector<uint8_t>     playingNotes;
+            uint8_t paraVcoNotes[6];
+            bool paraVcoPlaying[6];
 
             Voice* RequestVoice(uint8_t midiNote);
+            int RequestVco(uint8_t note);
  
         public:
             std::vector<int> playingVoices;
@@ -51,6 +54,7 @@ namespace kiwi_synth
             void Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate);
             void Process(float* sample);
 
+            inline VoiceMode GetVoiceMode() { return voiceMode; }
             void UpdateSettings();
             void InitModulations();
             void UpdateModulations();

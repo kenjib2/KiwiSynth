@@ -6,7 +6,7 @@ namespace kiwi_synth
         modulations = new Modulation*[2];
         modulations[0] = new Modulation[NUM_MODULATIONS];
         modulations[1] = new Modulation[NUM_MODULATIONS];
-        voiceMode = 255;
+        voiceMode = (VoiceMode)255; // Setting to an invalid number so that SetVoiceMode will trigger naturally
         InitModulations();
         for (int i = 0; i < maxVoices; i++) {
             voices[i].numVcos = voices[i].maxVcos;
@@ -21,19 +21,35 @@ namespace kiwi_synth
             nextVoice.Init(numVcos, sampleRate, i);
             voices.push_back(nextVoice);
         }
+        
+        for (int i = 0; i < 6; i++) {
+            paraVcoNotes[i] = -1;
+        }
     }
 
     
     void VoiceBank::UpdateSettings()
     {
-        int8_t newVoiceMode = patch->activeSettings->getIntValue(PatchSetting::VCO_VOICES);
+        VoiceMode newVoiceMode = (VoiceMode)patch->activeSettings->getIntValue(PatchSetting::VCO_VOICES);
         if (newVoiceMode != voiceMode) {
             AllNotesOff();
             voiceMode = newVoiceMode;
 
             if (voiceMode == VOICE_MODE_MONO) {
                 numVoices = 1;
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+            } else if (voiceMode == VOICE_MODE_PARA) {
+                numVoices = 2;
+                voices[0].ParaphonicMode(true);
+                voices[1].ParaphonicMode(true);
+                for (int i = 0; i < 6; i++) {
+                    paraVcoPlaying[i] = false;
+                    paraVcoNotes[i] = -1;
+                }
             } else {
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
                 numVoices = 2;
             }
 
@@ -160,6 +176,7 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
+        int vco;
         switch (voiceMode) {
             case VOICE_MODE_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
@@ -195,6 +212,10 @@ namespace kiwi_synth
                         voices[0].NoteOn(note, velocity);
                     }
                 }
+                break;
+            case VOICE_MODE_PARA:
+                vco = RequestVco(note);
+                voices[vco / 3].ParaNoteOn(vco % 3, note, velocity);
                 break;
             default:
                 Voice* voice = RequestVoice(note);
@@ -273,6 +294,13 @@ namespace kiwi_synth
                     }
                 }
                 break;
+            case VOICE_MODE_PARA:
+                for (int i = 0; i < 6; i++) {
+                    if (paraVcoNotes[i] == note) {
+                        paraVcoPlaying[i] = false;
+                        voices[i/3].ParaNoteOff(i%3, note, velocity);
+                    }
+                }
             default:
                 int numVoicesPlaying = 0;
                 int voiceFound = -1;
@@ -367,6 +395,34 @@ namespace kiwi_synth
 
         // Return the highest note.
         return &(voices[highestIndex]); 
+    }
+
+    int VoiceBank::RequestVco(uint8_t note) {
+         // First if that note is already playing, retrigger it to preserve envelope/lfo position.
+        for (int i = 0; i < 6; i++) {
+            if (paraVcoNotes[i] == note) {
+                paraVcoPlaying[i] = true;
+                return i;
+            }
+        }
+
+        // Else return first available voice.
+        for (int i = 0; i < 6; i++) {
+            if (!paraVcoPlaying[i]) {
+                paraVcoNotes[i] = note;
+                paraVcoPlaying[i] = true;
+                return i;
+            }
+        }
+        return 0;
+
+        // Else return first releasing voice.
+        /*for (int i = 0; i < 6; i++) {
+            if (voices[i].IsReleasing() && !voices[i].noteTriggered) {
+                vcoNotes[i] = note;
+                return &voices[i];
+            }
+        }*/
     }
 
 }

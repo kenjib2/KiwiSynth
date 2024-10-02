@@ -53,7 +53,7 @@ namespace kiwi_synth
     {
         if (isOn) {
             float masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
-            playingNote = midiNote + octave + interval + fineTune + masterTune;
+            playingNote = midiNote + octave + interval + fineTune + masterTune + paraOffset;
             float waveSample = 0.0f;
             float freq = std::fmax(mtof(playingNote + mod * 12.0f), 0.0f);
             switch(waveform) {

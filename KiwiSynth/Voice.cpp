@@ -28,10 +28,15 @@ namespace kiwi_synth
         initMods();
         prevSourceValues[SRC_NONE] = 0.0f;
         prevSourceValues[SRC_FIXED] = 1.0f;
+
+        ParaphonicMode(false);
     }
 
     void Voice::UpdateSettings(PatchSettings* patchSettings)
     {
+        if (patchSettings->getIntValue(VCO_VOICES) != VOICE_MODE_PARA) {
+            ParaphonicMode(false);
+        }
         env1.UpdateSettings(patchSettings);
         env2.UpdateSettings(patchSettings);
         lfo1.UpdateSettings(patchSettings);
@@ -132,15 +137,15 @@ namespace kiwi_synth
 
         float vcoSample = 0.0f;
         vcos[0].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
 
         vcoSample = 0.0f;
         vcos[1].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];
 
         vcoSample = 0.0f;
         vcos[2].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT;
+        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[2];
 
         float sampleAndHoldSample = 0.0f;
         float noiseSample = 0.0f;
@@ -185,6 +190,26 @@ namespace kiwi_synth
     bool Voice::IsReleasing()
     {
         return env1.IsReleasing();
+    }
+
+    void Voice::ParaNoteOn(int vco, uint8_t note, uint8_t velocity) { // Use octave and interval to set the note with respect to 0
+        vcos[vco].paraOffset = (float)note;
+        if (IsAvailable() || IsReleasing()) {
+            paraVcoMask[0] = 0.0f; // Make sure all vcos are turned off since sometimes one is left on for release.
+            paraVcoMask[1] = 0.0f;
+            paraVcoMask[2] = 0.0f;
+            NoteOn(0, velocity, false);
+        }
+        paraVcoMask[vco] = 1.0f;
+    }
+
+    void Voice::ParaNoteOff(int vco, uint8_t note, uint8_t velocity) {
+        if (paraVcoMask[0] + paraVcoMask[1] + paraVcoMask[2] < 1.001f) {
+            // We are leaving one vco mask on for the release so we can not assume they will all be off in ParaNoteOn
+            NoteOff(0, velocity);
+        } else {
+            paraVcoMask[vco] = 0.0f;
+        }
     }
 
     void Voice::NoteOn(int note, int velocity, bool reset)

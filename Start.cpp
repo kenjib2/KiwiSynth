@@ -47,7 +47,12 @@ using namespace kiwi_synth;
  * When exiting menus back to play mode, need to clear the MIDI event buffer (if we can remove OLED sourced noise and let process always run then will this still be an issue?)
  * Performance % are off since we switched to 384 buffer
  * Can we get the buffer lower
+ * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
+ * Change paraphonic so that the first two notes are 0 and 3, then the next notes choose a voice by proximity to the first two notes
+ * Change paraphonic so that there is a slight delay on release to detect releasing multiple notes "at once" when release phase of env triggers
+ * Paraphonic RequestVco is not done - still need to get releasing notes and then note stealing (not taking highest nor lowest)
  * 
+ * Can we implement portamento in paraphonic mode?
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * Can we get GPIO callbacks working?
