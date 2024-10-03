@@ -17,7 +17,7 @@ namespace kiwi_synth
         public:
             void Init() {}
             inline float Process(float input) {
-                if (gain > ATAN_DEBOUNCE_THRESHOLD) {
+                if (__builtin_expect(gain > ATAN_DEBOUNCE_THRESHOLD, 1)) {
                     return atan(input * gain) * level; // atan has a limit of pi/2 or @1.57. The max of level is 0.22 so total output will never exceed +/- 0.346
                 }
                 return input;

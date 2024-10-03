@@ -99,6 +99,14 @@ namespace kiwi_synth
         this->midiChannel = midiChannel;
     }
 
+    void KiwiSynth::ClearMidi() {
+        midi.Listen();
+        while(midi.HasEvents())
+        {
+            midi.PopEvent();
+        }
+    }
+
     void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         ProcessMidi();

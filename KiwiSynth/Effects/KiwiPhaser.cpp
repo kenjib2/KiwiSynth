@@ -100,10 +100,6 @@ float KiwiPhaser::Process(float in)
     {
         sig += engines_[i].Process(in) * inv_poles_; // Equal mix
     }*/
-    //sig += engines_[0].Process(in) * inv_poles_; // Equal mix
-    //sig += engines_[1].Process(in) * inv_poles_; // Equal mix
-    //sig += engines_[2].Process(in) * inv_poles_; // Equal mix
-    //sig += engines_[3].Process(in) * inv_poles_; // Equal mix
 
     // hard wiring for 2 pole
     return fclamp(engines_[0].Process(in) * inv_poles_ * 0.8

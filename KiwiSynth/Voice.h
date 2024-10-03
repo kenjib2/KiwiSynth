@@ -71,7 +71,8 @@ namespace kiwi_synth
             void NoteOn(int note, int velocity, bool reset = true);
             void NoteOff(int note, int velocity);
             void ParaNoteOn(int vco, uint8_t note, uint8_t velocity);
-            void ParaNoteOff(int vco, uint8_t note, uint8_t velocity);
+            void ParaNoteOff(int vco, bool noteOff);
+            void ParaAllNotesOff();
             inline void ParaphonicMode(bool isActive) {
                 if (isActive) {
                     paraVcoMask[0] = 0.0f;

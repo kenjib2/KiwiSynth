@@ -40,7 +40,7 @@ namespace kiwi_synth
 
         float waveSample = osc.Process();
 
-        if (waveform == 0) { // Triangle
+        if (__builtin_expect(waveform == 0, 1)) { // Triangle
             wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 5.0f, 1.0f));
             waveSample = wavefolder.Process(waveSample);
         } else if (waveform > 1) { // Sawtooth or Ramp

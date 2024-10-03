@@ -51,7 +51,7 @@ namespace kiwi_synth
 
     void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
     {
-        if (isOn) {
+        if (__builtin_expect(isOn, 1)) {
             float masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
             playingNote = midiNote + octave + interval + fineTune + masterTune + paraOffset;
             float waveSample = 0.0f;

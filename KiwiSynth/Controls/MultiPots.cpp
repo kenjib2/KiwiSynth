@@ -3,8 +3,8 @@
 
 namespace kiwi_synth
 {
-    float DSY_SDRAM_BSS mpValueBuffer[NUM_MPS][NUM_CHANNELS];
-    float DSY_SDRAM_BSS directValueBuffer[NUM_DIRECT_POTS];
+    float mpValueBuffer[NUM_MPS][NUM_CHANNELS];
+    float directValueBuffer[NUM_DIRECT_POTS];
 
     void MultiPots::Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig)
     {

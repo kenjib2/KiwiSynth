@@ -27,7 +27,7 @@ namespace kiwi_synth
             inline void Process(float* sample, PatchSettings* patchSettings, float mod)
             {
                 counter++;
-                if (counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod * 0.25f) {
+                if (__builtin_expect(counter >= rate + SAMPLE_AND_HOLD_MAXIMUM_RATE * mod * 0.25f, 0)) {
                     counter = 0;
                     currentSample = *sample;
                 }

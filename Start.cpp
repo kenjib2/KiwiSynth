@@ -33,7 +33,6 @@ using namespace kiwi_synth;
  * 
  * Can we move any global or class vars to local stack vars?
  * Can we convert any ops into bitwise ops?
- * Can we use compiler hints to optimize branching code toward the most expensive paths?
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
@@ -50,7 +49,9 @@ using namespace kiwi_synth;
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Change paraphonic so that there is a slight delay on release to detect releasing multiple notes "at once" when release phase of env triggers
  * Separate FX 1 and FX 2 into separate settings?
- * 
+ * Getting pops after adding paraphonic mode. Need to find somewhere to cut a little bit.
+ *  
+ * Panic button in system menu (kill all notes)
  * Can we implement portamento in paraphonic mode?
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
@@ -98,8 +99,9 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	load.OnBlockStart();
 	#endif // __CPU_LOAD__
 
-	if (display.mode) {
+	if (__builtin_expect(display.mode, 0)) {
 		kiwiSynth.AllNotesOff();
+		kiwiSynth.ClearMidi();
 		memset(out, 0, sizeof(float) * size * 2);
 	} else {
 		kiwiSynth.Process(out, size);

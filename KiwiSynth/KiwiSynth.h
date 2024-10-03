@@ -62,6 +62,10 @@ namespace kiwi_synth
 
             void InitMidi();
             void SetMidiChannel(int midiChannel);
+            /*
+             * Clears the listener of all midi events without processing them.
+             */
+            void ClearMidi();
 
             bool BootLoaderRequested();
             void LoadPatch(int bankNumber, int patchNumber);

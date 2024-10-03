@@ -30,6 +30,8 @@ namespace kiwi_synth
         MODS_SH_TO_VCF_FREQ
     } Modulations;
     
+    const static int VCO_TRIGGER_SAMPLES = 1024;
+
     class VoiceBank
     {
         private:
@@ -38,8 +40,10 @@ namespace kiwi_synth
             std::vector<Voice> voices;
             Patch* patch;
             std::vector<uint8_t>     playingNotes;
-            uint8_t paraVcoNotes[6];
+            int8_t paraVcoNotes[6];
             bool paraVcoPlaying[6];
+            bool paraVcoOffRequested[6]; // For paraphonic mode, set to true when a vco needs to be stopped after a slight delay to help with envelope release.
+            int32_t vcoTriggerCount;
 
             Voice* RequestVoice(uint8_t midiNote);
             int RequestVco(uint8_t note);

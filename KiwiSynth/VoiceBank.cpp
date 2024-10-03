@@ -23,8 +23,11 @@ namespace kiwi_synth
         }
         
         for (int i = 0; i < 6; i++) {
-            paraVcoNotes[i] = -1;
+            paraVcoNotes[i] = -128;
+            paraVcoPlaying[i] = false;
+            paraVcoOffRequested[i] = false;
         }
+        vcoTriggerCount = -1;
     }
 
     
@@ -45,7 +48,7 @@ namespace kiwi_synth
                 voices[1].ParaphonicMode(true);
                 for (int i = 0; i < 6; i++) {
                     paraVcoPlaying[i] = false;
-                    paraVcoNotes[i] = -1;
+                    paraVcoNotes[i] = -128;
                 }
             } else {
                 voices[0].ParaphonicMode(false);
@@ -63,6 +66,28 @@ namespace kiwi_synth
 
     void VoiceBank::Process(float* sample)
     {
+        // Triggering paraphonic vcos to turn off after a delay to give time to detect multiple simultaneous key releases
+        if (__builtin_expect(vcoTriggerCount == 0, 0)) {
+
+            for (int i = 0; i < 6; i++) {
+                if (paraVcoOffRequested[i]) {
+                    paraVcoOffRequested[i] = false;
+                    paraVcoPlaying[i] = false;
+                    paraVcoNotes[i] = -128;
+                    bool noteOff = false;
+                    if (
+                        (paraVcoOffRequested[i/3] || !paraVcoPlaying[i/3])
+                        && (paraVcoOffRequested[i/3 + 1] || !paraVcoPlaying[i/3 + 1])
+                        && (paraVcoOffRequested[i/3 + 2] || !paraVcoPlaying[i/3 + 2])
+                    ) {
+                        noteOff = true;
+                    }
+                    voices[i/3].ParaNoteOff(i%3, noteOff);
+                }
+            }
+        }
+        vcoTriggerCount--;
+
         sample[0] = 0.0f;
         sample[1] = 0.0f;
 
@@ -72,7 +97,7 @@ namespace kiwi_synth
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
-        if (voiceMode != VOICE_MODE_MONO) {
+        if (__builtin_expect(voiceMode != VOICE_MODE_MONO, 1)) {
             voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
@@ -297,8 +322,8 @@ namespace kiwi_synth
             case VOICE_MODE_PARA:
                 for (int i = 0; i < 6; i++) {
                     if (paraVcoNotes[i] == note) {
-                        paraVcoPlaying[i] = false;
-                        voices[i/3].ParaNoteOff(i%3, note, velocity);
+                        paraVcoOffRequested[i] = true;
+                        vcoTriggerCount = VCO_TRIGGER_SAMPLES;
                     }
                 }
             default:
@@ -351,6 +376,16 @@ namespace kiwi_synth
             }
         }
         playingNotes.clear();
+
+        if (patch->GetVoiceMode() == VOICE_MODE_PARA) {
+            for (int i = 0; i < 6; i++) {
+                paraVcoNotes[i] = -128;
+                paraVcoPlaying[i] = false;
+                paraVcoOffRequested[i] = false;
+            }
+            voices[0].ParaAllNotesOff();
+            voices[1].ParaAllNotesOff();
+        }
     }
 
     Voice* VoiceBank::RequestVoice(uint8_t midiNote)
@@ -399,12 +434,14 @@ namespace kiwi_synth
 
     int VoiceBank::RequestVco(uint8_t note) {
         // First use the first vcos of each patch.
-        if (!paraVcoPlaying[0]) {
+        if (!paraVcoPlaying[0] || paraVcoOffRequested[0] || voices[0].IsReleasing()) {
+            paraVcoOffRequested[0] = false;
             paraVcoNotes[0] = note;
             paraVcoPlaying[0] = true;
             return 0;
         }
-        if (!paraVcoPlaying[3]) {
+        if (!paraVcoPlaying[3] || paraVcoOffRequested[3] || voices[1].IsReleasing()) {
+            paraVcoOffRequested[3] = false;
             paraVcoNotes[3] = note;
             paraVcoPlaying[3] = true;
             return 3;
@@ -418,7 +455,8 @@ namespace kiwi_synth
         int delta3 = std::abs(paraVcoNotes[3] - note);
         if (delta0 < delta3) {
             for (int i = 1; i < 6; i++) {
-                if (!paraVcoPlaying[i]) {
+                if (!paraVcoPlaying[i] || paraVcoOffRequested[i] || voices[i/3].IsReleasing()) {
+                    paraVcoOffRequested[i] = false;
                     paraVcoNotes[i] = note;
                     paraVcoPlaying[i] = true;
                     return i;
@@ -426,7 +464,8 @@ namespace kiwi_synth
             }
         } else {
             for (int i = 5; i > 0; i--) {
-                if (!paraVcoPlaying[i]) {
+                if (!paraVcoPlaying[i] || paraVcoOffRequested[i] || voices[i/3].IsReleasing()) {
+                    paraVcoOffRequested[i] = false;
                     paraVcoNotes[i] = note;
                     paraVcoPlaying[i] = true;
                     return i;
@@ -455,6 +494,7 @@ namespace kiwi_synth
         if (delta0 < delta3) {
             for (int i = 0; i < 6; i++) {
                 if (i != highestIndex && i != lowestIndex) {
+                    paraVcoOffRequested[i] = false;
                     paraVcoNotes[i] = note;
                     paraVcoPlaying[i] = true;
                     return i;
@@ -463,6 +503,7 @@ namespace kiwi_synth
         } else {
             for (int i = 5; i >= 0; i--) {
                 if (i != highestIndex && i != lowestIndex) {
+                    paraVcoOffRequested[i] = false;
                     paraVcoNotes[i] = note;
                     paraVcoPlaying[i] = true;
                     return i;

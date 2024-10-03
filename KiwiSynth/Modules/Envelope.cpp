@@ -36,22 +36,22 @@ namespace kiwi_synth
 
     void Envelope::Process(float* sample, PatchSettings* patchSettings, float attackMod, float decayMod, float sustainMod, float releaseMod)
     {
-        if (attackMod != prevAttackMod) {
+        if (__builtin_expect(attackMod != prevAttackMod, 1)) {
             env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + attackMod), 0.0f) * 3.0f);
             prevAttackMod = attackMod;
         }
 
-        if (decayMod != prevDecayMod) {
+        if (__builtin_expect(decayMod != prevDecayMod, 1)) {
             env.SetDecayTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_DECAY + envNumber)) + prevDecayMod), 0.0f) * 3.0f);
             prevDecayMod = decayMod;
         }
 
-        if (sustainMod != prevSustainMod) {
+        if (__builtin_expect(sustainMod != prevSustainMod, 1)) {
             env.SetSustainLevel(fclamp(patchSettings->getFloatValue((PatchSetting)(ENV_1_SUSTAIN + envNumber)) + prevSustainMod, 0.0f, 1.0f));
             prevSustainMod = sustainMod;
         }
 
-        if (releaseMod != prevReleaseMod) {
+        if (__builtin_expect(releaseMod != prevReleaseMod, 1)) {
             if (!quickRelease) {
                 env.SetReleaseTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0f);
             }
@@ -59,7 +59,7 @@ namespace kiwi_synth
         }
 
         *sample = *sample * env.Process(noteTriggered);
-        if (reversed) {
+        if (__builtin_expect(reversed, 0)) {
             *sample = 1.0f - *sample;
             if (!env.IsRunning()) { // We have to still process it first to keep it moving, despite *sample getting overwritten.
                 *sample = 0.0f;

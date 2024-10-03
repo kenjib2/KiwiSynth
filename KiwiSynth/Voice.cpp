@@ -87,7 +87,7 @@ namespace kiwi_synth
         float voiceSample = 0.0f;
 
         // Triggering notes to play after a delay to shut down previous envelopes click-free (i.e. quickrelease)
-        if (noteTriggerCount == 0) {
+        if (__builtin_expect(noteTriggerCount == 0, 0)) {
             for (int i = 0; i < numVcos; i++) {
                 vcos[i].midiNote = (float)triggerNote;
             }
@@ -203,13 +203,21 @@ namespace kiwi_synth
         paraVcoMask[vco] = 1.0f;
     }
 
-    void Voice::ParaNoteOff(int vco, uint8_t note, uint8_t velocity) {
-        if (paraVcoMask[0] + paraVcoMask[1] + paraVcoMask[2] < 1.001f) {
-            // We are leaving one vco mask on for the release so we can not assume they will all be off in ParaNoteOn
-            NoteOff(0, velocity);
+    void Voice::ParaNoteOff(int vco, bool noteOff) {
+        if (noteOff) {
+            // We are leaving vco masks on for the release so we can not assume they will all be off in ParaNoteOn
+            if (!env1.IsReleasing()) {
+                NoteOff(0, 0);
+            }
         } else {
             paraVcoMask[vco] = 0.0f;
         }
+    }
+
+    void Voice::ParaAllNotesOff() {
+        paraVcoMask[0] = 0.0f;
+        paraVcoMask[1] = 0.0f;
+        paraVcoMask[2] = 0.0f;
     }
 
     void Voice::NoteOn(int note, int velocity, bool reset)
