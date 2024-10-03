@@ -192,7 +192,7 @@ namespace kiwi_synth
         return env1.IsReleasing();
     }
 
-    void Voice::ParaNoteOn(int vco, uint8_t note, uint8_t velocity) { // Use octave and interval to set the note with respect to 0
+    void Voice::ParaNoteOn(int vco, uint8_t note, uint8_t velocity) { // Use paraOffset to set the note with respect to 0
         vcos[vco].paraOffset = (float)note;
         if (IsAvailable() || IsReleasing()) {
             paraVcoMask[0] = 0.0f; // Make sure all vcos are turned off since sometimes one is left on for release.

@@ -47,6 +47,7 @@ namespace kiwi_synth
 
             Voice* RequestVoice(uint8_t midiNote);
             int RequestVco(uint8_t note);
+            inline bool VcoIsAvailable(int vco) { return (!paraVcoPlaying[vco] || paraVcoOffRequested[vco] || voices[vco/3].IsReleasing()); }
  
         public:
             std::vector<int> playingVoices;

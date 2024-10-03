@@ -49,6 +49,7 @@ namespace kiwi_synth
                 for (int i = 0; i < 6; i++) {
                     paraVcoPlaying[i] = false;
                     paraVcoNotes[i] = -128;
+                    paraVcoOffRequested[i] = false;
                 }
             } else {
                 voices[0].ParaphonicMode(false);
@@ -75,14 +76,16 @@ namespace kiwi_synth
                     paraVcoPlaying[i] = false;
                     paraVcoNotes[i] = -128;
                     bool noteOff = false;
+                    int voice = i/3;
+                    int vcoBase = voice * 3;
                     if (
-                        (paraVcoOffRequested[i/3] || !paraVcoPlaying[i/3])
-                        && (paraVcoOffRequested[i/3 + 1] || !paraVcoPlaying[i/3 + 1])
-                        && (paraVcoOffRequested[i/3 + 2] || !paraVcoPlaying[i/3 + 2])
+                        (paraVcoOffRequested[vcoBase] || !paraVcoPlaying[vcoBase])
+                        && (paraVcoOffRequested[vcoBase + 1] || !paraVcoPlaying[vcoBase + 1])
+                        && (paraVcoOffRequested[vcoBase + 2] || !paraVcoPlaying[vcoBase + 2])
                     ) {
                         noteOff = true;
                     }
-                    voices[i/3].ParaNoteOff(i%3, noteOff);
+                    voices[voice].ParaNoteOff(i%3, noteOff);
                 }
             }
         }
@@ -240,6 +243,9 @@ namespace kiwi_synth
                 break;
             case VOICE_MODE_PARA:
                 vco = RequestVco(note);
+                paraVcoOffRequested[vco] = false;
+                paraVcoNotes[vco] = note;
+                paraVcoPlaying[vco] = true;
                 voices[vco / 3].ParaNoteOn(vco % 3, note, velocity);
                 break;
             default:
@@ -433,17 +439,11 @@ namespace kiwi_synth
     }
 
     int VoiceBank::RequestVco(uint8_t note) {
-        // First use the first vcos of each patch.
-        if (!paraVcoPlaying[0] || paraVcoOffRequested[0] || voices[0].IsReleasing()) {
-            paraVcoOffRequested[0] = false;
-            paraVcoNotes[0] = note;
-            paraVcoPlaying[0] = true;
+        // First use the first vcos of each voice.
+        if (VcoIsAvailable(0)) {
             return 0;
         }
-        if (!paraVcoPlaying[3] || paraVcoOffRequested[3] || voices[1].IsReleasing()) {
-            paraVcoOffRequested[3] = false;
-            paraVcoNotes[3] = note;
-            paraVcoPlaying[3] = true;
+        if (VcoIsAvailable(3)) {
             return 3;
         }
 
@@ -453,21 +453,16 @@ namespace kiwi_synth
         // so that they can release together.
         int delta0 = std::abs(paraVcoNotes[0] - note);
         int delta3 = std::abs(paraVcoNotes[3] - note);
+
         if (delta0 < delta3) {
             for (int i = 1; i < 6; i++) {
-                if (!paraVcoPlaying[i] || paraVcoOffRequested[i] || voices[i/3].IsReleasing()) {
-                    paraVcoOffRequested[i] = false;
-                    paraVcoNotes[i] = note;
-                    paraVcoPlaying[i] = true;
+                if (VcoIsAvailable(i)) {
                     return i;
                 }
             }
         } else {
             for (int i = 5; i > 0; i--) {
-                if (!paraVcoPlaying[i] || paraVcoOffRequested[i] || voices[i/3].IsReleasing()) {
-                    paraVcoOffRequested[i] = false;
-                    paraVcoNotes[i] = note;
-                    paraVcoPlaying[i] = true;
+                if (VcoIsAvailable(i)) {
                     return i;
                 }
             }
@@ -494,18 +489,12 @@ namespace kiwi_synth
         if (delta0 < delta3) {
             for (int i = 0; i < 6; i++) {
                 if (i != highestIndex && i != lowestIndex) {
-                    paraVcoOffRequested[i] = false;
-                    paraVcoNotes[i] = note;
-                    paraVcoPlaying[i] = true;
                     return i;
                 }
             }
         } else {
             for (int i = 5; i >= 0; i--) {
                 if (i != highestIndex && i != lowestIndex) {
-                    paraVcoOffRequested[i] = false;
-                    paraVcoNotes[i] = note;
-                    paraVcoPlaying[i] = true;
                     return i;
                 }
             }
