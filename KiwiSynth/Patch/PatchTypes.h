@@ -66,6 +66,13 @@ namespace kiwi_synth
         WAVEFORM_VARISAW
     } Waveform;
 
+    typedef enum {
+        LFO_WAVEFORM_TRIANGLE,
+        LFO_WAVEFORM_SAWTOOTH,
+        LFO_WAVEFORM_RAMP,
+        LFO_WAVEFORM_SQUARE
+    } LfoWaveform;
+
     enum FilterType {
         LADDER_LOWPASS,
         SVF_LOWPASS,

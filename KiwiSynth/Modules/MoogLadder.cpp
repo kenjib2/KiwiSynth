@@ -75,7 +75,7 @@ void MoogLadder::ProcessInPlace(float *buf, size_t size)
         float input = buf[i];
         float total = 0.0f;
         float interp = 0.0f;
-        for (size_t os = 0; os < kInterpolation; os++) {
+        /*for (size_t os = 0; os < kInterpolation; os++) {
             float u = (interp * oldinput_ + (1.0f - interp) * input)
                 - (z1_[3] - pbg_ * input) * K_ * Qadjust_;
             u = fast_tanh(u);
@@ -85,7 +85,31 @@ void MoogLadder::ProcessInPlace(float *buf, size_t size)
             float stage4 = LPF(stage3, 3);
             total += stage4 * kInterpolationRecip;
             interp += kInterpolationRecip;
-        }
+        }*/
+        // Hard coding for kInterpolation = 2
+
+        float u = (interp * oldinput_ + (1.0f - interp) * input)
+            - (z1_[3] - pbg_ * input) * K_ * Qadjust_;
+        u = fast_tanh(u);
+        float stage1 = LPF(u, 0);
+        float stage2 = LPF(stage1, 1);
+        float stage3 = LPF(stage2, 2);
+        float stage4 = LPF(stage3, 3);
+        total += stage4 * kInterpolationRecip;
+        interp += kInterpolationRecip;
+
+        u = (interp * oldinput_ + (1.0f - interp) * input)
+            - (z1_[3] - pbg_ * input) * K_ * Qadjust_;
+        u = fast_tanh(u);
+        stage1 = LPF(u, 0);
+        stage2 = LPF(stage1, 1);
+        stage3 = LPF(stage2, 2);
+        stage4 = LPF(stage3, 3);
+        total += stage4 * kInterpolationRecip;
+        interp += kInterpolationRecip;
+
+        // Done hard coding for interpolation = 2
+
         oldinput_ = input;
         buf[i] = total;
     }

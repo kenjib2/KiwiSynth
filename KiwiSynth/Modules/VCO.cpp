@@ -14,10 +14,15 @@ namespace kiwi_synth
         interval = 0.0f;
         octave = 0.0f;
         midiNote = 60;
-    	osc.Init(sampleRate);
-        osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SQUARE);
-        osc.SetFreq(220.0f);
-        osc.SetAmp(1.0f);
+        squareOsc.Init(sampleRate);
+        squareOsc.SetFreq(220.0f);
+        squareOsc.SetAmp(1.0f);
+        sawOsc.Init(sampleRate);
+        sawOsc.SetFreq(220.0f);
+        sawOsc.SetAmp(1.0f);
+        triangleOsc.Init(sampleRate);
+        triangleOsc.SetFreq(220.0f);
+        triangleOsc.SetAmp(1.0f);
         variOsc.Init(sampleRate);
         variOsc.SetWaveshape(0.0f);
         variOsc.SetSync(false);
@@ -44,8 +49,6 @@ namespace kiwi_synth
                 interval = (float)(patchSettings->getIntValue((PatchSetting)(VCO_2_INTERVAL + vcoMod)) - 11);
                 octave = (float)((patchSettings->getIntValue((PatchSetting)(VCO_2_OCTAVE + vcoMod)) - 2) * 12);
             }
-
-            osc.SetWaveform(7 - waveform); // 7: WAVE_POLYBLEP_SQUARE, 6: WAVE_POLYBLEP_SAW, 5: WAVE_POLYBLEP_TRI
         }
     }
 
@@ -58,20 +61,18 @@ namespace kiwi_synth
             float freq = std::fmax(mtof(playingNote + mod * 12.0f), 0.0f);
             switch(waveform) {
                 case WAVEFORM_SQUARE:
-                    osc.SetFreq(freq);
-                    osc.SetPw(pulseWidth + pwMod);
-                    waveSample = osc.Process();
+                    squareOsc.SetFreq(freq);
+                    squareOsc.SetPw(pulseWidth + pwMod);
+                    waveSample = squareOsc.Process();
                     break;
                 case WAVEFORM_SAWTOOTH:
-                    osc.SetFreq(freq);
-                    osc.SetPw(pulseWidth + pwMod);
-                    waveSample = osc.Process();
+                    sawOsc.SetFreq(freq);
+                    waveSample = sawOsc.Process();
                     waveSample = fclamp(waveSample * (sawtoothGain + pwMod * 50.0f + 1.0f), -1.0f, 1.0f);
                     break;
                 case WAVEFORM_TRIANGLE:
-                    osc.SetFreq(freq);
-                    osc.SetPw(pulseWidth + pwMod);
-                    waveSample = osc.Process();
+                    triangleOsc.SetFreq(freq);
+                    waveSample = triangleOsc.Process();
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
                     waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
                     break;

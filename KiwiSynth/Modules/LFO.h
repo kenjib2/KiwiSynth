@@ -5,6 +5,10 @@
 #include "daisysp.h"
 
 #include "../Patch/PatchSettings.h"
+#include "KiwiSquare.h"
+#include "KiwiSaw.h"
+#include "KiwiRamp.h"
+#include "KiwiTriangle.h"
 
 using namespace daisysp;
 
@@ -24,7 +28,10 @@ namespace kiwi_synth
             bool            noteOnReset;
             float           basePhase;
             float           phase;
-            Oscillator      osc;
+            KiwiSquare      squareOsc;
+            KiwiSaw         sawOsc;
+            KiwiRamp        rampOsc;
+            KiwiTriangle    triangleOsc;
             Wavefolder      wavefolder;
             uint8_t         lfoNumber;
 
@@ -35,8 +42,8 @@ namespace kiwi_synth
 
             void UpdateSettings(PatchSettings* patchSettings);
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float tphaseMod);
-            inline void SetFreq(float frequency) { osc.SetFreq(frequency); }
-            inline void NoteOn() { if (noteOnReset) osc.Reset(phase); }
+            inline void SetFreq(float frequency) { squareOsc.SetFreq(frequency); sawOsc.SetFreq(frequency); rampOsc.SetFreq(frequency); triangleOsc.SetFreq(frequency); }
+            inline void NoteOn() { if (noteOnReset) { squareOsc.Reset(phase); sawOsc.Reset(phase); rampOsc.Reset(phase); triangleOsc.Reset(phase); } }
     };
 }
 

@@ -5,6 +5,9 @@
 #include "daisysp.h"
 
 #include "../Patch/PatchSettings.h"
+#include "KiwiPBSquare.h"
+#include "KiwiPBSaw.h"
+#include "KiwiTriangle.h"
 
 using namespace daisysp;
 
@@ -29,7 +32,9 @@ namespace kiwi_synth
             bool       isOn;
             bool       noteTriggered;
             int        waveform;
-            Oscillator osc;
+            KiwiPBSquare squareOsc;
+            KiwiPBSaw    sawOsc;
+            KiwiTriangle    triangleOsc;
             VariableShapeOscillator variOsc;
             VariableSawOscillator variSaw;
             Wavefolder wavefolder;
