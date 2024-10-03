@@ -75,6 +75,11 @@ namespace kiwi_synth
                     paraVcoMask[0] = 0.0f;
                     paraVcoMask[1] = 0.0f;
                     paraVcoMask[2] = 0.0f;
+
+                    currentMidiNote = 0;
+                    for (int i = 0; i < 3; i++) {
+                        vcos[i].midiNote = 0;
+                    }
                 } else {
                     paraVcoMask[0] = 1.0f;
                     paraVcoMask[1] = 1.0f;

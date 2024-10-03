@@ -14,7 +14,6 @@ namespace kiwi_synth
     class Envelope
     {
         private:
-            bool                    noteTriggered;
             bool                    reversed;
             bool                    quickRelease;
             float                   releaseValue;
@@ -26,6 +25,8 @@ namespace kiwi_synth
             uint8_t                 envNumber;
 
         public:
+            bool                    noteTriggered;
+
             Envelope() {}
             ~Envelope() {}
             void Init(float sampleRate, uint8_t envNumber);

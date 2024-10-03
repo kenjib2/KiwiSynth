@@ -194,7 +194,7 @@ namespace kiwi_synth
 
     void Voice::ParaNoteOn(int vco, uint8_t note, uint8_t velocity) { // Use paraOffset to set the note with respect to 0
         vcos[vco].paraOffset = (float)note;
-        if (IsAvailable() || IsReleasing()) {
+        if (IsAvailable() || (IsReleasing() && !noteTriggered)) {
             paraVcoMask[0] = 0.0f; // Make sure all vcos are turned off since sometimes one is left on for release.
             paraVcoMask[1] = 0.0f;
             paraVcoMask[2] = 0.0f;
@@ -206,7 +206,7 @@ namespace kiwi_synth
     void Voice::ParaNoteOff(int vco, bool noteOff) {
         if (noteOff) {
             // We are leaving vco masks on for the release so we can not assume they will all be off in ParaNoteOn
-            if (!env1.IsReleasing()) {
+            if (env1.noteTriggered) {
                 NoteOff(0, 0);
             }
         } else {
