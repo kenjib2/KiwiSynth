@@ -40,13 +40,10 @@ namespace kiwi_synth
             float currentPlayingNote;
             int triggerVelocity;
             float mods[MAX_MODS];
-            float vcoMods[MAX_MODS];
-            uint8_t numVcoMods;
             uint8_t numMods = 0;
             float modValues[NUM_MOD_DESTINATIONS];
             float prevSourceValues[NUM_MOD_SOURCES];
             float      paraVcoMask[3]; // For paraphonic mode, tracks which VCOs are triggered.
-            uint8_t    paraVcoNotes[3]; // For paraphonic mode, tracks which notes are playing.
 
             void initMods();
             void calculateMods(Modulation* modulations);
