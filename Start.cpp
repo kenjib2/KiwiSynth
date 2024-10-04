@@ -87,7 +87,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 384;
+const int AUDIO_BLOCK_SIZE = 256;
 Performance performance;
 CpuLoadMeter load;
 
