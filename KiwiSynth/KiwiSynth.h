@@ -66,6 +66,7 @@ namespace kiwi_synth
              * Clears the listener of all midi events without processing them.
              */
             void ClearMidi();
+            void Panic();
 
             bool BootLoaderRequested();
             void LoadPatch(int bankNumber, int patchNumber);

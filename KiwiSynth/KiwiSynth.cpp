@@ -107,6 +107,11 @@ namespace kiwi_synth
         }
     }
 
+    void KiwiSynth::Panic() {
+        AllNotesOff();
+        ClearMidi();
+    }
+
     void KiwiSynth::Process(AudioHandle::InterleavingOutputBuffer out, size_t size)
     {
         ProcessMidi();

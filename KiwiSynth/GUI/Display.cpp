@@ -223,6 +223,12 @@ namespace kiwi_synth
                         case SYSTEM_SCREEN_RESPONSE_NOEDIT:
                             menuActive = false;
                             break;
+                        case SYSTEM_SCREEN_RESPONSE_PANIC:
+                            menuActive = false;
+                            kiwiSynth->Panic();
+                            mode = MODE_PLAY;
+                            updateNeeded = true;
+                            break;
                         case SYSTEM_SCREEN_RESPONSE_UPDATE:
                             // Enter bootloader mode to listen for a bios update
                             mode = MODE_BOOTLOADER;

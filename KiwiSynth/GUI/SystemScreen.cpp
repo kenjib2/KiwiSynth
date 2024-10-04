@@ -18,19 +18,23 @@ namespace kiwi_synth
         sprintf(buffer, "System Version: 1.0");
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 14);
+        display->SetCursor(0, 12);
         sprintf(buffer, "Reads/Second: %d", performance->ReadsPerSec());
         display->WriteString(buffer, Font_6x8, true);
 
-        display->SetCursor(0, 28);
+        display->SetCursor(0, 24);
         sprintf(buffer, "Updates/Second: %d", performance->UpdatesPerSec());
         display->WriteString(buffer, Font_6x8, true);
 
 	    #ifdef __CPU_LOAD__
-            display->SetCursor(0, 42);
+            display->SetCursor(0, 36);
             sprintf(buffer, "CPU Max: %d  Avg: %d", (int)(performance->Max() * 100), (int)(performance->Avg() * 100));
             display->WriteString(buffer, Font_6x8, true);
     	#endif // __CPU_LOAD__
+
+        display->SetCursor(0, 46);
+        sprintf(buffer, "Panic!!!");
+        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_PANIC);
 
         display->SetCursor(0, 56);
         sprintf(buffer, "Flash BIOS");
@@ -61,6 +65,10 @@ namespace kiwi_synth
 
             case SYSTEM_SCREEN_UPDATE:
                 return SYSTEM_SCREEN_RESPONSE_UPDATE;
+
+            case SYSTEM_SCREEN_PANIC:
+                selected = SYSTEM_SCREEN_NONE;
+                return SYSTEM_SCREEN_RESPONSE_PANIC;
 
             default:
             case SYSTEM_SCREEN_RETURN:

@@ -15,15 +15,17 @@ namespace kiwi_synth
     enum SystemScreenSelection
     {
         SYSTEM_SCREEN_NONE = -1,
+        SYSTEM_SCREEN_PANIC,
         SYSTEM_SCREEN_UPDATE,
         SYSTEM_SCREEN_RETURN
     };
-    const static int SYSTEM_SCREEN_OPTIONS = 2;
+    const static int SYSTEM_SCREEN_OPTIONS = 3;
 
     enum SystemScreenResponse
     {
         SYSTEM_SCREEN_RESPONSE_EDIT,
         SYSTEM_SCREEN_RESPONSE_NOEDIT,
+        SYSTEM_SCREEN_RESPONSE_PANIC,
         SYSTEM_SCREEN_RESPONSE_UPDATE
     };
 

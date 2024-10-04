@@ -377,9 +377,7 @@ namespace kiwi_synth
     void VoiceBank::AllNotesOff()
     {
         for (int i = 0; i < maxVoices; i++) {
-            if (!voices[i].IsAvailable()) {
-                voices[i].NoteOff(0, 0);
-            }
+            voices[i].NoteOff(0, 0);
         }
         playingNotes.clear();
 

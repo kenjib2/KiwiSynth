@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Panic button in system menu (kill all notes)
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
@@ -52,6 +51,7 @@ using namespace kiwi_synth;
  * Can we absorb and optimize any more Daisy source?
  * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
+ * Save and load patches via Sysex
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * Can we get GPIO callbacks working?
