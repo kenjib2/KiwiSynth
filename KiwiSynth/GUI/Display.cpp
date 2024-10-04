@@ -72,6 +72,15 @@ namespace kiwi_synth
             if (menuActive) {
                 // Handle menus within screens
                 switch (mode) {
+                    case MODE_INT_SCREEN:
+                        if (direction == 1) {
+                            intValueScreen.Increment();
+                        } else if (direction == -1) {
+                            intValueScreen.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
+
                     case MODE_PATCH_SCREEN:
                         if (direction == 1) {
                             patchScreen.Increment();
@@ -134,6 +143,7 @@ namespace kiwi_synth
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
             SystemScreenResponse systemResponse;
+            IntScreenResponse intResponse;
 
             switch (mode) {
                 default:
@@ -155,6 +165,19 @@ namespace kiwi_synth
                         selectScreen.currentPage = SELECT_PAGE_BANK_PATCHES;
                     }
                     mode = MODE_SELECT_SCREEN;
+                    updateNeeded = true;
+                    break;
+                
+                case MODE_INT_SCREEN:
+                    intResponse = intValueScreen.Click();
+                    switch (intResponse) {
+                        case INT_SCREEN_RESPONSE_EDIT:
+                            menuActive = true;
+                            break;
+                        case INT_SCREEN_RESPONSE_NOEDIT:
+                            menuActive = false;
+                            break;
+                    }
                     updateNeeded = true;
                     break;
 

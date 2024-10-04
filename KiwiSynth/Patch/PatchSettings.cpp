@@ -130,6 +130,10 @@ namespace kiwi_synth
         setValue(GEN_EXPRESSION, 0.0f);
         setValue(GEN_SUSTAIN, 0.0f);
 
+        for (int i = 0; i < 8; i++) {
+            modSigns[i] = 1.0f;
+        }
+
         DefaultSettings();
     }
 
@@ -144,6 +148,18 @@ namespace kiwi_synth
             memcpy(this->intValues, savedPatch->voice2IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
             memcpy(this->floatValues, savedPatch->voice2FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
         }
+
+        SetModSigns();
+    }
+
+    void PatchSettings::SetModSigns() {
+        for (int i = 0; i < 8; i++) {
+            if (this->floatValues[MOD_1_DEPTH + i] >= 0.0f) {
+                modSigns[i] = 1.0f;
+            } else {
+                modSigns[i] = -1.0f;
+            }
+        }
     }
 
     void PatchSettings::Copy(PatchSettings* patchSettings)
@@ -151,6 +167,8 @@ namespace kiwi_synth
         memcpy(this->boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
         memcpy(this->intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
         memcpy(this->floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+
+        SetModSigns();
     }
 
     void PatchSettings::Load(SavedPatch* savedPatch, int voiceNumber)
@@ -210,22 +228,22 @@ namespace kiwi_synth
                 setValue(ENV_2_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 2:
-                setValue(MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[2]);
                 setValue(VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 3:
-                setValue(MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[3]);
                 setValue(VCO_2_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_DECAY, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 4:
-                setValue(MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[1]);
                 setValue(VCA_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 5:
-                setValue(MOD_1_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(MOD_1_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[0]);
                 setValue(VCO_2_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;

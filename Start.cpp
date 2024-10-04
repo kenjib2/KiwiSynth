@@ -32,7 +32,6 @@ using namespace kiwi_synth;
  * TO DO
  * 
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
- * Modulation is currently 0.0 - 1.0. Can we also do -1.0 to 0.0? -- maybe on the intval screen: scroll through sources and click to add a negative sign?
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
@@ -42,8 +41,6 @@ using namespace kiwi_synth;
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
  * Inverted amplitude envelope clicks when starting and stopping
- * When exiting menus back to play mode, need to clear the MIDI event buffer (if we can remove OLED sourced noise and let process always run then will this still be an issue?)
- * Performance % are off since we switched to 384 buffer
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
  *  
@@ -72,6 +69,7 @@ using namespace kiwi_synth;
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?
+ * Performance %s are off if we increase above a 256 buffer
  * L/R Output noise
  * Headphone out noise
  * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.

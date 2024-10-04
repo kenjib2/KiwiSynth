@@ -7,12 +7,14 @@ namespace kiwi_synth
     {
         this->display = display;
         this->patch = patch;
+        selected = INT_SCREEN_NONE;
     }
 
     void IntValueScreen::Display()
     {
         int8_t intVal1, intVal2;
         char val1[12], val2[12], val3[12];
+        char modSign;
 
         display->Fill(false);
 
@@ -55,29 +57,104 @@ namespace kiwi_synth
 
         display->SetCursor(0, 32);
         GetModSource(val1, 0);
+        modSign = ' ';
+        if (patch->voice1Settings->modSigns[0] < 0.0f) {
+            modSign = '-';
+        }
+        sprintf(buffer, "SRC1%c%s", modSign, val1);
+        display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC1);
+
+        display->SetCursor(66, 32);
         GetModDestination(val2, 0);
-        sprintf(buffer, "SRC1 %s DST1 %s", val1, val2);
+        sprintf(buffer, "DST1 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
         GetModSource(val1, 1);
+        modSign = ' ';
+        if (patch->voice1Settings->modSigns[1] < 0.0f) {
+            modSign = '-';
+        }
+        sprintf(buffer, "SRC2%c%s", modSign, val1);
+        display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC2);
+
+        display->SetCursor(66, 40);
         GetModDestination(val2, 1);
-        sprintf(buffer, "SRC2 %s DST2 %s", val1, val2);
+        sprintf(buffer, "DST2 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
         GetModSource(val1, 2);
+        modSign = ' ';
+        if (patch->voice1Settings->modSigns[2] < 0.0f) {
+            modSign = '-';
+        }
+        sprintf(buffer, "SRC3%c%s", modSign, val1);
+        display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC3);
+
+        display->SetCursor(66, 48);
         GetModDestination(val2, 2);
-        sprintf(buffer, "SRC3 %s DST3 %s", val1, val2);
+        sprintf(buffer, "DST3 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
         GetModSource(val1, 3);
+        modSign = ' ';
+        if (patch->voice1Settings->modSigns[3] < 0.0f) {
+            modSign = '-';
+        }
+        sprintf(buffer, "SRC4%c%s", modSign, val1);
+        display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC4);
+
+        display->SetCursor(66, 56);
         GetModDestination(val2, 3);
-        sprintf(buffer, "SRC4 %s DST4 %s", val1, val2);
+        sprintf(buffer, "DST4 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
+        if (selected != INT_SCREEN_NONE) {
+            display->SetCursor(102, 24);
+            sprintf(buffer, "<--");
+            display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_RETURN);
+        }
+
         display->Update();
+    }
+
+    void IntValueScreen::Increment() {
+        selected = (IntScreenSelection)((selected + 1) % INT_SCREEN_OPTIONS);
+    }
+
+    void IntValueScreen::Decrement() {
+        selected = (IntScreenSelection)((selected - 1 + INT_SCREEN_OPTIONS) % INT_SCREEN_OPTIONS);
+    }
+
+    IntScreenResponse IntValueScreen::Click() {
+        switch (selected) {
+            case INT_SCREEN_NONE:
+                selected = INT_SCREEN_SRC1;
+                return INT_SCREEN_RESPONSE_EDIT;
+
+            case INT_SCREEN_SRC1:
+                patch->activeSettings->modSigns[0] *= -1.0f;
+                return INT_SCREEN_RESPONSE_EDIT;
+
+            case INT_SCREEN_SRC2:
+                patch->activeSettings->modSigns[1] *= -1.0f;
+                return INT_SCREEN_RESPONSE_EDIT;
+
+            case INT_SCREEN_SRC3:
+                patch->activeSettings->modSigns[2] *= -1.0f;
+                return INT_SCREEN_RESPONSE_EDIT;
+
+            case INT_SCREEN_SRC4:
+                patch->activeSettings->modSigns[3] *= -1.0f;
+                return INT_SCREEN_RESPONSE_EDIT;
+
+            default:
+            case INT_SCREEN_RETURN:
+                selected = INT_SCREEN_NONE;
+                return INT_SCREEN_RESPONSE_NOEDIT;
+        }
     }
 
     // 2 character value

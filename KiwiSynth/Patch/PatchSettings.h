@@ -55,8 +55,15 @@ namespace kiwi_synth
              * Updates expansion basaed values with the current values in the GpioExpansion buffer.
              */
             void updateGpioExpansionValues(int controlNumber);
+            /*
+             * Sets up whether mod depth values are positive or negative depending on whether the current
+             * values are positive or negative. 0.0f will count as positive.
+             */
+            void SetModSigns();
 
         public:
+            float modSigns[8]; // values should be 1.0f or -1.0f only
+
             PatchSettings() {}
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
