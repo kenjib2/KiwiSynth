@@ -52,7 +52,7 @@ namespace kiwi_synth
              */
             void updatePotValues(int controlNumber);
             /*
-             * Updates expansion basaed values with the current values in the GpioExpansion buffer.
+             * Updates expansion based values with the current values in the GpioExpansion buffer.
              */
             void updateGpioExpansionValues(int controlNumber);
             /*
