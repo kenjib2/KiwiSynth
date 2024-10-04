@@ -31,8 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
+ * Modulation is currently 0.0 - 1.0. Can we also do -1.0 to 0.0? -- maybe on the intval screen: scroll through sources and click to add a negative sign?
+ * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
  * Paraphonic layered 3 "voice" mode.
@@ -68,7 +69,6 @@ using namespace kiwi_synth;
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion
- * Modulation is currently 0.0 - 1.0. Can we also do -1.0 to 0.0?
  * Modulating modulations and effects
  * New mod destination that is just Noise to VCA Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the VCF somehow?
