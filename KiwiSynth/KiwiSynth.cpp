@@ -256,6 +256,8 @@ namespace kiwi_synth
         SavedPatch savedPatch = storage.LoadPatch(bankNumber, patchNumber);
         patch.Load(savedPatch);
         voiceBank.UpdateSettings();
+        patch.Load(savedPatch);     // For some reason multitimbral voice modes require loading/updating the patch twice.
+        voiceBank.UpdateSettings(); // I need to debug this properly but for now it's working via this workaround.
         effectsEngine.UpdateSettings();
     }
 

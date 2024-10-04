@@ -73,6 +73,11 @@ namespace kiwi_synth
         memcpy(&loadedPatchData, &savedPatch, sizeof(SavedPatch));
 
         voiceMode = savedPatch.voiceMode;
+        if (voiceMode == VOICE_MODE_MULTI || voiceMode == VOICE_MODE_SPLIT) {
+            voice2Settings = &settings2;
+        } else {
+            voice2Settings = &settings1;
+        }
         splitNote = savedPatch.splitNote;
         strcpy(name, savedPatch.name);
         type = savedPatch.type;

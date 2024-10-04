@@ -50,6 +50,7 @@ using namespace kiwi_synth;
  * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
  * Save and load patches via Sysex
+ * Layered patches are either not saving or not loading correctly. setting2 seems to not be playing with the expected settings. If you load twice it works.
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * Can we get GPIO callbacks working?
