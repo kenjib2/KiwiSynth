@@ -31,13 +31,12 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Can we move any global or class vars to local stack vars?
- * Can we convert any ops into bitwise ops?
+ * Panic button in system menu (kill all notes)
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
- * Paraphonic modes with six notes. One mode with both voices mirroring env/lfo/etc. One with six notes and two independent voices kinda split by pitch.
+ * Paraphonic layered 3 "voice" mode.
  * Need to mod LFO1 to Pitch amount because of mod wheel
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
@@ -45,13 +44,13 @@ using namespace kiwi_synth;
  * Inverted amplitude envelope clicks when starting and stopping
  * When exiting menus back to play mode, need to clear the MIDI event buffer (if we can remove OLED sourced noise and let process always run then will this still be an issue?)
  * Performance % are off since we switched to 384 buffer
- * Can we get the buffer lower
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
- * Change paraphonic so that there is a slight delay on release to detect releasing multiple notes "at once" when release phase of env triggers
  * Separate FX 1 and FX 2 into separate settings?
- * Getting pops after adding paraphonic mode. Need to find somewhere to cut a little bit.
  *  
- * Panic button in system menu (kill all notes)
+ * Can we move any global or class vars to local stack vars?
+ * Can we convert any ops into bitwise ops?
+ * Can we absorb and optimize any more Daisy source?
+ * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
@@ -59,7 +58,6 @@ using namespace kiwi_synth;
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
- * Update Zita to handle larger delay values for Bloom reverb
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * Make attack longer or a slower curve? Maybe also lower max release.
  * External audio in
