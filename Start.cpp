@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * balance is always live data == not coming from the patch. See Luxe for an example.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Alternate inputs to S&H (instead of noise)

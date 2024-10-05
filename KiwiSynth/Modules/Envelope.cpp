@@ -24,7 +24,7 @@ namespace kiwi_synth
     void Envelope::UpdateSettings(PatchSettings* patchSettings)
     {
         if (!quickRelease) {
-            env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + prevAttackMod), 0.0f) * 3.0f);
+            env.SetAttackTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_ATTACK + envNumber)) + prevAttackMod), 0.0f) * 4.0f);
             env.SetDecayTime(std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_DECAY + envNumber)) + prevDecayMod), 0.0f) * 3.0f);
             env.SetSustainLevel(fclamp(patchSettings->getFloatValue((PatchSetting)(ENV_1_SUSTAIN + envNumber)) + prevSustainMod, 0.0f, 1.0f));
             releaseValue = std::fmax((patchSettings->getFloatValue((PatchSetting)(ENV_1_RELEASE + envNumber)) + prevReleaseMod), 0.0f) * 3.0f;
