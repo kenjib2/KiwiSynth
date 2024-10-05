@@ -43,6 +43,7 @@ using namespace kiwi_synth;
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
+ * Mod not applying to voice 2 sometimes -- see Vox Humana patch
  *  
  * Can we move any global or class vars to local stack vars?
  * Can we convert any ops into bitwise ops?
