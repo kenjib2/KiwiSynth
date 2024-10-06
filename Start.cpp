@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * balance is always live data == not coming from the patch. See Luxe for an example.
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Alternate inputs to S&H (instead of noise)
@@ -44,7 +43,7 @@ using namespace kiwi_synth;
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
- * Mod not applying to voice 2 sometimes -- see Vox Humana patch
+ * Mod not applying to voice 2 sometimes -- see Vox Humana patch -- I am not hearing this now. Remove item???
  *  
  * Can we move any global or class vars to local stack vars?
  * Can we convert any ops into bitwise ops?

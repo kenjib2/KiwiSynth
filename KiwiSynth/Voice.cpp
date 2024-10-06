@@ -48,6 +48,7 @@ namespace kiwi_synth
         sampleAndHold.UpdateSettings(patchSettings);
         vcf.UpdateSettings(patchSettings);
         vca.UpdateSettings(patchSettings);
+        baseBalance = patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f);
 
         portamentoOn = patchSettings->getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
         portamentoSpeed = patchSettings->getFloatValueLogLookup(PatchSetting::VCO_PORTAMENTO_SPEED);
@@ -159,7 +160,7 @@ namespace kiwi_synth
 
         vca.Process(&voiceSample, patchSettings, fclamp(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
-        float balance = fclamp(patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f) + modValues[DST_BALANCE], -1.0f, 1.0f);
+        float balance = fclamp(baseBalance + modValues[DST_BALANCE], -1.0f, 1.0f);
         sample[0]  = voiceSample  * std::fmin(1.0f - balance, 1.0f);  // max gain = 1.0, pan = 0: left and right unchanged)
         sample[1] = voiceSample * std::fmin(1.0f + balance, 1.0f);
 

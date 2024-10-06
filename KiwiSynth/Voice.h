@@ -27,23 +27,24 @@ namespace kiwi_synth
         private:
             static const int MAX_MODS = 9;
             std::vector<VCO> vcos;
-            Noise noise;
-            Envelope env1, env2;
+            Noise       noise;
+            Envelope    env1, env2;
             SampleAndHold sampleAndHold;
-            LFO lfo1, lfo2;
-            VCF vcf;
-            VCA vca;
-            int voiceNumber;
-            int32_t noteTriggerCount;
-            bool portamentoOn;
-            float portamentoSpeed;
-            float currentPlayingNote;
-            int triggerVelocity;
-            float mods[MAX_MODS];
-            uint8_t numMods = 0;
-            float modValues[NUM_MOD_DESTINATIONS];
-            float prevSourceValues[NUM_MOD_SOURCES];
-            float      paraVcoMask[3]; // For paraphonic mode, tracks which VCOs are triggered.
+            LFO         lfo1, lfo2;
+            VCF         vcf;
+            VCA         vca;
+            int         voiceNumber;
+            int32_t     noteTriggerCount;
+            bool        portamentoOn;
+            float       portamentoSpeed;
+            float       currentPlayingNote;
+            float       baseBalance;
+            int         triggerVelocity;
+            float       mods[MAX_MODS];
+            uint8_t     numMods = 0;
+            float       modValues[NUM_MOD_DESTINATIONS];
+            float       prevSourceValues[NUM_MOD_SOURCES];
+            float       paraVcoMask[3]; // For paraphonic mode, tracks which VCOs are triggered.
 
             void initMods();
             void calculateMods(Modulation* modulations);
