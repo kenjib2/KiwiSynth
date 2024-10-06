@@ -225,6 +225,27 @@ namespace kiwi_synth
             case DST_BALANCE:
                 strcpy(buffer, "Balnc");
                 break;
+            case DST_LFO_1_TO_MASTER_TUNE:
+                strcpy(buffer, "L1>MT");
+                break;
+            case DST_LFO_2_TO_VCF_CUTOFF:
+                strcpy(buffer, "L2>FC");
+                break;
+            case DST_NOTE_TO_VCF_CUTOFF:
+                strcpy(buffer, "Nt>FC");
+                break;
+            case DST_ENV_1_TO_VCA:
+                strcpy(buffer, "E1>Lv");
+                break;
+            case DST_ENV_1_TO_VCF_CUTOFF:
+                strcpy(buffer, "E1>FC");
+                break;
+            case DST_ENV_2_TO_VCF_CUTOFF:
+                strcpy(buffer, "E2>FC");
+                break;
+            case DST_SH_TO_VCF_CUTOFF:
+                strcpy(buffer, "SH>FC");
+                break;
         }
     }
 

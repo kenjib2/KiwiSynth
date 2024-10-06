@@ -5,7 +5,7 @@ namespace kiwi_synth
 {
     const static int MAX_PATCH_NAME_LENGTH = 15;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
-    const static int NUM_MOD_DESTINATIONS = 30; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 37; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 99;
     const static int NUM_PATCH_SETTINGS_SAVED = 92;
@@ -238,43 +238,53 @@ namespace kiwi_synth
         DST_VCO_1_FREQ,         // 2
         DST_VCO_1_PULSE_WIDTH,  // 3
         DST_VCO_2_FREQ,         // 4
+
         DST_VCO_2_PULSE_WIDTH,  // 5
         DST_VCO_3_FREQ,         // 6
         DST_VCO_3_PULSE_WIDTH,  // 7
         DST_NOISE_DENSITY,      // 8
         DST_NOISE_LEVEL,        // 9
+
         DST_SH_RATE,            // 10
         DST_VCF_CUTOFF,         // 11
         DST_VCF_RESONANCE,      // 12
-        //DST_VCF_ENV_1_DEPTH,          // Modulating other modulations might be complicated
-        //DST_VCF_ENV_2_DEPTH,
         DST_VCA_LEVEL,          // 13
         DST_VCA_ENV_1_DEPTH,    // 14
-        //DST_VCA_ENV_2_DEPTH,
+
         DST_LFO_1_FREQ,         // 15
         DST_LFO_1_PULSE_WIDTH,  // 16
-        //DST_LFO_1_TO_MASTER_TUNE,
         DST_LFO_1_TRIGGER_PHASE,// 17
         DST_LFO_2_FREQ,         // 18
         DST_LFO_2_PULSE_WIDTH,  // 19
-        //DST_LFO_2_TO_VCF_CUTOFF,
+
         DST_LFO_2_TRIGGER_PHASE,// 20
         DST_ENV_1_ATTACK,       // 21
         DST_ENV_1_DECAY,        // 22
         DST_ENV_1_SUSTAIN,      // 23
         DST_ENV_1_RELEASE,      // 24
+
         DST_ENV_2_ATTACK,       // 25
         DST_ENV_2_DECAY,        // 26
         DST_ENV_2_SUSTAIN,      // 27
         DST_ENV_2_RELEASE,      // 28
-        DST_BALANCE             // 29
+        DST_BALANCE,            // 29
+
+        DST_LFO_1_TO_MASTER_TUNE,// 30
+        DST_LFO_2_TO_VCF_CUTOFF,// 31
+        DST_NOTE_TO_VCF_CUTOFF, // 32
+        DST_ENV_1_TO_VCA,       // 33
+        DST_ENV_1_TO_VCF_CUTOFF,// 34
+
+        DST_ENV_2_TO_VCF_CUTOFF,// 35
+        DST_SH_TO_VCF_CUTOFF    // 36
+
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               // Could possibly modulate for sources 7-12 only or have only voice 1 apply or only in solo mode?
         //DST_FX_3,
         //DST_FX_4,
         //DST_FX_5,
         //DST_FX_REVERB
-    } ModulationDestination; // 29 destinations not including None
+    } ModulationDestination; // 37 destinations not including None
 
 } // namespace kiwi_synth
 #endif // __KIWI_SYNTH_PATCH_TYPES_H__

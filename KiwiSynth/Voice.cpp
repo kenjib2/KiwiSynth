@@ -70,14 +70,15 @@ namespace kiwi_synth
         modValues[modulations[6].destination] += prevSourceValues[modulations[6].source] * modulations[6].depth;
         modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;
 
-        modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * modulations[8].depth;
+        // The next modulations can all be further modified by previous mods
+        modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * (modulations[8].depth + modValues[DST_LFO_1_TO_MASTER_TUNE]);
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
         // Also skipping 10 because VCF tracking needs to be handled in a special way.
-        modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * modulations[11].depth;
-        modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * modulations[12].depth;
-        modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * modulations[13].depth;
-        modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * modulations[14].depth;
+        modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * (modulations[11].depth + modValues[DST_ENV_1_TO_VCF_CUTOFF]);
+        modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * (modulations[12].depth + modValues[DST_ENV_2_TO_VCF_CUTOFF]);
+        modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * (modulations[13].depth + modValues[DST_LFO_2_TO_VCF_CUTOFF]);
+        modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * (modulations[14].depth + modValues[DST_SH_TO_VCF_CUTOFF]);
     }
 
     /*
@@ -156,9 +157,9 @@ namespace kiwi_synth
         sampleAndHoldSample = noise.GetLastSample();
         sampleAndHold.Process(&sampleAndHoldSample, patchSettings, modValues[DST_SH_RATE]);
 
-        vcf.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(VCF_TRACKING), currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+        vcf.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(VCF_TRACKING) + modValues[DST_NOTE_TO_VCF_CUTOFF], currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 
-        vca.Process(&voiceSample, patchSettings, fclamp(modulations[9].depth + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
+        vca.Process(&voiceSample, patchSettings, fclamp((modulations[9].depth + modValues[DST_ENV_1_TO_VCA]) + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
 
         float balance = fclamp(baseBalance + modValues[DST_BALANCE], -1.0f, 1.0f);
         sample[0]  = voiceSample  * std::fmin(1.0f - balance, 1.0f);  // max gain = 1.0, pan = 0: left and right unchanged)
