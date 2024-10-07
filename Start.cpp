@@ -31,19 +31,17 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
- * System-wide default Mod settings 5-8 (not patch specific usually for pitch bend, modwheel, etc.). If any of 1-4 have that source, then the system wide one is overridden and ignored.
  * Alternate inputs to S&H (instead of noise)
  * Will fastSine work for LFOs and VCOs?
  * Paraphonic layered 3 "voice" mode.
- * Need to mod LFO1 to Pitch amount because of mod wheel
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
  * Note steal with all voice keys still held down does not retrigger envelope
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
- * Mod not applying to voice 2 sometimes -- see Vox Humana patch -- I am not hearing this now. Remove item???
  *  
  * Can we move any global or class vars to local stack vars?
  * Can we convert any ops into bitwise ops?
