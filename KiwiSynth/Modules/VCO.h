@@ -8,6 +8,7 @@
 #include "KiwiPBSquare.h"
 #include "KiwiPBSaw.h"
 #include "KiwiTriangle.h"
+#include "KiwiFastSine.h"
 
 using namespace daisysp;
 
@@ -37,6 +38,7 @@ namespace kiwi_synth
             KiwiTriangle    triangleOsc;
             VariableShapeOscillator variOsc;
             VariableSawOscillator variSaw;
+            KiwiFastSine sineOsc;
             Wavefolder wavefolder;
 
         public:

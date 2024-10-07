@@ -28,6 +28,9 @@ namespace kiwi_synth
         variOsc.SetSync(false);
         variSaw.Init(sampleRate);
         variSaw.SetWaveshape(0.0f);
+        sineOsc.Init(sampleRate);
+        sineOsc.SetFreq(220.0f);
+        sineOsc.SetAmp(1.0f);
         wavefolder.Init();
         wavefolder.SetGain(1.0f);
     }
@@ -39,6 +42,7 @@ namespace kiwi_synth
             waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
             pulseWidth = 0.53f - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03f, 0.5f);
             variShape = patchSettings->getFloatValue((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber));
+            variShape = variShape > 0.003 ? variShape - 0.003 : 0.0f;
             waveFolderGain = 1.0f + variShape * 27.0f;
             sawtoothGain = variShape * variShape * 50.0f;
             level = patchSettings->getFloatValue((PatchSetting)(VCO_1_LEVEL + vcoNumber));
@@ -86,6 +90,17 @@ namespace kiwi_synth
                     variSaw.SetPW(1.0f - variShape + pwMod);
                     waveSample = variSaw.Process();
                     break;
+                case WAVEFORM_SINE:
+                    sineOsc.SetFreq(freq);
+                    waveSample = sineOsc.Process();
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    break;
+                case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                    sawOsc.SetFreq(freq);
+                    waveSample = sawOsc.Process();
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
             }
 
             *sample = waveSample * level;

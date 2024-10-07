@@ -20,6 +20,12 @@ namespace kiwi_synth
             case WAVEFORM_VARISAW:
                 strcpy(buffer, "VS");
                 break;
+            case WAVEFORM_SINE:
+                strcpy(buffer, "Si");
+                break;
+            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                strcpy(buffer, "WS");
+                break;
         }
     }
 

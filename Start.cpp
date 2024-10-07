@@ -34,7 +34,7 @@ using namespace kiwi_synth;
  * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
- * Will fastSine work for LFOs and VCOs?
+ * Add Sine and Wavefolded Sawtooth(?) to LFO
  * Paraphonic layered 3 "voice" mode.
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
@@ -42,8 +42,11 @@ using namespace kiwi_synth;
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
+ * Poly mode: Sometimes when multiple notes are played together only one sounds -- maybe an issue with triggering?
  *  
  * Can we move any global or class vars to local stack vars?
+ * Can we add a mod_9 for expression? Would have to update all current saved patches.
+ * Also add a delay mode so you can swap out normal delay for ping-pong etc.
  * Can we convert any ops into bitwise ops?
  * Can we absorb and optimize any more Daisy source?
  * Can we get the buffer lower
@@ -62,7 +65,6 @@ using namespace kiwi_synth;
  * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
  * Ping Pong Delay
- * Bhāskara I's sine approximation formula
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion

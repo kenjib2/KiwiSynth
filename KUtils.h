@@ -4,6 +4,7 @@
 // Compiler options
 //#define __CPU_LOAD__ // Monitor performance in GUI
 //#define __PATCH_SETTINGS__ // Output patch settings to serial console
+#define EXTRA_PRECISION
 
 #include "daisy_seed.h"
 #include "daisysp.h"

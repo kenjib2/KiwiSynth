@@ -12,24 +12,6 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    typedef enum {
-        MODS_MOD_MATRIX_1,
-        MODS_MOD_MATRIX_2,
-        MODS_MOD_MATRIX_3,
-        MODS_MOD_MATRIX_4,
-        MODS_MOD_MATRIX_5,
-        MODS_MOD_MATRIX_6,
-        MODS_MOD_MATRIX_7,
-        MODS_MOD_MATRIX_8,
-        MODS_LFO_1_TO_VCOS,
-        MODS_ENV_1_TO_VCA,
-        MODS_NOTE_TO_VCF_FREQ,
-        MODS_ENV_1_TO_VCF_FREQ,
-        MODS_ENV_2_TO_VCF_FREQ,
-        MODS_LFO_2_TO_VCF_FREQ,
-        MODS_SH_TO_VCF_FREQ
-    } Modulations;
-    
     const static int VCO_TRIGGER_SAMPLES = 1024;
 
     class VoiceBank
