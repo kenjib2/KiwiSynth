@@ -21,8 +21,8 @@ namespace kiwi_synth
         tmp[VCO_3_INTERVAL] = 22;
         tmp[VCO_NOISE_TYPE] = 1;
         tmp[VCF_FILTER_TYPE] = 7;
-        tmp[LFO_1_WAVEFORM] = 3;
-        tmp[LFO_2_WAVEFORM] = 3;
+        tmp[LFO_1_WAVEFORM] = 7;
+        tmp[LFO_2_WAVEFORM] = 7;
         tmp[MOD_1_SOURCE] = NUM_MOD_SOURCES - 1;
         tmp[MOD_1_DESTINATION] = NUM_MOD_DESTINATIONS - 1;
         tmp[MOD_2_SOURCE] = NUM_MOD_SOURCES - 1;

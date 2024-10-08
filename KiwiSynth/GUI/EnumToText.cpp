@@ -42,17 +42,29 @@ namespace kiwi_synth
 
     void EnumToText::GetLfoWaveform(char* buffer, int8_t lfoWaveform) {
         switch (lfoWaveform) {
-            case 0:
+            case LFO_WAVEFORM_TRIANGLE:
                 strcpy(buffer, "Tr");
                 break;
-            case 1:
+            case LFO_WAVEFORM_SQUARE:
                 strcpy(buffer, "Sq");
                 break;
-            case 2:
+            case LFO_WAVEFORM_SAWTOOTH:
                 strcpy(buffer, "Sa");
                 break;
-            case 3:
+            case LFO_WAVEFORM_RAMP:
                 strcpy(buffer, "Ra");
+                break;
+            case LFO_WAVEFORM_VARISHAPE:
+                strcpy(buffer, "Sh");
+                break;
+            case LFO_WAVEFORM_VARISAW:
+                strcpy(buffer, "VS");
+                break;
+            case LFO_WAVEFORM_SINE:
+                strcpy(buffer, "Si");
+                break;
+            case LFO_WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                strcpy(buffer, "WS");
                 break;
         }
     }

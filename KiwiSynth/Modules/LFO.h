@@ -9,6 +9,7 @@
 #include "KiwiSaw.h"
 #include "KiwiRamp.h"
 #include "KiwiTriangle.h"
+#include "KiwiFastSine.h"
 
 using namespace daisysp;
 
@@ -22,6 +23,7 @@ namespace kiwi_synth
         private:
             int             waveform;
             float           pulseWidth;
+            float           variShape;
             float           waveFolderGain;
             float           sawtoothGain;
             float           freq;
@@ -32,6 +34,9 @@ namespace kiwi_synth
             KiwiSaw         sawOsc;
             KiwiRamp        rampOsc;
             KiwiTriangle    triangleOsc;
+            VariableShapeOscillator variOsc;
+            VariableSawOscillator variSaw;
+            KiwiFastSine    sineOsc;
             Wavefolder      wavefolder;
             uint8_t         lfoNumber;
 

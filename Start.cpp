@@ -34,7 +34,6 @@ using namespace kiwi_synth;
  * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
- * Add Sine and Wavefolded Sawtooth(?) to LFO
  * Paraphonic layered 3 "voice" mode.
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
@@ -44,6 +43,7 @@ using namespace kiwi_synth;
  * Separate FX 1 and FX 2 into separate settings?
  * Poly mode: Sometimes when multiple notes are played together only one sounds -- maybe an issue with triggering?
  *  
+ * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?
  * Can we add a mod_9 for expression? Would have to update all current saved patches.
  * Also add a delay mode so you can swap out normal delay for ping-pong etc.

@@ -72,7 +72,11 @@ namespace kiwi_synth
         LFO_WAVEFORM_TRIANGLE,
         LFO_WAVEFORM_SAWTOOTH,
         LFO_WAVEFORM_RAMP,
-        LFO_WAVEFORM_SQUARE
+        LFO_WAVEFORM_SQUARE,
+        LFO_WAVEFORM_SINE,
+        LFO_WAVEFORM_VARISHAPE,
+        LFO_WAVEFORM_VARISAW,
+        LFO_WAVEFORM_WAVEFOLDED_SAWTOOTH
     } LfoWaveform;
 
     enum FilterType {
