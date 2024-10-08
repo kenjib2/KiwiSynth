@@ -127,10 +127,10 @@ namespace kiwi_synth
         VCO_NOISE_TYPE,
         VCO_NOISE_LEVEL,
         VCO_DUST_DENSITY,           // 25
-        VCO_EXT_ON,
-        // External gain is analog only
-        VCO_EXT_TRIGGER_GATE,
-        VCO_EXT_LEVEL,
+        VCO_INPUT_ON,
+        VCO_INPUT_THRESHOLD,
+        VCO_INPUT_LEVEL,
+        // Input gain is analog only
 
         VCF_FILTER_TYPE,
         VCF_CUTOFF,                 // 30

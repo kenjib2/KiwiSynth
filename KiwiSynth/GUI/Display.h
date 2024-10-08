@@ -9,6 +9,7 @@
 #include "PlayScreen.h"
 #include "BootloaderScreen.h"
 #include "IntValueScreen.h"
+#include "FloatValue1Screen.h"
 #include "PatchScreen.h"
 #include "SelectScreen.h"
 #include "SystemScreen.h"
@@ -62,10 +63,11 @@ namespace kiwi_synth
         MODE_SELECT_SCREEN = -1,
         MODE_PLAY = 0,
         MODE_INT_SCREEN,
+        MODE_FLOAT_1_SCREEN,
         MODE_PATCH_SCREEN,
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
-    const int DISPLAY_MODE_OPTIONS = 4; // Not including MODE_LOAD_SCREEN or MODE_BOOTLOADER
+    const int DISPLAY_MODE_OPTIONS = 5; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
 
     /*
      * The display class is the main controller for the synth GUI. It handles input, manages which
@@ -99,6 +101,7 @@ namespace kiwi_synth
             PlayScreen playScreen;
             BootloaderScreen bootloaderScreen;
             IntValueScreen intValueScreen;
+            FloatValue1Screen floatValue1Screen;
             PatchScreen patchScreen;
             SelectScreen selectScreen;
             SystemScreen systemScreen;

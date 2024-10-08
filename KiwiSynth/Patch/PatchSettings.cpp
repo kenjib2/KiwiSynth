@@ -260,12 +260,12 @@ namespace kiwi_synth
             case 8:
                 setValue(FX_4, multiPots->GetMpValue(0, controlNumber));
                 setValue(VCO_1_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
-                setValue(VCO_EXT_LEVEL, multiPots->GetMpValue(2, controlNumber));
+                setValue(VCO_INPUT_LEVEL, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 9:
                 setValue(GEN_BALANCE, multiPots->GetMpValue(0, controlNumber));
                 setValue(VCO_2_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
-                setValue(VCO_EXT_TRIGGER_GATE, multiPots->GetMpValue(2, controlNumber));
+                setValue(VCO_INPUT_THRESHOLD, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 10:
                 setValue(FX_3, multiPots->GetMpValue(0, controlNumber));
@@ -336,7 +336,7 @@ namespace kiwi_synth
             case 0x23:
                 setValue(VCO_NOISE_ON, ge->getPinValue(controlNumber, 5));
                 setValue(VCO_3_ON, ge->getPinValue(controlNumber, 6));
-                setValue(VCO_EXT_ON, ge->getPinValue(controlNumber, 9));
+                setValue(VCO_INPUT_ON, ge->getPinValue(controlNumber, 9));
                 setValue(LFO_1_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 10));
                 setValue(LFO_2_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 11));
                 processEncoder(LFO_2_WAVEFORM, controlNumber, 2, 1);
@@ -376,9 +376,9 @@ namespace kiwi_synth
         setValue(VCO_NOISE_TYPE, (int8_t)0);
         setValue(VCO_NOISE_LEVEL, 0.0f);
 
-        setValue(VCO_EXT_ON, false);
-        setValue(VCO_EXT_TRIGGER_GATE, 0.5f);
-        setValue(VCO_EXT_LEVEL, 0.0f);
+        setValue(VCO_INPUT_ON, false);
+        setValue(VCO_INPUT_THRESHOLD, 0.5f);
+        setValue(VCO_INPUT_LEVEL, 0.0f);
 
         setValue(VCF_FILTER_TYPE, (int8_t)0);
         setValue(VCF_CUTOFF, 0.999f);

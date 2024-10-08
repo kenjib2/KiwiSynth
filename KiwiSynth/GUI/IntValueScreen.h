@@ -36,8 +36,8 @@ namespace kiwi_synth
      * for any changes to the values if in live mode. This allows you to see what is being changed and
      * what the potential values are when using the encoders.
      * 
-     * This screen does not have a menu and does not respond to clicks or internal scrolling. All
-     * updates are made using the standard physical patch controls.
+     * This screen has an additional function to invert modulation polarity, allowing mod settings to
+     * work as negative instead of positive modifiers.
      */
     class IntValueScreen
     {
