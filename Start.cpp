@@ -45,7 +45,7 @@ using namespace kiwi_synth;
  *  
  * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?
- * Can we add a mod_9 for expression? Would have to update all current saved patches.
+ * Can we add a mod_9 for expression and mod_10 for sustain? Would have to update all current saved patches.
  * Also add a delay mode so you can swap out normal delay for ping-pong etc.
  * Can we convert any ops into bitwise ops?
  * Can we absorb and optimize any more Daisy source?

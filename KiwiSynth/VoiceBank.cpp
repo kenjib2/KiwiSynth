@@ -204,14 +204,14 @@ namespace kiwi_synth
         }
 
         modSource = (ModulationSource)patch->voice1Settings->getIntValue(MOD_7_SOURCE);
-        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_SUSTAIN &&
-                modulations[0][MODS_MOD_MATRIX_2].source != SRC_SUSTAIN &&
-                modulations[0][MODS_MOD_MATRIX_3].source != SRC_SUSTAIN &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_SUSTAIN &&
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_VELOCITY &&
                 modSource == 0) {
-            modulations[0][MODS_MOD_MATRIX_7].source = SRC_SUSTAIN;
-            modulations[0][MODS_MOD_MATRIX_7].destination = DST_ENV_1_RELEASE;
-            modulations[0][MODS_MOD_MATRIX_7].depth = 0.5f;
+            modulations[0][MODS_MOD_MATRIX_7].source = SRC_VELOCITY;
+            modulations[0][MODS_MOD_MATRIX_7].destination = DST_ENV_1_TO_VCA;
+            modulations[0][MODS_MOD_MATRIX_7].depth = 1.0f;
         } else {
             modulations[0][MODS_MOD_MATRIX_7].source = modSource;
             modulations[0][MODS_MOD_MATRIX_7].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_7_DESTINATION);
@@ -232,6 +232,11 @@ namespace kiwi_synth
             modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_8_DESTINATION);
             modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);
         }
+
+        /*  modulations[0][MODS_MOD_MATRIX_7].source = SRC_SUSTAIN;
+            modulations[0][MODS_MOD_MATRIX_7].destination = DST_ENV_1_RELEASE;
+            modulations[0][MODS_MOD_MATRIX_7].depth = 0.5f;
+        */
 
         memcpy(modulations[1], modulations[0], sizeof(Modulation) * 8);
 
