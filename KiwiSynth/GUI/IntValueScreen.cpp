@@ -22,7 +22,7 @@ namespace kiwi_synth
 
         if (patch->GetLiveMode()) {
             voiceMode = (VoiceMode)patch->activeSettings->getIntValue(VCO_VOICES);
-            modSettings = patch->voice1Settings;
+            modSettings = patch->activeSettings;
             if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
                 settings = patch->voice1Settings;
             } else {
