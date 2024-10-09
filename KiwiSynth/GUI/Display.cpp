@@ -25,6 +25,7 @@ namespace kiwi_synth
         intValueScreen.Init(&display, patch);
         floatValue1Screen.Init(&display, patch);
         floatValue2Screen.Init(&display, patch);
+        floatValue3Screen.Init(&display, patch);
         patchScreen.Init(&display, patch);
         selectScreen.Init(&display, kiwiSynth);
         systemScreen.Init(&display, performance);
@@ -193,6 +194,11 @@ namespace kiwi_synth
                     updateNeeded = true;
                     break;
 
+                case MODE_FLOAT_3_SCREEN:
+                    floatValue3Screen.Click();
+                    updateNeeded = true;
+                    break;
+
                 case MODE_PATCH_SCREEN:
                     // Send the click to the patch screen and then handle the response.
                     patchResponse = patchScreen.Click();
@@ -308,6 +314,9 @@ namespace kiwi_synth
                 break;
             case MODE_FLOAT_2_SCREEN:
                 floatValue2Screen.Display();
+                break;
+            case MODE_FLOAT_3_SCREEN:
+                floatValue3Screen.Display();
                 break;
             case MODE_PATCH_SCREEN:
                 patchScreen.Display();

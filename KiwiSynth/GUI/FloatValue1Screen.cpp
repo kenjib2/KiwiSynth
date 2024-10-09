@@ -12,7 +12,7 @@ namespace kiwi_synth
 
     void FloatValue1Screen::Display()
     {
-        int intVal1, intVal2;
+        int intVal1, intVal2, intVal3;
         bool boolVal1;
         PatchSettings* settings;
         VoiceMode voiceMode;
@@ -37,12 +37,13 @@ namespace kiwi_synth
 
         display->SetCursor(0, 0);
         boolVal1 = settings->getBoolValue(VCO_PORTAMENTO_ON);
-        intVal1 = (int)(settings->getFloatValue(VCO_MASTER_TUNE) * 1000.f);
-        intVal2 = (int)(settings->getFloatValue(VCO_PORTAMENTO_SPEED) * 1000.f);
+        intVal1 = (int)(settings->getFloatValue(GEN_BALANCE) * 1000.f);
+        intVal2 = (int)(settings->getFloatValue(VCO_MASTER_TUNE) * 1000.f);
+        intVal3 = (int)(settings->getFloatValue(VCO_PORTAMENTO_SPEED) * 1000.f);
         if (!boolVal1) {
-            sprintf(buffer, "MaTune %03d Port Off V%d", intVal1, voiceNumber + 1);
+            sprintf(buffer, "B %03d T %03d Pt Off V%d", intVal1, intVal2, voiceNumber + 1);
         } else {
-            sprintf(buffer, "MaTune %03d Port %03d V%d", intVal1, intVal2, voiceNumber + 1);
+            sprintf(buffer, "B %03d T %03d Pt %03d V%d", intVal1, intVal2, intVal3, voiceNumber + 1);
         }
         display->WriteString(buffer, Font_6x8, true);
 

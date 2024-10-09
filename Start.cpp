@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Menus for bool and float values
  * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
