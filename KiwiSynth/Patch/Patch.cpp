@@ -86,7 +86,8 @@ namespace kiwi_synth
 
         settings1.Copy(&savedPatch, 0);
         settings2.Copy(&savedPatch, 1);
-        loadedPatchSettings.Copy(&savedPatch, 0);
+        loadedPatchSettings1.Copy(&savedPatch, 0);
+        loadedPatchSettings2.Copy(&savedPatch, 1);
     }
 
     void Patch::Save(SavedPatch* savedPatch) {

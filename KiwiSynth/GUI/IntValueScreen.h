@@ -19,9 +19,10 @@ namespace kiwi_synth
         INT_SCREEN_SRC2,
         INT_SCREEN_SRC3,
         INT_SCREEN_SRC4,
+        INT_SCREEN_VOICE,
         INT_SCREEN_RETURN
     };
-    const static int INT_SCREEN_OPTIONS = 5;
+    const static int INT_SCREEN_OPTIONS = 6;
 
     // These are response messages sent back to Display depending on what the user selects. They
     // instruct Display to perform different actions after the patch screen is exited.
@@ -56,14 +57,8 @@ namespace kiwi_synth
             KiwiDisplay* display;
             Patch* patch;
             IntScreenSelection selected;
+            int voiceNumber;
 
-            // Functions for translating code numbers into text representations.
-            void GetWaveform(char* buffer, int vcoNumber);
-            void GetNoiseType(char* buffer);
-            void GetLfoWaveform(char* buffer, int lfoNumber);
-            void GetVcfType(char* buffer);
-            void GetModSource(char* buffer, int modNumber);
-            void GetModDestination(char* buffer, int modNumber);
     };
 } // namespace kiwi_synth
 

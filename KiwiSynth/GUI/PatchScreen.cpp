@@ -40,7 +40,7 @@ namespace kiwi_synth
         if (patch->GetLiveMode()) {
             voiceMode = (VoiceMode)patch->activeSettings->getIntValue(VCO_VOICES);
         } else {
-            voiceMode = (VoiceMode)patch->loadedPatchSettings.getIntValue(VCO_VOICES);
+            voiceMode = (VoiceMode)patch->loadedPatchSettings1.getIntValue(VCO_VOICES);
         }
         EnumToText::GetVoiceMode(value, voiceMode);
         sprintf(buffer, "Voices: %s", value);

@@ -31,8 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Menu to change system-wide default Mod settings 5-8
  * Menus for bool and float values
+ * Menu to change system-wide default Mod settings 5-8
+ * Can toggle negative on loaded patches?
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Paraphonic layered 3 "voice" mode.
@@ -44,6 +45,8 @@ using namespace kiwi_synth;
  * Separate FX 1 and FX 2 into separate settings?
  * Poly mode: Sometimes when multiple notes are played together only one sounds -- maybe an issue with triggering?
  *  
+ * Hard sync voice mode
+ * FM synth voice mode
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?

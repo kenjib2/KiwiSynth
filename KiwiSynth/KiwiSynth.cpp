@@ -282,7 +282,8 @@ namespace kiwi_synth
 
         storage.SavePatch(&patch, bankNumber, patchNumber);
         patch.SetLiveMode(false, bankNumber, patchNumber);
-        patch.loadedPatchSettings.Copy(patch.activeSettings);
+        patch.loadedPatchSettings1.Copy(patch.voice1Settings);
+        patch.loadedPatchSettings2.Copy(patch.voice2Settings);
     }
 
     void KiwiSynth::UpdateSettings()
