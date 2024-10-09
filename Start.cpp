@@ -120,10 +120,6 @@ int main(void)
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 
-	#if defined(__PATCH_SETTINGS__)
-	hw.StartLog(false);
-	#endif // __PATCH_SETTINGS__
-
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 	#ifdef __CPU_LOAD__
 	load.Init(hw.AudioSampleRate(), AUDIO_BLOCK_SIZE);
@@ -173,9 +169,6 @@ int main(void)
 			if (display.mode) {
 				display.Update();
 			}
-			#ifdef __PATCH_SETTINGS__
-			kiwiSynth.TestOutput(&hw);
-			#endif // __PATCH_SETTINGS__
 		}
 		counter++;
 		counter &= 0b011111111;
