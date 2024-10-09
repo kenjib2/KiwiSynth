@@ -18,17 +18,20 @@ namespace kiwi_synth
         char modSign;
         PatchSettings* settings;
         PatchSettings* modSettings;
+        VoiceMode voiceMode;
 
         if (patch->GetLiveMode()) {
+            voiceMode = (VoiceMode)patch->activeSettings->getIntValue(VCO_VOICES);
             modSettings = patch->voice1Settings;
-            if (voiceNumber == 0) {
+            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
                 settings = patch->voice1Settings;
             } else {
                 settings = patch->voice2Settings;
             }
         } else {
+            voiceMode = (VoiceMode)patch->loadedPatchSettings1.getIntValue(VCO_VOICES);
             modSettings = &(patch->loadedPatchSettings1);
-            if (voiceNumber == 0) {
+            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
                 settings = &(patch->loadedPatchSettings1);
             } else {
                 settings = &(patch->loadedPatchSettings2);
@@ -135,16 +138,26 @@ namespace kiwi_synth
 
     void IntValueScreen::Increment() {
         selected = (IntScreenSelection)((selected + 1) % INT_SCREEN_OPTIONS);
+        if (!patch->GetLiveMode()) {
+            if (selected < INT_SCREEN_VOICE) {
+                selected = INT_SCREEN_VOICE;
+            }
+        }
     }
 
     void IntValueScreen::Decrement() {
         selected = (IntScreenSelection)((selected - 1 + INT_SCREEN_OPTIONS) % INT_SCREEN_OPTIONS);
+        if (!patch->GetLiveMode()) {
+            if (selected < INT_SCREEN_VOICE) {
+                selected = INT_SCREEN_RETURN;
+            }
+        }
     }
 
     IntScreenResponse IntValueScreen::Click() {
         switch (selected) {
             case INT_SCREEN_NONE:
-                selected = INT_SCREEN_SRC1;
+                selected = INT_SCREEN_VOICE;
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_SRC1:

@@ -15,11 +15,22 @@ namespace kiwi_synth
         int intVal1, intVal2;
         bool boolVal1;
         PatchSettings* settings;
+        VoiceMode voiceMode;
 
-        if (voiceNumber == 0) {
-            settings = patch->voice1Settings;
+        if (patch->GetLiveMode()) {
+            voiceMode = (VoiceMode)patch->activeSettings->getIntValue(VCO_VOICES);
+            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
+                settings = patch->voice1Settings;
+            } else {
+                settings = patch->voice2Settings;
+            }
         } else {
-            settings = patch->voice2Settings;
+            voiceMode = (VoiceMode)patch->loadedPatchSettings1.getIntValue(VCO_VOICES);
+            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
+                settings = &(patch->loadedPatchSettings1);
+            } else {
+                settings = &(patch->loadedPatchSettings2);
+            }
         }
 
         display->Fill(false);
