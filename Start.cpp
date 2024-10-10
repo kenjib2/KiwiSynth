@@ -31,9 +31,8 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * PATCHES AREN'T LOADING RIGHT
+ * No sound in live paraphonic mode?
  * Menu to change system-wide default mods and patch mod settings 5-8
- * Is Mod Wheel working?
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Paraphonic layered 3 "voice" mode.
@@ -42,6 +41,9 @@ using namespace kiwi_synth;
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
+ * PATCHES AREN'T LOADING RIGHT?
+ * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
+ * Pitch bend has a crackling noise if filter is low.
  *  
  * Hard sync voice mode
  * FM synth voice mode
@@ -62,7 +64,6 @@ using namespace kiwi_synth;
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
- * Make attack longer or a slower curve? Maybe also lower max release.
  * External audio in
  * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
