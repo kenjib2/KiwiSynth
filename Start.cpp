@@ -31,7 +31,9 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Menu to change system-wide default Mod settings 5-8
+ * PATCHES AREN'T LOADING RIGHT
+ * Menu to change system-wide default mods and patch mod settings 5-8
+ * Is Mod Wheel working?
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Paraphonic layered 3 "voice" mode.
@@ -46,7 +48,6 @@ using namespace kiwi_synth;
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?
- * Can we add a mod_9 for expression and mod_10 for sustain? Would have to update all current saved patches.
  * Also add a delay mode so you can swap out normal delay for ping-pong etc.
  * Can we convert any ops into bitwise ops?
  * Can we absorb and optimize any more Daisy source?

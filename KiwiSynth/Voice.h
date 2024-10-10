@@ -48,7 +48,7 @@ namespace kiwi_synth
             float       paraVcoMask[3]; // For paraphonic mode, tracks which VCOs are triggered.
 
             void initMods();
-            void calculateMods(Modulation* modulations);
+            void calculateMods(Modulation* modulations, Modulation* systemModulations);
             float getModValue(ModulationSource source, float depth);
 
         public:
@@ -64,7 +64,7 @@ namespace kiwi_synth
             void Init(int maxVcos, float sampleRate, int voiceNumber);
 
             void UpdateSettings(PatchSettings* patchSettings);
-            void Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, int numVoices);
+            void Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, Modulation* systemModulations, int numVoices);
             bool IsAvailable();
             bool IsReleasing();
             void NoteOn(int note, int velocity, bool reset = true);

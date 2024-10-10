@@ -59,7 +59,7 @@ namespace kiwi_synth
         memset(modValues, 0, NUM_MOD_DESTINATIONS * sizeof(float));
     }
 
-    void Voice::calculateMods(Modulation* modulations)
+    void Voice::calculateMods(Modulation* modulations, Modulation* systemModulations)
     {
         modValues[modulations[0].destination] += prevSourceValues[modulations[0].source] * modulations[0].depth;
         modValues[modulations[1].destination] += prevSourceValues[modulations[1].source] * modulations[1].depth;
@@ -79,12 +79,19 @@ namespace kiwi_synth
         modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * (modulations[12].depth + modValues[DST_ENV_2_TO_VCF_CUTOFF]);
         modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * (modulations[13].depth + modValues[DST_LFO_2_TO_VCF_CUTOFF]);
         modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * (modulations[14].depth + modValues[DST_SH_TO_VCF_CUTOFF]);
+
+        modValues[systemModulations[0].destination] += prevSourceValues[systemModulations[0].source] * systemModulations[0].depth;
+        modValues[systemModulations[1].destination] += prevSourceValues[systemModulations[1].source] * systemModulations[1].depth;
+        modValues[systemModulations[2].destination] += prevSourceValues[systemModulations[2].source] * systemModulations[2].depth;
+        modValues[systemModulations[3].destination] += prevSourceValues[systemModulations[3].source] * systemModulations[3].depth;
+        modValues[systemModulations[4].destination] += prevSourceValues[systemModulations[4].source] * systemModulations[4].depth;
+        modValues[systemModulations[5].destination] += prevSourceValues[systemModulations[5].source] * systemModulations[5].depth;
     }
 
     /*
      * All modulations are one sample behind due to circular dependencies.
      */
-    void Voice::Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, int numVoices)
+    void Voice::Process(float* sample, PatchSettings* patchSettings, Modulation* modulations, Modulation* systemModulations, int numVoices)
     {
         float voiceSample = 0.0f;
 
@@ -125,7 +132,7 @@ namespace kiwi_synth
 
         // Processing modules
         initMods();
-        calculateMods(modulations);
+        calculateMods(modulations, systemModulations);
 
         float env1Sample = 1.0f;
         env1.Process(&env1Sample, patchSettings, modValues[DST_ENV_1_ATTACK], modValues[DST_ENV_1_DECAY], modValues[DST_ENV_1_SUSTAIN], modValues[DST_ENV_1_RELEASE]);

@@ -17,15 +17,16 @@ namespace kiwi_synth
     class VoiceBank
     {
         private:
-            VoiceMode voiceMode;
-            uint8_t maxVoices;
-            std::vector<Voice> voices;
-            Patch* patch;
-            std::vector<uint8_t>     playingNotes;
-            int8_t paraVcoNotes[6];
-            bool paraVcoPlaying[6];
-            bool paraVcoOffRequested[6]; // For paraphonic mode, set to true when a vco needs to be stopped after a slight delay to help with envelope release.
-            int32_t vcoTriggerCount;
+            VoiceMode               voiceMode;
+            uint8_t                 maxVoices;
+            std::vector<Voice>      voices;
+            Patch*                  patch;
+            Modulation              systemModulations[6]; // These are system-wide defaults that take place unless overridden by another mod using the same sources.
+            std::vector<uint8_t>    playingNotes;
+            int8_t                  paraVcoNotes[6];
+            bool                    paraVcoPlaying[6];
+            bool                    paraVcoOffRequested[6]; // For paraphonic mode, set to true when a vco needs to be stopped after a slight delay to help with envelope release.
+            int32_t                 vcoTriggerCount;
 
             Voice* RequestVoice(uint8_t midiNote);
             int RequestVco(uint8_t note);

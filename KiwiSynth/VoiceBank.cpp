@@ -96,12 +96,12 @@ namespace kiwi_synth
 
         float nextVoice[2];
 
-        voices[0].Process(nextVoice, patch->voice1Settings, modulations[0], numVoices);
+        voices[0].Process(nextVoice, patch->voice1Settings, modulations[0], systemModulations, numVoices);
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
         if (__builtin_expect(voiceMode != VOICE_MODE_MONO, 1)) {
-            voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], numVoices);
+            voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], systemModulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
         }
@@ -171,73 +171,19 @@ namespace kiwi_synth
         modulations[0][MODS_MOD_MATRIX_4].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_4_SOURCE);
         modulations[0][MODS_MOD_MATRIX_4].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_4_DESTINATION);
         modulations[0][MODS_MOD_MATRIX_4].depth = patch->voice1Settings->getFloatValue(MOD_4_DEPTH);
-
-        // MODS 5-8 have system-wide defaults that take place unless overridden by another mod using the same sources.
-        ModulationSource modSource = (ModulationSource)patch->voice1Settings->getIntValue(MOD_5_SOURCE);
-        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_PITCH_BEND &&
-                modulations[0][MODS_MOD_MATRIX_2].source != SRC_PITCH_BEND &&
-                modulations[0][MODS_MOD_MATRIX_3].source != SRC_PITCH_BEND &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_PITCH_BEND &&
-                modSource == 0) {
-            modulations[0][MODS_MOD_MATRIX_5].source = SRC_PITCH_BEND;
-            modulations[0][MODS_MOD_MATRIX_5].destination = DST_VCOS_FREQ;
-            modulations[0][MODS_MOD_MATRIX_5].depth = 0.16666666667f;
-        } else {
-            modulations[0][MODS_MOD_MATRIX_5].source = modSource;
-            modulations[0][MODS_MOD_MATRIX_5].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_5_DESTINATION);
-            modulations[0][MODS_MOD_MATRIX_5].depth = patch->voice1Settings->getFloatValue(MOD_5_DEPTH);
-        }
-        
-        modSource = (ModulationSource)patch->voice1Settings->getIntValue(MOD_6_SOURCE);
-        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_MOD_WHEEL &&
-                modulations[0][MODS_MOD_MATRIX_2].source != SRC_MOD_WHEEL &&
-                modulations[0][MODS_MOD_MATRIX_3].source != SRC_MOD_WHEEL &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_MOD_WHEEL &&
-                modSource == 0) {
-            modulations[0][MODS_MOD_MATRIX_6].source = SRC_MOD_WHEEL;
-            modulations[0][MODS_MOD_MATRIX_6].destination = DST_LFO_1_TO_MASTER_TUNE;
-            modulations[0][MODS_MOD_MATRIX_6].depth = 0.04166666667f;
-        } else {
-            modulations[0][MODS_MOD_MATRIX_6].source = modSource;
-            modulations[0][MODS_MOD_MATRIX_6].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_6_DESTINATION);
-            modulations[0][MODS_MOD_MATRIX_6].depth = patch->voice1Settings->getFloatValue(MOD_6_DEPTH);
-        }
-
-        modSource = (ModulationSource)patch->voice1Settings->getIntValue(MOD_7_SOURCE);
-        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_VELOCITY &&
-                modulations[0][MODS_MOD_MATRIX_2].source != SRC_VELOCITY &&
-                modulations[0][MODS_MOD_MATRIX_3].source != SRC_VELOCITY &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_VELOCITY &&
-                modSource == 0) {
-            modulations[0][MODS_MOD_MATRIX_7].source = SRC_VELOCITY;
-            modulations[0][MODS_MOD_MATRIX_7].destination = DST_ENV_1_TO_VCA;
-            modulations[0][MODS_MOD_MATRIX_7].depth = 1.0f;
-        } else {
-            modulations[0][MODS_MOD_MATRIX_7].source = modSource;
-            modulations[0][MODS_MOD_MATRIX_7].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_7_DESTINATION);
-            modulations[0][MODS_MOD_MATRIX_7].depth = patch->voice1Settings->getFloatValue(MOD_7_DEPTH);
-        }
-
-        modSource = (ModulationSource)patch->voice1Settings->getIntValue(MOD_8_SOURCE);
-        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_AFTERTOUCH &&
-                modulations[0][MODS_MOD_MATRIX_2].source != SRC_AFTERTOUCH &&
-                modulations[0][MODS_MOD_MATRIX_3].source != SRC_AFTERTOUCH &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_AFTERTOUCH &&
-                modSource == 0) {
-            modulations[0][MODS_MOD_MATRIX_8].source = SRC_AFTERTOUCH;
-            modulations[0][MODS_MOD_MATRIX_8].destination = DST_VCF_CUTOFF;
-            modulations[0][MODS_MOD_MATRIX_8].depth = 0.2f;
-        } else {
-            modulations[0][MODS_MOD_MATRIX_8].source = modSource;
-            modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_8_DESTINATION);
-            modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);
-        }
-
-        /*  modulations[0][MODS_MOD_MATRIX_7].source = SRC_SUSTAIN;
-            modulations[0][MODS_MOD_MATRIX_7].destination = DST_ENV_1_RELEASE;
-            modulations[0][MODS_MOD_MATRIX_7].depth = 0.5f;
-        */
-
+        modulations[0][MODS_MOD_MATRIX_5].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_5_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_5].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_5_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_5].depth = patch->voice1Settings->getFloatValue(MOD_5_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_6].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_6_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_6].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_6_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_6].depth = patch->voice1Settings->getFloatValue(MOD_6_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_7].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_7_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_7].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_7_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_7].depth = patch->voice1Settings->getFloatValue(MOD_7_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_8].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_8_SOURCE);
+        modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_8_DESTINATION);
+        modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);
+ 
         memcpy(modulations[1], modulations[0], sizeof(Modulation) * 8);
 
         modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
@@ -255,6 +201,98 @@ namespace kiwi_synth
         modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
         modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
         modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(SH_TO_VCF_CUTOFF);
+
+        
+        systemModulations[0].source = SRC_PITCH_BEND;
+        systemModulations[0].depth = 0.16666666667f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_PITCH_BEND) {
+            systemModulations[0].destination = DST_VCOS_FREQ;
+        } else {
+            systemModulations[0].destination = DST_NONE;
+        }
+
+        systemModulations[1].source = SRC_MOD_WHEEL;
+        systemModulations[1].depth = 0.04166666667f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_MOD_WHEEL) {
+            systemModulations[1].destination = DST_LFO_1_TO_MASTER_TUNE;
+        } else {
+            systemModulations[1].destination = DST_NONE;
+        }
+        systemModulations[1].destination = DST_LFO_1_TO_MASTER_TUNE;
+
+        systemModulations[2].source = SRC_VELOCITY;
+        systemModulations[2].depth = 1.0f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_VELOCITY) {
+            systemModulations[2].destination = DST_ENV_1_TO_VCA;
+        } else {
+            systemModulations[2].destination = DST_NONE;
+        }
+
+        systemModulations[3].source = SRC_AFTERTOUCH;
+        systemModulations[3].depth = 0.2f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_AFTERTOUCH) {
+            systemModulations[3].destination = DST_VCF_CUTOFF;
+        } else {
+            systemModulations[3].destination = DST_NONE;
+        }
+
+        systemModulations[4].source = SRC_SUSTAIN;
+        systemModulations[4].depth = 0.5f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_SUSTAIN) {
+            systemModulations[4].destination = DST_ENV_1_RELEASE;
+        } else {
+            systemModulations[4].destination = DST_NONE;
+        }
+
+        systemModulations[5].source = SRC_EXPRESSION;
+        systemModulations[5].depth = 0.5f;
+        if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_2].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_3].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_5].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_6].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_7].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_EXPRESSION) {
+            systemModulations[5].destination = DST_VCF_CUTOFF;
+        } else {
+            systemModulations[5].destination = DST_NONE;
+        }
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
