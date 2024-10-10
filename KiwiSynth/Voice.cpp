@@ -95,12 +95,14 @@ namespace kiwi_synth
             }
             currentMidiNote = triggerNote;
             currentVelocity = triggerVelocity;
-            env1.SetQuickRelease(false);
-            env2.SetQuickRelease(false);
-            env1.NoteOn();
-            env2.NoteOn();
-            lfo1.NoteOn();
-            lfo2.NoteOn();
+            if  (triggerResetEnv) {
+                env1.SetQuickRelease(false);
+                env2.SetQuickRelease(false);
+                env1.NoteOn();
+                env2.NoteOn();
+                lfo1.NoteOn();
+                lfo2.NoteOn();
+            }
         }
         noteTriggerCount--;
 
@@ -232,6 +234,7 @@ namespace kiwi_synth
         triggerNote = note;
         triggerVelocity = velocity;
         noteTriggered = true;
+        triggerResetEnv = reset;
     }
 
     void Voice::NoteOff(int note, int velocity)

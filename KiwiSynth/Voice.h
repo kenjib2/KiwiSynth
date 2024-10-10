@@ -40,6 +40,7 @@ namespace kiwi_synth
             float       currentPlayingNote;
             float       baseBalance;
             int         triggerVelocity;
+            bool        triggerResetEnv;
             float       mods[MAX_MODS];
             uint8_t     numMods = 0;
             float       modValues[NUM_MOD_DESTINATIONS];

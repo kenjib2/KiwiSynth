@@ -459,6 +459,27 @@ namespace kiwi_synth
             }
         }
 
+        // Else play an available note if it was previously the same note to preserve portamento.
+        for (size_t i = 0; i < numVoices; i++) {
+            if (voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
+                return &voices[i];
+            }
+        }
+
+        // Else if both available, take the voice that was previously closest in pitch to help with portamento.
+        if (voices[0].IsAvailable() && voices[1].IsAvailable()) {
+            if (std::abs(midiNote - voices[0].currentMidiNote) < std::abs(midiNote - voices[1].currentMidiNote)) {
+                return &voices[0];
+            } else {
+                return &voices[1];
+            }
+        }
+        for (size_t i = 0; i < numVoices; i++) {
+            if (voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
+                return &voices[i];
+            }
+        }
+
         // Else return first available voice.
         for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsAvailable()) {

@@ -31,18 +31,15 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * mono should only reset envelopes when not note-stealing
  * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * Paraphonic layered 3 "voice" mode.
  * There is weird distortion with KiwiPhaser
  * Something is still popping faintly with note steal & retrigger
- * Note steal with all voice keys still held down does not retrigger envelope
  * Inverted amplitude envelope clicks when starting and stopping
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Separate FX 1 and FX 2 into separate settings?
- * Poly mode: Sometimes when multiple notes are played together only one sounds -- maybe an issue with triggering?
  *  
  * Hard sync voice mode
  * FM synth voice mode
