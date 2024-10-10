@@ -31,26 +31,23 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * No sound in live paraphonic mode?
- * Menu to change system-wide default mods and patch mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
- * Paraphonic layered 3 "voice" mode.
  * There is weird distortion with KiwiPhaser
- * Something is still popping faintly with note steal & retrigger
  * Inverted amplitude envelope clicks when starting and stopping
- * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
- * Separate FX 1 and FX 2 into separate settings?
- * PATCHES AREN'T LOADING RIGHT?
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
- * Pitch bend has a crackling noise if filter is low.
  *  
+ * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
+ * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Hard sync voice mode
  * FM synth voice mode
+ * Paraphonic layered 3 "voice" mode.
+ * Menu to change system-wide default mods and patch mod settings 5-8
+ * Pitch bend has a crackling noise audible if filter is low. Could just be interference noise from MIDI in.
+ * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?
- * Also add a delay mode so you can swap out normal delay for ping-pong etc.
  * Can we convert any ops into bitwise ops?
  * Can we absorb and optimize any more Daisy source?
  * Can we get the buffer lower

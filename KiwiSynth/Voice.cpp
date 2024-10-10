@@ -209,7 +209,7 @@ namespace kiwi_synth
             paraVcoMask[0] = 0.0f; // Make sure all vcos are turned off since sometimes one is left on for release.
             paraVcoMask[1] = 0.0f;
             paraVcoMask[2] = 0.0f;
-            NoteOn(0, velocity, false);
+            NoteOn(0, velocity, true);
         }
         paraVcoMask[vco] = 1.0f;
     }
