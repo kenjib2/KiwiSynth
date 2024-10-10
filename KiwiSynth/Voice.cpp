@@ -70,7 +70,14 @@ namespace kiwi_synth
         modValues[modulations[6].destination] += prevSourceValues[modulations[6].source] * modulations[6].depth;
         modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;
 
-        // The next modulations can all be further modified by previous mods
+        modValues[systemModulations[0].destination] += prevSourceValues[systemModulations[0].source] * systemModulations[0].depth;
+        modValues[systemModulations[1].destination] += prevSourceValues[systemModulations[1].source] * systemModulations[1].depth;
+        modValues[systemModulations[2].destination] += prevSourceValues[systemModulations[2].source] * systemModulations[2].depth;
+        modValues[systemModulations[3].destination] += prevSourceValues[systemModulations[3].source] * systemModulations[3].depth;
+        modValues[systemModulations[4].destination] += prevSourceValues[systemModulations[4].source] * systemModulations[4].depth;
+        modValues[systemModulations[5].destination] += prevSourceValues[systemModulations[5].source] * systemModulations[5].depth;
+
+        // The next modulations must be last since they can all be further modified by previous mods
         modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * (modulations[8].depth + modValues[DST_LFO_1_TO_MASTER_TUNE]);
         // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
@@ -79,13 +86,6 @@ namespace kiwi_synth
         modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * (modulations[12].depth + modValues[DST_ENV_2_TO_VCF_CUTOFF]);
         modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * (modulations[13].depth + modValues[DST_LFO_2_TO_VCF_CUTOFF]);
         modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * (modulations[14].depth + modValues[DST_SH_TO_VCF_CUTOFF]);
-
-        modValues[systemModulations[0].destination] += prevSourceValues[systemModulations[0].source] * systemModulations[0].depth;
-        modValues[systemModulations[1].destination] += prevSourceValues[systemModulations[1].source] * systemModulations[1].depth;
-        modValues[systemModulations[2].destination] += prevSourceValues[systemModulations[2].source] * systemModulations[2].depth;
-        modValues[systemModulations[3].destination] += prevSourceValues[systemModulations[3].source] * systemModulations[3].depth;
-        modValues[systemModulations[4].destination] += prevSourceValues[systemModulations[4].source] * systemModulations[4].depth;
-        modValues[systemModulations[5].destination] += prevSourceValues[systemModulations[5].source] * systemModulations[5].depth;
     }
 
     /*

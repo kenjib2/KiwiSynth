@@ -33,7 +33,7 @@ namespace kiwi_synth
     
     void VoiceBank::UpdateSettings()
     {
-        VoiceMode newVoiceMode = (VoiceMode)patch->activeSettings->getIntValue(PatchSetting::VCO_VOICES);
+        VoiceMode newVoiceMode = (VoiceMode)patch->voice1Settings->getIntValue(PatchSetting::VCO_VOICES);
         if (newVoiceMode != voiceMode) {
             AllNotesOff();
             voiceMode = newVoiceMode;
@@ -185,23 +185,6 @@ namespace kiwi_synth
         modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);
  
         memcpy(modulations[1], modulations[0], sizeof(Modulation) * 8);
-
-        modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[0][MODS_ENV_1_TO_VCA].depth = patch->voice1Settings->getFloatValue(VCA_ENV_1_DEPTH);
-        modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(VCF_TRACKING);
-        modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[0][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[0][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_VCF_CUTOFF);
-
-        modulations[1][MODS_LFO_1_TO_VCOS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[1][MODS_ENV_1_TO_VCA].depth = patch->voice2Settings->getFloatValue(VCA_ENV_1_DEPTH);
-        modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(VCF_TRACKING);
-        modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(SH_TO_VCF_CUTOFF);
-
         
         systemModulations[0].source = SRC_PITCH_BEND;
         systemModulations[0].depth = 0.16666666667f;
@@ -232,7 +215,6 @@ namespace kiwi_synth
         } else {
             systemModulations[1].destination = DST_NONE;
         }
-        systemModulations[1].destination = DST_LFO_1_TO_MASTER_TUNE;
 
         systemModulations[2].source = SRC_VELOCITY;
         systemModulations[2].depth = 1.0f;
@@ -293,6 +275,22 @@ namespace kiwi_synth
         } else {
             systemModulations[5].destination = DST_NONE;
         }
+
+        modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[0][MODS_ENV_1_TO_VCA].depth = patch->voice1Settings->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(VCF_TRACKING);
+        modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
+        modulations[0][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
+        modulations[0][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
+        modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_VCF_CUTOFF);
+
+        modulations[1][MODS_LFO_1_TO_VCOS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[1][MODS_ENV_1_TO_VCA].depth = patch->voice2Settings->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(VCF_TRACKING);
+        modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
+        modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
+        modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
+        modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(SH_TO_VCF_CUTOFF);
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
