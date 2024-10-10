@@ -31,6 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * mono should only reset envelopes when not note-stealing
  * Menu to change system-wide default Mod settings 5-8
  * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)

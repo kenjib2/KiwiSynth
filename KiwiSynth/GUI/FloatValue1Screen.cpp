@@ -17,20 +17,11 @@ namespace kiwi_synth
         PatchSettings* settings;
         VoiceMode voiceMode;
 
-        if (patch->GetLiveMode()) {
-            voiceMode = (VoiceMode)patch->activeSettings->getIntValue(VCO_VOICES);
-            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
-                settings = patch->voice1Settings;
-            } else {
-                settings = patch->voice2Settings;
-            }
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
+        if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
+            settings = patch->voice1Settings;
         } else {
-            voiceMode = (VoiceMode)patch->loadedPatchSettings1.getIntValue(VCO_VOICES);
-            if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
-                settings = &(patch->loadedPatchSettings1);
-            } else {
-                settings = &(patch->loadedPatchSettings2);
-            }
+            settings = patch->voice2Settings;
         }
 
         display->Fill(false);

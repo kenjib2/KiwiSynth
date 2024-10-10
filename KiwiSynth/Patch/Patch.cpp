@@ -61,6 +61,9 @@ namespace kiwi_synth
     void Patch::SetLiveMode(bool liveModeActive, int bankNumber, int patchNumber) {
         if (!liveMode && liveModeActive) {
             DefaultSettings();
+        } else if (liveMode && !liveModeActive) {
+            voice1Settings = &loadedPatchSettings1;
+            voice2Settings = &loadedPatchSettings2;
         }
 
         liveMode = liveModeActive;
