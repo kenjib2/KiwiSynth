@@ -31,6 +31,8 @@ namespace kiwi_synth
         if (calculatedVoiceMode < 0) calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode + VOICE_MODE_MAX);
             else calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode % VOICE_MODE_MAX);
 
+        voice1Settings = &settings1;
+        activeSettings = &settings1;
         if ((calculatedVoiceMode == VOICE_MODE_MULTI && this->voiceMode != VOICE_MODE_SPLIT) ||
             (calculatedVoiceMode == VOICE_MODE_SPLIT && this->voiceMode != VOICE_MODE_MULTI)) {
             settings2.Copy(&settings1);
