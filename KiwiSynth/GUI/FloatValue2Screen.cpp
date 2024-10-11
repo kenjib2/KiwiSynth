@@ -14,11 +14,9 @@ namespace kiwi_synth
     {
         int intVal1, intVal2, intVal3;
         PatchSettings* settings;
-        PatchSettings* modSettings;
         VoiceMode voiceMode;
 
         voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
-        modSettings = patch->voice1Settings;
         if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
             settings = patch->voice1Settings;
         } else {
@@ -61,14 +59,14 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        intVal1 = modSettings->getFloatValue(MOD_1_DEPTH) * 1000;
+        intVal1 = patch->voice1Settings->getFloatValue(MOD_1_DEPTH) * 1000;
         sprintf(buffer, "Modulation     D1 %03d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        intVal1 = modSettings->getFloatValue(MOD_2_DEPTH) * 1000;
-        intVal2 = modSettings->getFloatValue(MOD_3_DEPTH) * 1000;
-        intVal3 = modSettings->getFloatValue(MOD_4_DEPTH) * 1000;
+        intVal1 = patch->voice1Settings->getFloatValue(MOD_2_DEPTH) * 1000;
+        intVal2 = patch->voice1Settings->getFloatValue(MOD_3_DEPTH) * 1000;
+        intVal3 = patch->voice1Settings->getFloatValue(MOD_4_DEPTH) * 1000;
         sprintf(buffer, "D2  %03d D3 %03d D4 %03d", intVal1, intVal2, intVal3);
         display->WriteString(buffer, Font_6x8, true);
 
