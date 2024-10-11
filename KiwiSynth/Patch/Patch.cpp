@@ -19,11 +19,10 @@ namespace kiwi_synth
         reverbMode = REVERB_HALL;
         splitNote = 60;
 
-        activeSettings = &settings1;
         voice1Settings = &settings1;
         voice2Settings = &settings1;
-        multiPots->RegisterControlListener(activeSettings);
-        ge->RegisterControlListener(activeSettings);
+        multiPots->RegisterControlListener(voice1Settings);
+        ge->RegisterControlListener(voice1Settings);
     }
 
     void Patch::SetVoiceMode(VoiceMode voiceMode) {
@@ -31,8 +30,6 @@ namespace kiwi_synth
         if (calculatedVoiceMode < 0) calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode + VOICE_MODE_MAX);
             else calculatedVoiceMode = (VoiceMode)(calculatedVoiceMode % VOICE_MODE_MAX);
 
-        voice1Settings = &settings1;
-        activeSettings = &settings1;
         if ((calculatedVoiceMode == VOICE_MODE_MULTI && this->voiceMode != VOICE_MODE_SPLIT) ||
             (calculatedVoiceMode == VOICE_MODE_SPLIT && this->voiceMode != VOICE_MODE_MULTI)) {
             settings2.Copy(&settings1);
@@ -44,7 +41,7 @@ namespace kiwi_synth
             voice2Settings = &settings1;
         }
 
-        activeSettings->setValue(VCO_VOICES, (int8_t)calculatedVoiceMode);
+        voice1Settings->setValue(VCO_VOICES, (int8_t)calculatedVoiceMode);
         this->voiceMode = calculatedVoiceMode;
     }
 
@@ -60,15 +57,18 @@ namespace kiwi_synth
         settings2.DefaultSettings();
     }
 
-    void Patch::SetLiveMode(bool liveModeActive, int bankNumber, int patchNumber) {
-        if (!liveMode && liveModeActive) {
-            activeSettings = &settings1;
-            voice1Settings = &settings1;
+    void Patch::SetLiveMode(bool isLive, int bankNumber, int patchNumber) {
+        if (!liveMode && isLive) {
             voice2Settings = &settings1;
+            settings1.SetControlsLive(true);
+            settings2.SetControlsLive(true);
             DefaultSettings();
+        } else if (liveMode && !isLive) {
+            settings1.SetControlsLive(false);
+            settings2.SetControlsLive(false);
         }
 
-        liveMode = liveModeActive;
+        liveMode = isLive;
         this->bankNumber = bankNumber;
         this->patchNumber = patchNumber;
     }
@@ -78,12 +78,10 @@ namespace kiwi_synth
         memcpy(&loadedPatchData, &savedPatch, sizeof(SavedPatch));
 
         voiceMode = savedPatch.voiceMode;
-        activeSettings = &settings1;
-        voice1Settings = &loadedPatchSettings1;
         if (voiceMode == VOICE_MODE_MULTI || voiceMode == VOICE_MODE_SPLIT) {
-            voice2Settings = &loadedPatchSettings2;
+            voice2Settings = &settings2;
         } else {
-            voice2Settings = &loadedPatchSettings1;
+            voice2Settings = &settings1;
         }
         splitNote = savedPatch.splitNote;
         strcpy(name, savedPatch.name);
@@ -91,8 +89,8 @@ namespace kiwi_synth
         effectsMode = savedPatch.effectsMode;
         reverbMode = savedPatch.reverbMode;
 
-        loadedPatchSettings1.Copy(&savedPatch, 0);
-        loadedPatchSettings2.Copy(&savedPatch, 1);
+        settings1.Copy(&savedPatch, 0);
+        settings2.Copy(&savedPatch, 1);
     }
 
     void Patch::Save(SavedPatch* savedPatch) {

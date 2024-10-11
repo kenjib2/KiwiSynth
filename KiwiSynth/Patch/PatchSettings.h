@@ -39,6 +39,10 @@ namespace kiwi_synth
             int8_t intValues[NUM_PATCH_SETTINGS];
             bool boolValues[NUM_PATCH_SETTINGS];
             bool lastPinValues[4][16]; // Used to track changes to the rotary encoder state
+            int8_t floatValuesProtected[NUM_PATCH_SETTINGS];
+            int8_t boolValuesProtected[NUM_PATCH_SETTINGS];
+            // Since encoders work by incrementing or decrementing, we can just let them all be live all the time so no need to track them as protected.
+            bool floatValsSet; // True indicates that we have switched to loaded mode and need to set the floatVals on the next update.
 
             MultiPots* multiPots;
             GpioExpansion* ge;
@@ -68,6 +72,7 @@ namespace kiwi_synth
             ~PatchSettings() {}
             void Init(MultiPots* multiPots, GpioExpansion* ge);
             void DefaultSettings();
+            void SetControlsLive(bool isLive);
             void Copy(SavedPatch* savedPatch, int voiceNumber);
             void Copy(PatchSettings* patchSettings);
             void Load(SavedPatch* savedPatch, int voiceNumber);
@@ -88,11 +93,11 @@ namespace kiwi_synth
             /*
              * Sets a float setting value. If a non-float setting is attempted, no action will be performed.
              */
-            inline void setValue(PatchSetting setting, float value) { floatValues[setting] = value; }
+            inline void setValue(PatchSetting setting, float value) { if (!floatValuesProtected[setting]) floatValues[setting] = value; }
             /*
              * Sets a bool setting value. If a non-bool setting is attempted, no action will be performed.
              */
-            inline void setValue(PatchSetting setting, bool value) { boolValues[setting] = value; }
+            inline void setValue(PatchSetting setting, bool value) { if (!boolValuesProtected[setting]) boolValues[setting] = value; }
 
             /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.

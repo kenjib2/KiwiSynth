@@ -134,6 +134,7 @@ namespace kiwi_synth
             modSigns[i] = 1.0f;
         }
 
+        SetControlsLive(true);
         DefaultSettings();
     }
 
@@ -306,7 +307,7 @@ namespace kiwi_synth
         {
             case 0x20:
                 setValue(VCO_PORTAMENTO_ON, ge->getPinValue(controlNumber, 7));
-                setValue(GEN_SELECT_BUTTON, ge->getPinValue(controlNumber, 11));
+                boolValues[GEN_SELECT_BUTTON] = ge->getPinValue(controlNumber, 11); // Bypass setValue so that it always updates or else the UI will freeze after loading a patch.
                 setValue(ENV_2_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 14));
                 setValue(ENV_1_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 15));
                 processEncoder(MOD_1_SOURCE, controlNumber, 1, 2);
@@ -452,6 +453,18 @@ namespace kiwi_synth
         setValue(FX_REVERB, 0.0f);
 
         setValue(GEN_BALANCE, 0.5f);
+    }
+
+    void PatchSettings::SetControlsLive(bool isLive) {
+        if (isLive) {
+            memset(boolValuesProtected, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            memset(floatValuesProtected, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            floatValsSet = true;
+        } else {
+            memset(boolValuesProtected, 1, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            memset(floatValuesProtected, 1, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+            floatValsSet = false;
+        }
     }
 
 } // namespace kiwi_synth

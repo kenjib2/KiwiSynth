@@ -18,8 +18,6 @@ namespace kiwi_synth
             MultiPots*              multiPots;
             GpioExpansion*          ge;
 
-            PatchSettings           settings1;
-            PatchSettings           settings2;
             char                    name[MAX_PATCH_NAME_LENGTH + 1];
             bool                    liveMode;
             int                     bankNumber;
@@ -31,11 +29,10 @@ namespace kiwi_synth
             PatchType               type;
 
         public:
-            PatchSettings*          activeSettings;
+            PatchSettings           settings1;
+            PatchSettings           settings2;
             PatchSettings*          voice1Settings;
             PatchSettings*          voice2Settings;
-            PatchSettings           loadedPatchSettings1;
-            PatchSettings           loadedPatchSettings2;
             SavedPatch              loadedPatchData;
 
             Patch() {}
@@ -71,7 +68,7 @@ namespace kiwi_synth
             inline void SetSplitNote(int newSplitNote) { splitNote = newSplitNote; }
 
             inline bool GetLiveMode() { return liveMode; }
-            void SetLiveMode(bool liveModeActive, int bankNumber = -1, int patchNumber = -1);
+            void SetLiveMode(bool isLive, int bankNumber = -1, int patchNumber = -1);
             inline int GetBankNumber() { return bankNumber; }
             inline int GetPatchNumber() { return patchNumber; }
 

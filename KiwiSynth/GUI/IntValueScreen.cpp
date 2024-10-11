@@ -151,19 +151,19 @@ namespace kiwi_synth
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_SRC1:
-                patch->activeSettings->modSigns[0] *= -1.0f;
+                patch->voice1Settings->modSigns[0] *= -1.0f;
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_SRC2:
-                patch->activeSettings->modSigns[1] *= -1.0f;
+                patch->voice1Settings->modSigns[1] *= -1.0f;
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_SRC3:
-                patch->activeSettings->modSigns[2] *= -1.0f;
+                patch->voice1Settings->modSigns[2] *= -1.0f;
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_SRC4:
-                patch->activeSettings->modSigns[3] *= -1.0f;
+                patch->voice1Settings->modSigns[3] *= -1.0f;
                 return INT_SCREEN_RESPONSE_EDIT;
 
             case INT_SCREEN_VOICE:

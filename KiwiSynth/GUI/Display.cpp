@@ -18,7 +18,7 @@ namespace kiwi_synth
         guiButton = false;
         mode = MODE_PLAY;
         menuActive = false;
-        prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT);
+        prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT);
 
         playScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
@@ -57,7 +57,7 @@ namespace kiwi_synth
         bool updateNeeded = false;
 
         // Handle encoder rotations: Figure out if it changed. -1 is counterclockwise, 1 is clockwise, and 0 is no movement.
-        int newValue = patch->activeSettings->getIntValue(GEN_SELECT);
+        int newValue = patch->voice1Settings->getIntValue(GEN_SELECT);
         int direction = 0;
         if (newValue == prevSelectValue) {
             direction = 0;
@@ -141,7 +141,7 @@ namespace kiwi_synth
 
         // Handle encoder button clicks
         bool prevGuiButton = guiButton;
-        guiButton = patch->activeSettings->getBoolValue(GEN_SELECT_BUTTON);
+        guiButton = patch->voice1Settings->getBoolValue(GEN_SELECT_BUTTON);
         if (prevGuiButton && !guiButton) {
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
@@ -246,7 +246,7 @@ namespace kiwi_synth
                         case SELECT_SCREEN_RESPONSE_REFRESH:
                             break;
                         case SELECT_SCREEN_RESPONSE_PLAY:
-                            prevSelectValue = patch->activeSettings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
+                            prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
                             menuActive = false;
                             mode = MODE_PLAY;
                             break;
@@ -286,14 +286,14 @@ namespace kiwi_synth
 
     int Display::GetSelectValue(int numElements)
     {
-        int8_t value = patch->activeSettings->getIntValue(GEN_SELECT);
+        int8_t value = patch->voice1Settings->getIntValue(GEN_SELECT);
         if (value < 0) {
             value += numElements;
         } else {
             value %= numElements;
         }
 
-        patch->activeSettings->setValue(GEN_SELECT, value);
+        patch->voice1Settings->setValue(GEN_SELECT, value);
 
         return value;
     }

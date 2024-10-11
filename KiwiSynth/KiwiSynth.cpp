@@ -243,7 +243,7 @@ namespace kiwi_synth
 
     bool KiwiSynth::BootLoaderRequested()
     {
-        return patch.activeSettings->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
+        return patch.voice1Settings->getBoolValue(PatchSetting::GEN_SELECT_BUTTON);
     }
 
     void KiwiSynth::LoadPatch(int bankNumber, int patchNumber)
@@ -278,8 +278,8 @@ namespace kiwi_synth
 
         storage.SavePatch(&patch, bankNumber, patchNumber);
         patch.SetLiveMode(false, bankNumber, patchNumber);
-        patch.loadedPatchSettings1.Copy(patch.voice1Settings);
-        patch.loadedPatchSettings2.Copy(patch.voice2Settings);
+        patch.settings1.Copy(patch.voice1Settings);
+        patch.settings2.Copy(patch.voice2Settings);
     }
 
     void KiwiSynth::UpdateSettings()
