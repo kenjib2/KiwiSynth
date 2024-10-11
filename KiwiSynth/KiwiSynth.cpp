@@ -284,10 +284,8 @@ namespace kiwi_synth
 
     void KiwiSynth::UpdateSettings()
     {
-        if (patch.GetLiveMode()) {
-            voiceBank.UpdateSettings();
-            effectsEngine.UpdateSettings();
-        }
+        voiceBank.UpdateSettings();
+        effectsEngine.UpdateSettings();
     }
 
 } // namespace kiwi_synth
