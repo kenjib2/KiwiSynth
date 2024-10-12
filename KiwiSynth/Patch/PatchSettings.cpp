@@ -215,6 +215,10 @@ namespace kiwi_synth
 
     void PatchSettings::updatePotValues(int controlNumber)
     {
+        if (!isLive) {
+            UpdateFloatProtect(controlNumber);
+        }
+
         switch(controlNumber)
         {
             case 0:
@@ -298,6 +302,118 @@ namespace kiwi_synth
                 setValue(VCO_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
+        }
+    }
+
+    void PatchSettings::SetFloatProtect(PatchSetting patchSetting, float newValue) {
+        float currentValue = getFloatValue(patchSetting);
+
+        if (floatProtectedUpdateNeeded) { // Initial settings
+            if (newValue < currentValue) {
+                floatValuesProtected[patchSetting] = -1;
+            } else {
+                floatValuesProtected[patchSetting] = 1;
+            }
+        } else { // Updating settings
+            if ((floatValuesProtected[patchSetting] == -1 && newValue > currentValue) ||
+                (floatValuesProtected[patchSetting] == 1 && newValue < currentValue)) {
+                floatValuesProtected[patchSetting] = 0;
+            }
+        }
+    }
+
+    void PatchSettings::UpdateFloatProtect(int controlNumber)
+    {
+        switch(controlNumber)
+        {
+            case 0:
+                SetFloatProtect(VCF_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_3_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_2_DECAY, multiPots->GetMpValue(2, controlNumber));
+                SetFloatProtect(VCO_PORTAMENTO_SPEED, multiPots->GetDirectValue(0));
+                break;
+            case 1:
+                SetFloatProtect(SH_RATE, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_3_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_2_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 2:
+                SetFloatProtect(MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[2]);
+                SetFloatProtect(VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 3:
+                SetFloatProtect(MOD_4_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[3]);
+                SetFloatProtect(VCO_2_FINE_TUNE, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_1_DECAY, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 4:
+                SetFloatProtect(MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[1]);
+                SetFloatProtect(VCA_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_1_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 5:
+                SetFloatProtect(MOD_1_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[0]);
+                SetFloatProtect(VCO_2_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_1_RELEASE, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 6:
+                SetFloatProtect(FX_REVERB, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_MASTER_TUNE, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(VCF_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 7:
+                SetFloatProtect(FX_5, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_1_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(VCF_TRACKING, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 8:
+                SetFloatProtect(FX_4, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_1_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(VCO_INPUT_LEVEL, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 9:
+                SetFloatProtect(GEN_BALANCE, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_2_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(VCO_INPUT_THRESHOLD, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 10:
+                SetFloatProtect(FX_3, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(LFO_1_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(LFO_1_TRIGGER_PHASE, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 11:
+                SetFloatProtect(FX_2, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(LFO_2_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(LFO_2_TRIGGER_PHASE, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 12:
+                SetFloatProtect(FX_1, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(LFO_2_RATE, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(LFO_1_TO_MASTER_TUNE, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 13:
+                SetFloatProtect(VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(LFO_1_RATE, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(LFO_2_TO_VCF_CUTOFF, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 14:
+                SetFloatProtect(VCF_RESONANCE, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_NOISE_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_2_ATTACK, multiPots->GetMpValue(2, controlNumber));
+                break;
+            case 15:
+                SetFloatProtect(SH_TO_VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(VCO_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
+                break;
+        }
+
+        if (floatProtectedUpdateNeeded) {
+            floatProtectedUpdateCounter++;
+            if (floatProtectedUpdateCounter > 15) {
+                floatProtectedUpdateNeeded = false;
+            }
         }
     }
 
@@ -456,14 +572,16 @@ namespace kiwi_synth
     }
 
     void PatchSettings::SetControlsLive(bool isLive) {
+        this->isLive = isLive;
         if (isLive) {
             memset(boolValuesProtected, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);
             memset(floatValuesProtected, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-            floatValsSet = true;
+            floatProtectedUpdateNeeded = false;
         } else {
             memset(boolValuesProtected, 1, sizeof(int8_t) * NUM_PATCH_SETTINGS);
             memset(floatValuesProtected, 1, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-            floatValsSet = false;
+            floatProtectedUpdateNeeded = true;
+            floatProtectedUpdateCounter = 0;
         }
     }
 

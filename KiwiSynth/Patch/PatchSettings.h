@@ -42,7 +42,9 @@ namespace kiwi_synth
             int8_t floatValuesProtected[NUM_PATCH_SETTINGS];
             int8_t boolValuesProtected[NUM_PATCH_SETTINGS];
             // Since encoders work by incrementing or decrementing, we can just let them all be live all the time so no need to track them as protected.
-            bool floatValsSet; // True indicates that we have switched to loaded mode and need to set the floatVals on the next update.
+            bool floatProtectedUpdateNeeded; // True indicates that we have switched to loaded mode and need to set the floatValuesProtected on the next update.
+            uint8_t floatProtectedUpdateCounter; // Used to make sure we iterate through all 16 cycles of reading the pots.
+            bool isLive;
 
             MultiPots* multiPots;
             GpioExpansion* ge;
@@ -64,6 +66,16 @@ namespace kiwi_synth
              * values are positive or negative. 0.0f will count as positive.
              */
             void SetModSigns();
+            /*
+             * Sets values for float protection for the potentiometers for the given control number.
+             */
+            void UpdateFloatProtect(int controlNumber);
+            /*
+             * Sets values for float protection. -1 means the current pot value is below the current patch
+             * setting. 1 means the current pot value is above the current patch setting. 0 means that the patch
+             * setting has been crossed and the control is now reading live values.
+             */
+            void SetFloatProtect(PatchSetting patchSetting, float newValue);
 
         public:
             float modSigns[8]; // values should be 1.0f or -1.0f only

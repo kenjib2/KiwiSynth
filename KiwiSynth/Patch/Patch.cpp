@@ -63,7 +63,7 @@ namespace kiwi_synth
             settings1.SetControlsLive(true);
             settings2.SetControlsLive(true);
             DefaultSettings();
-        } else if (liveMode && !isLive) {
+        } else if (!isLive) {
             settings1.SetControlsLive(false);
             settings2.SetControlsLive(false);
         }
