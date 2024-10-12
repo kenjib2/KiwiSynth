@@ -31,17 +31,20 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * Revisit all patch and patchsettings code to clean up after major changes to settings1 and settings2.
+ * Saving a loaded patch -- should default to the current patch position like loading from the play screen.
+ * 
+ * Can we get GPIO callbacks working?
+ * Hard sync voice mode
+ * FM synth voice mode
+ * Check if patches are getting added and removed to patch type vectors properly.
+ * When filter is very low there is noise in the signal. Maybe interference???
  * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
- * Loading a patch, altering it, then saving it.
- * When filter is very low there is noise in the signal. Maybe interference???
- *  
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Alternate inputs to S&H (instead of noise)
- * Hard sync voice mode
- * FM synth voice mode
  * Paraphonic layered 3 "voice" mode.
  * Layered/Split -- some way to edit voice 2? Probably swap voice1 and 2 settings, but preserving FX and mod.
  * Menu to change system-wide default mods and patch mod settings 5-8
@@ -58,7 +61,6 @@ using namespace kiwi_synth;
  * Layered patches are either not saving or not loading correctly. setting2 seems to not be playing with the expected settings. If you load twice it works.
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
- * Can we get GPIO callbacks working?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
@@ -77,7 +79,6 @@ using namespace kiwi_synth;
  * L/R Output noise
  * Headphone out noise
  * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
- * Very occasional pops when distortion is on
  * Going out of GUI mode sometimes triggers note on(s)
  * Can we optimize more to get the audio buffer size lower?
  */

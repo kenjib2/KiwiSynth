@@ -74,9 +74,6 @@ namespace kiwi_synth
     }
 
     void Patch::Load(SavedPatch savedPatch) {
-        // Saving a copy of the loaded data in case we want to re-save the same patch
-        memcpy(&loadedPatchData, &savedPatch, sizeof(SavedPatch));
-
         voiceMode = savedPatch.voiceMode;
         if (voiceMode == VOICE_MODE_MULTI || voiceMode == VOICE_MODE_SPLIT) {
             voice2Settings = &settings2;

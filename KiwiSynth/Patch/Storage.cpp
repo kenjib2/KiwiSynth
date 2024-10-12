@@ -66,13 +66,7 @@ namespace kiwi_synth
 
         if (patchNumber % 2 == 0) {
             // Save the first patch
-            if (patch->GetLiveMode()) {
-                patch->Save(patchGroupData);
-            } else {
-                memcpy(patchGroupData, &(patch->loadedPatchData), sizeof(SavedPatch));
-                patch->GetName(patchGroupData[0].name);
-                patchGroupData[0].type = patch->GetPatchType();
-            }
+            patch->Save(patchGroupData);
 
             // Copy the existing second patch
             void* readPtr = qspi.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + (patchNumber + 1) * PATCH_SIZE);
@@ -84,13 +78,7 @@ namespace kiwi_synth
             memcpy(patchGroupData, readPtr, sizeof(SavedPatch));
 
             // Save the second patch
-            if (patch->GetLiveMode()) {
-                patch->Save(patchGroupData + 1);
-            } else {
-                memcpy(patchGroupData + 1, &(patch->loadedPatchData), sizeof(SavedPatch));
-                patch->GetName(patchGroupData[1].name);
-                patchGroupData[1].type = patch->GetPatchType();
-            }
+            patch->Save(patchGroupData + 1);
         }
 
         WritePatchGroup(bankNumber, patchGroup, patchGroupData);
