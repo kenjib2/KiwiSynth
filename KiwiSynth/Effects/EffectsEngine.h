@@ -18,6 +18,11 @@ using namespace daisysp;
 namespace kiwi_synth
 {
 
+    /*
+     * The effects engine operates independently from the synthesis modules. The effects chain is configurable
+     * using EffectsMode and ReverbMode values. Process then takes an audio sample input and applies the effects
+     * to the sample.
+     */
     class EffectsEngine
     {
         private:
@@ -43,8 +48,18 @@ namespace kiwi_synth
             ~EffectsEngine() {}
             void Init(Patch* patch, float sampleRate);
 
+            /*
+             * Configure the effects parameters based on user input controls.
+             */
             void UpdateSettings();
+            /*
+             * Changes between reverb modes, setting up the various Zita parameters that each mode uses.
+             */
             void UpdateReverbMode(ReverbMode newMode);
+            /*
+             * Process a stereo input and apply the effects. The sample argument should be a pointer to two
+             * float values. The first one is the left sample, and the second one is the right sample.
+             */
             void Process(float* sample);
     };
 }

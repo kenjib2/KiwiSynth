@@ -12,6 +12,10 @@ namespace kiwi_synth
             IControl(){}
             virtual ~IControl(){};
 
+            /*
+             * This interface is used by controller listeners so that they can register themselves
+             * with a controller.
+             */
             virtual void RegisterControlListener(IControlListener* controlListener);
     };
 } // namespace kiwi_synth

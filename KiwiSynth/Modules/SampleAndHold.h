@@ -9,6 +9,9 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
+    /*
+     * The Kiwi Synth sample and hold module.
+     */
     class SampleAndHold
     {
         private:
@@ -23,7 +26,13 @@ namespace kiwi_synth
             ~SampleAndHold() {}
             void Init(float sampleRate);
 
+            /*
+             * Updates sample and hold parameters based on user input.
+             */
             inline void UpdateSettings(PatchSettings* patchSettings) { rate = (int)patchSettings->getFloatValueLogLookup(PatchSetting::SH_RATE); }
+            /*
+             * Performs sample and hold on the incoming sample values.
+             */
             inline void Process(float* sample, PatchSettings* patchSettings, float mod)
             {
                 counter++;

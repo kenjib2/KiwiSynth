@@ -95,6 +95,9 @@ namespace kiwi_synth
              * Clears all interrupt flags.
              */
             inline void ClearInterrupts() { for (int i = 0; i < numGpioExpansions; i++) { mcps.at(i).clearInterrupts(); } }
+            /*
+             * Retrieves a GPIO pin value from cached values stored in memory.
+             */
             inline bool getPinValue(uint8_t address, uint8_t pin) { return bitValues[address - 0x20][pin]; }
 
     }; // class MultiPots

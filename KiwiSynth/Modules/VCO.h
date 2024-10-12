@@ -17,6 +17,17 @@ namespace kiwi_synth
     static const float      VCO_MIN_FREQUENCY = 30.0f;
     static const float      VCO_MAX_FREQUENCY = 15000.0f;
     
+    /*
+     * The Kiwi Synth VCO module provides a wide range of tonal texture. The following waveforms are supported:
+     *
+     * Square: A polyblep square with variable pulse width.
+     * Saw: A polyblep sawtooth. A variable waveform squashing algorithm lops off the top and bottom of the
+     *     waveform as it is increased, giving the waveform an increasingly square-wave type quality.
+     * Triangle: A polyblep triangle with variable wavefolding.
+     * Variable Shape: A waveform that transitions from saw-like to triangle-like.
+     * Variable Saw: A sawtooth that can add a variable amount of notch to the waveform.
+     * Sine: A polynomial sine wave approximation with variable wavefolding.
+     */
     class VCO
     {
         private:
@@ -49,7 +60,16 @@ namespace kiwi_synth
             ~VCO() {}
             void Init(float sampleRate, uint8_t vcoNumber);
 
+            /*
+             * Applies user settings to VCO parameters.
+             */
             void UpdateSettings(PatchSettings* patchSettings);
+            /*
+             * Generates the oscillator output. The value of the sample received as input will be ignored
+             * and overwritten. There are two sources of modulation. Mod will vary the oscillator
+             * frequency. The function of pwMod will vary depending on the waveform selected, and is only
+             * actually pulse width modulation for the square wave.
+             */
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod);
     };
 }

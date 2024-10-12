@@ -10,6 +10,17 @@ namespace kiwi_synth
     const int MIN_DELAY_SAMPLES =   1200;
     const int DEBOUNCE_RESOLUTION = 100;
 
+    /*
+     * A very simple delay effect. This delay uses pointer distance for delay time, so there
+     * will be audible artifacts when changing the delay time. This is done to avoid interpolating
+     * and multiple buffer writes per sample, thus using the fewest clock cycles to operate.
+     * Because of the artifacts when changing delay time, we also debounce the signal to keep it
+     * from jittering from analog noise on the pots.
+     * 
+     * Another optimization is using bitwise & operations instead of the expensive modulus operator.
+     * In order to do this, the buffer size must always be a power of two and the mask must always
+     * be the buffer size minus one.
+     */
     class KiwiDelay
     {
         private:

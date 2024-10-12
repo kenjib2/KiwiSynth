@@ -89,6 +89,10 @@ namespace kiwi_synth
             ~MultiPots() {};
             void Init(DaisySeed *hw, MultiPotsConfig *multiPotsConfig);
 
+            /*
+             * When the multipots are updated with new values, the registered control listener will be called using the IControlListener
+             * interface callback function.
+             */
             inline void RegisterControlListener(IControlListener* controlListener) { this->controlListener = controlListener; }
 
             /*

@@ -11,6 +11,10 @@ namespace kiwi_synth
 {
     const static float VCA_ATTENTUATION_CONSTANT = 0.30f;
     
+    /*
+     * The VCA module for the Kiwi Synth. This module serves two primary purpose: to apply modulation to the signal level,
+     * and to apply a general attenuation so that when multiple voices are combined they do not clip.
+     */
     class VCA
     {
         private:
@@ -21,7 +25,13 @@ namespace kiwi_synth
             ~VCA() {}
             void Init() {};
 
+            /*
+             * Applies user settings to VCA parameters.
+             */
             inline void UpdateSettings(PatchSettings* patchSettings) { level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL); }
+            /*
+             * Adjust the output level in the incoming sample.
+             */
             void Process(float* sample, PatchSettings* patchSettings, float env1Mod, float mod);
     };
 }
