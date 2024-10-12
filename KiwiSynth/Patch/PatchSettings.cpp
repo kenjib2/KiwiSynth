@@ -316,7 +316,8 @@ namespace kiwi_synth
             }
         } else { // Updating settings
             if ((floatValuesProtected[patchSetting] == -1 && newValue > currentValue) ||
-                (floatValuesProtected[patchSetting] == 1 && newValue < currentValue)) {
+                    (floatValuesProtected[patchSetting] == 1 && newValue < currentValue) ||
+                    (std::fabs(newValue - currentValue)) < 0.003f) { // Checking proximity because near 0.0f and 1.0f we might not be able to cross via the pot
                 floatValuesProtected[patchSetting] = 0;
             }
         }

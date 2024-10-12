@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Revisit all patch and patchsettings code to clean up after major changes to settings1 and settings2.
  * Saving a loaded patch -- should default to the current patch position like loading from the play screen.
  * 
  * Can we get GPIO callbacks working?

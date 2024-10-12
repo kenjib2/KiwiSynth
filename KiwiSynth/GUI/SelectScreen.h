@@ -19,7 +19,7 @@ namespace kiwi_synth
         SELECT_PAGE_BANK_PATCHES = -2,
         SELECT_PAGE_TYPE_PATCHES = -1,
         SELECT_PAGE_BANKS = 0,
-        SELECT_PAGE_PATCH_TYPES
+        SELECT_PAGE_TYPES
     };
     const static int maxSelectScreenPage = 2;
 

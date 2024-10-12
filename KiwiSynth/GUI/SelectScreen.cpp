@@ -17,7 +17,7 @@ namespace kiwi_synth
         display->Fill(false);
         switch (currentPage) {
             default:
-            case SELECT_PAGE_PATCH_TYPES:
+            case SELECT_PAGE_TYPES:
                 numSelections = 16;
 
                 display->SetCursor(0, 0);
@@ -70,12 +70,16 @@ namespace kiwi_synth
                     }
                 }
 
-                display->SetCursor(120, 0);
-                display->WriteString("^", Font_6x8, selection != 0);
+                if (!saving) {
+                    display->SetCursor(120, 0);
+                    display->WriteString("^", Font_6x8, selection != 0);
+                }
                 display->SetCursor(120, 28);
                 display->WriteString("X", Font_6x8, selection != 1);
-                display->SetCursor(120, 56);
-                display->WriteString("v", Font_6x8, selection != 2);
+                if (!saving) {
+                    display->SetCursor(120, 56);
+                    display->WriteString("v", Font_6x8, selection != 2);
+                }
                 break;
 
             case SELECT_PAGE_BANK_PATCHES:
@@ -149,16 +153,32 @@ namespace kiwi_synth
 
     void SelectScreen::Increment() {
         selection = (selection + 1) % numSelections;
-    }
+        if (saving && currentPage == SELECT_PAGE_BANKS && (selection == 0 || selection == 2)) {
+            // We can't page up and down when saving on bank selection because we don't want the type screen
+            Increment();
+        }
+   }
 
     void SelectScreen::Decrement() {
         selection = (selection - 1 + numSelections) % numSelections;
+        if (saving && currentPage == SELECT_PAGE_BANKS && (selection == 0 || selection == 2)) {
+            // We can't page up and down when saving on bank selection because we don't want the type screen
+            Decrement();
+        }
     }
 
     SelectScreenResponse SelectScreen::Click() {
-        // Handling cancel uniformly for all pages/screens
+        // Handling cancel for all pages/screens
         if (selection == 1) {
-            if (fromPlay) {
+            if (currentPage == SELECT_PAGE_TYPE_PATCHES ) {
+                currentPage = SELECT_PAGE_TYPES;
+                return SELECT_SCREEN_RESPONSE_REFRESH;
+            } else if (currentPage ==  SELECT_PAGE_BANK_PATCHES) {
+                bankNumber = 0;
+                patchNumber = 0;
+                currentPage = SELECT_PAGE_BANKS;
+                return SELECT_SCREEN_RESPONSE_REFRESH;
+            } else if (fromPlay) {
                 return SELECT_SCREEN_RESPONSE_PLAY;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;
@@ -180,7 +200,7 @@ namespace kiwi_synth
             currentPage = SELECT_PAGE_BANK_PATCHES;
 
         // Patch type selected from type select page
-        } else if (currentPage == SELECT_PAGE_PATCH_TYPES) {
+        } else if (currentPage == SELECT_PAGE_TYPES) {
             patchType = (PatchType)(selection - 3);
             patchTypePage = 0;
             patchTypeMax = kiwiSynth->patchTypes[patchType].size();
