@@ -13,8 +13,8 @@ namespace kiwi_synth
     {
         numGpioExpansions = gpioExpansionConfig->numGpioExpansions;
 
+        memset(bitValues, 0, 4 * 16 * sizeof(bool));
         for (int i = 0; i < numGpioExpansions; i++) {
-            pinValues[0x20 + i] = 0;
             KiwiMcp23017 mcp;
             KiwiMcp23017::Config cfg;
             cfg.transport_config.Defaults();
@@ -40,21 +40,31 @@ namespace kiwi_synth
 
     void GpioExpansion::Process()
     {
+        uint16_t nextValues;
+
         // Read all mcps and write to pinValues
-        pinValues[mcps.at(0).i2c_address] = mcps.at(0).Read();
-        mcps.at(0).clearInterrupts();
+        nextValues = mcps.at(0).Read();
+        for (int i = 0; i < 16; i++) {
+            bitValues[mcps.at(0).i2c_address - 0x20][i] = nextValues & (1 << (i - 1));
+        }
         controlListener->controlGpioUpdate(mcps.at(0).i2c_address); // Check for NULL if we ever might not be using a controlListener
 
-        pinValues[mcps.at(1).i2c_address] = mcps.at(1).Read();
-        mcps.at(1).clearInterrupts();
+        nextValues = mcps.at(1).Read();
+        for (int i = 0; i < 16; i++) {
+            bitValues[mcps.at(1).i2c_address - 0x20][i] = nextValues & (1 << (i - 1));
+        }
         controlListener->controlGpioUpdate(mcps.at(1).i2c_address); // Check for NULL if we ever might not be using a controlListener
 
-        pinValues[mcps.at(2).i2c_address] = mcps.at(2).Read();
-        mcps.at(2).clearInterrupts();
+        nextValues = mcps.at(2).Read();
+        for (int i = 0; i < 16; i++) {
+            bitValues[mcps.at(2).i2c_address - 0x20][i] = nextValues & (1 << (i - 1));
+        }
         controlListener->controlGpioUpdate(mcps.at(2).i2c_address); // Check for NULL if we ever might not be using a controlListener
 
-        pinValues[mcps.at(3).i2c_address] = mcps.at(3).Read();
-        mcps.at(3).clearInterrupts();
+        nextValues = mcps.at(3).Read();
+        for (int i = 0; i < 16; i++) {
+            bitValues[mcps.at(3).i2c_address - 0x20][i] = nextValues & (1 << (i - 1));
+        }
         controlListener->controlGpioUpdate(mcps.at(3).i2c_address); // Check for NULL if we ever might not be using a controlListener
     }
 

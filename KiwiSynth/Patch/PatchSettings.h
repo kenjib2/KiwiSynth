@@ -76,6 +76,15 @@ namespace kiwi_synth
              * setting has been crossed and the control is now reading live values.
              */
             void SetFloatProtect(PatchSetting patchSetting, float newValue);
+            /*
+             * Sets values for bool protection for the potentiometers for the given control number.
+             */
+            void UpdateBoolProtect(int controlNumber);
+            /*
+             * Sets values for bool protection. 1 means the current pot value is different from the current patch
+             * setting. 0 means that the patch setting has been matched and the control is now reading live values.
+             */
+            inline void SetBoolProtect(PatchSetting patchSetting, float newValue) { if (newValue == getBoolValue(patchSetting)) boolValuesProtected[patchSetting] = 0; }
 
         public:
             float modSigns[8]; // values should be 1.0f or -1.0f only

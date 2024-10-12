@@ -419,6 +419,10 @@ namespace kiwi_synth
 
     void PatchSettings::updateGpioExpansionValues(int controlNumber)
     {
+        if (!isLive) {
+            UpdateBoolProtect(controlNumber);
+        }
+
         switch(controlNumber)
         {
             case 0x20:
@@ -459,6 +463,30 @@ namespace kiwi_synth
                 processEncoder(LFO_2_WAVEFORM, controlNumber, 2, 1);
                 processEncoder(LFO_1_WAVEFORM, controlNumber, 4, 3);
                 processEncoder(VCO_NOISE_TYPE, controlNumber, 13, 12);
+                break;
+        }
+    }
+
+    void PatchSettings::UpdateBoolProtect(int controlNumber)
+    {
+        switch(controlNumber)
+        {
+            case 0x20:
+                SetBoolProtect(VCO_PORTAMENTO_ON, ge->getPinValue(controlNumber, 7));
+                SetBoolProtect(ENV_2_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 14));
+                SetBoolProtect(ENV_1_REVERSE_PHASE_ON, ge->getPinValue(controlNumber, 15));
+                break;
+            case 0x21:
+                SetBoolProtect(VCO_2_ON, ge->getPinValue(controlNumber, 5));
+                break;
+            case 0x22:
+                break;
+            case 0x23:
+                SetBoolProtect(VCO_NOISE_ON, ge->getPinValue(controlNumber, 5));
+                SetBoolProtect(VCO_3_ON, ge->getPinValue(controlNumber, 6));
+                SetBoolProtect(VCO_INPUT_ON, ge->getPinValue(controlNumber, 9));
+                SetBoolProtect(LFO_1_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 10));
+                SetBoolProtect(LFO_2_TRIGGER_RESET_ON, ge->getPinValue(controlNumber, 11));
                 break;
         }
     }

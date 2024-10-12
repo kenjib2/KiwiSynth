@@ -171,7 +171,7 @@ namespace kiwi_synth
         modulations[0][MODS_MOD_MATRIX_4].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_4_SOURCE);
         modulations[0][MODS_MOD_MATRIX_4].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_4_DESTINATION);
         modulations[0][MODS_MOD_MATRIX_4].depth = patch->voice1Settings->getFloatValue(MOD_4_DEPTH);
-        modulations[0][MODS_MOD_MATRIX_5].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_5_SOURCE);
+        /*modulations[0][MODS_MOD_MATRIX_5].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_5_SOURCE);
         modulations[0][MODS_MOD_MATRIX_5].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_5_DESTINATION);
         modulations[0][MODS_MOD_MATRIX_5].depth = patch->voice1Settings->getFloatValue(MOD_5_DEPTH);
         modulations[0][MODS_MOD_MATRIX_6].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_6_SOURCE);
@@ -182,7 +182,7 @@ namespace kiwi_synth
         modulations[0][MODS_MOD_MATRIX_7].depth = patch->voice1Settings->getFloatValue(MOD_7_DEPTH);
         modulations[0][MODS_MOD_MATRIX_8].source = (ModulationSource)patch->voice1Settings->getIntValue(MOD_8_SOURCE);
         modulations[0][MODS_MOD_MATRIX_8].destination = (ModulationDestination)patch->voice1Settings->getIntValue(MOD_8_DESTINATION);
-        modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);
+        modulations[0][MODS_MOD_MATRIX_8].depth = patch->voice1Settings->getFloatValue(MOD_8_DEPTH);*/
  
         memcpy(modulations[1], modulations[0], sizeof(Modulation) * 8);
         
@@ -191,11 +191,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_PITCH_BEND &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_PITCH_BEND &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_PITCH_BEND /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_PITCH_BEND &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_PITCH_BEND) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_PITCH_BEND*/) {
             systemModulations[0].destination = DST_VCOS_FREQ;
         } else {
             systemModulations[0].destination = DST_NONE;
@@ -206,11 +206,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_MOD_WHEEL &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_MOD_WHEEL &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_MOD_WHEEL /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_MOD_WHEEL &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_MOD_WHEEL) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_MOD_WHEEL*/) {
             systemModulations[1].destination = DST_LFO_1_TO_MASTER_TUNE;
         } else {
             systemModulations[1].destination = DST_NONE;
@@ -221,11 +221,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_VELOCITY &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_VELOCITY &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_VELOCITY /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_VELOCITY &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_VELOCITY) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_VELOCITY*/) {
             systemModulations[2].destination = DST_ENV_1_TO_VCA;
         } else {
             systemModulations[2].destination = DST_NONE;
@@ -236,11 +236,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_AFTERTOUCH &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_AFTERTOUCH &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_AFTERTOUCH /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_AFTERTOUCH &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_AFTERTOUCH) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_AFTERTOUCH*/) {
             systemModulations[3].destination = DST_VCF_CUTOFF;
         } else {
             systemModulations[3].destination = DST_NONE;
@@ -251,11 +251,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_SUSTAIN &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_SUSTAIN &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_SUSTAIN &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_SUSTAIN &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_SUSTAIN /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_SUSTAIN &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_SUSTAIN &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_SUSTAIN &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_SUSTAIN) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_SUSTAIN*/) {
             systemModulations[4].destination = DST_ENV_1_RELEASE;
         } else {
             systemModulations[4].destination = DST_NONE;
@@ -266,11 +266,11 @@ namespace kiwi_synth
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_EXPRESSION &&
-                modulations[0][MODS_MOD_MATRIX_4].source != SRC_EXPRESSION &&
+                modulations[0][MODS_MOD_MATRIX_4].source != SRC_EXPRESSION /*&&
                 modulations[0][MODS_MOD_MATRIX_5].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_EXPRESSION &&
-                modulations[0][MODS_MOD_MATRIX_8].source != SRC_EXPRESSION) {
+                modulations[0][MODS_MOD_MATRIX_8].source != SRC_EXPRESSION*/) {
             systemModulations[5].destination = DST_VCF_CUTOFF;
         } else {
             systemModulations[5].destination = DST_NONE;

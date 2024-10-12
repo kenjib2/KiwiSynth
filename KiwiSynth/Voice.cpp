@@ -65,10 +65,10 @@ namespace kiwi_synth
         modValues[modulations[1].destination] += prevSourceValues[modulations[1].source] * modulations[1].depth;
         modValues[modulations[2].destination] += prevSourceValues[modulations[2].source] * modulations[2].depth;
         modValues[modulations[3].destination] += prevSourceValues[modulations[3].source] * modulations[3].depth;
-        modValues[modulations[4].destination] += prevSourceValues[modulations[4].source] * modulations[4].depth;
+        /*modValues[modulations[4].destination] += prevSourceValues[modulations[4].source] * modulations[4].depth;
         modValues[modulations[5].destination] += prevSourceValues[modulations[5].source] * modulations[5].depth;
         modValues[modulations[6].destination] += prevSourceValues[modulations[6].source] * modulations[6].depth;
-        modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;
+        modValues[modulations[7].destination] += prevSourceValues[modulations[7].source] * modulations[7].depth;*/
 
         modValues[systemModulations[0].destination] += prevSourceValues[systemModulations[0].source] * systemModulations[0].depth;
         modValues[systemModulations[1].destination] += prevSourceValues[systemModulations[1].source] * systemModulations[1].depth;

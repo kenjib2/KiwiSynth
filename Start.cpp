@@ -31,19 +31,21 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Loaded patch mode updates values when abs(potValue - settings1.value) > changeDelta
  * Alternate inputs to S&H (instead of noise)
  * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
+ * Loading a patch, altering it, then saving it.
  *  
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
  * Hard sync voice mode
  * FM synth voice mode
  * Paraphonic layered 3 "voice" mode.
+ * Layered/Split -- some way to edit voice 2? Probably swap voice1 and 2 settings, but preserving FX and mod.
  * Menu to change system-wide default mods and patch mod settings 5-8
  * Pitch bend has a crackling noise audible if filter is low. Could just be interference noise from MIDI in.
+ * When filter is very low there is noise in the signal. Maybe interference???
  * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input

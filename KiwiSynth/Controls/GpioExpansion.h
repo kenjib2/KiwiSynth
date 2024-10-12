@@ -78,7 +78,7 @@ namespace kiwi_synth
             IControlListener* controlListener = nullptr;
 
         public:
-            std::map<uint8_t, uint16_t> pinValues;
+            bool bitValues[4][16];
             std::vector<KiwiMcp23017> mcps;
             GPIO interrupt;
             GpioExpansion() {}
@@ -95,8 +95,7 @@ namespace kiwi_synth
              * Clears all interrupt flags.
              */
             inline void ClearInterrupts() { for (int i = 0; i < numGpioExpansions; i++) { mcps.at(i).clearInterrupts(); } }
-            inline uint16_t getPinValues(uint8_t address) { return pinValues[address]; }
-            inline bool getPinValue(uint8_t address, uint8_t pin) { return (getPinValues(address) & (1 << (pin - 1))) > 0; }
+            inline bool getPinValue(uint8_t address, uint8_t pin) { return bitValues[address - 0x20][pin]; }
 
     }; // class MultiPots
 
