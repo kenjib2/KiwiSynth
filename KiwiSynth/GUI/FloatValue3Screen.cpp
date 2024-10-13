@@ -28,7 +28,7 @@ namespace kiwi_synth
 
         display->SetCursor(0, 0);
         intVal1 = settings->getFloatValue(LFO_1_PULSE_WIDTH) * 1000;
-        sprintf(buffer, "LFO1   PW %03d      V%d", intVal1, voiceNumber + 1);
+        sprintf(buffer, "LFO1---PW %03d------V%d", intVal1, voiceNumber + 1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
@@ -45,7 +45,7 @@ namespace kiwi_synth
 
         display->SetCursor(0, 16);
         intVal1 = settings->getFloatValue(LFO_2_PULSE_WIDTH) * 1000;
-        sprintf(buffer, "LFO2   PW %03d", intVal1);
+        sprintf(buffer, "LFO2---PW %03d--------", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
@@ -63,7 +63,7 @@ namespace kiwi_synth
         display->SetCursor(0, 32);
         boolVal1 = settings->getBoolValue(ENV_1_REVERSE_PHASE_ON);
         intVal1 = settings->getFloatValue(ENV_1_ATTACK) * 1000;
-        sprintf(buffer, "ENV1    Rv %s At %03d", boolVal1 ? "On " : "Off", intVal1);
+        sprintf(buffer, "ENV1----Rv %s-At %03d", boolVal1 ? "On-" : "Off", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
@@ -76,7 +76,7 @@ namespace kiwi_synth
         display->SetCursor(0, 48);
         boolVal1 = settings->getBoolValue(ENV_2_REVERSE_PHASE_ON);
         intVal1 = settings->getFloatValue(ENV_2_ATTACK) * 1000;
-        sprintf(buffer, "ENV2    Rv %s At %03d", boolVal1 ? "On " : "Off", intVal1);
+        sprintf(buffer, "ENV2----Rv %s-At %03d", boolVal1 ? "On-" : "Off", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);

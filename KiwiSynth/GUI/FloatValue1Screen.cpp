@@ -40,7 +40,7 @@ namespace kiwi_synth
 
         display->SetCursor(0, 8);
         intVal1 = settings->getFloatValue(VCO_1_LEVEL) * 1000;
-        sprintf(buffer, "VCO 1       Level %03d", intVal1);
+        sprintf(buffer, "VCO 1-------Level %03d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
@@ -51,11 +51,11 @@ namespace kiwi_synth
         display->SetCursor(0, 24);
         boolVal1 = settings->getBoolValue(VCO_2_ON);
         if (!boolVal1) {
-            sprintf(buffer, "VCO 2 Off");
+            sprintf(buffer, "VCO 2 Off------------");
             display->WriteString(buffer, Font_6x8, true);
         } else {
             intVal1 = settings->getFloatValue(VCO_2_LEVEL) * 1000;
-            sprintf(buffer, "VCO 2       Level %03d", intVal1);
+            sprintf(buffer, "VCO 2-------Level %03d", intVal1);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 32);
@@ -68,11 +68,11 @@ namespace kiwi_synth
         display->SetCursor(0, 40);
         boolVal1 = settings->getBoolValue(VCO_3_ON);
         if (!boolVal1) {
-            sprintf(buffer, "VCO 3 Off");
+            sprintf(buffer, "VCO 3 Off------------");
             display->WriteString(buffer, Font_6x8, true);
         } else {
             intVal1 = settings->getFloatValue(VCO_3_LEVEL) * 1000;
-            sprintf(buffer, "VCO 3       Level %03d", intVal1);
+            sprintf(buffer, "VCO 3-------Level %03d", intVal1);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 48);
@@ -85,20 +85,20 @@ namespace kiwi_synth
         display->SetCursor(0, 56);
         boolVal1 = settings->getBoolValue(VCO_NOISE_ON);
         if (!boolVal1) {
-            sprintf(buffer, "Ns Off");
+            sprintf(buffer, "Ns Off--");
         } else {
             intVal1 = settings->getFloatValue(VCO_NOISE_LEVEL) * 1000;
-            sprintf(buffer, "NsL %03d", intVal1);
+            sprintf(buffer, "NsL %03d-", intVal1);
         }
         display->WriteString(buffer, Font_6x8, true);
         display->SetCursor(48, 56);
         boolVal1 = settings->getBoolValue(VCO_INPUT_ON);
         if (!boolVal1) {
-            sprintf(buffer, "In Off");
+            sprintf(buffer, "In Off-------");
         } else {
             intVal1 = settings->getFloatValue(VCO_INPUT_THRESHOLD) * 1000;
             intVal2 = settings->getFloatValue(VCO_INPUT_LEVEL) * 1000;
-            sprintf(buffer, "InTh %03d L%03d", intVal1, intVal2);
+            sprintf(buffer, "InTh %03d-L%03d", intVal1, intVal2);
         }
         display->WriteString(buffer, Font_6x8, true);
 

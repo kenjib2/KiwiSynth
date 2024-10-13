@@ -26,7 +26,7 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        sprintf(buffer, "VCF                V%d", voiceNumber + 1);
+        sprintf(buffer, "VCF----------------V%d", voiceNumber + 1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
@@ -43,7 +43,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
-        sprintf(buffer, "VCA");
+        sprintf(buffer, "VCA------------------");
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
@@ -55,12 +55,12 @@ namespace kiwi_synth
         display->SetCursor(0, 40);
         intVal1 = settings->getFloatValue(SH_TO_VCF_CUTOFF) * 1000;
         intVal2 = settings->getFloatValue(SH_RATE) * 1000;
-        sprintf(buffer, "SH  FrCt %03d Rate %03d", intVal1, intVal2);
+        sprintf(buffer, "SH--FrCt %03d-Rate %03d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
         intVal1 = patch->voice1Settings->getFloatValue(MOD_1_DEPTH) * 1000;
-        sprintf(buffer, "Modulation     D1 %03d", intVal1);
+        sprintf(buffer, "Modulation-----D1 %03d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
