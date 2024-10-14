@@ -8,6 +8,7 @@
 #include "IControl.h"
 #include "IControlListener.h"
 #include "KiwiMcp23017.h"
+#include "KiwiGpio.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -55,13 +56,9 @@ namespace kiwi_synth
             pullupMap[3] = 0b1001111110111111;
 
             activeMap[0] = 0b0111111101111111;
-            activeMap[1] = 0b0111111101111111;
+            activeMap[1] = 0b0011111101111111;
             activeMap[2] = 0b0111111101111111;
             activeMap[3] = 0b0001111100111111;
-            /*activeMap[0] = 0b1111111011111110;
-            activeMap[1] = 0b1111110001111111;
-            activeMap[2] = 0b1111111011111110;
-            activeMap[3] = 0b1111110011111000;*/
 
             numGpioExpansions   = 4;
             interruptPin        = seed::D18;
@@ -80,7 +77,7 @@ namespace kiwi_synth
         public:
             bool bitValues[4][16];
             std::vector<KiwiMcp23017> mcps;
-            GPIO interrupt;
+            KiwiGPIO interrupt;
             GpioExpansion() {}
             ~GpioExpansion() {}
             void Init();

@@ -31,13 +31,11 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Saving a loaded patch -- should default to the current patch position like loading from the play screen.
- * 
  * Can we get GPIO callbacks working?
  * Hard sync voice mode
  * FM synth voice mode
  * Check if patches are getting added and removed to patch type vectors properly.
- * When filter is very low there is noise in the signal. Maybe interference???
+ * When filter is very low there is noise in the signal. Maybe interference??? Is it just voice detune?
  * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
