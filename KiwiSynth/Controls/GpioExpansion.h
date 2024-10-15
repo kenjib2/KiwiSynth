@@ -8,24 +8,12 @@
 #include "IControl.h"
 #include "IControlListener.h"
 #include "KiwiMcp23017.h"
-#include "KiwiGpio.h"
 
 using namespace daisy;
 using namespace daisy::seed;
 
 namespace kiwi_synth
 {
-	extern uint16_t pin0Value;
-	extern uint16_t pinRead;
-
-    extern bool gpioReadRequired;
-    extern uint32_t gpioLastInterruptTime;
-
-    /*
-     * Internal function for interrupt callbacks.
-     */
-    void GpioExpansionInterruptCallback(Pin pin);
-
    /*
     * Used to initialize a GpioExpansion object.
     *
@@ -58,7 +46,7 @@ namespace kiwi_synth
             activeMap[0] = 0b0111111101111111;
             activeMap[1] = 0b0011111101111111;
             activeMap[2] = 0b0111111101111111;
-            activeMap[3] = 0b0001111100111111;
+            activeMap[3] = 0b0011111100011111;
 
             numGpioExpansions   = 4;
             interruptPin        = seed::D18;
@@ -77,7 +65,7 @@ namespace kiwi_synth
         public:
             bool bitValues[4][16];
             std::vector<KiwiMcp23017> mcps;
-            KiwiGPIO interrupt;
+            GPIO interrupt;
             GpioExpansion() {}
             ~GpioExpansion() {}
             void Init();
@@ -86,8 +74,9 @@ namespace kiwi_synth
 
             /*
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
+             * Returns true if there was a read and false if not.
              */
-            void Process();
+            bool Process();
             /*
              * Clears all interrupt flags.
              */

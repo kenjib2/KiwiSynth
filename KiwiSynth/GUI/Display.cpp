@@ -269,9 +269,11 @@ namespace kiwi_synth
                     switch (systemResponse)  {
                         case SYSTEM_SCREEN_RESPONSE_EDIT:
                             menuActive = true;
+                            updateNeeded = true;
                             break;
                         case SYSTEM_SCREEN_RESPONSE_NOEDIT:
                             menuActive = false;
+                            updateNeeded = true;
                             break;
                         case SYSTEM_SCREEN_RESPONSE_PANIC:
                             menuActive = false;

@@ -31,11 +31,10 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Can we get GPIO callbacks working?
  * Hard sync voice mode
  * FM synth voice mode
  * Check if patches are getting added and removed to patch type vectors properly.
- * When filter is very low there is noise in the signal. Maybe interference??? Is it just voice detune?
+ * When filter is very low there is noise in the signal. Maybe interference??? Is it just voice detune? Could be a modulation not zeroed out?
  * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
@@ -124,7 +123,7 @@ int main(void)
 	#endif // __CPU_LOAD__
 	display.Init(&kiwiSynth, &performance);
 
-	kiwiSynth.ProcessInputs(true);
+	kiwiSynth.ProcessInputs();
 	if (kiwiSynth.BootLoaderRequested())
 	{
 		display.mode = MODE_BOOTLOADER;
@@ -138,26 +137,15 @@ int main(void)
 	hw.StartAudio(AudioCallback);
 
 	uint16_t counter = 0;
-	uint16_t updateCounter = 0;
     while(1)
 	{
-		// It takes 16 iterations to cycle through all the inputs. So we only need to update settings for pots every 16th iteration.
-		// However we will use 8 so knobs refresh more often. Otherwise the response quality might be unacceptable.
-		updateCounter++;
-		bool fullUpdate = false;
-		if (updateCounter >= 8 || display.mode) { // For higher potentiometer refresh but worse encoder response, increase to updateCounter >= 16.
-			fullUpdate = true;
-			updateCounter = 0;
-		}
-
-		kiwiSynth.ProcessInputs(fullUpdate);
-		if (fullUpdate) {
-			kiwiSynth.UpdateSettings();
-		}
+		//System::DelayUs(700); // Give the multiplexer time to change channels
+		kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
+		kiwiSynth.UpdateSettings();
 
 		#ifdef __CPU_LOAD__
 		if (!display.mode) {
-			performance.Update(fullUpdate);
+			performance.Update();
 		}
 		#endif // __CPU_LOAD__
 

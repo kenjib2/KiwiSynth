@@ -78,27 +78,20 @@ class Performance {
          max = 0.0;
          readCount = 0;
          readsPerSec = 0;
-         updateCount = 0;
-         updatesPerSec = 0;
 
          ticksPerS = System::GetTickFreq();
          nextReadTick = System::GetTick() + ticksPerS;
          channelMultiplier = 1.0f / 2.0f;
       }
 
-      void Update(bool update) {
+      void Update() {
          readCount++;
-         if (update) {
-            updateCount++;
-         }
          uint32_t tick = System::GetTick();
          if (tick > nextReadTick) {
             avg = load->GetAvgCpuLoad();
             max = load->GetMaxCpuLoad();
             readsPerSec = readCount;
             readCount = 0;
-            updatesPerSec = updateCount;
-            updateCount = 0;
             nextReadTick = tick + ticksPerS;
          }
       }
@@ -106,16 +99,13 @@ class Performance {
       inline float Avg() { return avg; }
       inline float Max() { return max; }
       inline int ReadsPerSec() { return readsPerSec; }
-      inline int UpdatesPerSec() { return updatesPerSec * channelMultiplier; }
 
    private:
       float avg;
       float max;
       uint32_t readsPerSec;
-      uint32_t updatesPerSec;
       uint32_t readCount;
       uint32_t nextReadTick;
-      uint32_t updateCount;
       uint32_t ticksPerS;
       float channelMultiplier; // Accounts for updates cycle through multiplexer channels, so each pot only gets updated once per n cycles.
       CpuLoadMeter* load;
