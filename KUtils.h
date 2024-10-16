@@ -81,7 +81,7 @@ class Performance {
 
          ticksPerS = System::GetTickFreq();
          nextReadTick = System::GetTick() + ticksPerS;
-         channelMultiplier = 1.0f / 2.0f;
+         channelMultiplier = 1.0f / 16.0f;
       }
 
       void Update() {
@@ -90,7 +90,7 @@ class Performance {
          if (tick > nextReadTick) {
             avg = load->GetAvgCpuLoad();
             max = load->GetMaxCpuLoad();
-            readsPerSec = readCount;
+            readsPerSec = readCount * channelMultiplier;
             readCount = 0;
             nextReadTick = tick + ticksPerS;
          }

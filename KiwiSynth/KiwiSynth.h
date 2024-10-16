@@ -2,6 +2,7 @@
 #define __KIWI_SYNTH_KIWI_SYNTH_H__
 
 #include<vector>
+#include<strings.h>
 
 #include "daisy_seed.h"
 

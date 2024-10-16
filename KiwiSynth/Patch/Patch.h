@@ -74,7 +74,7 @@ namespace kiwi_synth
             void DefaultSettings();
             void Load(SavedPatch savedPatch);
             void Save(SavedPatch* savedPatch);
-            PatchHeader GetPatchHeader();
+            void GetPatchHeader(PatchHeader* patchHeader);
     };
 
 } // namespace kiwi_synth

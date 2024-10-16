@@ -3,7 +3,7 @@
 namespace kiwi_synth
 {
     int patchHeaderSort(PatchHeader* a, PatchHeader* b) {
-        return strcmp(a->name, b->name);
+        return strcasecmp(a->name, b->name) < 0;
     }
 
     void KiwiSynth::Init(DaisySeed* hw, float sampleRate)
@@ -258,21 +258,24 @@ namespace kiwi_synth
     void KiwiSynth::SavePatch(int bankNumber, int patchNumber)
     {
         PatchHeader oldPatchHeader = patchBanks[bankNumber][patchNumber];
-        PatchHeader patchHeader = patch.GetPatchHeader();
+        PatchHeader patchHeader;
+        patch.GetPatchHeader(&patchHeader);
 
         // Update the patch bank header data
         patchBanks[bankNumber][patchNumber] = patchHeader;
 
-        // Remove the element from the patch type vector using erase function and iterators
-        auto it = std::find(patchTypes[oldPatchHeader.type].begin(), patchTypes[oldPatchHeader.type].end(),
-                            &oldPatchHeader);
-        // If element is found found, erase it
-        if (it != patchTypes[oldPatchHeader.type].end()) {
-            patchTypes[oldPatchHeader.type].erase(it);
+        // Find and remove the element from the patch type vector
+        for (unsigned int i = 0; i < patchTypes[oldPatchHeader.type].size(); i++) {
+            if (patchTypes[oldPatchHeader.type][i]->bankNumber == oldPatchHeader.bankNumber
+                && patchTypes[oldPatchHeader.type][i]->patchNumber == oldPatchHeader.patchNumber) {
+                    patchTypes[oldPatchHeader.type].erase(patchTypes[oldPatchHeader.type].begin() + i);
+                    break;
+                }
         }
+
         // Add the new element and sort it
-        patchTypes[oldPatchHeader.type].push_back(&patchHeader);
-        std::sort( patchTypes[oldPatchHeader.type].begin(), patchTypes[oldPatchHeader.type].end(), patchHeaderSort );
+        patchTypes[patchHeader.type].push_back(&patchBanks[bankNumber][patchNumber]);
+        std::sort( patchTypes[patchHeader.type].begin(), patchTypes[patchHeader.type].end(), patchHeaderSort );
 
         storage.SavePatch(&patch, bankNumber, patchNumber);
         patch.SetLiveMode(false, bankNumber, patchNumber);

@@ -102,15 +102,12 @@ namespace kiwi_synth
         settings2.Load(savedPatch, 1);
     }
 
-    PatchHeader Patch::GetPatchHeader() {
-        PatchHeader patchHeader;
-        strcpy(patchHeader.name, name);
-        patchHeader.bankNumber = bankNumber;
-        patchHeader.patchNumber = patchNumber;
-        patchHeader.type = type;
-        patchHeader.voiceMode = voiceMode;
-
-        return patchHeader;
+    void Patch::GetPatchHeader(PatchHeader* patchHeader) {
+        strcpy(patchHeader->name, name);
+        patchHeader->bankNumber = bankNumber;
+        patchHeader->patchNumber = patchNumber;
+        patchHeader->type = type;
+        patchHeader->voiceMode = voiceMode;
     }
 
 } // namespace kiwi_synth

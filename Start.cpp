@@ -33,8 +33,6 @@ using namespace kiwi_synth;
  * 
  * Hard sync voice mode
  * FM synth voice mode
- * Check if patches are getting added and removed to patch type vectors properly.
- * When filter is very low there is noise in the signal. Maybe interference??? Is it just voice detune? Could be a modulation not zeroed out?
  * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
@@ -44,7 +42,6 @@ using namespace kiwi_synth;
  * Paraphonic layered 3 "voice" mode.
  * Layered/Split -- some way to edit voice 2? Probably swap voice1 and 2 settings, but preserving FX and mod.
  * Menu to change system-wide default mods and patch mod settings 5-8
- * Pitch bend has a crackling noise audible if filter is low. Could just be interference noise from MIDI in.
  * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input
@@ -139,7 +136,6 @@ int main(void)
 	uint16_t counter = 0;
     while(1)
 	{
-		//System::DelayUs(700); // Give the multiplexer time to change channels
 		kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
 		kiwiSynth.UpdateSettings();
 
