@@ -33,7 +33,6 @@ using namespace kiwi_synth;
  * 
  * Hard sync voice mode
  * FM synth voice mode
- * There is weird distortion with KiwiPhaser
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
@@ -55,7 +54,6 @@ using namespace kiwi_synth;
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
- * Can we get phaser back up to 4 or 6 pole?
  * Can we make the data structures a little smaller without losing performance?
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * External audio in

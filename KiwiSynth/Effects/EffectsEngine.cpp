@@ -12,14 +12,10 @@ namespace kiwi_synth
         delay.Init();
         chorusL.Init(sampleRate, 0);
         chorusR.Init(sampleRate, 1);
-        phaserL.Init(sampleRate, 2);
-        phaserR.Init(sampleRate, 3);
-        phaserL.SetPoles(2);
-        phaserR.SetPoles(2);
-        phaserL.SetFeedback(0.0);
-        phaserR.SetFeedback(0.0);
-        phaserL.SetFreq(150.0f);
-        phaserR.SetFreq(150.0f);
+        phaserL.Feedback(0.3f);
+        phaserR.Feedback(0.3f);
+        phaserL.Range(440.f, 1600.f);
+        phaserR.Range(440.f, 1600.f);
         flangerL.Init(sampleRate, 4);
         flangerR.Init(sampleRate, 5);
         decimatorL.Init();
@@ -62,10 +58,12 @@ namespace kiwi_synth
         chorusL.SetLfoDepth(chorusDepth);
         chorusR.SetLfoDepth(chorusDepth);
 
-        phaserL.SetLfoFreq(freq);
-        phaserR.SetLfoFreq(freq);
-        phaserL.SetLfoDepth(phaserDepth);
-        phaserR.SetLfoDepth(phaserDepth);
+        phaserL.Rate(freq);
+        phaserR.Rate(freq);
+        phaserL.Depth(phaserDepth);
+        phaserR.Depth(phaserDepth);
+        phaserL.Feedback(phaserDepth * 0.75f);
+        phaserR.Feedback(phaserDepth * 0.75f);
 
         flangerL.SetLfoFreq(freq);
         flangerR.SetLfoFreq(freq);

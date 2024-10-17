@@ -107,11 +107,6 @@ namespace kiwi_synth
                 selected = PATCH_SCREEN_LOAD;
             }
 
-            // If a patch is loaded, we can not edit voice mode, fx, or reverb. Skip them.
-            if (!patch->GetLiveMode() && selected > PATCH_SCREEN_TYPE && selected < PATCH_SCREEN_LIVE) {
-                selected = PATCH_SCREEN_LIVE;
-            }
-
             // If the voice mode is not split mode, then skip selecction of the split note (since it is not displayed).
             if (selected == PATCH_SCREEN_SPLIT_NOTE && patch->GetVoiceMode() != VOICE_MODE_SPLIT) {
                 selected = (PatchScreenSelection)(selected + 1);

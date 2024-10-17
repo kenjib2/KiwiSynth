@@ -1,141 +1,152 @@
-/*
-Copyright (c) 2020 Electrosmith, Corp
+#ifndef __KIWI_SYNTH_KIWI_PHASER__
+#define __KIWI_SYNTH_KIWI_PHASER__
 
-Use of this source code is governed by an MIT-style
-license that can be found in the LICENSE file or at
-https://opensource.org/licenses/MIT.
+#include "../Modules/KiwiTriangle.h"
+
+/* 
+Date: Mon, 24 Aug 1998 07:02:40 -0700
+Reply-To: music-dsp
+Originator: music-dsp@shoko.calarts.edu
+Sender: music-dsp
+Precedence: bulk
+From: "Ross Bencina" <rbencina@hotmail.com>
+To: Multiple recipients of list <music-dsp>
+Subject: Re: Phaser revisited [code included]
+X-Comment:  Music Hackers Unite! http://shoko.calarts.edu/~glmrboy/musicdsp/music-dsp.html 
+Status: RO
+
+Hi again,
+
+Thanks to Chris Towsend and Marc Lindahl for their helpful 
+contributions. I now have a working phaser and it sounds great! It seems 
+my main error was using a 'sub-sampled' all-pass reverberator instead of 
+a single sample all-pass filter [what was I thinking? :)].
+
+I have included a working prototype (C++) below for anyone who is 
+interested. My only remaining doubt is whether the conversion from 
+frequency to delay time [ _dmin = fMin / (SR/2.f); ] makes any sense 
+what-so-ever.
+
+Ross B.
 */
+/*
+    class: Phaser
+    implemented by: Ross Bencina <rossb@kagi.com>
+    date: 24/8/98
 
-#pragma once
-#ifndef __KIWI_SYNTH_KIWI_PHASER_H__
-#define __KIWI_SYNTH_KIWI_PHASER_H__
-#ifdef __cplusplus
+    Phaser is a six stage phase shifter, intended to reproduce the
+    sound of a traditional analogue phaser effect.
+    This implementation uses six first order all-pass filters in
+    series, with delay time modulated by a sinusoidal.
 
-#include <stdint.h>
-#include "IEffect.h"
-#include "KiwiDelayLine.h"
+    This implementation was created to be clear, not efficient.
+    Obvious modifications include using a table lookup for the lfo,
+    not updating the filter delay times every sample, and not
+    tuning all of the filters to the same delay time.
 
-/** @file phaser.h */
+    Thanks to:
+    The nice folks on the music-dsp mailing list, including...
+    Chris Towsend and Marc Lindahl
+    
+    ...and Scott Lehman's Phase Shifting page at harmony central:
+    http://www.harmony-central.com/Effects/Articles/Phase_Shifting/
+
+*/
+// Modified by Kenji Baugham to use a cheaper triangle LFO instead of sine
 
 namespace kiwi_synth
 {
-/**  
-    @brief Single Phaser engine. Used in Phaser.
-    @author Ben Sergentanis
-*/
-class KiwiPhaserEngine
-{
-  public:
-    KiwiPhaserEngine() {}
-    ~KiwiPhaserEngine() {}
 
-    /** Initialize the module
-        \param sample_rate Audio engine sample rate.
-    */
-    void Init(float sample_rate, int bufferNumber);
+    #define SR (48000.f)  //sample rate
+    #define F_PI (3.14159f)
 
-    /** Get the next sample
-        \param in Sample to process
-    */
-    float Process(float in);
+    class KiwiPhaser{
+    public:
+        KiwiPhaser()  //initialise to some usefull defaults...
+            : _fb( .7f )
+            , _lfoPhase( 0.f )
+            , _depth( 1.f )
+            , _zm1( 0.f )
+        {
+            lfo.Init(SR);
+            lfo.SetAmp(0.5f);
+            Range( 440.f, 1600.f );
+            Rate( .5f );
+        }
 
-    /** How much to modulate the allpass filter by.
-        \param depth Works 0-1.
-    */
-    void SetLfoDepth(float depth);
+        void Range( float fMin, float fMax ){ // Hz
+            _dmin = fMin / (SR/2.f);
+            _dmax = fMax / (SR/2.f);
+        }
 
-    /** Set lfo frequency.
-        \param lfo_freq Frequency in Hz
-    */
-    void SetLfoFreq(float lfo_freq);
+        void Rate( float rate ){ // cps
+            _lfoInc = 2.f * F_PI * (rate / SR);
+            lfo.SetFreq(rate);
+        }
 
-    /** Set the allpass frequency
-        \param ap_freq Frequency in Hz.
-    */
-    void SetFreq(float ap_freq);
+        void Feedback( float fb ){ // 0 -> <1.
+            _fb = fb;
+        }
 
-    /** Set the feedback amount.
-        \param feedback Amount from 0-1.
-    */
-    void SetFeedback(float feedback);
+        void Depth( float depth ){  // 0 -> 1.
+            _depth = depth;
+        }
 
-  private:
-    float                    sample_rate_;
-    static constexpr int32_t kDelayLength
-        = 2400; // 50 ms at 48kHz = .05 * 48000
+        float Process( float inSamp ){
+            //calculate and update phaser sweep lfo...
+            float d  = _dmin + (_dmax-_dmin) * (lfo.Process() + 0.5f);
+            _lfoPhase += _lfoInc;
+            if( _lfoPhase >= F_PI * 2.f )
+                _lfoPhase -= F_PI * 2.f;
 
-    //triangle lfo
-    float lfo_phase_;
-    float lfo_freq_;
-    float lfo_amp_;
+            //update filter coeffs
+            for( int i=0; i<6; i++ )
+                _alps[i].Delay( d );
 
-    float os_;
+            //calculate output
+            float y = 	_alps[0].Update(
+                        _alps[1].Update(
+                        _alps[2].Update(
+                        _alps[3].Update(
+                            _alps[4].Update(
+                            _alps[5].Update( inSamp + _zm1 * _fb ))))));
+            _zm1 = y;
 
-    float feedback_;
-    float ap_freq_;
+            return inSamp + y * _depth;
+        }
+    private:
+        class AllpassDelay{
+        public:
+            AllpassDelay()
+                : _a1( 0.f )
+                , _zm1( 0.f )
+                {}
 
-    float deltime_;
-    float last_sample_;
+            void Delay( float delay ){ //sample delay time
+                _a1 = (1.f - delay) / (1.f + delay);
+            }
 
-    KiwiDelayLine del_;
+            float Update( float inSamp ){
+                float y = inSamp * -_a1 + _zm1;
+                _zm1 = y * _a1 + inSamp;
 
-    float ProcessLfo();
-};
+                return y;
+            }
+        private:
+            float _a1, _zm1;
+        };
 
-//wraps up all of the phaser engines
-/**  
-    @brief Phaser Effect.
-    @author Ben Sergentanis
-    @date Jan 2021
-*/
-class KiwiPhaser : public IEffect
-{
-  public:
-    KiwiPhaser() {}
-    ~KiwiPhaser() {}
+        AllpassDelay _alps[6];
+        KiwiTriangle lfo;
 
-    /** Initialize the module
-        \param sample_rate Audio engine sample rate
-    */
-    void Init(float sample_rate, int bufferNumber);
+        float _dmin, _dmax; //range
+        float _fb; //feedback
+        float _lfoPhase;
+        float _lfoInc;
+        float _depth;
 
-    /** Get the next floating point sample.
-        \param in Sample to process
-    */
-    float Process(float in);
+        float _zm1;
+    };
 
-    /** Number of allpass stages.
-        \param poles Works 1 to 8.
-    */
-    void SetPoles(int poles);
-
-    /** Set all lfo depths
-        \param depth Works 0-1.
-    */
-    void SetLfoDepth(float depth);
-
-    /** Set all lfo frequencies.
-        \param lfo_freq Lfo freq in Hz.
-    */
-    void SetLfoFreq(float lfo_freq);
-
-    /** Set all channel allpass freq in Hz.
-        \param ap_freq Frequency in Hz.
-    */
-    void SetFreq(float ap_freq);
-
-    /** Set all channels feedback.
-        \param feedback Works 0-1.
-    */
-    void SetFeedback(float feedback);
-
-  private:
-    static constexpr int kMaxPoles = 8;
-    KiwiPhaserEngine     engines_[kMaxPoles];
-    float                gain_frac_;
-    float                inv_poles_;
-    int                  poles_;
-};
-} //namespace kiwi_synth
-#endif // __cplusplus
-#endif // __KIWI_SYNTH_KIWI_PHASER_H__
+} // namespace kiwi_synth
+#endif // __KIWI_SYNTH_KIWI_PHASER__
