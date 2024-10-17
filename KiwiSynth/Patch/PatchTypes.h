@@ -36,9 +36,10 @@ namespace kiwi_synth
         VOICE_MODE_MULTI,
         VOICE_MODE_SPLIT,
         VOICE_MODE_PARA,
-        VOICE_MODE_HSYNC
+        VOICE_MODE_HSYNC,
+        VOICE_MODE_HSYNC_MONO
     } VoiceMode;
-    static const int VOICE_MODE_MAX = 6;
+    static const int VOICE_MODE_MAX = 7;
 
     typedef enum {
         FX_DISTORTION_DELAY,
@@ -68,6 +69,13 @@ namespace kiwi_synth
         WAVEFORM_SINE,
         WAVEFORM_WAVEFOLDED_SAWTOOTH
     } Waveform;
+    static const int WAVEFORM_MAX = 7;
+
+    typedef enum {
+        NOISE_TYPE_WHITE,
+        NOISE_TYPE_DUST
+    } NoiseType;
+    static const int NOISE_TYPE_MAX = 2;
 
     typedef enum {
         LFO_WAVEFORM_TRIANGLE,
@@ -79,8 +87,9 @@ namespace kiwi_synth
         LFO_WAVEFORM_VARISAW,
         LFO_WAVEFORM_WAVEFOLDED_SAWTOOTH
     } LfoWaveform;
+    static const int LFO_WAVEFORM_MAX = 8;
 
-    enum FilterType {
+    typedef enum {
         LADDER_LOWPASS,
         SVF_LOWPASS,
         SVF_HIGHPASS,
@@ -89,7 +98,8 @@ namespace kiwi_synth
         SVF_PEAK,
         ONE_POLE_LOWPASS,
         ONE_POLE_HIGHPASS
-    };
+    } FilterType;
+    static const int FILTER_TYPE_MAX = 8;
     
     /*
      * All controls for the Kiwi Synth.

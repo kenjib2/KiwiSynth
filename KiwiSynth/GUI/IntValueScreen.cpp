@@ -29,8 +29,8 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue((PatchSetting)(VCO_1_WAVEFORM)));
-        EnumToText::GetVcfType(val2, settings->getIntValue((PatchSetting)(VCF_FILTER_TYPE)));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_1_WAVEFORM));
+        EnumToText::GetVcfType(val2, (FilterType)settings->getIntValue(VCF_FILTER_TYPE));
         sprintf(buffer, "W1 %s VCF %s", val1, val2);
         display->WriteString(buffer, Font_6x8, true);
 
@@ -41,26 +41,26 @@ namespace kiwi_synth
         intVal1 = settings->getIntValue(VCO_2_OCTAVE) - 2;
         intVal2 = settings->getIntValue(VCO_2_INTERVAL) - 11;
         display->SetCursor(0, 8);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue((PatchSetting)(VCO_2_WAVEFORM)));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_2_WAVEFORM));
         sprintf(buffer, "W2 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         intVal1 = settings->getIntValue(VCO_3_OCTAVE) - 2;
         intVal2 = settings->getIntValue(VCO_3_INTERVAL) - 11;
         display->SetCursor(0, 16);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue((PatchSetting)(VCO_3_WAVEFORM)));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_3_WAVEFORM));
         sprintf(buffer, "W3 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
-        EnumToText::GetNoiseType(val1, settings->getIntValue((PatchSetting)(VCO_NOISE_TYPE)));
-        EnumToText::GetLfoWaveform(val2, settings->getIntValue((PatchSetting)(LFO_1_WAVEFORM)));
-        EnumToText::GetLfoWaveform(val3, settings->getIntValue((PatchSetting)(LFO_2_WAVEFORM)));
+        EnumToText::GetNoiseType(val1, (NoiseType)settings->getIntValue(VCO_NOISE_TYPE));
+        EnumToText::GetLfoWaveform(val2, (LfoWaveform)settings->getIntValue(LFO_1_WAVEFORM));
+        EnumToText::GetLfoWaveform(val3, (LfoWaveform)settings->getIntValue(LFO_2_WAVEFORM));
         sprintf(buffer, "N %s L1 %s L2 %s", val1, val2, val3);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
-        EnumToText::GetModSource(val1, patch->voice1Settings->getIntValue((PatchSetting)(MOD_1_SOURCE)));
+        EnumToText::GetModSource(val1, (ModulationSource)patch->voice1Settings->getIntValue(MOD_1_SOURCE));
         modSign = ' ';
         if (patch->voice1Settings->modSigns[0] < 0.0f) {
             modSign = '-';
@@ -69,12 +69,12 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC1);
 
         display->SetCursor(66, 32);
-        EnumToText::GetModDestination(val2, patch->voice1Settings->getIntValue((PatchSetting)(MOD_1_DESTINATION)));
+        EnumToText::GetModDestination(val2, (ModulationDestination)patch->voice1Settings->getIntValue(MOD_1_DESTINATION));
         sprintf(buffer, "DST1 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
-        EnumToText::GetModSource(val1, patch->voice1Settings->getIntValue((PatchSetting)(MOD_2_SOURCE)));
+        EnumToText::GetModSource(val1, (ModulationSource)patch->voice1Settings->getIntValue(MOD_2_SOURCE));
         modSign = ' ';
         if (patch->voice1Settings->modSigns[1] < 0.0f) {
             modSign = '-';
@@ -83,12 +83,12 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC2);
 
         display->SetCursor(66, 40);
-        EnumToText::GetModDestination(val2, patch->voice1Settings->getIntValue((PatchSetting)(MOD_2_DESTINATION)));
+        EnumToText::GetModDestination(val2, (ModulationDestination)patch->voice1Settings->getIntValue(MOD_2_DESTINATION));
         sprintf(buffer, "DST2 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        EnumToText::GetModSource(val1, patch->voice1Settings->getIntValue((PatchSetting)(MOD_3_SOURCE)));
+        EnumToText::GetModSource(val1, (ModulationSource)patch->voice1Settings->getIntValue(MOD_3_SOURCE));
         modSign = ' ';
         if (patch->voice1Settings->modSigns[2] < 0.0f) {
             modSign = '-';
@@ -97,12 +97,12 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC3);
 
         display->SetCursor(66, 48);
-        EnumToText::GetModDestination(val2, patch->voice1Settings->getIntValue((PatchSetting)(MOD_3_DESTINATION)));
+        EnumToText::GetModDestination(val2, (ModulationDestination)patch->voice1Settings->getIntValue(MOD_3_DESTINATION));
         sprintf(buffer, "DST3 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        EnumToText::GetModSource(val1, patch->voice1Settings->getIntValue((PatchSetting)(MOD_4_SOURCE)));
+        EnumToText::GetModSource(val1, (ModulationSource)patch->voice1Settings->getIntValue(MOD_4_SOURCE));
         modSign = ' ';
         if (patch->voice1Settings->modSigns[3] < 0.0f) {
             modSign = '-';
@@ -111,7 +111,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_SRC4);
 
         display->SetCursor(66, 56);
-        EnumToText::GetModDestination(val2, patch->voice1Settings->getIntValue((PatchSetting)(MOD_4_DESTINATION)));
+        EnumToText::GetModDestination(val2, (ModulationDestination)patch->voice1Settings->getIntValue(MOD_4_DESTINATION));
         sprintf(buffer, "DST4 %s", val2);
         display->WriteString(buffer, Font_6x8, true);
 

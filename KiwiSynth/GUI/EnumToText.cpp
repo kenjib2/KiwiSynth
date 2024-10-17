@@ -29,18 +29,18 @@ namespace kiwi_synth
         }
     }
 
-    void EnumToText::GetNoiseType(char* buffer, int8_t noiseType) {
+    void EnumToText::GetNoiseType(char* buffer, NoiseType noiseType) {
         switch (noiseType) {
-            case 0:
+            case NOISE_TYPE_WHITE:
                 strcpy(buffer, "Wh");
                 break;
-            case 1:
+            case NOISE_TYPE_DUST:
                 strcpy(buffer, "Ds");
                 break;
         }
     }
 
-    void EnumToText::GetLfoWaveform(char* buffer, int8_t lfoWaveform) {
+    void EnumToText::GetLfoWaveform(char* buffer, LfoWaveform lfoWaveform) {
         switch (lfoWaveform) {
             case LFO_WAVEFORM_TRIANGLE:
                 strcpy(buffer, "Tr");
@@ -69,36 +69,36 @@ namespace kiwi_synth
         }
     }
 
-    void EnumToText::GetVcfType(char* buffer, int8_t vcfType) {
+    void EnumToText::GetVcfType(char* buffer, FilterType vcfType) {
         switch (vcfType) {
-            case 0:
+            case LADDER_LOWPASS:
                 strcpy(buffer, "LddrLoPa");
                 break;
-            case 1:
+            case SVF_LOWPASS:
                 strcpy(buffer, "LowPass");
                 break;
-            case 2:
+            case SVF_HIGHPASS:
                 strcpy(buffer, "HighPass");
                 break;
-            case 3:
+            case SVF_BANDPASS:
                 strcpy(buffer, "BandPass");
                 break;
-            case 4:
+            case SVF_NOTCH:
                 strcpy(buffer, "Notch");
                 break;
-            case 5:
+            case SVF_PEAK:
                 strcpy(buffer, "Peak");
                 break;
-            case 6:
+            case ONE_POLE_LOWPASS:
                 strcpy(buffer, "1PoleHiP");
                 break;
-            case 7:
+            case ONE_POLE_HIGHPASS:
                 strcpy(buffer, "1PoleLoP");
                 break;
         }
     }
 
-    void EnumToText::GetModSource(char* buffer, int8_t modSource) {
+    void EnumToText::GetModSource(char* buffer, ModulationSource modSource) {
         switch (modSource) {
             case SRC_NONE:
                 strcpy(buffer, "None ");
@@ -148,7 +148,7 @@ namespace kiwi_synth
         }
     }
 
-    void EnumToText::GetModDestination(char* buffer, int8_t modDestination) {
+    void EnumToText::GetModDestination(char* buffer, ModulationDestination modDestination) {
         switch (modDestination) {
             case DST_NONE:
                 strcpy(buffer, "None ");
@@ -334,6 +334,9 @@ namespace kiwi_synth
                 break;
             case VOICE_MODE_HSYNC:
                 strcpy(buffer, "Hard Sync");
+                break;
+            case VOICE_MODE_HSYNC_MONO:
+                strcpy(buffer, "Hrd Sync Mono");
                 break;
         }
     }

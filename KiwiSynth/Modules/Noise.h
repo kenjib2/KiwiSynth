@@ -16,7 +16,7 @@ namespace kiwi_synth
     class Noise
     {
         private:
-            int        noiseType;
+            NoiseType  noiseType;
             float      level;
             float      lastSample;
             bool       isOn;

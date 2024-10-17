@@ -17,23 +17,23 @@ namespace kiwi_synth
             /*
              * Buffer should be at least 3 in size.
              */
-            static void GetNoiseType(char* buffer, int8_t noiseType);
+            static void GetNoiseType(char* buffer, NoiseType noiseType);
             /*
              * Buffer should be at least 3 in size.
              */
-            static void GetLfoWaveform(char* buffer, int8_t lfoWaveform);
+            static void GetLfoWaveform(char* buffer, LfoWaveform lfoWaveform);
             /*
              * Buffer should be at least 9 in size.
              */
-            static void GetVcfType(char* buffer, int8_t vcfType);
+            static void GetVcfType(char* buffer, FilterType vcfType);
             /*
              * Buffer should be at least 6 in size.
              */
-            static void GetModSource(char* buffer, int8_t modSource);
+            static void GetModSource(char* buffer, ModulationSource modSource);
             /*
              * Buffer should be at least 6 in size.
              */
-            static void GetModDestination(char* buffer, int8_t modDestination);
+            static void GetModDestination(char* buffer, ModulationDestination modDestination);
             /*
              * Buffer should be at least 13 in size.
              */

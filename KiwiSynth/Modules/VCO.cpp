@@ -128,6 +128,7 @@ namespace kiwi_synth
                 return sineOsc.GetPhaseRatio();
             case WAVEFORM_WAVEFOLDED_SAWTOOTH:
                 return sawOsc.GetPhaseRatio();
+            default:
             case WAVEFORM_VARISHAPE:
             case WAVEFORM_VARISAW:
                 return 0.0f;
