@@ -68,17 +68,20 @@ namespace kiwi_synth
                     squareOsc.SetFreq(freq);
                     squareOsc.SetPw(pulseWidth + pwMod);
                     waveSample = squareOsc.Process();
+                    eoc = squareOsc.IsEOC();
                     break;
                 case WAVEFORM_SAWTOOTH:
                     sawOsc.SetFreq(freq);
                     waveSample = sawOsc.Process();
                     waveSample = fclamp(waveSample * (sawtoothGain + pwMod * 50.0f + 1.0f), -1.0f, 1.0f);
+                    eoc = sawOsc.IsEOC();
                     break;
                 case WAVEFORM_TRIANGLE:
                     triangleOsc.SetFreq(freq);
                     waveSample = triangleOsc.Process();
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
                     waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = triangleOsc.IsEOC();
                     break;
                 case WAVEFORM_VARISHAPE:
                     variOsc.SetSyncFreq(freq);
@@ -95,12 +98,14 @@ namespace kiwi_synth
                     waveSample = sineOsc.Process();
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
                     waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = sineOsc.IsEOC();
                     break;
                 case WAVEFORM_WAVEFOLDED_SAWTOOTH:
                     sawOsc.SetFreq(freq);
                     waveSample = sawOsc.Process();
                     wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
                     waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = sawOsc.IsEOC();
             }
 
             *sample = waveSample * level;
@@ -109,4 +114,48 @@ namespace kiwi_synth
             *sample = 0.0f;
         }
     }
+
+    float VCO::GetPhaseRatio()
+    {
+        switch(waveform) {
+            case WAVEFORM_SQUARE:
+                return squareOsc.GetPhaseRatio();
+            case WAVEFORM_SAWTOOTH:
+                return sawOsc.GetPhaseRatio();
+            case WAVEFORM_TRIANGLE:
+                return triangleOsc.GetPhaseRatio();
+            case WAVEFORM_SINE:
+                return sineOsc.GetPhaseRatio();
+            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                return sawOsc.GetPhaseRatio();
+            case WAVEFORM_VARISHAPE:
+            case WAVEFORM_VARISAW:
+                return 0.0f;
+        }
+    }
+
+    void VCO::HardSync(float phaseRatio)
+    {
+        switch(waveform) {
+            case WAVEFORM_SQUARE:
+                squareOsc.HardSync(phaseRatio);
+                break;
+            case WAVEFORM_SAWTOOTH:
+                sawOsc.HardSync(phaseRatio);
+                break;
+            case WAVEFORM_TRIANGLE:
+                triangleOsc.HardSync(phaseRatio);
+                break;
+            case WAVEFORM_SINE:
+                sineOsc.HardSync(phaseRatio);
+                break;
+            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                sawOsc.HardSync(phaseRatio);
+                break;
+            case WAVEFORM_VARISHAPE:
+            case WAVEFORM_VARISAW:
+                break;
+        }
+    }
+
 }

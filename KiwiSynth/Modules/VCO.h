@@ -55,6 +55,7 @@ namespace kiwi_synth
         public:
             float      midiNote; // 0 to 127 with portamento applied. Needs mtof to make a frequency.
             float      paraOffset; // Midi note for this specific VCO relative to 0
+            bool       eoc; // End of cycle (ready for hard sync)
 
             VCO() {}
             ~VCO() {}
@@ -71,6 +72,12 @@ namespace kiwi_synth
              * actually pulse width modulation for the square wave.
              */
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod);
+            /** Returns the ratio of phase to frequency to generate a unit of time passed since the last phase crossing.
+             */
+            float GetPhaseRatio();
+            /** Sets the phase based on a given phase ratio.
+             */
+            void HardSync(float phaseRatio);
     };
 }
 

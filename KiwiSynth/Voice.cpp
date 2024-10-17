@@ -150,6 +150,11 @@ namespace kiwi_synth
         vcos[0].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
         voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
 
+        if (hardSync && vcos[0].eoc) {
+            vcos[1].HardSync(vcos[0].GetPhaseRatio());
+            vcos[2].HardSync(vcos[0].GetPhaseRatio());
+        }
+
         vcoSample = 0.0f;
         vcos[1].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
         voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];

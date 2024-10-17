@@ -71,6 +71,12 @@ class KiwiSquare
     /** Returns true if cycle is at end of cycle. Set during call to Process.
     */
     inline bool IsEOC() { return eoc_; }
+    /** Returns the ratio of phase to frequency to generate a unit of time passed since the last phase crossing.
+     */
+    inline float GetPhaseRatio() { return phase_ / freq_; }
+    /** Sets the phase based on a given phase ratio.
+     */
+    inline void HardSync(float phaseRatio) { phase_ = phaseRatio * freq_; }
 
   private:
     inline float   CalcPhaseInc(float f) { return f * sr_recip_; }

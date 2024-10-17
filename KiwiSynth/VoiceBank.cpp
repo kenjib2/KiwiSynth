@@ -42,6 +42,8 @@ namespace kiwi_synth
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
             } else if (voiceMode == VOICE_MODE_PARA) {
                 numVoices = 2;
                 voices[0].ParaphonicMode(true);
@@ -51,9 +53,19 @@ namespace kiwi_synth
                     paraVcoNotes[i] = -128;
                     paraVcoOffRequested[i] = false;
                 }
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
+            } else if (voiceMode == VOICE_MODE_HSYNC) {
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = true;
+                voices[1].hardSync = true;
+                numVoices = 2;
             } else {
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
                 numVoices = 2;
             }
 
