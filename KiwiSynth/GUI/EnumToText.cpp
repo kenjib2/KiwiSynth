@@ -332,6 +332,9 @@ namespace kiwi_synth
             case VOICE_MODE_PARA:
                 strcpy(buffer, "Paraphonic");
                 break;
+            case VOICE_MODE_HSYNC:
+                strcpy(buffer, "Hard Sync");
+                break;
         }
     }
 

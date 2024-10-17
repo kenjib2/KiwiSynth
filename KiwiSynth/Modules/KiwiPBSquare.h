@@ -46,9 +46,7 @@ class KiwiPBSquare
         phase_     = 0.0f;
         phase_inc_ = CalcPhaseInc(freq_);
         eoc_       = true;
-        eor_       = true;
     }
-
 
     /** Changes the frequency of the Oscillator, and recalculates phase increment.
     */
@@ -58,8 +56,6 @@ class KiwiPBSquare
         phase_inc_ = CalcPhaseInc(f);
         phase_inc_recip_ = 1.0f / phase_inc_;
     }
-
-
     /** Sets the amplitude of the waveform.
     */
     inline void SetAmp(const float a) { amp_ = a; }
@@ -73,13 +69,15 @@ class KiwiPBSquare
     /** Resets the phase to the input argument. If no argumeNt is present, it will reset phase to 0.0;
     */
     inline void Reset(float _phase = 0.0f) { phase_ = _phase; }
+    /** Returns true if cycle is at end of cycle. Set during call to Process.
+    */
+    inline bool IsEOC() { return eoc_; }
 
   private:
     inline float   CalcPhaseInc(float f) { return f * sr_recip_; }
     float   amp_, freq_, pw_;
     float   sr_, sr_recip_, phase_, phase_inc_, phase_inc_recip_;
-    float   last_out_, last_freq_;
-    bool    eor_, eoc_;
+    bool    eoc_;
 };
 
 } // namespace kiwi_synth

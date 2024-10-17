@@ -20,7 +20,6 @@ namespace kiwi_synth
         {
             eoc_ = false;
         }
-        eor_ = (phase_ - phase_inc_ < 0.5f && phase_ >= 0.5f);
 
         return out * amp_;
     }
