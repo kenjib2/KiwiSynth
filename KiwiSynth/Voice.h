@@ -60,6 +60,7 @@ namespace kiwi_synth
             bool noteTriggered;
             bool hardSync;
             bool sampleAndHoldAvailable;
+            FmMode fmMode;
 
             Voice() {}
             ~Voice() {}

@@ -341,6 +341,18 @@ namespace kiwi_synth
             case VOICE_MODE_HSYNC_MONO:
                 strcpy(buffer, "Hrd Sync Mono");
                 break;
+            case VOICE_MODE_FM_PARA:
+                strcpy(buffer, "FM Parallel");
+                break;
+            case VOICE_MODE_FM_PARA_MONO:
+                strcpy(buffer, "FM Para Mono");
+                break;
+            case VOICE_MODE_FM_SER:
+                strcpy(buffer, "FM Serial");
+                break;
+            case VOICE_MODE_FM_SER_MONO:
+                strcpy(buffer, "FM Ser Mono");
+                break;
         }
     }
 

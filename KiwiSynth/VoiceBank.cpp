@@ -46,6 +46,8 @@ namespace kiwi_synth
                 voices[1].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_OFF;
+                voices[1].fmMode = FM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_PARA) {
                 numVoices = 2;
                 voices[0].ParaphonicMode(true);
@@ -57,24 +59,64 @@ namespace kiwi_synth
                 }
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_OFF;
+                voices[1].fmMode = FM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_HSYNC) {
-                voices[0].ParaphonicMode(false);
-                voices[1].ParaphonicMode(false);
-                voices[0].hardSync = true;
-                voices[1].hardSync = true;
                 numVoices = 2;
-            } else if (voiceMode == VOICE_MODE_HSYNC_MONO) {
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
                 voices[0].hardSync = true;
                 voices[1].hardSync = true;
+                voices[0].fmMode = FM_MODE_OFF;
+                voices[1].fmMode = FM_MODE_OFF;
+            } else if (voiceMode == VOICE_MODE_HSYNC_MONO) {
                 numVoices = 1;
-            } else {
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = true;
+                voices[1].hardSync = true;
+                voices[0].fmMode = FM_MODE_OFF;
+                voices[1].fmMode = FM_MODE_OFF;
+            } else if (voiceMode == VOICE_MODE_FM_PARA) {
+                numVoices = 2;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_PARALLEL;
+                voices[1].fmMode = FM_MODE_PARALLEL;
+            } else if (voiceMode == VOICE_MODE_FM_PARA_MONO) {
+                numVoices = 1;
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_PARALLEL;
+                voices[1].fmMode = FM_MODE_PARALLEL;
+            } else if (voiceMode == VOICE_MODE_FM_SER) {
                 numVoices = 2;
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_SERIAL;
+                voices[1].fmMode = FM_MODE_SERIAL;
+            } else if (voiceMode == VOICE_MODE_FM_SER_MONO) {
+                numVoices = 1;
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_SERIAL;
+                voices[1].fmMode = FM_MODE_SERIAL;
+            } else {
+                numVoices = 2;
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = false;
+                voices[1].hardSync = false;
+                voices[0].fmMode = FM_MODE_OFF;
+                voices[1].fmMode = FM_MODE_OFF;
             }
 
             patch->SetVoiceMode((VoiceMode)voiceMode);
@@ -121,7 +163,12 @@ namespace kiwi_synth
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
-        if (__builtin_expect(voiceMode != VOICE_MODE_MONO && voiceMode != VOICE_MODE_HSYNC_MONO, 1)) {
+        if (__builtin_expect(
+                voiceMode != VOICE_MODE_MONO &&
+                voiceMode != VOICE_MODE_HSYNC_MONO &&
+                voiceMode != VOICE_MODE_FM_PARA_MONO &&
+                voiceMode != VOICE_MODE_FM_SER_MONO,
+                1)) {
             voices[1].sampleAndHoldAvailable = sampleAndHoldInputAvailable;
             voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], systemModulations, numVoices);
             sample[0] += nextVoice[0];
@@ -336,6 +383,8 @@ namespace kiwi_synth
         switch (voiceMode) {
             case VOICE_MODE_MONO:
             case VOICE_MODE_HSYNC_MONO:
+            case VOICE_MODE_FM_PARA_MONO:
+            case VOICE_MODE_FM_SER_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
                 playingNotes.push_back(note);
                 if (voices[0].noteTriggered) {
@@ -392,6 +441,8 @@ namespace kiwi_synth
         switch (voiceMode) {
             case VOICE_MODE_MONO:
             case VOICE_MODE_HSYNC_MONO:
+            case VOICE_MODE_FM_PARA_MONO:
+            case VOICE_MODE_FM_SER_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
                 if (note == playingNotes.back()) {
                     playingNotes.pop_back();
