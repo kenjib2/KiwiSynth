@@ -61,6 +61,12 @@ namespace kiwi_synth
                 voices[0].hardSync = true;
                 voices[1].hardSync = true;
                 numVoices = 2;
+            } else if (voiceMode == VOICE_MODE_HSYNC_MONO) {
+                voices[0].ParaphonicMode(false);
+                voices[1].ParaphonicMode(false);
+                voices[0].hardSync = true;
+                voices[1].hardSync = true;
+                numVoices = 1;
             } else {
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
@@ -112,7 +118,7 @@ namespace kiwi_synth
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
-        if (__builtin_expect(voiceMode != VOICE_MODE_MONO, 1)) {
+        if (__builtin_expect(voiceMode != VOICE_MODE_MONO && voiceMode != VOICE_MODE_HSYNC_MONO, 1)) {
             voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], systemModulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
@@ -310,6 +316,7 @@ namespace kiwi_synth
         int vco;
         switch (voiceMode) {
             case VOICE_MODE_MONO:
+            case VOICE_MODE_HSYNC_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
                 playingNotes.push_back(note);
                 if (voices[0].noteTriggered) {
@@ -365,6 +372,7 @@ namespace kiwi_synth
     {
         switch (voiceMode) {
             case VOICE_MODE_MONO:
+            case VOICE_MODE_HSYNC_MONO:
                 voices[1].NoteOff(note, velocity); // Kill any voice 2 notes just in case
                 if (note == playingNotes.back()) {
                     playingNotes.pop_back();
