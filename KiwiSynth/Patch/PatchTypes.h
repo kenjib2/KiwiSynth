@@ -5,7 +5,7 @@ namespace kiwi_synth
 {
     const static int MAX_PATCH_NAME_LENGTH = 15;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
-    const static int NUM_MOD_DESTINATIONS = 37; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 38; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 99;
     const static int NUM_PATCH_SETTINGS_SAVED = 92;
@@ -311,7 +311,8 @@ namespace kiwi_synth
         DST_ENV_1_TO_VCF_CUTOFF,// 34
 
         DST_ENV_2_TO_VCF_CUTOFF,// 35
-        DST_SH_TO_VCF_CUTOFF    // 36
+        DST_SH_TO_VCF_CUTOFF,   // 36
+        DST_SH_IN               // 37
 
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               // Could possibly modulate for sources 7-12 only or have only voice 1 apply or only in solo mode?

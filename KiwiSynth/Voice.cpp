@@ -168,7 +168,11 @@ namespace kiwi_synth
         noise.Process(&noiseSample, patchSettings, modValues[DST_NOISE_LEVEL], modValues[DST_NOISE_DENSITY]);
         fclamp(voiceSample = voiceSample + noiseSample, -1.0f, 1.0f);
 
-        sampleAndHoldSample = noise.GetLastSample();
+        if  (sampleAndHoldAvailable) {
+            sampleAndHoldSample = modValues[DST_SH_IN];
+        }  else {
+            sampleAndHoldSample = noise.GetLastSample();
+        }
         sampleAndHold.Process(&sampleAndHoldSample, patchSettings, modValues[DST_SH_RATE]);
 
         vcf.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(VCF_TRACKING) + modValues[DST_NOTE_TO_VCF_CUTOFF], currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);

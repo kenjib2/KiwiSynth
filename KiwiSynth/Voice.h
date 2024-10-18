@@ -59,6 +59,7 @@ namespace kiwi_synth
             int currentVelocity;
             bool noteTriggered;
             bool hardSync;
+            bool sampleAndHoldAvailable;
 
             Voice() {}
             ~Voice() {}

@@ -264,6 +264,9 @@ namespace kiwi_synth
             case DST_SH_TO_VCF_CUTOFF:
                 strcpy(buffer, "SH>FC");
                 break;
+            case DST_SH_IN:
+                strcpy(buffer, "S&HIn");
+                break;
         }
     }
 

@@ -28,6 +28,8 @@ namespace kiwi_synth
             paraVcoOffRequested[i] = false;
         }
         vcoTriggerCount = -1;
+
+        sampleAndHoldInputAvailable = false;
     }
 
     
@@ -114,11 +116,13 @@ namespace kiwi_synth
 
         float nextVoice[2];
 
+        voices[0].sampleAndHoldAvailable = sampleAndHoldInputAvailable;
         voices[0].Process(nextVoice, patch->voice1Settings, modulations[0], systemModulations, numVoices);
         sample[0] += nextVoice[0];
         sample[1] += nextVoice[1];
 
         if (__builtin_expect(voiceMode != VOICE_MODE_MONO && voiceMode != VOICE_MODE_HSYNC_MONO, 1)) {
+            voices[1].sampleAndHoldAvailable = sampleAndHoldInputAvailable;
             voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], systemModulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
@@ -292,6 +296,21 @@ namespace kiwi_synth
             systemModulations[5].destination = DST_VCF_CUTOFF;
         } else {
             systemModulations[5].destination = DST_NONE;
+        }
+
+        systemModulations[5].source = SRC_EXPRESSION;
+        systemModulations[5].depth = 0.5f;
+        if (modulations[0][MODS_MOD_MATRIX_1].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_2].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_3].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_4].destination == DST_SH_IN /*||
+                modulations[0][MODS_MOD_MATRIX_5].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_6].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_7].destination == DST_SH_IN ||
+                modulations[0][MODS_MOD_MATRIX_8].destination == DST_SH_IN*/) {
+            sampleAndHoldInputAvailable = true;
+        } else {
+            sampleAndHoldInputAvailable = false;
         }
 
         modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);

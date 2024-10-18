@@ -27,6 +27,7 @@ namespace kiwi_synth
             bool                    paraVcoPlaying[6];
             bool                    paraVcoOffRequested[6]; // For paraphonic mode, set to true when a vco needs to be stopped after a slight delay to help with envelope release.
             int32_t                 vcoTriggerCount;
+            bool                    sampleAndHoldInputAvailable;
 
             Voice* RequestVoice(uint8_t midiNote);
             int RequestVco(uint8_t note);
