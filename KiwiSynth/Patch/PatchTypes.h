@@ -38,19 +38,19 @@ namespace kiwi_synth
         VOICE_MODE_PARA,
         VOICE_MODE_HSYNC,
         VOICE_MODE_HSYNC_MONO,
-        VOICE_MODE_FM_PARA,
-        VOICE_MODE_FM_PARA_MONO,
-        VOICE_MODE_FM_SER,
-        VOICE_MODE_FM_SER_MONO
+        VOICE_MODE_PM_PARA,
+        VOICE_MODE_PM_PARA_MONO,
+        VOICE_MODE_PM_SER,
+        VOICE_MODE_PM_SER_MONO
     } VoiceMode;
     static const int VOICE_MODE_MAX = 11;
 
     typedef enum {
-        FM_MODE_OFF,
-        FM_MODE_PARALLEL,
-        FM_MODE_SERIAL
-    } FmMode;
-    static const int FM_MODE_MAX = 3;
+        PM_MODE_OFF,
+        PM_MODE_PARALLEL,
+        PM_MODE_SERIAL
+    } PmMode;
+    static const int PM_MODE_MAX = 3;
 
     typedef enum {
         FX_DISTORTION_DELAY,

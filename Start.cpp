@@ -31,7 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * FM synth voice mode (Four modes? Parallel/Serial and Poly/Mono?)
+ * PM synthesis has some pops in poly mode
  * Inverted amplitude envelope clicks when starting and stopping
  * Make attack longer or a slower curve? Maybe also lower max release. Need to be able to edit all patches to do this.
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.

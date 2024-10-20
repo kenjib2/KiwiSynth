@@ -78,6 +78,9 @@ namespace kiwi_synth
             /** Sets the phase based on a given phase ratio.
              */
             void HardSync(float phaseRatio);
+            /** Adds a value 0.0-1.0 (equivalent to 0.0-TWO_PI) to the current phase. Useful for PM and "FM" synthesis.
+            */
+            void PhaseAdd(float phase);
     };
 }
 

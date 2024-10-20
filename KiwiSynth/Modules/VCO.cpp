@@ -159,4 +159,12 @@ namespace kiwi_synth
         }
     }
 
+    void VCO::PhaseAdd(float phase)
+    {
+        squareOsc.PhaseAdd(phase);
+        sawOsc.PhaseAdd(phase);
+        triangleOsc.PhaseAdd(phase);
+        sineOsc.PhaseAdd(phase);
+    }
+
 }

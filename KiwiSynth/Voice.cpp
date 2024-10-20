@@ -146,22 +146,39 @@ namespace kiwi_synth
         float lfo2Sample = 1.0f;
         lfo2.Process(&lfo2Sample, patchSettings, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH], modValues[DST_LFO_2_TRIGGER_PHASE]);
 
-        float vcoSample = 0.0f;
-        vcos[0].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
+        if (pmMode == PM_MODE_OFF) {
+            float vcoSample = 0.0f;
+            vcos[0].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
 
-        if (hardSync && vcos[0].eoc) {
-            vcos[1].HardSync(vcos[0].GetPhaseRatio());
-            vcos[2].HardSync(vcos[0].GetPhaseRatio());
+            if (hardSync && vcos[0].eoc) {
+                vcos[1].HardSync(vcos[0].GetPhaseRatio());
+                vcos[2].HardSync(vcos[0].GetPhaseRatio());
+            }
+
+            vcoSample = 0.0f;
+            vcos[1].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];
+
+            vcoSample = 0.0f;
+            vcos[2].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[2];
+        } else if (pmMode == PM_MODE_PARALLEL) {
+            float fmSample = 0.0f;
+            vcos[2].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            float fmSample2 = 0.0f;
+            vcos[1].Process(&fmSample2, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            vcos[0].PhaseAdd((fmSample + fmSample2) / 2);
+            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+        } else if (pmMode == PM_MODE_SERIAL) {
+            float fmSample = 0.0f;
+            vcos[2].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            vcos[1].PhaseAdd(fmSample);
+            vcos[1].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            vcos[0].PhaseAdd(fmSample);
+            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+            voiceSample = voiceSample * VOICE_ATTENTUATION_CONSTANT;
         }
-
-        vcoSample = 0.0f;
-        vcos[1].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];
-
-        vcoSample = 0.0f;
-        vcos[2].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
-        voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[2];
 
         float sampleAndHoldSample = 0.0f;
         float noiseSample = 0.0f;

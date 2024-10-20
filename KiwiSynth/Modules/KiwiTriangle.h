@@ -77,7 +77,10 @@ class KiwiTriangle
     /** Sets the phase based on a given phase ratio.
      */
     inline void HardSync(float phaseRatio) { phase_ = phaseRatio * freq_; }
-
+    /** Adds a value 0.0-1.0 (equivalent to 0.0-TWO_PI) to the current phase. Useful for PM and "FM" synthesis.
+    */
+    inline void PhaseAdd(float _phase) { phase_ += _phase; if (phase_ > 1.0f) phase_ -= 1.0f; }
+    
   private:
     inline float   CalcPhaseInc(float f) { return f * sr_recip_; }
     float   amp_, freq_;
