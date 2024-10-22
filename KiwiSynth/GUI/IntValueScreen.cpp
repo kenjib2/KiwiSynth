@@ -19,7 +19,7 @@ namespace kiwi_synth
         PatchSettings* settings;
         VoiceMode voiceMode;
 
-        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
         if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
             settings = patch->voice1Settings;
         } else {
@@ -29,7 +29,7 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_1_WAVEFORM));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_1_WAVEFORM));
         EnumToText::GetVcfType(val2, (FilterType)settings->getIntValue(VCF_FILTER_TYPE));
         sprintf(buffer, "W1 %s VCF %s", val1, val2);
         display->WriteString(buffer, Font_6x8, true);
@@ -38,22 +38,22 @@ namespace kiwi_synth
         sprintf(buffer, "V%d", voiceNumber + 1);
         display->WriteString(buffer, Font_6x8, selected != INT_SCREEN_VOICE);
 
-        intVal1 = settings->getIntValue(VCO_2_OCTAVE) - 2;
-        intVal2 = settings->getIntValue(VCO_2_INTERVAL) - 11;
+        intVal1 = settings->getIntValue(OSC_2_OCTAVE) - 2;
+        intVal2 = settings->getIntValue(OSC_2_INTERVAL) - 11;
         display->SetCursor(0, 8);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_2_WAVEFORM));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_2_WAVEFORM));
         sprintf(buffer, "W2 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
-        intVal1 = settings->getIntValue(VCO_3_OCTAVE) - 2;
-        intVal2 = settings->getIntValue(VCO_3_INTERVAL) - 11;
+        intVal1 = settings->getIntValue(OSC_3_OCTAVE) - 2;
+        intVal2 = settings->getIntValue(OSC_3_INTERVAL) - 11;
         display->SetCursor(0, 16);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(VCO_3_WAVEFORM));
+        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_3_WAVEFORM));
         sprintf(buffer, "W3 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
-        EnumToText::GetNoiseType(val1, (NoiseType)settings->getIntValue(VCO_NOISE_TYPE));
+        EnumToText::GetNoiseType(val1, (NoiseType)settings->getIntValue(OSC_NOISE_TYPE));
         EnumToText::GetLfoWaveform(val2, (LfoWaveform)settings->getIntValue(LFO_1_WAVEFORM));
         EnumToText::GetLfoWaveform(val3, (LfoWaveform)settings->getIntValue(LFO_2_WAVEFORM));
         sprintf(buffer, "N %s L1 %s L2 %s", val1, val2, val3);

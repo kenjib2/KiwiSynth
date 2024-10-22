@@ -6,7 +6,7 @@
 #include "daisysp.h"
 
 #include "Modulation.h"
-#include "Modules/VCO.h"
+#include "Modules/Oscillator.h"
 #include "Modules/Noise.h"
 #include "Modules/SampleAndHold.h"
 #include "Modules/VCF.h"
@@ -26,7 +26,7 @@ namespace kiwi_synth
     {
         private:
             static const int MAX_MODS = 9;
-            std::vector<VCO> vcos;
+            std::vector<Oscillator> vcos;
             Noise       noise;
             Envelope    env1, env2;
             SampleAndHold sampleAndHold;
@@ -45,7 +45,7 @@ namespace kiwi_synth
             uint8_t     numMods = 0;
             float       modValues[NUM_MOD_DESTINATIONS];
             float       prevSourceValues[NUM_MOD_SOURCES];
-            float       paraVcoMask[3]; // For paraphonic mode, tracks which VCOs are triggered.
+            float       paraVcoMask[3]; // For paraphonic mode, tracks which oscillators are triggered.
 
             void initMods();
             void calculateMods(Modulation* modulations, Modulation* systemModulations);

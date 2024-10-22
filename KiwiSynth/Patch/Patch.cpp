@@ -41,7 +41,7 @@ namespace kiwi_synth
             voice2Settings = &settings1;
         }
 
-        voice1Settings->setValue(VCO_VOICES, (int8_t)calculatedVoiceMode);
+        voice1Settings->setValue(OSC_VOICES, (int8_t)calculatedVoiceMode);
         this->voiceMode = calculatedVoiceMode;
     }
 

@@ -35,7 +35,7 @@ namespace kiwi_synth
     
     void VoiceBank::UpdateSettings()
     {
-        VoiceMode newVoiceMode = (VoiceMode)patch->voice1Settings->getIntValue(PatchSetting::VCO_VOICES);
+        VoiceMode newVoiceMode = (VoiceMode)patch->voice1Settings->getIntValue(PatchSetting::OSC_VOICES);
         if (newVoiceMode != voiceMode) {
             AllNotesOff();
             voiceMode = newVoiceMode;
@@ -203,9 +203,9 @@ namespace kiwi_synth
             modulations[i][MODS_MOD_MATRIX_8].destination = DST_NONE;
             modulations[i][MODS_MOD_MATRIX_8].depth = 0.0f;
 
-            modulations[i][MODS_LFO_1_TO_VCOS].source = SRC_LFO_1;
-            modulations[i][MODS_LFO_1_TO_VCOS].destination = DST_VCOS_FREQ;
-            modulations[i][MODS_LFO_1_TO_VCOS].depth = 0.0f;
+            modulations[i][MODS_LFO_1_TO_OSCS].source = SRC_LFO_1;
+            modulations[i][MODS_LFO_1_TO_OSCS].destination = DST_OSCS_FREQ;
+            modulations[i][MODS_LFO_1_TO_OSCS].depth = 0.0f;
             modulations[i][MODS_ENV_1_TO_VCA].source = SRC_ENV_1;
             modulations[i][MODS_ENV_1_TO_VCA].destination = DST_VCA_LEVEL;
             modulations[i][MODS_ENV_1_TO_VCA].depth = 0.0f;
@@ -265,7 +265,7 @@ namespace kiwi_synth
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_PITCH_BEND &&
                 modulations[0][MODS_MOD_MATRIX_8].source != SRC_PITCH_BEND*/) {
-            systemModulations[0].destination = DST_VCOS_FREQ;
+            systemModulations[0].destination = DST_OSCS_FREQ;
         } else {
             systemModulations[0].destination = DST_NONE;
         }
@@ -360,7 +360,7 @@ namespace kiwi_synth
             sampleAndHoldInputAvailable = false;
         }
 
-        modulations[0][MODS_LFO_1_TO_VCOS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[0][MODS_LFO_1_TO_OSCS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
         modulations[0][MODS_ENV_1_TO_VCA].depth = patch->voice1Settings->getFloatValue(VCA_ENV_1_DEPTH);
         modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(VCF_TRACKING);
         modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
@@ -368,7 +368,7 @@ namespace kiwi_synth
         modulations[0][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
         modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_VCF_CUTOFF);
 
-        modulations[1][MODS_LFO_1_TO_VCOS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
+        modulations[1][MODS_LFO_1_TO_OSCS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
         modulations[1][MODS_ENV_1_TO_VCA].depth = patch->voice2Settings->getFloatValue(VCA_ENV_1_DEPTH);
         modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(VCF_TRACKING);
         modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
@@ -510,7 +510,7 @@ namespace kiwi_synth
                 for (int i = 0; i < 6; i++) {
                     if (paraVcoNotes[i] == note) {
                         paraVcoOffRequested[i] = true;
-                        vcoTriggerCount = VCO_TRIGGER_SAMPLES;
+                        vcoTriggerCount = OSC_TRIGGER_SAMPLES;
                     }
                 }
             default:

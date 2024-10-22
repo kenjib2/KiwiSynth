@@ -37,7 +37,7 @@ namespace kiwi_synth
 
         display->SetCursor(0, 16);
         VoiceMode voiceMode;
-        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
         EnumToText::GetVoiceMode(value, voiceMode);
         sprintf(buffer, "Voices: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_VOICES);

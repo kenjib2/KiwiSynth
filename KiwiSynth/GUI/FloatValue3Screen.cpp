@@ -17,7 +17,7 @@ namespace kiwi_synth
         PatchSettings* settings;
         VoiceMode voiceMode;
 
-        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
         if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
             settings = patch->voice1Settings;
         } else {

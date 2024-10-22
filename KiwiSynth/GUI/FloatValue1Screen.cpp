@@ -17,7 +17,7 @@ namespace kiwi_synth
         PatchSettings* settings;
         VoiceMode voiceMode;
 
-        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(VCO_VOICES);
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
         if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
             settings = patch->voice1Settings;
         } else {
@@ -27,10 +27,10 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        boolVal1 = settings->getBoolValue(VCO_PORTAMENTO_ON);
+        boolVal1 = settings->getBoolValue(OSC_PORTAMENTO_ON);
         intVal1 = (int)(settings->getFloatValue(GEN_BALANCE) * 1000.f);
-        intVal2 = (int)(settings->getFloatValue(VCO_MASTER_TUNE) * 1000.f);
-        intVal3 = (int)(settings->getFloatValue(VCO_PORTAMENTO_SPEED) * 1000.f);
+        intVal2 = (int)(settings->getFloatValue(OSC_MASTER_TUNE) * 1000.f);
+        intVal3 = (int)(settings->getFloatValue(OSC_PORTAMENTO_SPEED) * 1000.f);
         if (!boolVal1) {
             sprintf(buffer, "B %03d T %03d Pt Off V%d", intVal1, intVal2, voiceNumber + 1);
         } else {
@@ -39,65 +39,65 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
-        intVal1 = settings->getFloatValue(VCO_1_LEVEL) * 1000;
-        sprintf(buffer, "VCO 1-------Level %03d", intVal1);
+        intVal1 = settings->getFloatValue(OSC_1_LEVEL) * 1000;
+        sprintf(buffer, "Osc 1-------Level %03d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
-        intVal1 = settings->getFloatValue(VCO_1_PULSE_WIDTH) * 1000;
+        intVal1 = settings->getFloatValue(OSC_1_PULSE_WIDTH) * 1000;
         sprintf(buffer, "Pulse Width %03d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
-        boolVal1 = settings->getBoolValue(VCO_2_ON);
+        boolVal1 = settings->getBoolValue(OSC_2_ON);
         if (!boolVal1) {
-            sprintf(buffer, "VCO 2 Off------------");
+            sprintf(buffer, "Osc 2 Off------------");
             display->WriteString(buffer, Font_6x8, true);
         } else {
-            intVal1 = settings->getFloatValue(VCO_2_LEVEL) * 1000;
-            sprintf(buffer, "VCO 2-------Level %03d", intVal1);
+            intVal1 = settings->getFloatValue(OSC_2_LEVEL) * 1000;
+            sprintf(buffer, "Osc 2-------Level %03d", intVal1);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 32);
-            intVal1 = settings->getFloatValue(VCO_2_PULSE_WIDTH) * 1000;
-            intVal2 = settings->getFloatValue(VCO_2_FINE_TUNE) * 1000;
+            intVal1 = settings->getFloatValue(OSC_2_PULSE_WIDTH) * 1000;
+            intVal2 = settings->getFloatValue(OSC_2_FINE_TUNE) * 1000;
             sprintf(buffer, "PWidth %03d FineTn %03d", intVal1, intVal2);
             display->WriteString(buffer, Font_6x8, true);
         }
 
         display->SetCursor(0, 40);
-        boolVal1 = settings->getBoolValue(VCO_3_ON);
+        boolVal1 = settings->getBoolValue(OSC_3_ON);
         if (!boolVal1) {
-            sprintf(buffer, "VCO 3 Off------------");
+            sprintf(buffer, "Osc 3 Off------------");
             display->WriteString(buffer, Font_6x8, true);
         } else {
-            intVal1 = settings->getFloatValue(VCO_3_LEVEL) * 1000;
-            sprintf(buffer, "VCO 3-------Level %03d", intVal1);
+            intVal1 = settings->getFloatValue(OSC_3_LEVEL) * 1000;
+            sprintf(buffer, "Osc 3-------Level %03d", intVal1);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 48);
-            intVal1 = settings->getFloatValue(VCO_3_PULSE_WIDTH) * 1000;
-            intVal2 = settings->getFloatValue(VCO_3_FINE_TUNE) * 1000;
+            intVal1 = settings->getFloatValue(OSC_3_PULSE_WIDTH) * 1000;
+            intVal2 = settings->getFloatValue(OSC_3_FINE_TUNE) * 1000;
             sprintf(buffer, "PWidth %03d FineTn %03d", intVal1, intVal2);
             display->WriteString(buffer, Font_6x8, true);
         }
 
         display->SetCursor(0, 56);
-        boolVal1 = settings->getBoolValue(VCO_NOISE_ON);
+        boolVal1 = settings->getBoolValue(OSC_NOISE_ON);
         if (!boolVal1) {
             sprintf(buffer, "Ns Off--");
         } else {
-            intVal1 = settings->getFloatValue(VCO_NOISE_LEVEL) * 1000;
+            intVal1 = settings->getFloatValue(OSC_NOISE_LEVEL) * 1000;
             sprintf(buffer, "NsL %03d-", intVal1);
         }
         display->WriteString(buffer, Font_6x8, true);
         display->SetCursor(48, 56);
-        boolVal1 = settings->getBoolValue(VCO_INPUT_ON);
+        boolVal1 = settings->getBoolValue(OSC_INPUT_ON);
         if (!boolVal1) {
             sprintf(buffer, "In Off-------");
         } else {
-            intVal1 = settings->getFloatValue(VCO_INPUT_THRESHOLD) * 1000;
-            intVal2 = settings->getFloatValue(VCO_INPUT_LEVEL) * 1000;
+            intVal1 = settings->getFloatValue(OSC_INPUT_THRESHOLD) * 1000;
+            intVal2 = settings->getFloatValue(OSC_INPUT_LEVEL) * 1000;
             sprintf(buffer, "InTh %03d-L%03d", intVal1, intVal2);
         }
         display->WriteString(buffer, Font_6x8, true);

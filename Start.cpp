@@ -24,8 +24,8 @@ using namespace kiwi_synth;
 // 76/83/77 remove waveshaping from vco     	8
 // Most expensive: reverb, lfo, vco, vcf, reverb
 // 85/98/91 distortion added                	6
-// 87/96/90 new benchmark 3VCO+N no dist	 	*****
-// 87/100/92 new benchmark 3VCO+N with dist	 	*****
+// 87/96/90 new benchmark 3Osc+N no dist	 	*****
+// 87/100/92 new benchmark 3Osc+N with dist	 	*****
 
 
 /*
@@ -47,12 +47,13 @@ using namespace kiwi_synth;
  * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
  * Save and load patches via Sysex
+ * Patch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
  * Layered patches are either not saving or not loading correctly. setting2 seems to not be playing with the expected settings. If you load twice it works.
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we make the data structures a little smaller without losing performance?
- * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. VCO.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
+ * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. Oscillator.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
  * External audio in
  * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)

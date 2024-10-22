@@ -17,7 +17,7 @@ namespace kiwi_synth
 
         patch.Init(&multiPots, &ge);
 
-        voiceBank.Init(numVoices, NUM_VCOS, &patch, sampleRate);
+        voiceBank.Init(numVoices, NUM_OSCS, &patch, sampleRate);
         effectsEngine.Init(&patch, sampleRate);
 
         storage.Init(hw->qspi);

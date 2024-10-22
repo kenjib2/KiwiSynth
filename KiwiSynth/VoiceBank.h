@@ -12,7 +12,7 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    const static int VCO_TRIGGER_SAMPLES = 1024;
+    const static int OSC_TRIGGER_SAMPLES = 1024;
 
     class VoiceBank
     {

@@ -116,42 +116,42 @@ namespace kiwi_synth
      * All controls for the Kiwi Synth.
      */
     typedef enum {
-        VCO_VOICES,                 // 0
-        VCO_MASTER_TUNE,                    // This does not get saved to patch settings or stored for patches. It is always loaded directly from live pot value
-        VCO_PORTAMENTO_ON,
-        VCO_PORTAMENTO_SPEED,
+        OSC_VOICES,                 // 0
+        OSC_MASTER_TUNE,                    // This does not get saved to patch settings or stored for patches. It is always loaded directly from live pot value
+        OSC_PORTAMENTO_ON,
+        OSC_PORTAMENTO_SPEED,
 
-        VCO_1_WAVEFORM,
-        VCO_2_WAVEFORM,             // 5
-        VCO_3_WAVEFORM,
+        OSC_1_WAVEFORM,
+        OSC_2_WAVEFORM,             // 5
+        OSC_3_WAVEFORM,
 
-        VCO_1_PULSE_WIDTH,
-        VCO_2_PULSE_WIDTH,
-        VCO_3_PULSE_WIDTH,
+        OSC_1_PULSE_WIDTH,
+        OSC_2_PULSE_WIDTH,
+        OSC_3_PULSE_WIDTH,
 
-        VCO_1_LEVEL,                // 10
-        VCO_2_LEVEL,
-        VCO_3_LEVEL,
+        OSC_1_LEVEL,                // 10
+        OSC_2_LEVEL,
+        OSC_3_LEVEL,
 
-        VCO_1_ON,
-        VCO_2_ON,
-        VCO_3_ON,                   // 15
+        OSC_1_ON,
+        OSC_2_ON,
+        OSC_3_ON,                   // 15
         
-        VCO_2_OCTAVE,
-        VCO_3_OCTAVE,
-        VCO_2_INTERVAL,
-        VCO_3_INTERVAL,
-        VCO_2_FINE_TUNE,            // 20
-        VCO_3_FINE_TUNE,
+        OSC_2_OCTAVE,
+        OSC_3_OCTAVE,
+        OSC_2_INTERVAL,
+        OSC_3_INTERVAL,
+        OSC_2_FINE_TUNE,            // 20
+        OSC_3_FINE_TUNE,
 
 
-        VCO_NOISE_ON,
-        VCO_NOISE_TYPE,
-        VCO_NOISE_LEVEL,
-        VCO_DUST_DENSITY,           // 25
-        VCO_INPUT_ON,
-        VCO_INPUT_THRESHOLD,
-        VCO_INPUT_LEVEL,
+        OSC_NOISE_ON,
+        OSC_NOISE_TYPE,
+        OSC_NOISE_LEVEL,
+        OSC_DUST_DENSITY,           // 25
+        OSC_INPUT_ON,
+        OSC_INPUT_THRESHOLD,
+        OSC_INPUT_LEVEL,
         // Input gain is analog only
 
         VCF_FILTER_TYPE,
@@ -248,7 +248,7 @@ namespace kiwi_synth
         MODS_MOD_MATRIX_6,
         MODS_MOD_MATRIX_7,
         MODS_MOD_MATRIX_8,
-        MODS_LFO_1_TO_VCOS,
+        MODS_LFO_1_TO_OSCS,
         MODS_ENV_1_TO_VCA,
         MODS_NOTE_TO_VCF_FREQ,
         MODS_ENV_1_TO_VCF_FREQ,
@@ -279,15 +279,15 @@ namespace kiwi_synth
     typedef enum
     {
         DST_NONE = -1,
-        DST_VCOS_FREQ,          // 0
-        DST_VCOS_PULSE_WIDTH,   // 1
-        DST_VCO_1_FREQ,         // 2
-        DST_VCO_1_PULSE_WIDTH,  // 3
-        DST_VCO_2_FREQ,         // 4
+        DST_OSCS_FREQ,          // 0
+        DST_OSCS_PULSE_WIDTH,   // 1
+        DST_OSC_1_FREQ,         // 2
+        DST_OSC_1_PULSE_WIDTH,  // 3
+        DST_OSC_2_FREQ,         // 4
 
-        DST_VCO_2_PULSE_WIDTH,  // 5
-        DST_VCO_3_FREQ,         // 6
-        DST_VCO_3_PULSE_WIDTH,  // 7
+        DST_OSC_2_PULSE_WIDTH,  // 5
+        DST_OSC_3_FREQ,         // 6
+        DST_OSC_3_PULSE_WIDTH,  // 7
         DST_NOISE_DENSITY,      // 8
         DST_NOISE_LEVEL,        // 9
 

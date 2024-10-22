@@ -2,22 +2,22 @@
 
 namespace kiwi_synth
 {
-    void Voice::Init(int numVCOs, float sampleRate, int voiceNumber)
+    void Voice::Init(int numOscillators, float sampleRate, int voiceNumber)
     {
         this->voiceNumber = voiceNumber;
         noteTriggered = false;
         noteTriggerCount = -1;
         currentMidiNote = 64;
         currentPlayingNote = 64.0f;
-        this->maxVcos = numVCOs;
-        this->numVcos = maxVcos;
+        this->maxVcos = numOscillators;
+        this->numVcos = numOscillators;
 
         env1.Init(sampleRate, 0);
         env2.Init(sampleRate, 1);
         lfo1.Init(sampleRate, 0);
         lfo2.Init(sampleRate, 1);
-        for (int i = 0; i < numVCOs; i++) {
-            VCO nextVco;
+        for (int i = 0; i < numOscillators; i++) {
+            Oscillator nextVco;
             nextVco.Init(sampleRate, i);
             vcos.push_back(nextVco);
         }
@@ -34,7 +34,7 @@ namespace kiwi_synth
 
     void Voice::UpdateSettings(PatchSettings* patchSettings)
     {
-        if (patchSettings->getIntValue(VCO_VOICES) != VOICE_MODE_PARA) {
+        if (patchSettings->getIntValue(OSC_VOICES) != VOICE_MODE_PARA) {
             ParaphonicMode(false);
         }
         env1.UpdateSettings(patchSettings);
@@ -50,8 +50,8 @@ namespace kiwi_synth
         vca.UpdateSettings(patchSettings);
         baseBalance = patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f);
 
-        portamentoOn = patchSettings->getBoolValue(PatchSetting::VCO_PORTAMENTO_ON);
-        portamentoSpeed = patchSettings->getFloatValueLogLookup(PatchSetting::VCO_PORTAMENTO_SPEED);
+        portamentoOn = patchSettings->getBoolValue(PatchSetting::OSC_PORTAMENTO_ON);
+        portamentoSpeed = patchSettings->getFloatValueLogLookup(PatchSetting::OSC_PORTAMENTO_SPEED);
     }
 
     void Voice::initMods()
@@ -148,7 +148,7 @@ namespace kiwi_synth
 
         if (pmMode == PM_MODE_OFF) {
             float vcoSample = 0.0f;
-            vcos[0].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+            vcos[0].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
             voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
 
             if (hardSync && vcos[0].eoc) {
@@ -157,26 +157,26 @@ namespace kiwi_synth
             }
 
             vcoSample = 0.0f;
-            vcos[1].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            vcos[1].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
             voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];
 
             vcoSample = 0.0f;
-            vcos[2].Process(&vcoSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            vcos[2].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
             voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[2];
         } else if (pmMode == PM_MODE_PARALLEL) {
             float fmSample = 0.0f;
-            vcos[2].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            vcos[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
             float fmSample2 = 0.0f;
-            vcos[1].Process(&fmSample2, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            vcos[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
             vcos[0].PhaseAdd((fmSample + fmSample2) / 2);
-            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
         } else if (pmMode == PM_MODE_SERIAL) {
             float fmSample = 0.0f;
-            vcos[2].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_3_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_3_PULSE_WIDTH]);
+            vcos[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
             vcos[1].PhaseAdd(fmSample);
-            vcos[1].Process(&fmSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_2_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_2_PULSE_WIDTH]);
+            vcos[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
             vcos[0].PhaseAdd(fmSample);
-            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_VCOS_FREQ] + modValues[DST_VCO_1_FREQ], modValues[DST_VCOS_PULSE_WIDTH] + modValues[DST_VCO_1_PULSE_WIDTH]);
+            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
             voiceSample = voiceSample * VOICE_ATTENTUATION_CONSTANT;
         }
 

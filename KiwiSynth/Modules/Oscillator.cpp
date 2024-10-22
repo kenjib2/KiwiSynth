@@ -1,10 +1,10 @@
-#include "VCO.h"
+#include "Oscillator.h"
 
 namespace kiwi_synth
 {
-    void VCO::Init(float sampleRate, uint8_t vcoNumber)
+    void Oscillator::Init(float sampleRate, uint8_t oscNumber)
     {
-        this->vcoNumber = vcoNumber;
+        this->oscNumber = oscNumber;
         isOn = true;
         waveform = 0;
         pulseWidth = 0.5f;
@@ -35,31 +35,31 @@ namespace kiwi_synth
         wavefolder.SetGain(1.0f);
     }
 
-    void VCO::UpdateSettings(PatchSettings* patchSettings)
+    void Oscillator::UpdateSettings(PatchSettings* patchSettings)
     {
-        isOn = patchSettings->getBoolValue((PatchSetting)(VCO_1_ON + vcoNumber));
+        isOn = patchSettings->getBoolValue((PatchSetting)(OSC_1_ON + oscNumber));
         if (isOn) {
-            waveform = patchSettings->getIntValue((PatchSetting)(VCO_1_WAVEFORM + vcoNumber));
-            pulseWidth = 0.53f - patchSettings->getFloatValueLinear((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber), 0.03f, 0.5f);
-            variShape = patchSettings->getFloatValue((PatchSetting)(VCO_1_PULSE_WIDTH + vcoNumber));
+            waveform = patchSettings->getIntValue((PatchSetting)(OSC_1_WAVEFORM + oscNumber));
+            pulseWidth = 0.53f - patchSettings->getFloatValueLinear((PatchSetting)(OSC_1_PULSE_WIDTH + oscNumber), 0.03f, 0.5f);
+            variShape = patchSettings->getFloatValue((PatchSetting)(OSC_1_PULSE_WIDTH + oscNumber));
             variShape = variShape > 0.003 ? variShape - 0.003 : 0.0f;
             waveFolderGain = 1.0f + variShape * 27.0f;
             sawtoothGain = variShape * variShape * 50.0f;
-            level = patchSettings->getFloatValue((PatchSetting)(VCO_1_LEVEL + vcoNumber));
-            if (vcoNumber > 0) {
-                int vcoMod = vcoNumber - 1;
-                level = patchSettings->getFloatValue((PatchSetting)(VCO_2_LEVEL + vcoMod));
-                fineTune = patchSettings->getFloatValueLinear((PatchSetting)(VCO_2_FINE_TUNE + vcoMod), -1.0f, 1.0);
-                interval = (float)(patchSettings->getIntValue((PatchSetting)(VCO_2_INTERVAL + vcoMod)) - 11);
-                octave = (float)((patchSettings->getIntValue((PatchSetting)(VCO_2_OCTAVE + vcoMod)) - 2) * 12);
+            level = patchSettings->getFloatValue((PatchSetting)(OSC_1_LEVEL + oscNumber));
+            if (oscNumber > 0) {
+                int oscMod = oscNumber - 1;
+                level = patchSettings->getFloatValue((PatchSetting)(OSC_2_LEVEL + oscMod));
+                fineTune = patchSettings->getFloatValueLinear((PatchSetting)(OSC_2_FINE_TUNE + oscMod), -1.0f, 1.0);
+                interval = (float)(patchSettings->getIntValue((PatchSetting)(OSC_2_INTERVAL + oscMod)) - 11);
+                octave = (float)((patchSettings->getIntValue((PatchSetting)(OSC_2_OCTAVE + oscMod)) - 2) * 12);
             }
         }
     }
 
-    void VCO::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
+    void Oscillator::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
     {
         if (__builtin_expect(isOn, 1)) {
-            float masterTune = patchSettings->getFloatValueLinear(PatchSetting::VCO_MASTER_TUNE, -1.0f, 1.0f);
+            float masterTune = patchSettings->getFloatValueLinear(PatchSetting::OSC_MASTER_TUNE, -1.0f, 1.0f);
             playingNote = midiNote + octave + interval + fineTune + masterTune + paraOffset;
             float waveSample = 0.0f;
             float freq = std::fmax(mtof(playingNote + mod * 12.0f), 0.0f);
@@ -115,7 +115,7 @@ namespace kiwi_synth
         }
     }
 
-    float VCO::GetPhaseRatio()
+    float Oscillator::GetPhaseRatio()
     {
         switch(waveform) {
             case WAVEFORM_SQUARE:
@@ -135,7 +135,7 @@ namespace kiwi_synth
         }
     }
 
-    void VCO::HardSync(float phaseRatio)
+    void Oscillator::HardSync(float phaseRatio)
     {
         switch(waveform) {
             case WAVEFORM_SQUARE:
@@ -159,7 +159,7 @@ namespace kiwi_synth
         }
     }
 
-    void VCO::PhaseAdd(float phase)
+    void Oscillator::PhaseAdd(float phase)
     {
         squareOsc.PhaseAdd(phase);
         sawOsc.PhaseAdd(phase);

@@ -25,7 +25,7 @@ namespace kiwi_synth
     class KiwiSynth
     {
         private:
-            static const int NUM_VCOS = 3;
+            static const int NUM_OSCS = 3;
             static const int MAX_VOICES = 2;
 
             DaisySeed* hw;

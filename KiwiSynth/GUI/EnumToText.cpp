@@ -153,28 +153,28 @@ namespace kiwi_synth
             case DST_NONE:
                 strcpy(buffer, "None ");
                 break;
-            case DST_VCOS_FREQ:
+            case DST_OSCS_FREQ:
                 strcpy(buffer, "Frequ");
                 break;
-            case DST_VCOS_PULSE_WIDTH:
+            case DST_OSCS_PULSE_WIDTH:
                 strcpy(buffer, "PWdth");
                 break;
-            case DST_VCO_1_FREQ:
+            case DST_OSC_1_FREQ:
                 strcpy(buffer, "V1Frq");
                 break;
-            case DST_VCO_1_PULSE_WIDTH:
+            case DST_OSC_1_PULSE_WIDTH:
                 strcpy(buffer, "V1Pwd");
                 break;
-            case DST_VCO_2_FREQ:
+            case DST_OSC_2_FREQ:
                 strcpy(buffer, "V2Frq");
                 break;
-            case DST_VCO_2_PULSE_WIDTH:
+            case DST_OSC_2_PULSE_WIDTH:
                 strcpy(buffer, "V2Pwd");
                 break;
-            case DST_VCO_3_FREQ:
+            case DST_OSC_3_FREQ:
                 strcpy(buffer, "V3Frq");
                 break;
-            case DST_VCO_3_PULSE_WIDTH:
+            case DST_OSC_3_PULSE_WIDTH:
                 strcpy(buffer, "V3Pwd");
                 break;
             case DST_NOISE_DENSITY:

@@ -17,9 +17,9 @@ namespace kiwi_synth
 
     void Noise::UpdateSettings(PatchSettings* patchSettings)
     {
-        isOn = patchSettings->getBoolValue(PatchSetting::VCO_NOISE_ON);
-        noiseType = (NoiseType)patchSettings->getIntValue(PatchSetting::VCO_NOISE_TYPE);
-        level = patchSettings->getFloatValue(PatchSetting::VCO_NOISE_LEVEL);
+        isOn = patchSettings->getBoolValue(PatchSetting::OSC_NOISE_ON);
+        noiseType = (NoiseType)patchSettings->getIntValue(PatchSetting::OSC_NOISE_TYPE);
+        level = patchSettings->getFloatValue(PatchSetting::OSC_NOISE_LEVEL);
     }
 
 }

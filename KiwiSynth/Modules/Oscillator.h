@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_VCO_H__
-#define __KIWI_SYNTH_VCO_H__
+#ifndef __KIWI_SYNTH_OSCILLATOR_H__
+#define __KIWI_SYNTH_OSCILLATOR_H__
 
 
 #include "daisysp.h"
@@ -14,11 +14,8 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    static const float      VCO_MIN_FREQUENCY = 30.0f;
-    static const float      VCO_MAX_FREQUENCY = 15000.0f;
-    
     /*
-     * The Kiwi Synth VCO module provides a wide range of tonal texture. The following waveforms are supported:
+     * The Kiwi Synth oscillator module provides a wide range of tonal texture. The following waveforms are supported:
      *
      * Square: A polyblep square with variable pulse width.
      * Saw: A polyblep sawtooth. A variable waveform squashing algorithm lops off the top and bottom of the
@@ -28,10 +25,10 @@ namespace kiwi_synth
      * Variable Saw: A sawtooth that can add a variable amount of notch to the waveform.
      * Sine: A polynomial sine wave approximation with variable wavefolding.
      */
-    class VCO
+    class Oscillator
     {
         private:
-            uint8_t    vcoNumber;
+            uint8_t    oscNumber;
             float      pulseWidth;
             float      variShape;
             float      waveFolderGain;
@@ -54,15 +51,15 @@ namespace kiwi_synth
 
         public:
             float      midiNote; // 0 to 127 with portamento applied. Needs mtof to make a frequency.
-            float      paraOffset; // Midi note for this specific VCO relative to 0
+            float      paraOffset; // Midi note for this specific oscillator relative to 0
             bool       eoc; // End of cycle (ready for hard sync)
 
-            VCO() {}
-            ~VCO() {}
-            void Init(float sampleRate, uint8_t vcoNumber);
+            Oscillator() {}
+            ~Oscillator() {}
+            void Init(float sampleRate, uint8_t oscNumber);
 
             /*
-             * Applies user settings to VCO parameters.
+             * Applies user settings to oscillator parameters.
              */
             void UpdateSettings(PatchSettings* patchSettings);
             /*
@@ -85,4 +82,4 @@ namespace kiwi_synth
 }
 
 
-#endif // __KIWI_SYNTH_VCO_H__
+#endif // __KIWI_SYNTH_OSCILLATOR_H__
