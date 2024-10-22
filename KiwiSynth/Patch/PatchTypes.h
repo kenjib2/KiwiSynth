@@ -5,7 +5,7 @@ namespace kiwi_synth
 {
     const static int MAX_PATCH_NAME_LENGTH = 15;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
-    const static int NUM_MOD_DESTINATIONS = 38; // Not including NONE
+    const static int NUM_MOD_DESTINATIONS = 41; // Not including NONE
     const static int NUM_MODULATIONS = 15; // Including 8 variable and 7 fixed
     const static int NUM_PATCH_SETTINGS = 99;
     const static int NUM_PATCH_SETTINGS_SAVED = 92;
@@ -281,49 +281,53 @@ namespace kiwi_synth
         DST_NONE = -1,
         DST_OSCS_FREQ,          // 0
         DST_OSCS_PULSE_WIDTH,   // 1
-        DST_OSC_1_FREQ,         // 2
-        DST_OSC_1_PULSE_WIDTH,  // 3
-        DST_OSC_2_FREQ,         // 4
+        DST_OSC_1_LEVEL,        // 2
+        DST_OSC_1_FREQ,         // 3
+        DST_OSC_1_PULSE_WIDTH,  // 4
 
-        DST_OSC_2_PULSE_WIDTH,  // 5
-        DST_OSC_3_FREQ,         // 6
-        DST_OSC_3_PULSE_WIDTH,  // 7
-        DST_NOISE_DENSITY,      // 8
-        DST_NOISE_LEVEL,        // 9
+        DST_OSC_2_LEVEL,        // 5
+        DST_OSC_2_FREQ,         // 6
+        DST_OSC_2_PULSE_WIDTH,  // 7
+        DST_OSC_3_LEVEL,        // 8
+        DST_OSC_3_FREQ,         // 9
 
-        DST_SH_RATE,            // 10
-        DST_FLT_CUTOFF,         // 11
-        DST_FLT_RESONANCE,      // 12
-        DST_AMP_LEVEL,          // 13
-        DST_AMP_ENV_1_DEPTH,    // 14
+        DST_OSC_3_PULSE_WIDTH,  // 10
+        DST_NOISE_DENSITY,      // 11
+        DST_NOISE_LEVEL,        // 12
+        DST_SH_IN,              // 13
+        DST_SH_RATE,            // 14
 
-        DST_LFO_1_FREQ,         // 15
-        DST_LFO_1_PULSE_WIDTH,  // 16
-        DST_LFO_1_TRIGGER_PHASE,// 17
-        DST_LFO_2_FREQ,         // 18
-        DST_LFO_2_PULSE_WIDTH,  // 19
+        DST_SH_TO_FLT_CUTOFF,   // 15
+        DST_FLT_CUTOFF,         // 16
+        DST_FLT_RESONANCE,      // 17
+        DST_NOTE_TO_FLT_CUTOFF, // 18
+        DST_AMP_LEVEL,          // 19
 
-        DST_LFO_2_TRIGGER_PHASE,// 20
-        DST_ENV_1_ATTACK,       // 21
-        DST_ENV_1_DECAY,        // 22
-        DST_ENV_1_SUSTAIN,      // 23
-        DST_ENV_1_RELEASE,      // 24
+        DST_AMP_ENV_1_DEPTH,    // 20
+        DST_LFO_1_FREQ,         // 21
+        DST_LFO_1_PULSE_WIDTH,  // 22
+        DST_LFO_1_TRIGGER_PHASE,// 23
+        DST_LFO_1_TO_MASTER_TUNE,// 24
 
-        DST_ENV_2_ATTACK,       // 25
-        DST_ENV_2_DECAY,        // 26
-        DST_ENV_2_SUSTAIN,      // 27
-        DST_ENV_2_RELEASE,      // 28
-        DST_BALANCE,            // 29
+        DST_LFO_2_FREQ,         // 25
+        DST_LFO_2_PULSE_WIDTH,  // 26
+        DST_LFO_2_TRIGGER_PHASE,// 27
+        DST_LFO_2_TO_FLT_CUTOFF,// 28
+        DST_ENV_1_ATTACK,       // 29
 
-        DST_LFO_1_TO_MASTER_TUNE,// 30
-        DST_LFO_2_TO_FLT_CUTOFF,// 31
-        DST_NOTE_TO_FLT_CUTOFF, // 32
+        DST_ENV_1_DECAY,        // 30
+        DST_ENV_1_SUSTAIN,      // 31
+        DST_ENV_1_RELEASE,      // 32
         DST_ENV_1_TO_AMP,       // 33
         DST_ENV_1_TO_FLT_CUTOFF,// 34
 
-        DST_ENV_2_TO_FLT_CUTOFF,// 35
-        DST_SH_TO_FLT_CUTOFF,   // 36
-        DST_SH_IN               // 37
+        DST_ENV_2_ATTACK,       // 35
+        DST_ENV_2_DECAY,        // 36
+        DST_ENV_2_SUSTAIN,      // 37
+        DST_ENV_2_RELEASE,      // 38
+        DST_ENV_2_TO_FLT_CUTOFF,// 39
+
+        DST_BALANCE             // 40
 
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice
         //DST_FX_2,               // Could possibly modulate for sources 7-12 only or have only voice 1 apply or only in solo mode?

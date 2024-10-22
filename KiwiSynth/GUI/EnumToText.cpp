@@ -267,6 +267,15 @@ namespace kiwi_synth
             case DST_SH_IN:
                 strcpy(buffer, "S&HIn");
                 break;
+            case DST_OSC_1_LEVEL:
+                strcpy(buffer, "O1Lvl");
+                break;
+            case DST_OSC_2_LEVEL:
+                strcpy(buffer, "O2Lvl");
+                break;
+            case DST_OSC_3_LEVEL:
+                strcpy(buffer, "O3Lvl");
+                break;
         }
     }
 
