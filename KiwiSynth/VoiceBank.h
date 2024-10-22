@@ -23,15 +23,15 @@ namespace kiwi_synth
             Patch*                  patch;
             Modulation              systemModulations[6]; // These are system-wide defaults that take place unless overridden by another mod using the same sources.
             std::vector<uint8_t>    playingNotes;
-            int8_t                  paraVcoNotes[6];
-            bool                    paraVcoPlaying[6];
-            bool                    paraVcoOffRequested[6]; // For paraphonic mode, set to true when a vco needs to be stopped after a slight delay to help with envelope release.
-            int32_t                 vcoTriggerCount;
+            int8_t                  paraOscNotes[6];
+            bool                    paraOscPlaying[6];
+            bool                    paraOscOffRequested[6]; // For paraphonic mode, set to true when an oscillator needs to be stopped after a slight delay to help with envelope release.
+            int32_t                 oscTriggerCount;
             bool                    sampleAndHoldInputAvailable;
 
             Voice* RequestVoice(uint8_t midiNote);
-            int RequestVco(uint8_t note);
-            inline bool VcoIsAvailable(int vco) { return (!paraVcoPlaying[vco] || paraVcoOffRequested[vco]); }
+            int RequestOscillator(uint8_t note);
+            inline bool OscillatorIsAvailable(int oscillator) { return (!paraOscPlaying[oscillator] || paraOscOffRequested[oscillator]); }
  
         public:
             std::vector<int> playingVoices;
@@ -40,7 +40,7 @@ namespace kiwi_synth
 
             VoiceBank() {}
             ~VoiceBank() {}
-            void Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate);
+            void Init(uint8_t maxVoices, uint8_t numOscillators, Patch* patch, float sampleRate);
             void Process(float* sample);
 
             inline VoiceMode GetVoiceMode() { return voiceMode; }

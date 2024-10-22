@@ -116,9 +116,9 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        intVal1 = settings->getFloatValue(VCA_LEVEL) * 1000;
-        intVal2 = settings->getFloatValue(VCA_ENV_1_DEPTH) * 1000;
-        sprintf(buffer, "VCA Lvl %03d Env1 %03d", intVal1, intVal2);
+        intVal1 = settings->getFloatValue(AMP_LEVEL) * 1000;
+        intVal2 = settings->getFloatValue(AMP_ENV_1_DEPTH) * 1000;
+        sprintf(buffer, "AMP Lvl %03d Env1 %03d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);*/
 
         display->Update();

@@ -161,8 +161,8 @@ namespace kiwi_synth
         VCF_ENV_1_DEPTH,
         VCF_ENV_2_DEPTH,
 
-        VCA_LEVEL,                  // 35
-        VCA_ENV_1_DEPTH,
+        AMP_LEVEL,                  // 35
+        AMP_ENV_1_DEPTH,
 
         ENV_1_ATTACK,
         ENV_2_ATTACK,
@@ -249,7 +249,7 @@ namespace kiwi_synth
         MODS_MOD_MATRIX_7,
         MODS_MOD_MATRIX_8,
         MODS_LFO_1_TO_OSCS,
-        MODS_ENV_1_TO_VCA,
+        MODS_ENV_1_TO_AMP,
         MODS_NOTE_TO_VCF_FREQ,
         MODS_ENV_1_TO_VCF_FREQ,
         MODS_ENV_2_TO_VCF_FREQ,
@@ -294,8 +294,8 @@ namespace kiwi_synth
         DST_SH_RATE,            // 10
         DST_VCF_CUTOFF,         // 11
         DST_VCF_RESONANCE,      // 12
-        DST_VCA_LEVEL,          // 13
-        DST_VCA_ENV_1_DEPTH,    // 14
+        DST_AMP_LEVEL,          // 13
+        DST_AMP_ENV_1_DEPTH,    // 14
 
         DST_LFO_1_FREQ,         // 15
         DST_LFO_1_PULSE_WIDTH,  // 16
@@ -318,7 +318,7 @@ namespace kiwi_synth
         DST_LFO_1_TO_MASTER_TUNE,// 30
         DST_LFO_2_TO_VCF_CUTOFF,// 31
         DST_NOTE_TO_VCF_CUTOFF, // 32
-        DST_ENV_1_TO_VCA,       // 33
+        DST_ENV_1_TO_AMP,       // 33
         DST_ENV_1_TO_VCF_CUTOFF,// 34
 
         DST_ENV_2_TO_VCF_CUTOFF,// 35

@@ -2,14 +2,14 @@
 
 namespace kiwi_synth
 {
-    void VoiceBank::Init(uint8_t maxVoices, uint8_t numVcos, Patch* patch, float sampleRate) {
+    void VoiceBank::Init(uint8_t maxVoices, uint8_t numOscillators, Patch* patch, float sampleRate) {
         modulations = new Modulation*[2];
         modulations[0] = new Modulation[NUM_MODULATIONS];
         modulations[1] = new Modulation[NUM_MODULATIONS];
         voiceMode = (VoiceMode)255; // Setting to an invalid number so that SetVoiceMode will trigger naturally
         InitModulations();
         for (int i = 0; i < maxVoices; i++) {
-            voices[i].numVcos = voices[i].maxVcos;
+            voices[i].numOscillators = voices[i].maxOscillators;
         }
 
         this->patch = patch;
@@ -18,16 +18,16 @@ namespace kiwi_synth
         for (uint8_t i = 0; i < maxVoices; i++)
         {
             Voice nextVoice;
-            nextVoice.Init(numVcos, sampleRate, i);
+            nextVoice.Init(numOscillators, sampleRate, i);
             voices.push_back(nextVoice);
         }
         
         for (int i = 0; i < 6; i++) {
-            paraVcoNotes[i] = -128;
-            paraVcoPlaying[i] = false;
-            paraVcoOffRequested[i] = false;
+            paraOscNotes[i] = -128;
+            paraOscPlaying[i] = false;
+            paraOscOffRequested[i] = false;
         }
-        vcoTriggerCount = -1;
+        oscTriggerCount = -1;
 
         sampleAndHoldInputAvailable = false;
     }
@@ -53,9 +53,9 @@ namespace kiwi_synth
                 voices[0].ParaphonicMode(true);
                 voices[1].ParaphonicMode(true);
                 for (int i = 0; i < 6; i++) {
-                    paraVcoPlaying[i] = false;
-                    paraVcoNotes[i] = -128;
-                    paraVcoOffRequested[i] = false;
+                    paraOscPlaying[i] = false;
+                    paraOscNotes[i] = -128;
+                    paraOscOffRequested[i] = false;
                 }
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
@@ -129,21 +129,21 @@ namespace kiwi_synth
 
     void VoiceBank::Process(float* sample)
     {
-        // Triggering paraphonic vcos to turn off after a delay to give time to detect multiple simultaneous key releases
-        if (__builtin_expect(vcoTriggerCount == 0, 0)) {
+        // Triggering paraphonic oscillators to turn off after a delay to give time to detect multiple simultaneous key releases
+        if (__builtin_expect(oscTriggerCount == 0, 0)) {
 
             for (int i = 0; i < 6; i++) {
-                if (paraVcoOffRequested[i]) {
-                    paraVcoOffRequested[i] = false;
-                    paraVcoPlaying[i] = false;
-                    paraVcoNotes[i] = -128;
+                if (paraOscOffRequested[i]) {
+                    paraOscOffRequested[i] = false;
+                    paraOscPlaying[i] = false;
+                    paraOscNotes[i] = -128;
                     bool noteOff = false;
                     int voice = i/3;
-                    int vcoBase = voice * 3;
+                    int oscBase = voice * 3;
                     if (
-                        (paraVcoOffRequested[vcoBase] || !paraVcoPlaying[vcoBase])
-                        && (paraVcoOffRequested[vcoBase + 1] || !paraVcoPlaying[vcoBase + 1])
-                        && (paraVcoOffRequested[vcoBase + 2] || !paraVcoPlaying[vcoBase + 2])
+                        (paraOscOffRequested[oscBase] || !paraOscPlaying[oscBase])
+                        && (paraOscOffRequested[oscBase + 1] || !paraOscPlaying[oscBase + 1])
+                        && (paraOscOffRequested[oscBase + 2] || !paraOscPlaying[oscBase + 2])
                     ) {
                         noteOff = true;
                     }
@@ -151,7 +151,7 @@ namespace kiwi_synth
                 }
             }
         }
-        vcoTriggerCount--;
+        oscTriggerCount--;
 
         sample[0] = 0.0f;
         sample[1] = 0.0f;
@@ -206,9 +206,9 @@ namespace kiwi_synth
             modulations[i][MODS_LFO_1_TO_OSCS].source = SRC_LFO_1;
             modulations[i][MODS_LFO_1_TO_OSCS].destination = DST_OSCS_FREQ;
             modulations[i][MODS_LFO_1_TO_OSCS].depth = 0.0f;
-            modulations[i][MODS_ENV_1_TO_VCA].source = SRC_ENV_1;
-            modulations[i][MODS_ENV_1_TO_VCA].destination = DST_VCA_LEVEL;
-            modulations[i][MODS_ENV_1_TO_VCA].depth = 0.0f;
+            modulations[i][MODS_ENV_1_TO_AMP].source = SRC_ENV_1;
+            modulations[i][MODS_ENV_1_TO_AMP].destination = DST_AMP_LEVEL;
+            modulations[i][MODS_ENV_1_TO_AMP].depth = 0.0f;
             modulations[i][MODS_NOTE_TO_VCF_FREQ].source = SRC_NOTE;
             modulations[i][MODS_NOTE_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
             modulations[i][MODS_NOTE_TO_VCF_FREQ].depth = 0.0f;
@@ -295,7 +295,7 @@ namespace kiwi_synth
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_VELOCITY &&
                 modulations[0][MODS_MOD_MATRIX_8].source != SRC_VELOCITY*/) {
-            systemModulations[2].destination = DST_ENV_1_TO_VCA;
+            systemModulations[2].destination = DST_ENV_1_TO_AMP;
         } else {
             systemModulations[2].destination = DST_NONE;
         }
@@ -361,7 +361,7 @@ namespace kiwi_synth
         }
 
         modulations[0][MODS_LFO_1_TO_OSCS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[0][MODS_ENV_1_TO_VCA].depth = patch->voice1Settings->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[0][MODS_ENV_1_TO_AMP].depth = patch->voice1Settings->getFloatValue(AMP_ENV_1_DEPTH);
         modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(VCF_TRACKING);
         modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
         modulations[0][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
@@ -369,7 +369,7 @@ namespace kiwi_synth
         modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_VCF_CUTOFF);
 
         modulations[1][MODS_LFO_1_TO_OSCS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
-        modulations[1][MODS_ENV_1_TO_VCA].depth = patch->voice2Settings->getFloatValue(VCA_ENV_1_DEPTH);
+        modulations[1][MODS_ENV_1_TO_AMP].depth = patch->voice2Settings->getFloatValue(AMP_ENV_1_DEPTH);
         modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(VCF_TRACKING);
         modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
         modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
@@ -379,7 +379,7 @@ namespace kiwi_synth
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)
     {
-        int vco;
+        int oscillator;
         switch (voiceMode) {
             case VOICE_MODE_MONO:
             case VOICE_MODE_HSYNC_MONO:
@@ -420,11 +420,11 @@ namespace kiwi_synth
                 }
                 break;
             case VOICE_MODE_PARA:
-                vco = RequestVco(note);
-                paraVcoOffRequested[vco] = false;
-                paraVcoNotes[vco] = note;
-                paraVcoPlaying[vco] = true;
-                voices[vco / 3].ParaNoteOn(vco % 3, note, velocity);
+                oscillator = RequestOscillator(note);
+                paraOscOffRequested[oscillator] = false;
+                paraOscNotes[oscillator] = note;
+                paraOscPlaying[oscillator] = true;
+                voices[oscillator / 3].ParaNoteOn(oscillator % 3, note, velocity);
                 break;
             default:
                 Voice* voice = RequestVoice(note);
@@ -508,9 +508,9 @@ namespace kiwi_synth
                 break;
             case VOICE_MODE_PARA:
                 for (int i = 0; i < 6; i++) {
-                    if (paraVcoNotes[i] == note) {
-                        paraVcoOffRequested[i] = true;
-                        vcoTriggerCount = OSC_TRIGGER_SAMPLES;
+                    if (paraOscNotes[i] == note) {
+                        paraOscOffRequested[i] = true;
+                        oscTriggerCount = OSC_TRIGGER_SAMPLES;
                     }
                 }
             default:
@@ -564,9 +564,9 @@ namespace kiwi_synth
 
         if (patch->GetVoiceMode() == VOICE_MODE_PARA) {
             for (int i = 0; i < 6; i++) {
-                paraVcoNotes[i] = -128;
-                paraVcoPlaying[i] = false;
-                paraVcoOffRequested[i] = false;
+                paraOscNotes[i] = -128;
+                paraOscPlaying[i] = false;
+                paraOscOffRequested[i] = false;
             }
             voices[0].ParaAllNotesOff();
             voices[1].ParaAllNotesOff();
@@ -638,31 +638,31 @@ namespace kiwi_synth
         return &(voices[highestIndex]); 
     }
 
-    int VoiceBank::RequestVco(uint8_t note) {
-        // First use the first vcos of each voice.
-        if (VcoIsAvailable(0)) {
+    int VoiceBank::RequestOscillator(uint8_t note) {
+        // First use the first oscillators of each voice.
+        if (OscillatorIsAvailable(0)) {
             return 0;
         }
-        if (VcoIsAvailable(3)) {
+        if (OscillatorIsAvailable(3)) {
             return 3;
         }
 
         // Find whether the note is closer in pitch to the first or second voice and try to get
-        // a voice from that vco if possible, but get a voice from the other one if necessary.
+        // a voice from that oscillator if possible, but get a voice from the other one if necessary.
         // This will help to cluster three note chords played on one hand together in one voice
         // so that they can release together.
-        int delta0 = std::abs(paraVcoNotes[0] - note);
-        int delta3 = std::abs(paraVcoNotes[3] - note);
+        int delta0 = std::abs(paraOscNotes[0] - note);
+        int delta3 = std::abs(paraOscNotes[3] - note);
 
         if (delta0 < delta3) {
             for (int i = 1; i < 6; i++) {
-                if (VcoIsAvailable(i)) {
+                if (OscillatorIsAvailable(i)) {
                     return i;
                 }
             }
         } else {
             for (int i = 5; i > 0; i--) {
-                if (VcoIsAvailable(i)) {
+                if (OscillatorIsAvailable(i)) {
                     return i;
                 }
             }
@@ -675,13 +675,13 @@ namespace kiwi_synth
         uint8_t lowestNote = 127;
         for (int i = 0; i < 6; i++) {
             // Find the highest
-            if (paraVcoNotes[i] > highestNote) {
-                highestNote = paraVcoNotes[i];
+            if (paraOscNotes[i] > highestNote) {
+                highestNote = paraOscNotes[i];
                 highestIndex = i;
             }
             // Find the lowest
-            if (paraVcoNotes[i] < lowestNote) {
-                lowestNote = paraVcoNotes[i];
+            if (paraOscNotes[i] < lowestNote) {
+                lowestNote = paraOscNotes[i];
                 lowestIndex = i;
             }
         }
@@ -700,7 +700,7 @@ namespace kiwi_synth
             }
         }
 
-        // We should never reach this point since there are six vcos and only 2 highest/lowest
+        // We should never reach this point since there are six oscillators and only 2 highest/lowest
         return 0;
     }
 

@@ -9,22 +9,22 @@ namespace kiwi_synth
         noteTriggerCount = -1;
         currentMidiNote = 64;
         currentPlayingNote = 64.0f;
-        this->maxVcos = numOscillators;
-        this->numVcos = numOscillators;
+        this->maxOscillators = numOscillators;
+        this->numOscillators = numOscillators;
 
         env1.Init(sampleRate, 0);
         env2.Init(sampleRate, 1);
         lfo1.Init(sampleRate, 0);
         lfo2.Init(sampleRate, 1);
         for (int i = 0; i < numOscillators; i++) {
-            Oscillator nextVco;
-            nextVco.Init(sampleRate, i);
-            vcos.push_back(nextVco);
+            Oscillator nextOscillator;
+            nextOscillator.Init(sampleRate, i);
+            oscillators.push_back(nextOscillator);
         }
         noise.Init(sampleRate);
         sampleAndHold.Init(sampleRate);
         vcf.Init(sampleRate);
-        vca.Init();
+        amplifier.Init();
         initMods();
         prevSourceValues[SRC_NONE] = 0.0f;
         prevSourceValues[SRC_FIXED] = 1.0f;
@@ -41,13 +41,13 @@ namespace kiwi_synth
         env2.UpdateSettings(patchSettings);
         lfo1.UpdateSettings(patchSettings);
         lfo2.UpdateSettings(patchSettings);
-        vcos[0].UpdateSettings(patchSettings);
-        vcos[1].UpdateSettings(patchSettings);
-        vcos[2].UpdateSettings(patchSettings);
+        oscillators[0].UpdateSettings(patchSettings);
+        oscillators[1].UpdateSettings(patchSettings);
+        oscillators[2].UpdateSettings(patchSettings);
         noise.UpdateSettings(patchSettings);
         sampleAndHold.UpdateSettings(patchSettings);
         vcf.UpdateSettings(patchSettings);
-        vca.UpdateSettings(patchSettings);
+        amplifier.UpdateSettings(patchSettings);
         baseBalance = patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f);
 
         portamentoOn = patchSettings->getBoolValue(PatchSetting::OSC_PORTAMENTO_ON);
@@ -79,7 +79,7 @@ namespace kiwi_synth
 
         // The next modulations must be last since they can all be further modified by previous mods
         modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * (modulations[8].depth + modValues[DST_LFO_1_TO_MASTER_TUNE]);
-        // We are skipping 9 because the note triggering ASDR to VCA is handled as a special case, but using two loops to
+        // We are skipping 9 because the note triggering ASDR to amplifer is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
         // Also skipping 10 because VCF tracking needs to be handled in a special way.
         modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * (modulations[11].depth + modValues[DST_ENV_1_TO_VCF_CUTOFF]);
@@ -97,8 +97,8 @@ namespace kiwi_synth
 
         // Triggering notes to play after a delay to shut down previous envelopes click-free (i.e. quickrelease)
         if (__builtin_expect(noteTriggerCount == 0, 0)) {
-            for (int i = 0; i < numVcos; i++) {
-                vcos[i].midiNote = (float)triggerNote;
+            for (int i = 0; i < numOscillators; i++) {
+                oscillators[i].midiNote = (float)triggerNote;
             }
             currentMidiNote = triggerNote;
             currentVelocity = triggerVelocity;
@@ -126,9 +126,9 @@ namespace kiwi_synth
         } else {
             currentPlayingNote = (float)currentMidiNote;
         }
-        vcos[0].midiNote = currentPlayingNote;
-        vcos[1].midiNote = currentPlayingNote;
-        vcos[2].midiNote = currentPlayingNote;
+        oscillators[0].midiNote = currentPlayingNote;
+        oscillators[1].midiNote = currentPlayingNote;
+        oscillators[2].midiNote = currentPlayingNote;
 
         // Processing modules
         initMods();
@@ -147,36 +147,36 @@ namespace kiwi_synth
         lfo2.Process(&lfo2Sample, patchSettings, modValues[DST_LFO_2_FREQ], modValues[DST_LFO_2_PULSE_WIDTH], modValues[DST_LFO_2_TRIGGER_PHASE]);
 
         if (pmMode == PM_MODE_OFF) {
-            float vcoSample = 0.0f;
-            vcos[0].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
-            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[0];
+            float oscSample = 0.0f;
+            oscillators[0].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[0];
 
-            if (hardSync && vcos[0].eoc) {
-                vcos[1].HardSync(vcos[0].GetPhaseRatio());
-                vcos[2].HardSync(vcos[0].GetPhaseRatio());
+            if (hardSync && oscillators[0].eoc) {
+                oscillators[1].HardSync(oscillators[0].GetPhaseRatio());
+                oscillators[2].HardSync(oscillators[0].GetPhaseRatio());
             }
 
-            vcoSample = 0.0f;
-            vcos[1].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
-            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[1];
+            oscSample = 0.0f;
+            oscillators[1].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
+            voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[1];
 
-            vcoSample = 0.0f;
-            vcos[2].Process(&vcoSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
-            voiceSample = voiceSample + vcoSample * VOICE_ATTENTUATION_CONSTANT * paraVcoMask[2];
+            oscSample = 0.0f;
+            oscillators[2].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[2];
         } else if (pmMode == PM_MODE_PARALLEL) {
             float fmSample = 0.0f;
-            vcos[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
             float fmSample2 = 0.0f;
-            vcos[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
-            vcos[0].PhaseAdd((fmSample + fmSample2) / 2);
-            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            oscillators[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
+            oscillators[0].PhaseAdd((fmSample + fmSample2) / 2);
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
         } else if (pmMode == PM_MODE_SERIAL) {
             float fmSample = 0.0f;
-            vcos[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
-            vcos[1].PhaseAdd(fmSample);
-            vcos[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
-            vcos[0].PhaseAdd(fmSample);
-            vcos[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            oscillators[1].PhaseAdd(fmSample);
+            oscillators[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
+            oscillators[0].PhaseAdd(fmSample);
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
             voiceSample = voiceSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
@@ -194,7 +194,7 @@ namespace kiwi_synth
 
         vcf.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(VCF_TRACKING) + modValues[DST_NOTE_TO_VCF_CUTOFF], currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
 
-        vca.Process(&voiceSample, patchSettings, fclamp((modulations[9].depth + modValues[DST_ENV_1_TO_VCA]) + modValues[DST_VCA_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_VCA_LEVEL]);
+        amplifier.Process(&voiceSample, patchSettings, fclamp((modulations[9].depth + modValues[DST_ENV_1_TO_AMP]) + modValues[DST_AMP_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_AMP_LEVEL]);
 
         float balance = fclamp(baseBalance + modValues[DST_BALANCE], -1.0f, 1.0f);
         sample[0]  = voiceSample  * std::fmin(1.0f - balance, 1.0f);  // max gain = 1.0, pan = 0: left and right unchanged)
@@ -229,32 +229,32 @@ namespace kiwi_synth
         return env1.IsReleasing();
     }
 
-    void Voice::ParaNoteOn(int vco, uint8_t note, uint8_t velocity) { // Use paraOffset to set the note with respect to 0
-        vcos[vco].paraOffset = (float)note;
+    void Voice::ParaNoteOn(int oscillator, uint8_t note, uint8_t velocity) { // Use paraOffset to set the note with respect to 0
+        oscillators[oscillator].paraOffset = (float)note;
         if (IsAvailable() || (IsReleasing() && !noteTriggered)) {
-            paraVcoMask[0] = 0.0f; // Make sure all vcos are turned off since sometimes one is left on for release.
-            paraVcoMask[1] = 0.0f;
-            paraVcoMask[2] = 0.0f;
+            paraOscMask[0] = 0.0f; // Make sure all oscillators are turned off since sometimes one is left on for release.
+            paraOscMask[1] = 0.0f;
+            paraOscMask[2] = 0.0f;
             NoteOn(0, velocity, true);
         }
-        paraVcoMask[vco] = 1.0f;
+        paraOscMask[oscillator] = 1.0f;
     }
 
-    void Voice::ParaNoteOff(int vco, bool noteOff) {
+    void Voice::ParaNoteOff(int oscillator, bool noteOff) {
         if (noteOff) {
-            // We are leaving vco masks on for the release so we can not assume they will all be off in ParaNoteOn
+            // We are leaving oscillator masks on for the release so we can not assume they will all be off in ParaNoteOn
             if (env1.noteTriggered) {
                 NoteOff(0, 0);
             }
         } else {
-            paraVcoMask[vco] = 0.0f;
+            paraOscMask[oscillator] = 0.0f;
         }
     }
 
     void Voice::ParaAllNotesOff() {
-        paraVcoMask[0] = 0.0f;
-        paraVcoMask[1] = 0.0f;
-        paraVcoMask[2] = 0.0f;
+        paraOscMask[0] = 0.0f;
+        paraOscMask[1] = 0.0f;
+        paraOscMask[2] = 0.0f;
     }
 
     void Voice::NoteOn(int note, int velocity, bool reset)

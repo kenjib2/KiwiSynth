@@ -234,7 +234,7 @@ namespace kiwi_synth
                 break;
             case 2:
                 setValue(MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[2]);
-                setValue(VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
+                setValue(AMP_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 3:
@@ -244,7 +244,7 @@ namespace kiwi_synth
                 break;
             case 4:
                 setValue(MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[1]);
-                setValue(VCA_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                setValue(AMP_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 5:
@@ -340,7 +340,7 @@ namespace kiwi_synth
                 break;
             case 2:
                 SetFloatProtect(MOD_3_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[2]);
-                SetFloatProtect(VCA_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(AMP_ENV_1_DEPTH, multiPots->GetMpValue(1, controlNumber));
                 SetFloatProtect(ENV_2_RELEASE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 3:
@@ -350,7 +350,7 @@ namespace kiwi_synth
                 break;
             case 4:
                 SetFloatProtect(MOD_2_DEPTH, multiPots->GetMpValue(0, controlNumber) * modSigns[1]);
-                SetFloatProtect(VCA_LEVEL, multiPots->GetMpValue(1, controlNumber));
+                SetFloatProtect(AMP_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 SetFloatProtect(ENV_1_SUSTAIN, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 5:
@@ -533,8 +533,8 @@ namespace kiwi_synth
         setValue(VCF_ENV_1_DEPTH, 0.0f);
         setValue(VCF_ENV_2_DEPTH, 0.0f);
 
-        setValue(VCA_LEVEL, 0.0f);
-        setValue(VCA_ENV_1_DEPTH, 0.999f);
+        setValue(AMP_LEVEL, 0.0f);
+        setValue(AMP_ENV_1_DEPTH, 0.999f);
 
         setValue(ENV_1_ATTACK, 0.01f);
         setValue(ENV_2_ATTACK, 0.01f);

@@ -78,4 +78,4 @@ namespace kiwi_synth
     };
 
 } // namespace kiwi_synth
-#endif // __KIWI_SYNTH_VCA_H__
+#endif // __KIWI_SYNTH_PATCH_H__

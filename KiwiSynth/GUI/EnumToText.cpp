@@ -192,11 +192,11 @@ namespace kiwi_synth
             case DST_VCF_RESONANCE:
                 strcpy(buffer, "VCFRs");
                 break;
-            case DST_VCA_LEVEL:
-                strcpy(buffer, "VCALv");
+            case DST_AMP_LEVEL:
+                strcpy(buffer, "AmpLv");
                 break;
-            case DST_VCA_ENV_1_DEPTH:
-                strcpy(buffer, "VCAE1");
+            case DST_AMP_ENV_1_DEPTH:
+                strcpy(buffer, "AmpE1");
                 break;
             case DST_LFO_1_FREQ:
                 strcpy(buffer, "L1Frq");
@@ -252,7 +252,7 @@ namespace kiwi_synth
             case DST_NOTE_TO_VCF_CUTOFF:
                 strcpy(buffer, "Nt>FC");
                 break;
-            case DST_ENV_1_TO_VCA:
+            case DST_ENV_1_TO_AMP:
                 strcpy(buffer, "E1>Lv");
                 break;
             case DST_ENV_1_TO_VCF_CUTOFF:

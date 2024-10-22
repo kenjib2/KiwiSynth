@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_VCA_H__
-#define __KIWI_SYNTH_VCA_H__
+#ifndef __KIWI_SYNTH_AMPLIFIER_H__
+#define __KIWI_SYNTH_AMPLIFIER_H__
 
 
 #include "daisysp.h"
@@ -9,26 +9,26 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    const static float VCA_ATTENTUATION_CONSTANT = 0.30f;
+    const static float AMP_ATTENTUATION_CONSTANT = 0.30f;
     
     /*
-     * The VCA module for the Kiwi Synth. This module serves two primary purpose: to apply modulation to the signal level,
+     * The amplifer module for the Kiwi Synth. This module serves two primary purpose: to apply modulation to the signal level,
      * and to apply a general attenuation so that when multiple voices are combined they do not clip.
      */
-    class VCA
+    class Amplifier
     {
         private:
             float                   level;
 
         public:
-            VCA() {}
-            ~VCA() {}
+            Amplifier() {}
+            ~Amplifier() {}
             void Init() {};
 
             /*
-             * Applies user settings to VCA parameters.
+             * Applies user settings to amplifer parameters.
              */
-            inline void UpdateSettings(PatchSettings* patchSettings) { level = patchSettings->getFloatValue(PatchSetting::VCA_LEVEL); }
+            inline void UpdateSettings(PatchSettings* patchSettings) { level = patchSettings->getFloatValue(PatchSetting::AMP_LEVEL); }
             /*
              * Adjust the output level in the incoming sample.
              */
@@ -37,4 +37,4 @@ namespace kiwi_synth
 }
 
 
-#endif // __KIWI_SYNTH_VCA_H__
+#endif // __KIWI_SYNTH_AMPLIFIER_H__

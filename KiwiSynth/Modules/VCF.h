@@ -34,7 +34,7 @@ namespace kiwi_synth
             void Init(float sampleRate);
 
             /*
-             * Applies user settings to VCA parameters.
+             * Applies user settings to VCF parameters.
              */
             void UpdateSettings(PatchSettings* patchSettings);
             /*
