@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_VCF_H__
-#define __KIWI_SYNTH_VCF_H__
+#ifndef __KIWI_SYNTH_FILTER_H__
+#define __KIWI_SYNTH_FILTER_H__
 
 
 #include "daisysp.h"
@@ -11,13 +11,13 @@ using namespace daisysp;
 
 namespace kiwi_synth
 {
-    static const float      VCF_MIN_FREQUENCY = 100.0f;
-    static const float      VCF_MAX_FREQUENCY = 15000.0f;
+    static const float      FLT_MIN_FREQUENCY = 100.0f;
+    static const float      FLT_MAX_FREQUENCY = 15000.0f;
 
     /*
      * The filter module for the Kiwi Synth. Multiple filter types are provided.
      */
-    class VCF
+    class Filter
     {
         private:
             bool                    noteTriggered;
@@ -29,12 +29,12 @@ namespace kiwi_synth
             KiwiSvf                 svFilter;
 
         public:
-            VCF() {}
-            ~VCF() {}
+            Filter() {}
+            ~Filter() {}
             void Init(float sampleRate);
 
             /*
-             * Applies user settings to VCF parameters.
+             * Applies user settings to filter parameters.
              */
             void UpdateSettings(PatchSettings* patchSettings);
             /*
@@ -47,4 +47,4 @@ namespace kiwi_synth
 }
 
 
-#endif // __KIWI_SYNTH_VCF_H__
+#endif // __KIWI_SYNTH_FILTER_H__

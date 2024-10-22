@@ -103,15 +103,15 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         /*display->SetCursor(0, 40);
-        intVal1 = settings->getFloatValue(VCF_CUTOFF) * 1000;
-        intVal2 = settings->getFloatValue(VCF_RESONANCE) * 1000;
-        sprintf(buffer, "VCF FCut %03d Res %03d", intVal1, intVal2);
+        intVal1 = settings->getFloatValue(FLT_CUTOFF) * 1000;
+        intVal2 = settings->getFloatValue(FLT_RESONANCE) * 1000;
+        sprintf(buffer, "Flt FCut %03d Res %03d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        intVal1 = settings->getFloatValue(VCF_TRACKING) * 1000;
-        intVal2 = settings->getFloatValue(VCF_ENV_1_DEPTH) * 1000;
-        intVal3 = settings->getFloatValue(VCF_ENV_2_DEPTH) * 1000;
+        intVal1 = settings->getFloatValue(FLT_TRACKING) * 1000;
+        intVal2 = settings->getFloatValue(FLT_ENV_1_DEPTH) * 1000;
+        intVal3 = settings->getFloatValue(FLT_ENV_2_DEPTH) * 1000;
         sprintf(buffer, "KT %03d E1 %03d E2 %03d", intVal1, intVal2, intVal3);
         display->WriteString(buffer, Font_6x8, true);
 

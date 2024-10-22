@@ -1,8 +1,8 @@
-#include "VCF.h"
+#include "Filter.h"
 
 namespace kiwi_synth
 {
-    void VCF::Init(float sampleRate)
+    void Filter::Init(float sampleRate)
     {
         filter.Init(sampleRate);
         svFilter.Init(sampleRate);
@@ -10,20 +10,20 @@ namespace kiwi_synth
         opFilter.SetFilterMode(daisysp::OnePole::FilterMode::FILTER_MODE_LOW_PASS);
     }
 
-    void VCF::UpdateSettings(PatchSettings* patchSettings)
+    void Filter::UpdateSettings(PatchSettings* patchSettings)
     {
-        frequency = patchSettings->getFloatValueExponential(PatchSetting::VCF_CUTOFF, VCF_MIN_FREQUENCY, VCF_MAX_FREQUENCY);
-        resonance = patchSettings->getFloatValue(PatchSetting::VCF_RESONANCE);
+        frequency = patchSettings->getFloatValueExponential(PatchSetting::FLT_CUTOFF, FLT_MIN_FREQUENCY, FLT_MAX_FREQUENCY);
+        resonance = patchSettings->getFloatValue(PatchSetting::FLT_RESONANCE);
 
-        filterType = (FilterType)patchSettings->getIntValue(PatchSetting::VCF_FILTER_TYPE);
+        filterType = (FilterType)patchSettings->getIntValue(PatchSetting::FLT_FILTER_TYPE);
     }
 
-    void VCF::Process(float* sample, PatchSettings* patchSettings, float trackingMod, int currentMidiNote, float mod, float resMod)
+    void Filter::Process(float* sample, PatchSettings* patchSettings, float trackingMod, int currentMidiNote, float mod, float resMod)
     {
         float computedFrequency = frequency;
         computedFrequency = computedFrequency + trackingMod * mtof(currentMidiNote);
 
-        computedFrequency = computedFrequency + (VCF_MAX_FREQUENCY - VCF_MIN_FREQUENCY - computedFrequency) * mod;
+        computedFrequency = computedFrequency + (FLT_MAX_FREQUENCY - FLT_MIN_FREQUENCY - computedFrequency) * mod;
 
         float computedResonance = resonance;
         float output;

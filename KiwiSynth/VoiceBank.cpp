@@ -209,21 +209,21 @@ namespace kiwi_synth
             modulations[i][MODS_ENV_1_TO_AMP].source = SRC_ENV_1;
             modulations[i][MODS_ENV_1_TO_AMP].destination = DST_AMP_LEVEL;
             modulations[i][MODS_ENV_1_TO_AMP].depth = 0.0f;
-            modulations[i][MODS_NOTE_TO_VCF_FREQ].source = SRC_NOTE;
-            modulations[i][MODS_NOTE_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-            modulations[i][MODS_NOTE_TO_VCF_FREQ].depth = 0.0f;
-            modulations[i][MODS_ENV_1_TO_VCF_FREQ].source = SRC_ENV_1;
-            modulations[i][MODS_ENV_1_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-            modulations[i][MODS_ENV_1_TO_VCF_FREQ].depth = 0.0f;
-            modulations[i][MODS_ENV_2_TO_VCF_FREQ].source = SRC_ENV_2;
-            modulations[i][MODS_ENV_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-            modulations[i][MODS_ENV_2_TO_VCF_FREQ].depth = 0.0f;
-            modulations[i][MODS_LFO_2_TO_VCF_FREQ].source = SRC_LFO_2;
-            modulations[i][MODS_LFO_2_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-            modulations[i][MODS_LFO_2_TO_VCF_FREQ].depth = 0.0f;
-            modulations[i][MODS_SH_TO_VCF_FREQ].source = SRC_SH;
-            modulations[i][MODS_SH_TO_VCF_FREQ].destination = DST_VCF_CUTOFF;
-            modulations[i][MODS_SH_TO_VCF_FREQ].depth = 0.0f;
+            modulations[i][MODS_NOTE_TO_FLT_FREQ].source = SRC_NOTE;
+            modulations[i][MODS_NOTE_TO_FLT_FREQ].destination = DST_FLT_CUTOFF;
+            modulations[i][MODS_NOTE_TO_FLT_FREQ].depth = 0.0f;
+            modulations[i][MODS_ENV_1_TO_FLT_FREQ].source = SRC_ENV_1;
+            modulations[i][MODS_ENV_1_TO_FLT_FREQ].destination = DST_FLT_CUTOFF;
+            modulations[i][MODS_ENV_1_TO_FLT_FREQ].depth = 0.0f;
+            modulations[i][MODS_ENV_2_TO_FLT_FREQ].source = SRC_ENV_2;
+            modulations[i][MODS_ENV_2_TO_FLT_FREQ].destination = DST_FLT_CUTOFF;
+            modulations[i][MODS_ENV_2_TO_FLT_FREQ].depth = 0.0f;
+            modulations[i][MODS_LFO_2_TO_FLT_FREQ].source = SRC_LFO_2;
+            modulations[i][MODS_LFO_2_TO_FLT_FREQ].destination = DST_FLT_CUTOFF;
+            modulations[i][MODS_LFO_2_TO_FLT_FREQ].depth = 0.0f;
+            modulations[i][MODS_SH_TO_FLT_FREQ].source = SRC_SH;
+            modulations[i][MODS_SH_TO_FLT_FREQ].destination = DST_FLT_CUTOFF;
+            modulations[i][MODS_SH_TO_FLT_FREQ].depth = 0.0f;
         }
     }
 
@@ -310,7 +310,7 @@ namespace kiwi_synth
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_AFTERTOUCH &&
                 modulations[0][MODS_MOD_MATRIX_8].source != SRC_AFTERTOUCH*/) {
-            systemModulations[3].destination = DST_VCF_CUTOFF;
+            systemModulations[3].destination = DST_FLT_CUTOFF;
         } else {
             systemModulations[3].destination = DST_NONE;
         }
@@ -340,7 +340,7 @@ namespace kiwi_synth
                 modulations[0][MODS_MOD_MATRIX_6].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_7].source != SRC_EXPRESSION &&
                 modulations[0][MODS_MOD_MATRIX_8].source != SRC_EXPRESSION*/) {
-            systemModulations[5].destination = DST_VCF_CUTOFF;
+            systemModulations[5].destination = DST_FLT_CUTOFF;
         } else {
             systemModulations[5].destination = DST_NONE;
         }
@@ -362,19 +362,19 @@ namespace kiwi_synth
 
         modulations[0][MODS_LFO_1_TO_OSCS].depth = patch->voice1Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
         modulations[0][MODS_ENV_1_TO_AMP].depth = patch->voice1Settings->getFloatValue(AMP_ENV_1_DEPTH);
-        modulations[0][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(VCF_TRACKING);
-        modulations[0][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[0][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[0][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[0][MODS_SH_TO_VCF_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_VCF_CUTOFF);
+        modulations[0][MODS_NOTE_TO_FLT_FREQ].depth = patch->voice1Settings->getFloatValue(FLT_TRACKING);
+        modulations[0][MODS_ENV_1_TO_FLT_FREQ].depth = patch->voice1Settings->getFloatValueExponential(FLT_ENV_1_DEPTH);
+        modulations[0][MODS_ENV_2_TO_FLT_FREQ].depth = patch->voice1Settings->getFloatValueExponential(FLT_ENV_2_DEPTH);
+        modulations[0][MODS_LFO_2_TO_FLT_FREQ].depth = patch->voice1Settings->getFloatValueExponential(LFO_2_TO_FLT_CUTOFF);
+        modulations[0][MODS_SH_TO_FLT_FREQ].depth = patch->voice1Settings->getFloatValue(SH_TO_FLT_CUTOFF);
 
         modulations[1][MODS_LFO_1_TO_OSCS].depth = patch->voice2Settings->getFloatValueExponential(LFO_1_TO_MASTER_TUNE);
         modulations[1][MODS_ENV_1_TO_AMP].depth = patch->voice2Settings->getFloatValue(AMP_ENV_1_DEPTH);
-        modulations[1][MODS_NOTE_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(VCF_TRACKING);
-        modulations[1][MODS_ENV_1_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_1_DEPTH);
-        modulations[1][MODS_ENV_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(VCF_ENV_2_DEPTH);
-        modulations[1][MODS_LFO_2_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValueExponential(LFO_2_TO_VCF_CUTOFF);
-        modulations[1][MODS_SH_TO_VCF_FREQ].depth = patch->voice2Settings->getFloatValue(SH_TO_VCF_CUTOFF);
+        modulations[1][MODS_NOTE_TO_FLT_FREQ].depth = patch->voice2Settings->getFloatValue(FLT_TRACKING);
+        modulations[1][MODS_ENV_1_TO_FLT_FREQ].depth = patch->voice2Settings->getFloatValueExponential(FLT_ENV_1_DEPTH);
+        modulations[1][MODS_ENV_2_TO_FLT_FREQ].depth = patch->voice2Settings->getFloatValueExponential(FLT_ENV_2_DEPTH);
+        modulations[1][MODS_LFO_2_TO_FLT_FREQ].depth = patch->voice2Settings->getFloatValueExponential(LFO_2_TO_FLT_CUTOFF);
+        modulations[1][MODS_SH_TO_FLT_FREQ].depth = patch->voice2Settings->getFloatValue(SH_TO_FLT_CUTOFF);
     }
 
     void VoiceBank::NoteOn(uint8_t note, uint8_t velocity)

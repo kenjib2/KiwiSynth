@@ -69,8 +69,8 @@ namespace kiwi_synth
         }
     }
 
-    void EnumToText::GetVcfType(char* buffer, FilterType vcfType) {
-        switch (vcfType) {
+    void EnumToText::GetFilterType(char* buffer, FilterType filterType) {
+        switch (filterType) {
             case LADDER_LOWPASS:
                 strcpy(buffer, "LddrLoPa");
                 break;
@@ -186,11 +186,11 @@ namespace kiwi_synth
             case DST_SH_RATE:
                 strcpy(buffer, "SHRat");
                 break;
-            case DST_VCF_CUTOFF:
-                strcpy(buffer, "VCFCt");
+            case DST_FLT_CUTOFF:
+                strcpy(buffer, "FltCt");
                 break;
-            case DST_VCF_RESONANCE:
-                strcpy(buffer, "VCFRs");
+            case DST_FLT_RESONANCE:
+                strcpy(buffer, "FltRs");
                 break;
             case DST_AMP_LEVEL:
                 strcpy(buffer, "AmpLv");
@@ -246,22 +246,22 @@ namespace kiwi_synth
             case DST_LFO_1_TO_MASTER_TUNE:
                 strcpy(buffer, "L1>MT");
                 break;
-            case DST_LFO_2_TO_VCF_CUTOFF:
+            case DST_LFO_2_TO_FLT_CUTOFF:
                 strcpy(buffer, "L2>FC");
                 break;
-            case DST_NOTE_TO_VCF_CUTOFF:
+            case DST_NOTE_TO_FLT_CUTOFF:
                 strcpy(buffer, "Nt>FC");
                 break;
             case DST_ENV_1_TO_AMP:
                 strcpy(buffer, "E1>Lv");
                 break;
-            case DST_ENV_1_TO_VCF_CUTOFF:
+            case DST_ENV_1_TO_FLT_CUTOFF:
                 strcpy(buffer, "E1>FC");
                 break;
-            case DST_ENV_2_TO_VCF_CUTOFF:
+            case DST_ENV_2_TO_FLT_CUTOFF:
                 strcpy(buffer, "E2>FC");
                 break;
-            case DST_SH_TO_VCF_CUTOFF:
+            case DST_SH_TO_FLT_CUTOFF:
                 strcpy(buffer, "SH>FC");
                 break;
             case DST_SH_IN:

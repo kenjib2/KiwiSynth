@@ -52,7 +52,7 @@ namespace kiwi_synth
         boolVal1 = settings->getBoolValue(LFO_2_TRIGGER_RESET_ON);
         intVal1 = settings->getFloatValue(LFO_2_RATE) * 1000;
         intVal2 = settings->getFloatValue(LFO_2_TRIGGER_PHASE) * 1000;
-        intVal3 = settings->getFloatValue(LFO_2_TO_VCF_CUTOFF) * 1000;
+        intVal3 = settings->getFloatValue(LFO_2_TO_FLT_CUTOFF) * 1000;
         if (boolVal1) {
             sprintf(buffer, "Rt %03d Ph %03d FCt %03d", intVal1, intVal2, intVal3);
         } else {

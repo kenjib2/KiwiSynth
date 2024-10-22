@@ -9,7 +9,7 @@
 #include "Modules/Oscillator.h"
 #include "Modules/Noise.h"
 #include "Modules/SampleAndHold.h"
-#include "Modules/VCF.h"
+#include "Modules/Filter.h"
 #include "Modules/Amplifier.h"
 #include "Modules/Envelope.h"
 #include "Modules/LFO.h"
@@ -31,7 +31,7 @@ namespace kiwi_synth
             Envelope    env1, env2;
             SampleAndHold sampleAndHold;
             LFO         lfo1, lfo2;
-            VCF         vcf;
+            Filter      filter;
             Amplifier   amplifier;
             int         voiceNumber;
             int32_t     noteTriggerCount;

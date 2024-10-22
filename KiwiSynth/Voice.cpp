@@ -23,7 +23,7 @@ namespace kiwi_synth
         }
         noise.Init(sampleRate);
         sampleAndHold.Init(sampleRate);
-        vcf.Init(sampleRate);
+        filter.Init(sampleRate);
         amplifier.Init();
         initMods();
         prevSourceValues[SRC_NONE] = 0.0f;
@@ -46,7 +46,7 @@ namespace kiwi_synth
         oscillators[2].UpdateSettings(patchSettings);
         noise.UpdateSettings(patchSettings);
         sampleAndHold.UpdateSettings(patchSettings);
-        vcf.UpdateSettings(patchSettings);
+        filter.UpdateSettings(patchSettings);
         amplifier.UpdateSettings(patchSettings);
         baseBalance = patchSettings->getFloatValueLinear(GEN_BALANCE, -1.0f, 1.0f);
 
@@ -81,11 +81,11 @@ namespace kiwi_synth
         modValues[modulations[8].destination] += prevSourceValues[modulations[8].source] * (modulations[8].depth + modValues[DST_LFO_1_TO_MASTER_TUNE]);
         // We are skipping 9 because the note triggering ASDR to amplifer is handled as a special case, but using two loops to
         // avoid having to check an if condition each time and thus save operator executions.
-        // Also skipping 10 because VCF tracking needs to be handled in a special way.
-        modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * (modulations[11].depth + modValues[DST_ENV_1_TO_VCF_CUTOFF]);
-        modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * (modulations[12].depth + modValues[DST_ENV_2_TO_VCF_CUTOFF]);
-        modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * (modulations[13].depth + modValues[DST_LFO_2_TO_VCF_CUTOFF]);
-        modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * (modulations[14].depth + modValues[DST_SH_TO_VCF_CUTOFF]);
+        // Also skipping 10 because filter tracking needs to be handled in a special way.
+        modValues[modulations[11].destination] += prevSourceValues[modulations[11].source] * (modulations[11].depth + modValues[DST_ENV_1_TO_FLT_CUTOFF]);
+        modValues[modulations[12].destination] += prevSourceValues[modulations[12].source] * (modulations[12].depth + modValues[DST_ENV_2_TO_FLT_CUTOFF]);
+        modValues[modulations[13].destination] += prevSourceValues[modulations[13].source] * (modulations[13].depth + modValues[DST_LFO_2_TO_FLT_CUTOFF]);
+        modValues[modulations[14].destination] += prevSourceValues[modulations[14].source] * (modulations[14].depth + modValues[DST_SH_TO_FLT_CUTOFF]);
     }
 
     /*
@@ -192,7 +192,7 @@ namespace kiwi_synth
         }
         sampleAndHold.Process(&sampleAndHoldSample, patchSettings, modValues[DST_SH_RATE]);
 
-        vcf.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(VCF_TRACKING) + modValues[DST_NOTE_TO_VCF_CUTOFF], currentMidiNote, modValues[DST_VCF_CUTOFF], modValues[DST_VCF_RESONANCE]);
+        filter.Process(&voiceSample, patchSettings, patchSettings->getFloatValue(FLT_TRACKING) + modValues[DST_NOTE_TO_FLT_CUTOFF], currentMidiNote, modValues[DST_FLT_CUTOFF], modValues[DST_FLT_RESONANCE]);
 
         amplifier.Process(&voiceSample, patchSettings, fclamp((modulations[9].depth + modValues[DST_ENV_1_TO_AMP]) + modValues[DST_AMP_ENV_1_DEPTH], 0.0f, 1.0f) * prevSourceValues[SRC_ENV_1], modValues[DST_AMP_LEVEL]);
 

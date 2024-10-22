@@ -30,8 +30,8 @@ namespace kiwi_synth
 
         display->SetCursor(0, 0);
         EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_1_WAVEFORM));
-        EnumToText::GetVcfType(val2, (FilterType)settings->getIntValue(VCF_FILTER_TYPE));
-        sprintf(buffer, "W1 %s VCF %s", val1, val2);
+        EnumToText::GetFilterType(val2, (FilterType)settings->getIntValue(FLT_FILTER_TYPE));
+        sprintf(buffer, "W1 %s Flt %s", val1, val2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(114, 0);

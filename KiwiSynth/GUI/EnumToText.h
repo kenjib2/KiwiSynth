@@ -25,7 +25,7 @@ namespace kiwi_synth
             /*
              * Buffer should be at least 9 in size.
              */
-            static void GetVcfType(char* buffer, FilterType vcfType);
+            static void GetFilterType(char* buffer, FilterType filterType);
             /*
              * Buffer should be at least 6 in size.
              */

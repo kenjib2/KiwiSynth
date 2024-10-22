@@ -15,14 +15,14 @@ using namespace kiwi_synth;
 // 58/64/59 no oscillator processing			26 (was 30)
 // 81/88/83 no noise/SH (was off anyway)    	2 (was 5)
 // 83/91/85 no amplifer							0 (was 0)
-// 71/78/73 no vcf                          	12 (was 22)
+// 71/78/73 no filter                       	12 (was 22)
 // 68/70/69 no reverb/effectsEngine				16 (was 20)
 // 82/88/83 no MIDI								2 (was 4)
 // 80/88/81 no calculateMods					4 (was 8)
 // 72/79/74 fullFunctionality = false			11 (was 16)
 // 81/88/82 remove fmod from lfo            	3
 // 76/83/77 remove waveshaping from oscillator	8
-// Most expensive: reverb, lfo, oscillator, vcf, reverb
+// Most expensive: reverb, lfo, oscillator, filter, reverb
 // 85/98/91 distortion added                	6
 // 87/96/90 new benchmark 3Osc+N no dist	 	*****
 // 87/100/92 new benchmark 3Osc+N with dist	 	*****
@@ -36,7 +36,7 @@ using namespace kiwi_synth;
  * PM synthesis has some pops in poly mode
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
- * Should some encoders like voice mode, waveform, and vcf type wraparound at max and min?
+ * Should some encoders like voice mode, waveform, and filter type wraparound at max and min?
  * Paraphonic layered 3 "voice" mode.
  * Menu to change system-wide default mods and patch mod settings 5-8
  * Is something still popping faintly with note steal & retrigger?
@@ -64,7 +64,7 @@ using namespace kiwi_synth;
  * Pre-filter vs output distortion
  * Modulating modulations and effects
  * New mod destination that is just Noise to amplifer Level (constant noise outside of envelope)
- * Can dust noise optionally bypass the VCF somehow?
+ * Can dust noise optionally bypass the filter somehow?
  * Performance %s are off if we increase above a 256 buffer
  * L/R Output noise
  * Headphone out noise

@@ -154,12 +154,12 @@ namespace kiwi_synth
         OSC_INPUT_LEVEL,
         // Input gain is analog only
 
-        VCF_FILTER_TYPE,
-        VCF_CUTOFF,                 // 30
-        VCF_RESONANCE,
-        VCF_TRACKING,
-        VCF_ENV_1_DEPTH,
-        VCF_ENV_2_DEPTH,
+        FLT_FILTER_TYPE,
+        FLT_CUTOFF,                 // 30
+        FLT_RESONANCE,
+        FLT_TRACKING,
+        FLT_ENV_1_DEPTH,
+        FLT_ENV_2_DEPTH,
 
         AMP_LEVEL,                  // 35
         AMP_ENV_1_DEPTH,
@@ -186,9 +186,9 @@ namespace kiwi_synth
         LFO_1_TRIGGER_PHASE,        // 55
         LFO_2_TRIGGER_PHASE,
         LFO_1_TO_MASTER_TUNE,
-        LFO_2_TO_VCF_CUTOFF,
+        LFO_2_TO_FLT_CUTOFF,
 
-        SH_TO_VCF_CUTOFF,
+        SH_TO_FLT_CUTOFF,
         SH_RATE,                    // 60
 
         MOD_1_SOURCE,
@@ -250,11 +250,11 @@ namespace kiwi_synth
         MODS_MOD_MATRIX_8,
         MODS_LFO_1_TO_OSCS,
         MODS_ENV_1_TO_AMP,
-        MODS_NOTE_TO_VCF_FREQ,
-        MODS_ENV_1_TO_VCF_FREQ,
-        MODS_ENV_2_TO_VCF_FREQ,
-        MODS_LFO_2_TO_VCF_FREQ,
-        MODS_SH_TO_VCF_FREQ
+        MODS_NOTE_TO_FLT_FREQ,
+        MODS_ENV_1_TO_FLT_FREQ,
+        MODS_ENV_2_TO_FLT_FREQ,
+        MODS_LFO_2_TO_FLT_FREQ,
+        MODS_SH_TO_FLT_FREQ
     } Modulations;
 
     typedef enum
@@ -292,8 +292,8 @@ namespace kiwi_synth
         DST_NOISE_LEVEL,        // 9
 
         DST_SH_RATE,            // 10
-        DST_VCF_CUTOFF,         // 11
-        DST_VCF_RESONANCE,      // 12
+        DST_FLT_CUTOFF,         // 11
+        DST_FLT_RESONANCE,      // 12
         DST_AMP_LEVEL,          // 13
         DST_AMP_ENV_1_DEPTH,    // 14
 
@@ -316,13 +316,13 @@ namespace kiwi_synth
         DST_BALANCE,            // 29
 
         DST_LFO_1_TO_MASTER_TUNE,// 30
-        DST_LFO_2_TO_VCF_CUTOFF,// 31
-        DST_NOTE_TO_VCF_CUTOFF, // 32
+        DST_LFO_2_TO_FLT_CUTOFF,// 31
+        DST_NOTE_TO_FLT_CUTOFF, // 32
         DST_ENV_1_TO_AMP,       // 33
-        DST_ENV_1_TO_VCF_CUTOFF,// 34
+        DST_ENV_1_TO_FLT_CUTOFF,// 34
 
-        DST_ENV_2_TO_VCF_CUTOFF,// 35
-        DST_SH_TO_VCF_CUTOFF,   // 36
+        DST_ENV_2_TO_FLT_CUTOFF,// 35
+        DST_SH_TO_FLT_CUTOFF,   // 36
         DST_SH_IN               // 37
 
         //DST_FX_1,               // Can't modulate effects because source values are different for each voice

@@ -20,7 +20,7 @@ namespace kiwi_synth
         tmp[OSC_3_OCTAVE] = 4;
         tmp[OSC_3_INTERVAL] = 22;
         tmp[OSC_NOISE_TYPE] = NOISE_TYPE_MAX - 1;
-        tmp[VCF_FILTER_TYPE] = FILTER_TYPE_MAX - 1;
+        tmp[FLT_FILTER_TYPE] = FILTER_TYPE_MAX - 1;
         tmp[LFO_1_WAVEFORM] = LFO_WAVEFORM_MAX - 1;
         tmp[LFO_2_WAVEFORM] = LFO_WAVEFORM_MAX - 1;
         tmp[MOD_1_SOURCE] = NUM_MOD_SOURCES - 1;
@@ -101,7 +101,7 @@ namespace kiwi_synth
         setValue(OSC_3_OCTAVE, (int8_t)2);
         setValue(OSC_3_INTERVAL, (int8_t)11);
         setValue(OSC_NOISE_TYPE, (int8_t)0);
-        setValue(VCF_FILTER_TYPE, (int8_t)0);
+        setValue(FLT_FILTER_TYPE, (int8_t)0);
         setValue(LFO_1_WAVEFORM, (int8_t)0);
         setValue(LFO_2_WAVEFORM, (int8_t)0);
         setValue(MOD_1_SOURCE, (int8_t)0);
@@ -222,7 +222,7 @@ namespace kiwi_synth
         switch(controlNumber)
         {
             case 0:
-                setValue(VCF_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                setValue(FLT_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
                 setValue(OSC_3_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_2_DECAY, multiPots->GetMpValue(2, controlNumber));
                 setValue(OSC_PORTAMENTO_SPEED, multiPots->GetDirectValue(0));
@@ -255,12 +255,12 @@ namespace kiwi_synth
             case 6:
                 setValue(FX_REVERB, multiPots->GetMpValue(0, controlNumber));
                 setValue(OSC_MASTER_TUNE, multiPots->GetMpValue(1, controlNumber));
-                setValue(VCF_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
+                setValue(FLT_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 7:
                 setValue(FX_5, multiPots->GetMpValue(0, controlNumber));
                 setValue(OSC_1_LEVEL, multiPots->GetMpValue(1, controlNumber));
-                setValue(VCF_TRACKING, multiPots->GetMpValue(2, controlNumber));
+                setValue(FLT_TRACKING, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 8:
                 setValue(FX_4, multiPots->GetMpValue(0, controlNumber));
@@ -288,17 +288,17 @@ namespace kiwi_synth
                 setValue(LFO_1_TO_MASTER_TUNE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 13:
-                setValue(VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                setValue(FLT_CUTOFF, multiPots->GetMpValue(0, controlNumber));
                 setValue(LFO_1_RATE, multiPots->GetMpValue(1, controlNumber));
-                setValue(LFO_2_TO_VCF_CUTOFF, multiPots->GetMpValue(2, controlNumber));
+                setValue(LFO_2_TO_FLT_CUTOFF, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 14:
-                setValue(VCF_RESONANCE, multiPots->GetMpValue(0, controlNumber));
+                setValue(FLT_RESONANCE, multiPots->GetMpValue(0, controlNumber));
                 setValue(OSC_NOISE_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_2_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 15:
-                setValue(SH_TO_VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                setValue(SH_TO_FLT_CUTOFF, multiPots->GetMpValue(0, controlNumber));
                 setValue(OSC_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
                 setValue(ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
@@ -328,7 +328,7 @@ namespace kiwi_synth
         switch(controlNumber)
         {
             case 0:
-                SetFloatProtect(VCF_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(FLT_ENV_2_DEPTH, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(OSC_3_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 SetFloatProtect(ENV_2_DECAY, multiPots->GetMpValue(2, controlNumber));
                 SetFloatProtect(OSC_PORTAMENTO_SPEED, multiPots->GetDirectValue(0));
@@ -361,12 +361,12 @@ namespace kiwi_synth
             case 6:
                 SetFloatProtect(FX_REVERB, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(OSC_MASTER_TUNE, multiPots->GetMpValue(1, controlNumber));
-                SetFloatProtect(VCF_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
+                SetFloatProtect(FLT_ENV_1_DEPTH, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 7:
                 SetFloatProtect(FX_5, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(OSC_1_LEVEL, multiPots->GetMpValue(1, controlNumber));
-                SetFloatProtect(VCF_TRACKING, multiPots->GetMpValue(2, controlNumber));
+                SetFloatProtect(FLT_TRACKING, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 8:
                 SetFloatProtect(FX_4, multiPots->GetMpValue(0, controlNumber));
@@ -394,17 +394,17 @@ namespace kiwi_synth
                 SetFloatProtect(LFO_1_TO_MASTER_TUNE, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 13:
-                SetFloatProtect(VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(FLT_CUTOFF, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(LFO_1_RATE, multiPots->GetMpValue(1, controlNumber));
-                SetFloatProtect(LFO_2_TO_VCF_CUTOFF, multiPots->GetMpValue(2, controlNumber));
+                SetFloatProtect(LFO_2_TO_FLT_CUTOFF, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 14:
-                SetFloatProtect(VCF_RESONANCE, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(FLT_RESONANCE, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(OSC_NOISE_LEVEL, multiPots->GetMpValue(1, controlNumber));
                 SetFloatProtect(ENV_2_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
             case 15:
-                SetFloatProtect(SH_TO_VCF_CUTOFF, multiPots->GetMpValue(0, controlNumber));
+                SetFloatProtect(SH_TO_FLT_CUTOFF, multiPots->GetMpValue(0, controlNumber));
                 SetFloatProtect(OSC_3_PULSE_WIDTH, multiPots->GetMpValue(1, controlNumber));
                 SetFloatProtect(ENV_1_ATTACK, multiPots->GetMpValue(2, controlNumber));
                 break;
@@ -435,7 +435,7 @@ namespace kiwi_synth
                 processEncoder(OSC_3_INTERVAL, controlNumber, 4, 3);
                 processEncoder(OSC_2_INTERVAL, controlNumber, 6, 5);
                 processEncoder(GEN_SELECT, controlNumber, 9, 10);
-                processEncoder(VCF_FILTER_TYPE, controlNumber, 12, 13);
+                processEncoder(FLT_FILTER_TYPE, controlNumber, 12, 13);
                 break;
             case 0x21:
                 setValue(OSC_2_ON, ge->getPinValue(controlNumber, 5));
@@ -526,12 +526,12 @@ namespace kiwi_synth
         setValue(OSC_INPUT_THRESHOLD, 0.5f);
         setValue(OSC_INPUT_LEVEL, 0.0f);
 
-        setValue(VCF_FILTER_TYPE, (int8_t)0);
-        setValue(VCF_CUTOFF, 0.999f);
-        setValue(VCF_RESONANCE, 0.0f);
-        setValue(VCF_TRACKING, 0.999f);
-        setValue(VCF_ENV_1_DEPTH, 0.0f);
-        setValue(VCF_ENV_2_DEPTH, 0.0f);
+        setValue(FLT_FILTER_TYPE, (int8_t)0);
+        setValue(FLT_CUTOFF, 0.999f);
+        setValue(FLT_RESONANCE, 0.0f);
+        setValue(FLT_TRACKING, 0.999f);
+        setValue(FLT_ENV_1_DEPTH, 0.0f);
+        setValue(FLT_ENV_2_DEPTH, 0.0f);
 
         setValue(AMP_LEVEL, 0.0f);
         setValue(AMP_ENV_1_DEPTH, 0.999f);
@@ -558,9 +558,9 @@ namespace kiwi_synth
         setValue(LFO_1_TRIGGER_PHASE, 0.5f);
         setValue(LFO_2_TRIGGER_PHASE, 0.5f);
         setValue(LFO_1_TO_MASTER_TUNE, 0.0f);
-        setValue(LFO_2_TO_VCF_CUTOFF, 0.0f);
+        setValue(LFO_2_TO_FLT_CUTOFF, 0.0f);
 
-        setValue(SH_TO_VCF_CUTOFF, 0.0f);
+        setValue(SH_TO_FLT_CUTOFF, 0.0f);
         setValue(SH_RATE, 0.5f);
 
         setValue(MOD_1_SOURCE, (int8_t)0);

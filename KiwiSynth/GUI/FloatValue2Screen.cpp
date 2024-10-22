@@ -26,19 +26,19 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        sprintf(buffer, "VCF----------------V%d", voiceNumber + 1);
+        sprintf(buffer, "Filter----------V%d", voiceNumber + 1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
-        intVal1 = settings->getFloatValue(VCF_CUTOFF) * 1000;
-        intVal2 = settings->getFloatValue(VCF_RESONANCE) * 1000;
+        intVal1 = settings->getFloatValue(FLT_CUTOFF) * 1000;
+        intVal2 = settings->getFloatValue(FLT_RESONANCE) * 1000;
         sprintf(buffer, "FreqCut %03d  Reso %03d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
-        intVal1 = settings->getFloatValue(VCF_TRACKING) * 1000;
-        intVal2 = settings->getFloatValue(VCF_ENV_1_DEPTH) * 1000;
-        intVal3 = settings->getFloatValue(VCF_ENV_2_DEPTH) * 1000;
+        intVal1 = settings->getFloatValue(FLT_TRACKING) * 1000;
+        intVal2 = settings->getFloatValue(FLT_ENV_1_DEPTH) * 1000;
+        intVal3 = settings->getFloatValue(FLT_ENV_2_DEPTH) * 1000;
         sprintf(buffer, "KT %03d  E1 %03d E2 %03d", intVal1, intVal2, intVal3);
         display->WriteString(buffer, Font_6x8, true);
 
@@ -53,7 +53,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
-        intVal1 = settings->getFloatValue(SH_TO_VCF_CUTOFF) * 1000;
+        intVal1 = settings->getFloatValue(SH_TO_FLT_CUTOFF) * 1000;
         intVal2 = settings->getFloatValue(SH_RATE) * 1000;
         sprintf(buffer, "SH--FrCt %03d-Rate %03d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
