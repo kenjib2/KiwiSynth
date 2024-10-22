@@ -56,7 +56,7 @@ namespace kiwi_synth
         }
     }
 
-    void Oscillator::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod)
+    void Oscillator::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float ampMod)
     {
         if (__builtin_expect(isOn, 1)) {
             float masterTune = patchSettings->getFloatValueLinear(PatchSetting::OSC_MASTER_TUNE, -1.0f, 1.0f);
@@ -108,7 +108,7 @@ namespace kiwi_synth
                     eoc = sawOsc.IsEOC();
             }
 
-            *sample = waveSample * level;
+            *sample = waveSample * std::fmax(level + ampMod, 0.0f);
         }
         else {
             *sample = 0.0f;
@@ -165,6 +165,14 @@ namespace kiwi_synth
         sawOsc.PhaseAdd(phase);
         triangleOsc.PhaseAdd(phase);
         sineOsc.PhaseAdd(phase);
+    }
+
+    void Oscillator::PhaseReset()
+    {
+        squareOsc.PhaseReset();
+        sawOsc.PhaseReset();
+        triangleOsc.PhaseReset();
+        sineOsc.PhaseReset();
     }
 
 }

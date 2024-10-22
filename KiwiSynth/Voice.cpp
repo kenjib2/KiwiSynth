@@ -148,7 +148,7 @@ namespace kiwi_synth
 
         if (pmMode == PM_MODE_OFF) {
             float oscSample = 0.0f;
-            oscillators[0].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            oscillators[0].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_1_LEVEL]);
             voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[0];
 
             if (hardSync && oscillators[0].eoc) {
@@ -157,26 +157,29 @@ namespace kiwi_synth
             }
 
             oscSample = 0.0f;
-            oscillators[1].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
+            oscillators[1].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL]);
             voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[1];
 
             oscSample = 0.0f;
-            oscillators[2].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            oscillators[2].Process(&oscSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL]);
             voiceSample = voiceSample + oscSample * VOICE_ATTENTUATION_CONSTANT * paraOscMask[2];
         } else if (pmMode == PM_MODE_PARALLEL) {
             float fmSample = 0.0f;
-            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH], modValues[DST_OSC_1_LEVEL]);
             float fmSample2 = 0.0f;
-            oscillators[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
-            oscillators[0].PhaseAdd((fmSample + fmSample2) / 2);
-            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            oscillators[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL]);
+            oscillators[0].PhaseAdd((fmSample + fmSample2));
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL]);
+            oscillators[0].PhaseReset();
         } else if (pmMode == PM_MODE_SERIAL) {
             float fmSample = 0.0f;
-            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH]);
+            oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH], modValues[DST_OSC_1_LEVEL]);
             oscillators[1].PhaseAdd(fmSample);
-            oscillators[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH]);
+            oscillators[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL]);
+            oscillators[1].PhaseReset();
             oscillators[0].PhaseAdd(fmSample);
-            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH]);
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL]);
+            oscillators[0].PhaseReset();
             voiceSample = voiceSample * VOICE_ATTENTUATION_CONSTANT;
         }
 
