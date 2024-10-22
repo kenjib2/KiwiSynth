@@ -160,22 +160,22 @@ namespace kiwi_synth
                 strcpy(buffer, "PWdth");
                 break;
             case DST_OSC_1_FREQ:
-                strcpy(buffer, "V1Frq");
+                strcpy(buffer, "O1Frq");
                 break;
             case DST_OSC_1_PULSE_WIDTH:
-                strcpy(buffer, "V1Pwd");
+                strcpy(buffer, "O1Pwd");
                 break;
             case DST_OSC_2_FREQ:
-                strcpy(buffer, "V2Frq");
+                strcpy(buffer, "O2Frq");
                 break;
             case DST_OSC_2_PULSE_WIDTH:
-                strcpy(buffer, "V2Pwd");
+                strcpy(buffer, "O2Pwd");
                 break;
             case DST_OSC_3_FREQ:
-                strcpy(buffer, "V3Frq");
+                strcpy(buffer, "O3Frq");
                 break;
             case DST_OSC_3_PULSE_WIDTH:
-                strcpy(buffer, "V3Pwd");
+                strcpy(buffer, "O3Pwd");
                 break;
             case DST_NOISE_DENSITY:
                 strcpy(buffer, "NsDns");
