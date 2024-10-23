@@ -22,11 +22,12 @@ namespace kiwi_synth
         PATCH_SCREEN_FX,
         PATCH_SCREEN_REVERB,
         PATCH_SCREEN_LIVE,
+        PATCH_SCREEN_SWAP,
         PATCH_SCREEN_LOAD,
         PATCH_SCREEN_SAVE,
         PATCH_SCREEN_RETURN
     };
-    const static int PATCH_SCREEN_OPTIONS = 10;
+    const static int PATCH_SCREEN_OPTIONS = 11;
 
     // These are response messages sent back to Display depending on what the user selects. They
     // instruct Display to perform different actions after the patch screen is exited.

@@ -96,6 +96,7 @@ namespace kiwi_synth
             void SetControlsLive(bool isLive);
             void Copy(SavedPatch* savedPatch, int voiceNumber);
             void Copy(PatchSettings* patchSettings);
+            void CopyVoiceSettings(PatchSettings* patchSettings);
             void Load(SavedPatch* savedPatch, int voiceNumber);
 
             /*

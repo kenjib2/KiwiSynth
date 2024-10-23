@@ -69,9 +69,23 @@ namespace kiwi_synth
         sprintf(buffer, "Reverb: %s", value);
         display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_REVERB);
 
-        display->SetCursor(0, 40);
-        sprintf(buffer, "Live Mode");
-        display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_LIVE);
+        if (!patch->GetLiveMode()) {
+            display->SetCursor(0, 40);
+            sprintf(buffer, "Live Mode");
+            display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_LIVE);
+
+            if (patch->GetVoiceMode() == VOICE_MODE_MULTI || patch->GetVoiceMode() == VOICE_MODE_SPLIT) {
+                display->SetCursor(66, 40);
+                sprintf(buffer, "Swap Layers");
+                display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SWAP);
+            }
+        } else {
+            if (patch->GetVoiceMode() == VOICE_MODE_MULTI || patch->GetVoiceMode() == VOICE_MODE_SPLIT) {
+                display->SetCursor(0, 40);
+                sprintf(buffer, "Swap Layers");
+                display->WriteString(buffer, Font_6x8, selected != PATCH_SCREEN_SWAP);
+            }
+        }
 
         display->SetCursor(0, 48);
         sprintf(buffer, "Load Patch");
@@ -104,6 +118,11 @@ namespace kiwi_synth
 
             // If in live mode, we can't select live mode again. Skip the menu item.
             if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
+                selected = PATCH_SCREEN_SWAP;
+            }
+
+            // Must come after the check for PATCH_SCREEN_LIVE
+            if (selected == PATCH_SCREEN_SWAP && !(patch->GetVoiceMode() == VOICE_MODE_MULTI || patch->GetVoiceMode() == VOICE_MODE_SPLIT)) {
                 selected = PATCH_SCREEN_LOAD;
             }
 
@@ -127,6 +146,11 @@ namespace kiwi_synth
         } else {
             selected = (PatchScreenSelection)((selected - 1 + PATCH_SCREEN_OPTIONS) % PATCH_SCREEN_OPTIONS);
             
+            // Must come before the check for PATCH_SCREEN_LIVE
+            if (selected == PATCH_SCREEN_SWAP && !(patch->GetVoiceMode() == VOICE_MODE_MULTI || patch->GetVoiceMode() == VOICE_MODE_SPLIT)) {
+                selected = PATCH_SCREEN_LIVE;
+            }
+
             // If in live mode, we can't select live mode again. Skip the menu item.
             if (patch->GetLiveMode() && selected == PATCH_SCREEN_LIVE) {
                 selected = PATCH_SCREEN_REVERB;
@@ -194,6 +218,11 @@ namespace kiwi_synth
 
             case PATCH_SCREEN_LIVE:
                 patch->SetLiveMode(true);
+                selected = PATCH_SCREEN_NONE;
+                return PATCH_SCREEN_RESPONSE_PLAY;
+
+            case PATCH_SCREEN_SWAP:
+                patch->SwapLayers();
                 selected = PATCH_SCREEN_NONE;
                 return PATCH_SCREEN_RESPONSE_PLAY;
 

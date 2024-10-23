@@ -110,4 +110,18 @@ namespace kiwi_synth
         patchHeader->voiceMode = voiceMode;
     }
 
+    void Patch::SwapLayers() {
+        if (voiceMode == VOICE_MODE_SPLIT || voiceMode ==  VOICE_MODE_MULTI) {
+            settings1.SetControlsLive(false);
+            settings2.SetControlsLive(false);
+
+            // voice1Settings is used for modulation, fx, and system control settings exclusively, so when
+            // we swap them we need to only copy the other settings.
+            PatchSettings temp;
+            temp.CopyVoiceSettings(voice1Settings);
+            voice1Settings->CopyVoiceSettings(voice2Settings);
+            voice2Settings->CopyVoiceSettings(&temp);
+       }
+    }
+
 } // namespace kiwi_synth

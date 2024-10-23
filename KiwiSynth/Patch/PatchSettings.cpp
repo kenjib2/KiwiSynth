@@ -141,13 +141,13 @@ namespace kiwi_synth
     void PatchSettings::Copy(SavedPatch* savedPatch, int voiceNumber)
     {
         if (voiceNumber == 0) {
-            memcpy(this->boolValues, savedPatch->voice1BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
-            memcpy(this->intValues, savedPatch->voice1IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
-            memcpy(this->floatValues, savedPatch->voice1FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(boolValues, savedPatch->voice1BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(intValues, savedPatch->voice1IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(floatValues, savedPatch->voice1FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
         } else {
-            memcpy(this->boolValues, savedPatch->voice2BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
-            memcpy(this->intValues, savedPatch->voice2IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
-            memcpy(this->floatValues, savedPatch->voice2FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(boolValues, savedPatch->voice2BoolValues, sizeof(bool) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(intValues, savedPatch->voice2IntValues, sizeof(int8_t) * NUM_PATCH_SETTINGS_SAVED);
+            memcpy(floatValues, savedPatch->voice2FloatValues, sizeof(float) * NUM_PATCH_SETTINGS_SAVED);
         }
 
         SetModSigns();
@@ -165,11 +165,18 @@ namespace kiwi_synth
 
     void PatchSettings::Copy(PatchSettings* patchSettings)
     {
-        memcpy(this->boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
-        memcpy(this->intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
-        memcpy(this->floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
+        memcpy(boolValues, patchSettings->boolValues, sizeof(bool) * NUM_PATCH_SETTINGS);
+        memcpy(intValues, patchSettings->intValues, sizeof(int8_t) * NUM_PATCH_SETTINGS);
+        memcpy(floatValues, patchSettings->floatValues, sizeof(float) * NUM_PATCH_SETTINGS);
 
         SetModSigns();
+    }
+
+    void PatchSettings::CopyVoiceSettings(PatchSettings* patchSettings)
+    {
+        memcpy(boolValues, patchSettings->boolValues, sizeof(bool) * MOD_1_SOURCE);
+        memcpy(intValues, patchSettings->intValues, sizeof(int8_t) * MOD_1_SOURCE);
+        memcpy(floatValues, patchSettings->floatValues, sizeof(float) * MOD_1_SOURCE);
     }
 
     void PatchSettings::Load(SavedPatch* savedPatch, int voiceNumber)

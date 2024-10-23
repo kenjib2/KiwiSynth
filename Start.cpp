@@ -31,11 +31,12 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Layered/Split -- some way to edit voice 2? Probably swap voice1 and 2 settings, but preserving FX and mod. When doing this you can fix attk dcy release on Crystalline
+ * Re-organize intscreen and floatvaluescreens
+ * Paraphonic layered 3 "voice" mode.
+ * Polyphonic PM synth pops. Where can we optimize more?
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and filter type wraparound at max and min?
- * Paraphonic layered 3 "voice" mode.
  * Menu to change system-wide default mods and patch mod settings 5-8
  * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
@@ -76,7 +77,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 256;
+const int AUDIO_BLOCK_SIZE = 384;
 Performance performance;
 CpuLoadMeter load;
 
