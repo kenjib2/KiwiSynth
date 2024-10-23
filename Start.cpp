@@ -34,6 +34,7 @@ using namespace kiwi_synth;
  * Re-organize intscreen and floatvaluescreens
  * Paraphonic layered 3 "voice" mode.
  * Polyphonic PM synth pops. Where can we optimize more?
+ * Resonance and SHToFCut knobs jump around alot -- needs a smoothing cap?
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and filter type wraparound at max and min?

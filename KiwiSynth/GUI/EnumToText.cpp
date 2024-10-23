@@ -3,7 +3,7 @@
 namespace kiwi_synth
 {
 
-    void EnumToText::GetWaveform(char* buffer, Waveform waveform) {
+    void EnumToText::GetWaveformTwoChar(char* buffer, Waveform waveform) {
         switch (waveform) {
             case WAVEFORM_SQUARE:
                 strcpy(buffer, "Sq");
@@ -25,6 +25,32 @@ namespace kiwi_synth
                 break;
             case WAVEFORM_WAVEFOLDED_SAWTOOTH:
                 strcpy(buffer, "WS");
+                break;
+        }
+    }
+
+    void EnumToText::GetWaveform(char* buffer, Waveform waveform) {
+        switch (waveform) {
+            case WAVEFORM_SQUARE:
+                strcpy(buffer, "Squa");
+                break;
+            case WAVEFORM_SAWTOOTH:
+                strcpy(buffer, "Sawt");
+                break;
+            case WAVEFORM_TRIANGLE:
+                strcpy(buffer, "Tria");
+                break;
+            case WAVEFORM_VARISHAPE:
+                strcpy(buffer, "VaSh");
+                break;
+            case WAVEFORM_VARISAW:
+                strcpy(buffer, "VaSw");
+                break;
+            case WAVEFORM_SINE:
+                strcpy(buffer, "Sine");
+                break;
+            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                strcpy(buffer, "WfSw");
                 break;
         }
     }
@@ -75,7 +101,7 @@ namespace kiwi_synth
                 strcpy(buffer, "LddrLoPa");
                 break;
             case SVF_LOWPASS:
-                strcpy(buffer, "LowPass");
+                strcpy(buffer, "LowPass ");
                 break;
             case SVF_HIGHPASS:
                 strcpy(buffer, "HighPass");
@@ -84,10 +110,10 @@ namespace kiwi_synth
                 strcpy(buffer, "BandPass");
                 break;
             case SVF_NOTCH:
-                strcpy(buffer, "Notch");
+                strcpy(buffer, "Notch   ");
                 break;
             case SVF_PEAK:
-                strcpy(buffer, "Peak");
+                strcpy(buffer, "Peak    ");
                 break;
             case ONE_POLE_LOWPASS:
                 strcpy(buffer, "1PoleHiP");

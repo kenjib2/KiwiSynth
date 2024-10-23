@@ -13,6 +13,10 @@ namespace kiwi_synth
             /*
              * Buffer should be at least 3 in size.
              */
+            static void GetWaveformTwoChar(char* buffer, Waveform waveform);
+            /*
+             * Buffer should be at least 5 in size.
+             */
             static void GetWaveform(char* buffer, Waveform waveform);
             /*
              * Buffer should be at least 3 in size.

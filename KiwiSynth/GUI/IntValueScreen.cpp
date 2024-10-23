@@ -29,7 +29,7 @@ namespace kiwi_synth
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_1_WAVEFORM));
+        EnumToText::GetWaveformTwoChar(val1, (Waveform)settings->getIntValue(OSC_1_WAVEFORM));
         EnumToText::GetFilterType(val2, (FilterType)settings->getIntValue(FLT_FILTER_TYPE));
         sprintf(buffer, "W1 %s Flt %s", val1, val2);
         display->WriteString(buffer, Font_6x8, true);
@@ -41,14 +41,14 @@ namespace kiwi_synth
         intVal1 = settings->getIntValue(OSC_2_OCTAVE) - 2;
         intVal2 = settings->getIntValue(OSC_2_INTERVAL) - 11;
         display->SetCursor(0, 8);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_2_WAVEFORM));
+        EnumToText::GetWaveformTwoChar(val1, (Waveform)settings->getIntValue(OSC_2_WAVEFORM));
         sprintf(buffer, "W2 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         intVal1 = settings->getIntValue(OSC_3_OCTAVE) - 2;
         intVal2 = settings->getIntValue(OSC_3_INTERVAL) - 11;
         display->SetCursor(0, 16);
-        EnumToText::GetWaveform(val1, (Waveform)settings->getIntValue(OSC_3_WAVEFORM));
+        EnumToText::GetWaveformTwoChar(val1, (Waveform)settings->getIntValue(OSC_3_WAVEFORM));
         sprintf(buffer, "W3 %s OCT %d INT %d", val1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
