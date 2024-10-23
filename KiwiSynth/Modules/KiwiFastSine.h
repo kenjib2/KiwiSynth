@@ -62,6 +62,10 @@ class KiwiFastSine
     /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
     */
     float Process();
+    /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
+     * The phaseMod parameter can be used to modulate the phase for PM synthesis.
+     */
+    float Process(float phaseMod);
     /** Resets the phase to the input argument. If no argumeNt is present, it will reset phase to 0.0;
     */
     inline void Reset(float _phase = 0.0f) { phase_ = _phase; }
@@ -74,12 +78,6 @@ class KiwiFastSine
     /** Sets the phase based on a given phase ratio.
      */
     inline void HardSync(float phaseRatio) { phase_ = phaseRatio * freq_; }
-    /** Adds a value 0.0-1.0 (equivalent to 0.0-TWO_PI) to the current phase. Useful for PM and "FM" synthesis.
-    */
-    inline void PhaseAdd(float _phase) { phase_diff_ = _phase; phase_ += _phase; if (phase_ > 1.0f) phase_ -= 1.0f; }
-    /** Reverses the last PhaseAdd call. This only works correctly if PhaseAdd was called in the same process cycle.
-    */
-    inline void PhaseReset() { phase_ -= phase_diff_; if (phase_ < 1.0f) phase_ += 1.0f; }
 
   private:
     inline float   CalcPhaseInc(float f) { return f * sr_recip_; }

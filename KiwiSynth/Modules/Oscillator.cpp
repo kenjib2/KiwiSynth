@@ -115,6 +115,65 @@ namespace kiwi_synth
         }
     }
 
+    void Oscillator::Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float ampMod, float phaseMod)
+    {
+        if (__builtin_expect(isOn, 1)) {
+            float masterTune = patchSettings->getFloatValueLinear(PatchSetting::OSC_MASTER_TUNE, -1.0f, 1.0f);
+            playingNote = midiNote + octave + interval + fineTune + masterTune + paraOffset;
+            float waveSample = 0.0f;
+            float freq = std::fmax(mtof(playingNote + mod * 12.0f), 0.0f);
+            switch(waveform) {
+                case WAVEFORM_SQUARE:
+                    squareOsc.SetFreq(freq);
+                    squareOsc.SetPw(pulseWidth + pwMod);
+                    waveSample = squareOsc.Process(phaseMod);
+                    eoc = squareOsc.IsEOC();
+                    break;
+                case WAVEFORM_SAWTOOTH:
+                    sawOsc.SetFreq(freq);
+                    waveSample = sawOsc.Process(phaseMod);
+                    waveSample = fclamp(waveSample * (sawtoothGain + pwMod * 50.0f + 1.0f), -1.0f, 1.0f);
+                    eoc = sawOsc.IsEOC();
+                    break;
+                case WAVEFORM_TRIANGLE:
+                    triangleOsc.SetFreq(freq);
+                    waveSample = triangleOsc.Process(phaseMod);
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = triangleOsc.IsEOC();
+                    break;
+                case WAVEFORM_VARISHAPE:
+                    variOsc.SetSyncFreq(freq);
+                    variOsc.SetPW((variShape + pwMod) * 0.25f);
+                    waveSample = variOsc.Process();
+                    break;
+                case WAVEFORM_VARISAW:
+                    variSaw.SetFreq(freq);
+                    variSaw.SetPW(1.0f - variShape + pwMod);
+                    waveSample = variSaw.Process();
+                    break;
+                case WAVEFORM_SINE:
+                    sineOsc.SetFreq(freq);
+                    waveSample = sineOsc.Process(phaseMod);
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = sineOsc.IsEOC();
+                    break;
+                case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                    sawOsc.SetFreq(freq);
+                    waveSample = sawOsc.Process(phaseMod);
+                    wavefolder.SetGain(std::fmax(waveFolderGain + pwMod * 27.0f, 1.0f));
+                    waveSample = fclamp(wavefolder.Process(waveSample), -1.0f, 1.0f);
+                    eoc = sawOsc.IsEOC();
+            }
+
+            *sample = waveSample * std::fmax(level + ampMod, 0.0f);
+        }
+        else {
+            *sample = 0.0f;
+        }
+    }
+
     float Oscillator::GetPhaseRatio()
     {
         switch(waveform) {
@@ -157,22 +216,6 @@ namespace kiwi_synth
             case WAVEFORM_VARISAW:
                 break;
         }
-    }
-
-    void Oscillator::PhaseAdd(float phase)
-    {
-        squareOsc.PhaseAdd(phase);
-        sawOsc.PhaseAdd(phase);
-        triangleOsc.PhaseAdd(phase);
-        sineOsc.PhaseAdd(phase);
-    }
-
-    void Oscillator::PhaseReset()
-    {
-        squareOsc.PhaseReset();
-        sawOsc.PhaseReset();
-        triangleOsc.PhaseReset();
-        sineOsc.PhaseReset();
     }
 
 }

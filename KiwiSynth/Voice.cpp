@@ -168,18 +168,12 @@ namespace kiwi_synth
             oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH], modValues[DST_OSC_1_LEVEL]);
             float fmSample2 = 0.0f;
             oscillators[1].Process(&fmSample2, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL]);
-            oscillators[0].PhaseAdd((fmSample + fmSample2));
-            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL]);
-            oscillators[0].PhaseReset();
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL], fmSample + fmSample2);
         } else if (pmMode == PM_MODE_SERIAL) {
             float fmSample = 0.0f;
             oscillators[2].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_3_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_3_PULSE_WIDTH], modValues[DST_OSC_1_LEVEL]);
-            oscillators[1].PhaseAdd(fmSample);
-            oscillators[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL]);
-            oscillators[1].PhaseReset();
-            oscillators[0].PhaseAdd(fmSample);
-            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL]);
-            oscillators[0].PhaseReset();
+            oscillators[1].Process(&fmSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_2_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_2_PULSE_WIDTH], modValues[DST_OSC_2_LEVEL], fmSample);
+            oscillators[0].Process(&voiceSample, patchSettings, modValues[DST_OSCS_FREQ] + modValues[DST_OSC_1_FREQ], modValues[DST_OSCS_PULSE_WIDTH] + modValues[DST_OSC_1_PULSE_WIDTH], modValues[DST_OSC_3_LEVEL], fmSample);
             voiceSample = voiceSample * VOICE_ATTENTUATION_CONSTANT;
         }
 

@@ -70,18 +70,16 @@ namespace kiwi_synth
              * actually pulse width modulation for the square wave.
              */
             void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float ampMod);
+            /*
+             * Process override to include phase modulation.
+             */
+            void Process(float* sample, PatchSettings* patchSettings, float mod, float pwMod, float ampMod, float phaseMod);
             /** Returns the ratio of phase to frequency to generate a unit of time passed since the last phase crossing.
              */
             float GetPhaseRatio();
             /** Sets the phase based on a given phase ratio.
              */
             void HardSync(float phaseRatio);
-            /** Adds a value 0.0-1.0 (equivalent to 0.0-TWO_PI) to the current phase. Useful for PM and "FM" synthesis.
-            */
-            void PhaseAdd(float phase);
-            /** Restores the original, unmodulated phase value.
-            */
-            void PhaseReset();
     };
 }
 
