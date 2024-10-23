@@ -31,7 +31,7 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Default modulation stopped working.
+ * LFO retrig might not be working with PM Bass 2 patch.
  * Layered/Split -- some way to edit voice 2? Probably swap voice1 and 2 settings, but preserving FX and mod. When doing this you can fix attk dcy release on Crystalline
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.

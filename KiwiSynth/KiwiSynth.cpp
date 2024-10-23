@@ -132,12 +132,12 @@ namespace kiwi_synth
         }
 
         float sustain = (float)!gpioSustain.Read();
-        patch.voice1Settings->setValue(GEN_SUSTAIN, sustain);
-        patch.voice2Settings->setValue(GEN_SUSTAIN, sustain);
+        patch.voice1Settings->forceSetValue(GEN_SUSTAIN, sustain);
+        patch.voice2Settings->forceSetValue(GEN_SUSTAIN, sustain);
         
         float expression = hw->adc.GetFloat(4);
-        patch.voice1Settings->setValue(GEN_EXPRESSION, expression);
-        patch.voice2Settings->setValue(GEN_EXPRESSION, expression);
+        patch.voice1Settings->forceSetValue(GEN_EXPRESSION, expression);
+        patch.voice2Settings->forceSetValue(GEN_EXPRESSION, expression);
     }
 
     void KiwiSynth::ProcessInputs()
@@ -182,16 +182,15 @@ namespace kiwi_synth
                 case PitchBend:
                     midiCounter = 0;
                     value = (float)midiEvent->AsPitchBend().value / 8192.0f;
-                    patch.voice1Settings->setValue(GEN_PITCH_BEND, value);
-                    patch.voice2Settings->setValue(GEN_PITCH_BEND, value);
+                    patch.voice1Settings->forceSetValue(GEN_PITCH_BEND, value);
+                    patch.voice2Settings->forceSetValue(GEN_PITCH_BEND, value);
                     break;
 
-                // Unimplemented message types
                 case ChannelPressure:
                     midiCounter = 0;
                     value = (float)midiEvent->AsChannelPressure().pressure / 127.0f;
-                    patch.voice1Settings->setValue(GEN_AFTERTOUCH, value);
-                    patch.voice2Settings->setValue(GEN_AFTERTOUCH, value);
+                    patch.voice1Settings->forceSetValue(GEN_AFTERTOUCH, value);
+                    patch.voice2Settings->forceSetValue(GEN_AFTERTOUCH, value);
                     break;
 
                 case ControlChange:
@@ -200,23 +199,23 @@ namespace kiwi_synth
                         case 1:  // Mod Wheel
                             midiCounter = 0;
                             value = (float)cc.value / 127.0f;
-                            patch.voice1Settings->setValue(GEN_MOD_WHEEL, value);
-                            patch.voice2Settings->setValue(GEN_MOD_WHEEL, value);
+                            patch.voice1Settings->forceSetValue(GEN_MOD_WHEEL, value);
+                            patch.voice2Settings->forceSetValue(GEN_MOD_WHEEL, value);
                             break;
 
                         case 11: // Expression
                             midiCounter = 0;
                             value = (float)cc.value / 127.0f;
-                            patch.voice1Settings->setValue(GEN_EXPRESSION, value);
-                            patch.voice2Settings->setValue(GEN_EXPRESSION, value);
+                            patch.voice1Settings->forceSetValue(GEN_EXPRESSION, value);
+                            patch.voice2Settings->forceSetValue(GEN_EXPRESSION, value);
                             break;
 
                         case 64: // Sustain Pedal
                             midiCounter = 0;
 
                             value = (float)((cc.value & 0b1000000) >> 6); // 0.0 if 0-63 or less, 1.0 if 64-127
-                            patch.voice1Settings->setValue(GEN_SUSTAIN, value); // Off
-                            patch.voice2Settings->setValue(GEN_SUSTAIN, value); // Off
+                            patch.voice1Settings->forceSetValue(GEN_SUSTAIN, value); // Off
+                            patch.voice2Settings->forceSetValue(GEN_SUSTAIN, value); // Off
                             break;
 
                     }

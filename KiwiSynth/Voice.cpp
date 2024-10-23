@@ -266,9 +266,11 @@ namespace kiwi_synth
             env1.SetQuickRelease(true);
             env2.SetQuickRelease(true);
         }
+        if (!env1.IsPlaying()) {
+            triggerVelocity = velocity;
+        }
         noteTriggerCount = NOTE_TRIGGER_SAMPLES;
         triggerNote = note;
-        triggerVelocity = velocity;
         noteTriggered = true;
         triggerResetEnv = reset;
     }

@@ -121,6 +121,17 @@ namespace kiwi_synth
             inline void setValue(PatchSetting setting, bool value) { if (!boolValuesProtected[setting]) boolValues[setting] = value; }
 
             /*
+             * Sets a float setting value regardless of loaded or live settings. This should only be used for live performance settings, like
+             * pitch bend and mod wheel.
+             */
+            inline void forceSetValue(PatchSetting setting, float value) { floatValues[setting] = value; }
+            /*
+             * Sets a bool setting value regardless of loaded or live settings. This should only be used for live performance settings, like
+             * pitch bend and mod wheel.
+             */
+            inline void forceSetValue(PatchSetting setting, bool value) { boolValues[setting] = value; }
+
+            /*
              * Gets an integer setting value. If a non-integer setting is attempted, 0 will be returned.
              */
             inline int8_t getIntValue(PatchSetting setting) { return intValues[setting]; }

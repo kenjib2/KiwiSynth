@@ -271,7 +271,7 @@ namespace kiwi_synth
         }
 
         systemModulations[1].source = SRC_MOD_WHEEL;
-        systemModulations[1].depth = 0.04166666667f;
+        systemModulations[1].depth = 0.08333333333f;
         if (modulations[0][MODS_MOD_MATRIX_1].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_2].source != SRC_MOD_WHEEL &&
                 modulations[0][MODS_MOD_MATRIX_3].source != SRC_MOD_WHEEL &&
@@ -345,8 +345,6 @@ namespace kiwi_synth
             systemModulations[5].destination = DST_NONE;
         }
 
-        systemModulations[5].source = SRC_EXPRESSION;
-        systemModulations[5].depth = 0.5f;
         if (modulations[0][MODS_MOD_MATRIX_1].destination == DST_SH_IN ||
                 modulations[0][MODS_MOD_MATRIX_2].destination == DST_SH_IN ||
                 modulations[0][MODS_MOD_MATRIX_3].destination == DST_SH_IN ||
