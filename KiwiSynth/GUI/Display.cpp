@@ -31,6 +31,8 @@ namespace kiwi_synth
         systemScreen.Init(&display, performance);
         settingsScreen1.Init(&display, patch);
         settingsScreen2.Init(&display, patch);
+        settingsScreen3.Init(&display, patch);
+        settingsScreen4.Init(&display, patch);
 
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -196,6 +198,14 @@ namespace kiwi_synth
                     updateNeeded = true;
                     break;
 
+                case MODE_SETTINGS_SCREEN_3:
+                    settingsScreen3.Click();
+                    updateNeeded = true;
+                    break;
+
+                case MODE_SETTINGS_SCREEN_4:
+                    break;
+
                 case MODE_FLOAT_1_SCREEN:
                     floatValue1Screen.Click();
                     updateNeeded = true;
@@ -337,6 +347,12 @@ namespace kiwi_synth
                 break;
             case MODE_SETTINGS_SCREEN_2:
                 settingsScreen2.Display();
+                break;
+            case MODE_SETTINGS_SCREEN_3:
+                settingsScreen3.Display();
+                break;
+            case MODE_SETTINGS_SCREEN_4:
+                settingsScreen4.Display();
                 break;
             case MODE_FLOAT_1_SCREEN:
                 floatValue1Screen.Display();

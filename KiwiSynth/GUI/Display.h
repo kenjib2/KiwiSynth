@@ -17,6 +17,8 @@
 #include "SystemScreen.h"
 #include "SettingsScreen1.h"
 #include "SettingsScreen2.h"
+#include "SettingsScreen3.h"
+#include "SettingsScreen4.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -69,13 +71,15 @@ namespace kiwi_synth
         MODE_PATCH_SCREEN,
         MODE_SETTINGS_SCREEN_1,
         MODE_SETTINGS_SCREEN_2,
+        MODE_SETTINGS_SCREEN_3,
+        MODE_SETTINGS_SCREEN_4,
         MODE_INT_SCREEN,
         MODE_FLOAT_1_SCREEN,
         MODE_FLOAT_2_SCREEN,
         MODE_FLOAT_3_SCREEN,
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
-    const int DISPLAY_MODE_OPTIONS = 9; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    const int DISPLAY_MODE_OPTIONS = 11; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
 
     /*
      * The display class is the main controller for the synth GUI. It handles input, manages which
@@ -117,6 +121,8 @@ namespace kiwi_synth
             SystemScreen systemScreen;
             SettingsScreen1 settingsScreen1;
             SettingsScreen2 settingsScreen2;
+            SettingsScreen3 settingsScreen3;
+            SettingsScreen4 settingsScreen4;
 
             bool HandleEncoder();
             bool HandleClick();

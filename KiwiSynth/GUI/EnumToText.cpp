@@ -418,6 +418,146 @@ namespace kiwi_synth
         }
     }
 
+    void EnumToText::GetEffect1(char* buffer, EffectsMode effectsMode) {
+        switch (effectsMode) {
+            case FX_DISTORTION_DELAY:
+                strcpy(buffer, "Distortion-----------");
+                break;
+            case FX_CHORUS_DELAY:
+                strcpy(buffer, "Chorus---------------");
+                break;
+            case FX_PHASER_DELAY:
+                strcpy(buffer, "Phaser---------------");
+                break;
+            case FX_FLANGER_DELAY:
+                strcpy(buffer, "Flanger--------------");
+                break;
+            case FX_DISTORTION_BITCRUSH:
+                strcpy(buffer, "Distortion-----------");
+                break;
+        }
+    }
+
+    void EnumToText::GetEffect2(char* buffer, EffectsMode effectsMode) {
+        switch (effectsMode) {
+            case FX_DISTORTION_DELAY:
+                strcpy(buffer, "Delay----------------");
+                break;
+            case FX_CHORUS_DELAY:
+                strcpy(buffer, "Delay----------------");
+                break;
+            case FX_PHASER_DELAY:
+                strcpy(buffer, "Delay----------------");
+                break;
+            case FX_FLANGER_DELAY:
+                strcpy(buffer, "Delay----------------");
+                break;
+            case FX_DISTORTION_BITCRUSH:
+                strcpy(buffer, "Bit Crusher----------");
+                break;
+        }
+    }
+
+    void EnumToText::GetEffectSetting(char* buffer, EffectsMode effectsMode, int settingNum) {
+        switch (effectsMode) {
+            case FX_DISTORTION_DELAY:
+                switch (settingNum) {
+                    case 1:
+                        strcpy(buffer, "Drive ");
+                        break;
+                    case 2:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 3:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 4:
+                        strcpy(buffer, "Time  ");
+                        break;
+                    case 5:
+                        strcpy(buffer, "Feedbk");
+                        break;
+                }
+                break;
+            case FX_CHORUS_DELAY:
+                switch (settingNum) {
+                    case 1:
+                        strcpy(buffer, "Rate  ");
+                        break;
+                    case 2:
+                        strcpy(buffer, "Depth ");
+                        break;
+                    case 3:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 4:
+                        strcpy(buffer, "Time  ");
+                        break;
+                    case 5:
+                        strcpy(buffer, "Feedbk");
+                        break;
+                }
+                break;
+            case FX_PHASER_DELAY:
+                switch (settingNum) {
+                    case 1:
+                        strcpy(buffer, "Rate  ");
+                        break;
+                    case 2:
+                        strcpy(buffer, "Depth ");
+                        break;
+                    case 3:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 4:
+                        strcpy(buffer, "Time  ");
+                        break;
+                    case 5:
+                        strcpy(buffer, "Feedbk");
+                        break;
+                }
+                break;
+            case FX_FLANGER_DELAY:
+                switch (settingNum) {
+                    case 1:
+                        strcpy(buffer, "Rate  ");
+                        break;
+                    case 2:
+                        strcpy(buffer, "Depth ");
+                        break;
+                    case 3:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 4:
+                        strcpy(buffer, "Time  ");
+                        break;
+                    case 5:
+                        strcpy(buffer, "Feedbk");
+                        break;
+                }
+                break;
+            case FX_DISTORTION_BITCRUSH:
+                switch (settingNum) {
+                    case 1:
+                        strcpy(buffer, "Gain  ");
+                        break;
+                    case 2:
+                        strcpy(buffer, "Level ");
+                        break;
+                    case 3:
+                        strcpy(buffer, "Crush ");
+                        break;
+                    case 4:
+                        strcpy(buffer, "DwnSmp");
+                        break;
+                    case 5:
+                        strcpy(buffer, "Decimt");
+                        break;
+                }
+                break;
+        }
+    }
+
     void EnumToText::GetReverbMode(char* buffer, ReverbMode reverbMode) {
         switch (reverbMode) {
             case REVERB_ROOM:
@@ -437,6 +577,29 @@ namespace kiwi_synth
                 break;
             case REVERB_BRIGHT:
                 strcpy(buffer, "Bright");
+                break;
+        }
+    }
+
+    void EnumToText::GetReverbModePadded(char* buffer, ReverbMode reverbMode) {
+        switch (reverbMode) {
+            case REVERB_ROOM:
+                strcpy(buffer, "Room-----------------");
+                break;
+            case REVERB_HALL:
+                strcpy(buffer, "Hall-----------------");
+                break;
+            case REVERB_CHAMBER:
+                strcpy(buffer, "Chamber--------------");
+                break;
+            case REVERB_CATHEDRAL:
+                strcpy(buffer, "Cathedral------------");
+                break;
+            case REVERB_BLOOM:
+                strcpy(buffer, "Bloom----------------");
+                break;
+            case REVERB_BRIGHT:
+                strcpy(buffer, "Bright---------------");
                 break;
         }
     }

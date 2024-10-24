@@ -43,7 +43,7 @@ namespace kiwi_synth
              */
             static void GetPatchType(char* buffer, PatchType patchType);
             /*
-             * Buffer should be at least 11 in size.
+             * Buffer should be at least 14 in size.
              */
             static void GetVoiceMode(char* buffer, VoiceMode voiceMode);
             /*
@@ -55,9 +55,25 @@ namespace kiwi_synth
              */
             static void GetEffectsMode(char* buffer, EffectsMode effectsMode);
             /*
+             * Buffer should be at least 22 in size.
+             */
+            static void GetEffect1(char* buffer, EffectsMode effectsMode);
+            /*
+             * Buffer should be at least 22 in size.
+             */
+            static void GetEffect2(char* buffer, EffectsMode effectsMode);
+            /*
+             * Buffer should be at least 7 in size.
+             */
+            static void GetEffectSetting(char* buffer, EffectsMode effectsMode, int settingNum);
+            /*
              * Buffer should be at least 13 in size.
              */
             static void GetReverbMode(char* buffer, ReverbMode reverbMode);
+            /*
+             * Buffer should be at least 22 in size.
+             */
+            static void GetReverbModePadded(char* buffer, ReverbMode reverbMode);
     };
 
 } // namespace kiwi_synth
