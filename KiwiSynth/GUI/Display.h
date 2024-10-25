@@ -77,7 +77,7 @@ namespace kiwi_synth
         MODE_SETTINGS_SCREEN_7,
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
-    const int DISPLAY_MODE_OPTIONS = 14; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    const int DISPLAY_MODE_OPTIONS = 10; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
 
     /*
      * The display class is the main controller for the synth GUI. It handles input, manages which

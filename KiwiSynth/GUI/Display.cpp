@@ -62,9 +62,7 @@ namespace kiwi_synth
         // Handle encoder rotations: Figure out if it changed. -1 is counterclockwise, 1 is clockwise, and 0 is no movement.
         int newValue = patch->voice1Settings->getIntValue(GEN_SELECT);
         int direction = 0;
-        if (newValue == prevSelectValue) {
-            direction = 0;
-        } else {
+        if (newValue != prevSelectValue) {
             if ((newValue > prevSelectValue || (newValue == -128 && prevSelectValue == 127))
                 && !(newValue == 127 && prevSelectValue == -128)) {
                 direction = 1;
@@ -72,9 +70,7 @@ namespace kiwi_synth
                 direction = -1;
             }
             prevSelectValue = newValue;
-        }
 
-        if (direction) {
             if (menuActive) {
                 // Handle menus within screens
                 switch (mode) {

@@ -33,7 +33,7 @@ using namespace kiwi_synth;
  * 
  * Paraphonic layered 3 "voice" mode.
  * Polyphonic PM synth pops. Where can we optimize more?
- * Can't play 3 osc with chorus anymore??? Optimize!
+ * Can't play 3 osc with chorus anymore??? Optimize! This started with the settings screen re-do
  * Resonance and SHToFCut and FX 1-3 knobs jump around alot -- needs a smoothing cap?
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
@@ -130,7 +130,7 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	uint16_t counter = 0;
+	//uint16_t counter = 0;
     while(1)
 	{
 		kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
@@ -143,12 +143,12 @@ int main(void)
 		#endif // __CPU_LOAD__
 
 		display.HandleInput();
-		if (counter == 255) {
+		/*if (counter == 255) {
 			if (display.mode) {
 				display.Update();
 			}
 		}
 		counter++;
-		counter &= 0b011111111;
+		counter &= 0b011111111;*/
 	}
 }
