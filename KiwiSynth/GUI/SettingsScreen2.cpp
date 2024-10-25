@@ -39,9 +39,9 @@ namespace kiwi_synth
             EnumToText::GetNoiseType(charVal1, (NoiseType)settings->getIntValue(OSC_NOISE_TYPE));
             intVal1 = settings->getFloatValue(OSC_NOISE_LEVEL) * 1000;
             if (voiceMode == VOICE_MODE_MULTI || voiceMode == VOICE_MODE_SPLIT) {
-                sprintf(buffer, "Noise-Tp %s-Lv %03d-V%d", charVal1, intVal1, voiceNumber + 1);
+                sprintf(buffer, "Noise-Tp %s-Lv %3d-V%d", charVal1, intVal1, voiceNumber + 1);
             } else {
-                sprintf(buffer, "Noise--Typ %s-Lvl %03d", charVal1, intVal1);
+                sprintf(buffer, "Noise--Typ %s-Lvl %3d", charVal1, intVal1);
             }
         }
         display->WriteString(buffer, Font_6x8, true);
@@ -53,7 +53,7 @@ namespace kiwi_synth
         } else {
             intVal1 = settings->getFloatValue(OSC_INPUT_THRESHOLD) * 1000;
             intVal2 = settings->getFloatValue(OSC_INPUT_LEVEL) * 1000;
-            sprintf(buffer, "ExtIn--Thr %03d-Lv %03d", intVal1, intVal2);
+            sprintf(buffer, "ExtIn--Thr %3d-Lv %3d", intVal1, intVal2);
         }
         display->WriteString(buffer, Font_6x8, true);
 
@@ -64,19 +64,19 @@ namespace kiwi_synth
         display->SetCursor(0, 24);
         EnumToText::GetFilterType(charVal1, (FilterType)settings->getIntValue(FLT_FILTER_TYPE));
         intVal1 = settings->getFloatValue(FLT_TRACKING) * 1000;
-        sprintf(buffer, "Typ %s KTrk %03d", charVal1, intVal1);
+        sprintf(buffer, "Typ %s KTrk %3d", charVal1, intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
         intVal1 = settings->getFloatValue(FLT_CUTOFF) * 1000;
         intVal2 = settings->getFloatValue(FLT_RESONANCE) * 1000;
-        sprintf(buffer, "FreqCut %03d  Reso %03d", intVal1, intVal2);
+        sprintf(buffer, "FreqCut %3d  Reso %3d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 40);
         intVal1 = settings->getFloatValue(FLT_ENV_1_DEPTH) * 1000;
         intVal2 = settings->getFloatValue(FLT_ENV_2_DEPTH) * 1000;
-        sprintf(buffer, "Env1 %03d     Env2 %03d", intVal1, intVal2);
+        sprintf(buffer, "Env1 %3d     Env2 %3d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
@@ -86,7 +86,7 @@ namespace kiwi_synth
         display->SetCursor(0, 56);
         intVal1 = settings->getFloatValue(SH_TO_FLT_CUTOFF) * 1000;
         intVal2 = settings->getFloatValue(SH_RATE) * 1000;
-        sprintf(buffer, "ToFrCt %03d   Rate %03d", intVal1, intVal2);
+        sprintf(buffer, "ToFrCt %3d   Rate %3d", intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();

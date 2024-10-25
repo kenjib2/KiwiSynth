@@ -39,7 +39,7 @@ namespace kiwi_synth
         EnumToText::GetWaveform(charVal1, (Waveform)settings->getIntValue(OSC_1_WAVEFORM));
         intVal1 = settings->getFloatValue(OSC_1_PULSE_WIDTH) * 1000;
         intVal2 = settings->getFloatValue(OSC_1_LEVEL) * 1000;
-        sprintf(buffer, "Wv %s PW %03d Lv %03d", charVal1, intVal1, intVal2);
+        sprintf(buffer, "Wv %s PW %3d Lv %3d", charVal1, intVal1, intVal2);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
@@ -55,14 +55,14 @@ namespace kiwi_synth
             EnumToText::GetWaveform(charVal1, (Waveform)settings->getIntValue(OSC_2_WAVEFORM));
             intVal1 = settings->getFloatValue(OSC_2_PULSE_WIDTH) * 1000;
             intVal2 = settings->getFloatValue(OSC_2_LEVEL) * 1000;
-            sprintf(buffer, "Wv %s PW %03d Lv %03d", charVal1, intVal1, intVal2);
+            sprintf(buffer, "Wv %s PW %3d Lv %3d", charVal1, intVal1, intVal2);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 32);
             intVal1 = settings->getIntValue(OSC_2_OCTAVE) - 2;
             intVal2 = settings->getIntValue(OSC_2_INTERVAL) - 11;
             intVal3 = settings->getFloatValue(OSC_2_FINE_TUNE) * 1000;
-            sprintf(buffer, "Oct% 2d Int% 3d Fine %03d", intVal1, intVal2, intVal3);
+            sprintf(buffer, "Oct%2d Int%3d Fine %3d", intVal1, intVal2, intVal3);
             display->WriteString(buffer, Font_6x8, true);
         }
 
@@ -79,14 +79,14 @@ namespace kiwi_synth
             EnumToText::GetWaveform(charVal1, (Waveform)settings->getIntValue(OSC_3_WAVEFORM));
             intVal1 = settings->getFloatValue(OSC_3_PULSE_WIDTH) * 1000;
             intVal2 = settings->getFloatValue(OSC_3_LEVEL) * 1000;
-            sprintf(buffer, "Wv %s PW %03d Lv %03d", charVal1, intVal1, intVal2);
+            sprintf(buffer, "Wv %s PW %3d Lv %3d", charVal1, intVal1, intVal2);
             display->WriteString(buffer, Font_6x8, true);
 
             display->SetCursor(0, 56);
             intVal1 = settings->getIntValue(OSC_3_OCTAVE) - 2;
             intVal2 = settings->getIntValue(OSC_3_INTERVAL) - 11;
             intVal3 = settings->getFloatValue(OSC_3_FINE_TUNE) * 1000;
-            sprintf(buffer, "Oct%02d Int%03d Fine %03d", intVal1, intVal2, intVal3);
+            sprintf(buffer, "Oct%2d Int%3d Fine %3d", intVal1, intVal2, intVal3);
             display->WriteString(buffer, Font_6x8, true);
         }
 

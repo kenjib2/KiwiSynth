@@ -1,5 +1,5 @@
-#ifndef __KIWI_SYNTH_SETTINGS_SCREEN_4_H__
-#define __KIWI_SYNTH_SETTINGS_SCREEN_4_H__
+#ifndef __KIWI_SYNTH_SETTINGS_SCREEN_5_H__
+#define __KIWI_SYNTH_SETTINGS_SCREEN_5_H__
 
 #include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
@@ -13,16 +13,16 @@ namespace kiwi_synth
 {
 
     /*
-     * Settings screen 4 displays all of the data for the LFOs while also listening for any changes to the
-     * values if in live mode. This allows you to see what is being changed.
+     * Settings screen 5 displays all of the data for the envelopes while also listening for any changes to
+     * the values if in live mode. This allows you to see what is being changed.
      * 
      * Clicking alternates between settings 1 and 2 when in split or layered mode.
      */
-    class SettingsScreen4
+    class SettingsScreen5
     {
         public:
-            SettingsScreen4(){}
-            virtual ~SettingsScreen4(){};
+            SettingsScreen5(){}
+            virtual ~SettingsScreen5(){};
             void Init(KiwiDisplay* display, Patch* patch);
 
             void Display();
@@ -38,4 +38,4 @@ namespace kiwi_synth
 } // namespace kiwi_synth
 
 
-#endif // __KIWI_SYNTH_SETTINGS_SCREEN_4_H__
+#endif // __KIWI_SYNTH_SETTINGS_SCREEN_5_H__

@@ -13,58 +13,85 @@ namespace kiwi_synth
     void SettingsScreen4::Display()
     {
         int intVal1, intVal2;
-        char charVal1[22], charVal2[12];
+        char charVal1[12];
+        bool boolVal1;
         PatchSettings* settings;
+        VoiceMode voiceMode;
 
-        // Effects settings always come from voice1Settings
-        settings = patch->voice1Settings;
+        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
+        if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
+            settings = patch->voice1Settings;
+        } else {
+            settings = patch->voice2Settings;
+        }
 
         display->Fill(false);
 
         display->SetCursor(0, 0);
-        EnumToText::GetEffect1(charVal1, patch->GetEffectsMode());
-        sprintf(buffer, "%s", charVal1);
+        if (voiceMode == VOICE_MODE_MULTI || voiceMode == VOICE_MODE_SPLIT) {
+            sprintf(buffer, "LFO 1------------- V%d", voiceNumber + 1);
+        } else {
+            sprintf(buffer, "LFO 1----------------");
+        }
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 8);
-        EnumToText::GetEffectSetting(charVal1, patch->GetEffectsMode(), 1);
-        EnumToText::GetEffectSetting(charVal2, patch->GetEffectsMode(), 2);
-        intVal1 = settings->getFloatValue(FX_1) * 1000;
-        intVal2 = settings->getFloatValue(FX_2) * 1000;
-        sprintf(buffer, "%s %03d %s %03d", charVal1, intVal1, charVal2, intVal2);
+        EnumToText::GetLfoWaveform(charVal1, (LfoWaveform)(settings->getIntValue(LFO_1_WAVEFORM)));
+        intVal1 = settings->getFloatValue(LFO_1_PULSE_WIDTH) * 1000;
+        sprintf(buffer, "Wave %s   PWdth %3d", charVal1, intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 16);
-        EnumToText::GetEffect2(charVal1, patch->GetEffectsMode());
-        sprintf(buffer, "%s", charVal1);
+        boolVal1 = settings->getBoolValue(LFO_1_TRIGGER_RESET_ON);
+        intVal1 = settings->getFloatValue(LFO_1_RATE) * 1000;
+        intVal2 = settings->getFloatValue(LFO_1_TRIGGER_PHASE) * 1000;
+        if (boolVal1) {
+            sprintf(buffer, "Rate %3d  RstPhs %3d", intVal1, intVal2);
+        } else {
+            sprintf(buffer, "Rate %3d  RstPhs Off", intVal1);
+        }
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 24);
-        EnumToText::GetEffectSetting(charVal1, patch->GetEffectsMode(), 3);
-        EnumToText::GetEffectSetting(charVal2, patch->GetEffectsMode(), 4);
-        intVal1 = settings->getFloatValue(FX_3) * 1000;
-        intVal2 = settings->getFloatValue(FX_4) * 1000;
-        sprintf(buffer, "%s %03d %s %03d", charVal1, intVal1, charVal2, intVal2);
+        intVal1 = settings->getFloatValue(LFO_1_TO_MASTER_TUNE) * 1000;
+        sprintf(buffer, "ToMasterTune %3d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 32);
-        EnumToText::GetEffectSetting(charVal1, patch->GetEffectsMode(), 5);
-        intVal1 = settings->getFloatValue(FX_5) * 1000;
-        sprintf(buffer, "%s %03d", charVal1, intVal1);
+        sprintf(buffer, "LFO 2----------------");
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 40);
+        EnumToText::GetLfoWaveform(charVal1, (LfoWaveform)(settings->getIntValue(LFO_2_WAVEFORM)));
+        intVal1 = settings->getFloatValue(LFO_2_PULSE_WIDTH) * 1000;
+        sprintf(buffer, "Wave %s   PWdth %3d", charVal1, intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 48);
-        EnumToText::GetReverbModePadded(charVal1, patch->GetReverbMode());
-        sprintf(buffer, "%s", charVal1);
+        boolVal1 = settings->getBoolValue(LFO_2_TRIGGER_RESET_ON);
+        intVal1 = settings->getFloatValue(LFO_2_RATE) * 1000;
+        intVal2 = settings->getFloatValue(LFO_2_TRIGGER_PHASE) * 1000;
+        if (boolVal1) {
+            sprintf(buffer, "Rate %3d  RstPhs %3d", intVal1, intVal2);
+        } else {
+            sprintf(buffer, "Rate %3d  RstPhs Off", intVal1);
+        }
         display->WriteString(buffer, Font_6x8, true);
 
         display->SetCursor(0, 56);
-        EnumToText::GetReverbModePadded(charVal1, patch->GetReverbMode());
-        intVal1 = settings->getFloatValue(FX_REVERB) * 1000;
-        sprintf(buffer, "Amount %03d", intVal1);
+        intVal1 = settings->getFloatValue(LFO_2_TO_FLT_CUTOFF) * 1000;
+        sprintf(buffer, "ToFilterCutoff %3d", intVal1);
         display->WriteString(buffer, Font_6x8, true);
 
         display->Update();
+    }
+
+    void SettingsScreen4::Click() {
+        if (patch->GetVoiceMode() == VOICE_MODE_MULTI || patch->GetVoiceMode() == VOICE_MODE_SPLIT) {
+            voiceNumber = voiceNumber ^ 1;
+        } else {
+            voiceNumber = 0;
+        }
     }
 
 } // namespace kiwi_synth

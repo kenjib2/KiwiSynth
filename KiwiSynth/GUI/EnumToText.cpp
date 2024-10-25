@@ -3,32 +3,6 @@
 namespace kiwi_synth
 {
 
-    void EnumToText::GetWaveformTwoChar(char* buffer, Waveform waveform) {
-        switch (waveform) {
-            case WAVEFORM_SQUARE:
-                strcpy(buffer, "Sq");
-                break;
-            case WAVEFORM_SAWTOOTH:
-                strcpy(buffer, "Sa");
-                break;
-            case WAVEFORM_TRIANGLE:
-                strcpy(buffer, "Tr");
-                break;
-            case WAVEFORM_VARISHAPE:
-                strcpy(buffer, "Sh");
-                break;
-            case WAVEFORM_VARISAW:
-                strcpy(buffer, "VS");
-                break;
-            case WAVEFORM_SINE:
-                strcpy(buffer, "Si");
-                break;
-            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
-                strcpy(buffer, "WS");
-                break;
-        }
-    }
-
     void EnumToText::GetWaveform(char* buffer, Waveform waveform) {
         switch (waveform) {
             case WAVEFORM_SQUARE:
@@ -69,28 +43,28 @@ namespace kiwi_synth
     void EnumToText::GetLfoWaveform(char* buffer, LfoWaveform lfoWaveform) {
         switch (lfoWaveform) {
             case LFO_WAVEFORM_TRIANGLE:
-                strcpy(buffer, "Tr");
+                strcpy(buffer, "Tria");
                 break;
             case LFO_WAVEFORM_SQUARE:
-                strcpy(buffer, "Sq");
+                strcpy(buffer, "Squa");
                 break;
             case LFO_WAVEFORM_SAWTOOTH:
-                strcpy(buffer, "Sa");
+                strcpy(buffer, "Sawt");
                 break;
             case LFO_WAVEFORM_RAMP:
-                strcpy(buffer, "Ra");
+                strcpy(buffer, "Ramp");
                 break;
             case LFO_WAVEFORM_VARISHAPE:
-                strcpy(buffer, "Sh");
+                strcpy(buffer, "VaSh");
                 break;
             case LFO_WAVEFORM_VARISAW:
-                strcpy(buffer, "VS");
+                strcpy(buffer, "VaSw");
                 break;
             case LFO_WAVEFORM_SINE:
-                strcpy(buffer, "Si");
+                strcpy(buffer, "Sine");
                 break;
             case LFO_WAVEFORM_WAVEFOLDED_SAWTOOTH:
-                strcpy(buffer, "WS");
+                strcpy(buffer, "WfSw");
                 break;
         }
     }
@@ -584,22 +558,22 @@ namespace kiwi_synth
     void EnumToText::GetReverbModePadded(char* buffer, ReverbMode reverbMode) {
         switch (reverbMode) {
             case REVERB_ROOM:
-                strcpy(buffer, "Room-----------------");
+                strcpy(buffer, "Room Reverb----------");
                 break;
             case REVERB_HALL:
-                strcpy(buffer, "Hall-----------------");
+                strcpy(buffer, "Hall Reverb----------");
                 break;
             case REVERB_CHAMBER:
-                strcpy(buffer, "Chamber--------------");
+                strcpy(buffer, "Chamber Reverb-------");
                 break;
             case REVERB_CATHEDRAL:
-                strcpy(buffer, "Cathedral------------");
+                strcpy(buffer, "Cathedral Reverb-----");
                 break;
             case REVERB_BLOOM:
-                strcpy(buffer, "Bloom----------------");
+                strcpy(buffer, "Bloom Reverb---------");
                 break;
             case REVERB_BRIGHT:
-                strcpy(buffer, "Bright---------------");
+                strcpy(buffer, "Bright Reverb--------");
                 break;
         }
     }

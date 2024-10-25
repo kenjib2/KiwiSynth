@@ -22,10 +22,6 @@ namespace kiwi_synth
 
         playScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
-        intValueScreen.Init(&display, patch);
-        floatValue1Screen.Init(&display, patch);
-        floatValue2Screen.Init(&display, patch);
-        floatValue3Screen.Init(&display, patch);
         patchScreen.Init(&display, patch);
         selectScreen.Init(&display, kiwiSynth);
         systemScreen.Init(&display, performance);
@@ -33,6 +29,9 @@ namespace kiwi_synth
         settingsScreen2.Init(&display, patch);
         settingsScreen3.Init(&display, patch);
         settingsScreen4.Init(&display, patch);
+        settingsScreen5.Init(&display, patch);
+        settingsScreen6.Init(&display, patch);
+        settingsScreen7.Init(&display, patch);
 
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -79,20 +78,29 @@ namespace kiwi_synth
             if (menuActive) {
                 // Handle menus within screens
                 switch (mode) {
-                    case MODE_INT_SCREEN:
-                        if (direction == 1) {
-                            intValueScreen.Increment();
-                        } else if (direction == -1) {
-                            intValueScreen.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
                     case MODE_PATCH_SCREEN:
                         if (direction == 1) {
                             patchScreen.Increment();
                         } else if (direction == -1) {
                             patchScreen.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
+
+                    case MODE_SETTINGS_SCREEN_6:
+                        if (direction == 1) {
+                            settingsScreen6.Increment();
+                        } else if (direction == -1) {
+                            settingsScreen6.Decrement();
+                        }
+                        updateNeeded = true;
+                        break;
+
+                    case MODE_SETTINGS_SCREEN_7:
+                        if (direction == 1) {
+                            settingsScreen7.Increment();
+                        } else if (direction == -1) {
+                            settingsScreen7.Decrement();
                         }
                         updateNeeded = true;
                         break;
@@ -150,7 +158,8 @@ namespace kiwi_synth
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
             SystemScreenResponse systemResponse;
-            IntScreenResponse intResponse;
+            SettingsScreen6Response settings6Response;
+            SettingsScreen7Response settings7Response;
 
             switch (mode) {
                 default:
@@ -175,19 +184,6 @@ namespace kiwi_synth
                     updateNeeded = true;
                     break;
                 
-                case MODE_INT_SCREEN:
-                    intResponse = intValueScreen.Click();
-                    switch (intResponse) {
-                        case INT_SCREEN_RESPONSE_EDIT:
-                            menuActive = true;
-                            break;
-                        case INT_SCREEN_RESPONSE_NOEDIT:
-                            menuActive = false;
-                            break;
-                    }
-                    updateNeeded = true;
-                    break;
-
                 case MODE_SETTINGS_SCREEN_1:
                     settingsScreen1.Click();
                     updateNeeded = true;
@@ -204,20 +200,40 @@ namespace kiwi_synth
                     break;
 
                 case MODE_SETTINGS_SCREEN_4:
-                    break;
-
-                case MODE_FLOAT_1_SCREEN:
-                    floatValue1Screen.Click();
+                    settingsScreen4.Click();
                     updateNeeded = true;
                     break;
 
-                case MODE_FLOAT_2_SCREEN:
-                    floatValue2Screen.Click();
+                case MODE_SETTINGS_SCREEN_5:
+                    settingsScreen5.Click();
                     updateNeeded = true;
                     break;
 
-                case MODE_FLOAT_3_SCREEN:
-                    floatValue3Screen.Click();
+                case MODE_SETTINGS_SCREEN_6:
+                    settings6Response = settingsScreen6.Click();
+                    switch (settings6Response) {
+                        case SETTINGS_SCREEN_6_RESPONSE_EDIT:
+                            menuActive = true;
+                            break;
+                        default:
+                        case SETTINGS_SCREEN_6_RESPONSE_NOEDIT:
+                            menuActive = false;
+                            break;
+                    }
+                    updateNeeded = true;
+                    break;
+
+                case MODE_SETTINGS_SCREEN_7:
+                    settings7Response = settingsScreen7.Click();
+                    switch (settings7Response) {
+                        case SETTINGS_SCREEN_7_RESPONSE_EDIT:
+                            menuActive = true;
+                            break;
+                        default:
+                        case SETTINGS_SCREEN_7_RESPONSE_NOEDIT:
+                            menuActive = false;
+                            break;
+                    }
                     updateNeeded = true;
                     break;
 
@@ -339,9 +355,6 @@ namespace kiwi_synth
             default:
                 playScreen.Display();
                 break;
-            case MODE_INT_SCREEN:
-                intValueScreen.Display();
-                break;
             case MODE_SETTINGS_SCREEN_1:
                 settingsScreen1.Display();
                 break;
@@ -354,14 +367,14 @@ namespace kiwi_synth
             case MODE_SETTINGS_SCREEN_4:
                 settingsScreen4.Display();
                 break;
-            case MODE_FLOAT_1_SCREEN:
-                floatValue1Screen.Display();
+            case MODE_SETTINGS_SCREEN_5:
+                settingsScreen5.Display();
                 break;
-            case MODE_FLOAT_2_SCREEN:
-                floatValue2Screen.Display();
+            case MODE_SETTINGS_SCREEN_6:
+                settingsScreen6.Display();
                 break;
-            case MODE_FLOAT_3_SCREEN:
-                floatValue3Screen.Display();
+            case MODE_SETTINGS_SCREEN_7:
+                settingsScreen7.Display();
                 break;
             case MODE_PATCH_SCREEN:
                 patchScreen.Display();

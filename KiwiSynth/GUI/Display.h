@@ -8,10 +8,6 @@
 #include "../../KUtils.h"
 #include "PlayScreen.h"
 #include "BootloaderScreen.h"
-#include "IntValueScreen.h"
-#include "FloatValue1Screen.h"
-#include "FloatValue2Screen.h"
-#include "FloatValue3Screen.h"
 #include "PatchScreen.h"
 #include "SelectScreen.h"
 #include "SystemScreen.h"
@@ -19,6 +15,9 @@
 #include "SettingsScreen2.h"
 #include "SettingsScreen3.h"
 #include "SettingsScreen4.h"
+#include "SettingsScreen5.h"
+#include "SettingsScreen6.h"
+#include "SettingsScreen7.h"
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -73,13 +72,12 @@ namespace kiwi_synth
         MODE_SETTINGS_SCREEN_2,
         MODE_SETTINGS_SCREEN_3,
         MODE_SETTINGS_SCREEN_4,
-        MODE_INT_SCREEN,
-        MODE_FLOAT_1_SCREEN,
-        MODE_FLOAT_2_SCREEN,
-        MODE_FLOAT_3_SCREEN,
+        MODE_SETTINGS_SCREEN_5,
+        MODE_SETTINGS_SCREEN_6,
+        MODE_SETTINGS_SCREEN_7,
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
-    const int DISPLAY_MODE_OPTIONS = 11; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    const int DISPLAY_MODE_OPTIONS = 14; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
 
     /*
      * The display class is the main controller for the synth GUI. It handles input, manages which
@@ -112,10 +110,6 @@ namespace kiwi_synth
 
             PlayScreen playScreen;
             BootloaderScreen bootloaderScreen;
-            IntValueScreen intValueScreen;
-            FloatValue1Screen floatValue1Screen;
-            FloatValue2Screen floatValue2Screen;
-            FloatValue3Screen floatValue3Screen;
             PatchScreen patchScreen;
             SelectScreen selectScreen;
             SystemScreen systemScreen;
@@ -123,6 +117,9 @@ namespace kiwi_synth
             SettingsScreen2 settingsScreen2;
             SettingsScreen3 settingsScreen3;
             SettingsScreen4 settingsScreen4;
+            SettingsScreen5 settingsScreen5;
+            SettingsScreen6 settingsScreen6;
+            SettingsScreen7 settingsScreen7;
 
             bool HandleEncoder();
             bool HandleClick();

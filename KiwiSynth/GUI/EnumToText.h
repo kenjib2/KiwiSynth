@@ -11,10 +11,6 @@ namespace kiwi_synth
     {
         public:
             /*
-             * Buffer should be at least 3 in size.
-             */
-            static void GetWaveformTwoChar(char* buffer, Waveform waveform);
-            /*
              * Buffer should be at least 5 in size.
              */
             static void GetWaveform(char* buffer, Waveform waveform);
@@ -23,7 +19,7 @@ namespace kiwi_synth
              */
             static void GetNoiseType(char* buffer, NoiseType noiseType);
             /*
-             * Buffer should be at least 3 in size.
+             * Buffer should be at least 5 in size.
              */
             static void GetLfoWaveform(char* buffer, LfoWaveform lfoWaveform);
             /*
