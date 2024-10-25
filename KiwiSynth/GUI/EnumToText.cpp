@@ -3,6 +3,32 @@
 namespace kiwi_synth
 {
 
+    void EnumToText::GetWaveformTwoChar(char* buffer, Waveform waveform) {
+        switch (waveform) {
+            case WAVEFORM_SQUARE:
+                strcpy(buffer, "Sq");
+                break;
+            case WAVEFORM_SAWTOOTH:
+                strcpy(buffer, "Sa");
+                break;
+            case WAVEFORM_TRIANGLE:
+                strcpy(buffer, "Tr");
+                break;
+            case WAVEFORM_VARISHAPE:
+                strcpy(buffer, "Sh");
+                break;
+            case WAVEFORM_VARISAW:
+                strcpy(buffer, "VS");
+                break;
+            case WAVEFORM_SINE:
+                strcpy(buffer, "Si");
+                break;
+            case WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                strcpy(buffer, "WS");
+                break;
+        }
+    }
+
     void EnumToText::GetWaveform(char* buffer, Waveform waveform) {
         switch (waveform) {
             case WAVEFORM_SQUARE:
@@ -36,6 +62,35 @@ namespace kiwi_synth
                 break;
             case NOISE_TYPE_DUST:
                 strcpy(buffer, "Ds");
+                break;
+        }
+    }
+
+    void EnumToText::GetLfoWaveformTwoChar(char* buffer, LfoWaveform lfoWaveform) {
+        switch (lfoWaveform) {
+            case LFO_WAVEFORM_TRIANGLE:
+                strcpy(buffer, "Tr");
+                break;
+            case LFO_WAVEFORM_SQUARE:
+                strcpy(buffer, "Sq");
+                break;
+            case LFO_WAVEFORM_SAWTOOTH:
+                strcpy(buffer, "Sa");
+                break;
+            case LFO_WAVEFORM_RAMP:
+                strcpy(buffer, "Ra");
+                break;
+            case LFO_WAVEFORM_VARISHAPE:
+                strcpy(buffer, "Sh");
+                break;
+            case LFO_WAVEFORM_VARISAW:
+                strcpy(buffer, "VS");
+                break;
+            case LFO_WAVEFORM_SINE:
+                strcpy(buffer, "Si");
+                break;
+            case LFO_WAVEFORM_WAVEFOLDED_SAWTOOTH:
+                strcpy(buffer, "WS");
                 break;
         }
     }

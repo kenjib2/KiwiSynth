@@ -50,7 +50,7 @@ namespace kiwi_synth
             SystemScreenResponse Click();
 
         private:
-            char buffer[256];
+            char buffer[32];
             KiwiDisplay* display;
             Performance* performance;
     };

@@ -12,7 +12,7 @@ namespace kiwi_synth
     }
 
     void SelectScreen::Display() {
-        char value[32];
+        char value[22];
 
         display->Fill(false);
         switch (currentPage) {

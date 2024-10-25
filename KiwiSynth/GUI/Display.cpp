@@ -25,13 +25,14 @@ namespace kiwi_synth
         patchScreen.Init(&display, patch);
         selectScreen.Init(&display, kiwiSynth);
         systemScreen.Init(&display, performance);
-        settingsScreen1.Init(&display, patch);
+        intValueScreen.Init(&display, patch);
+        /*settingsScreen1.Init(&display, patch);
         settingsScreen2.Init(&display, patch);
         settingsScreen3.Init(&display, patch);
         settingsScreen4.Init(&display, patch);
         settingsScreen5.Init(&display, patch);
         settingsScreen6.Init(&display, patch);
-        settingsScreen7.Init(&display, patch);
+        settingsScreen7.Init(&display, patch);*/
 
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -51,7 +52,7 @@ namespace kiwi_synth
         updateNeeded = HandleEncoder();
         updateNeeded = updateNeeded || HandleClick();
 
-        if (updateNeeded) {
+        if (__builtin_expect(updateNeeded, 0)) {
             Update();
         }
     }
@@ -62,7 +63,7 @@ namespace kiwi_synth
         // Handle encoder rotations: Figure out if it changed. -1 is counterclockwise, 1 is clockwise, and 0 is no movement.
         int newValue = patch->voice1Settings->getIntValue(GEN_SELECT);
         int direction = 0;
-        if (newValue != prevSelectValue) {
+        if (__builtin_expect(newValue != prevSelectValue, 0)) {
             if ((newValue > prevSelectValue || (newValue == -128 && prevSelectValue == 127))
                 && !(newValue == 127 && prevSelectValue == -128)) {
                 direction = 1;
@@ -71,58 +72,7 @@ namespace kiwi_synth
             }
             prevSelectValue = newValue;
 
-            if (menuActive) {
-                // Handle menus within screens
-                switch (mode) {
-                    case MODE_PATCH_SCREEN:
-                        if (direction == 1) {
-                            patchScreen.Increment();
-                        } else if (direction == -1) {
-                            patchScreen.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
-                    case MODE_SETTINGS_SCREEN_6:
-                        if (direction == 1) {
-                            settingsScreen6.Increment();
-                        } else if (direction == -1) {
-                            settingsScreen6.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
-                    case MODE_SETTINGS_SCREEN_7:
-                        if (direction == 1) {
-                            settingsScreen7.Increment();
-                        } else if (direction == -1) {
-                            settingsScreen7.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
-                    case MODE_SELECT_SCREEN:
-                        if (direction == 1) {
-                            selectScreen.Increment();
-                        } else if (direction == -1) {
-                            selectScreen.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
-                    case MODE_SYSTEM_SCREEN:
-                        if (direction == 1) {
-                            systemScreen.Increment();
-                        } else if (direction == -1) {
-                            systemScreen.Decrement();
-                        }
-                        updateNeeded = true;
-                        break;
-
-                    default:
-                        break;
-                }
-            } else {
+            if (__builtin_expect(!menuActive, 1)) {
                 // Cycle through display screens
                 if (direction == 1) {
                     if (mode + 1 < DISPLAY_MODE_OPTIONS) {
@@ -138,6 +88,52 @@ namespace kiwi_synth
                     }
                 }
                 updateNeeded = true;
+            } else {
+                // Handle menus within screens
+                if (__builtin_expect(mode == MODE_PLAY, 1)) {
+                } else if (mode == MODE_PATCH_SCREEN) {
+                    if (direction == 1) {
+                        patchScreen.Increment();
+                    } else if (direction == -1) {
+                        patchScreen.Decrement();
+                    }
+                    updateNeeded = true;
+                } else if (mode == MODE_INT_VALUE_SCREEN) {
+                    if (direction == 1) {
+                        intValueScreen.Increment();
+                    } else if (direction == -1) {
+                        intValueScreen.Decrement();
+                    }
+                    updateNeeded = true;
+                /*} else if (mode == MODE_SETTINGS_SCREEN_6) {
+                    if (direction == 1) {
+                        settingsScreen6.Increment();
+                    } else if (direction == -1) {
+                        settingsScreen6.Decrement();
+                    }
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_7) {
+                    if (direction == 1) {
+                        settingsScreen7.Increment();
+                    } else if (direction == -1) {
+                        settingsScreen7.Decrement();
+                    }
+                    updateNeeded = true;*/
+                } else if (mode == MODE_SELECT_SCREEN) {
+                    if (direction == 1) {
+                        selectScreen.Increment();
+                    } else if (direction == -1) {
+                        selectScreen.Decrement();
+                    }
+                    updateNeeded = true;
+                } else if (mode == MODE_SYSTEM_SCREEN) {
+                    if (direction == 1) {
+                        systemScreen.Increment();
+                    } else if (direction == -1) {
+                        systemScreen.Decrement();
+                    }
+                    updateNeeded = true;
+                }
             }
         }
 
@@ -150,21 +146,87 @@ namespace kiwi_synth
         // Handle encoder button clicks
         bool prevGuiButton = guiButton;
         guiButton = patch->voice1Settings->getBoolValue(GEN_SELECT_BUTTON);
-        if (prevGuiButton && !guiButton) {
+        if (__builtin_expect(prevGuiButton && !guiButton, 0)) {
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
+            IntScreenResponse intResponse;
             SystemScreenResponse systemResponse;
             SettingsScreen6Response settings6Response;
-            SettingsScreen7Response settings7Response;
+            //SettingsScreen7Response settings7Response;
 
-            switch (mode) {
-                default:
-                    break;
-                case MODE_PLAY:
-                    // From play mode we want to load patches, starting positioned at the current patch for convenience.
+            if (__builtin_expect(mode == MODE_PLAY, 1)) {
+                // From play mode we want to load patches, starting positioned at the current patch for convenience.
+                menuActive = true;
+                selectScreen.saving = false;
+                selectScreen.fromPlay = true;
+                if (patch->GetLiveMode()) {
+                    selectScreen.bankNumber = 0;
+                    selectScreen.patchNumber = 0;
+                    selectScreen.selection = 3;
+                    selectScreen.currentPage = SELECT_PAGE_BANKS;
+                } else {
+                    selectScreen.bankNumber = patch->GetBankNumber();
+                    selectScreen.patchNumber = patch->GetPatchNumber() & ~7;
+                    selectScreen.selection = patch->GetPatchNumber() % 8 + 3;
+                    selectScreen.currentPage = SELECT_PAGE_BANK_PATCHES;
+                }
+                mode = MODE_SELECT_SCREEN;
+                updateNeeded = true;
+            } else if (mode == MODE_INT_VALUE_SCREEN) {
+                intResponse = intValueScreen.Click();
+                if (intResponse == INT_SCREEN_RESPONSE_EDIT) {
+                    menuActive = true;
+                } else {
+                    menuActive = false;
+                } // mode == INT_SCREEN_RESPONSE_NOEDIT
+                updateNeeded = true;
+            /*} else if (mode == MODE_SETTINGS_SCREEN_1) {
+                settingsScreen1.Click();
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_2) {
+                settingsScreen2.Click();
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_3) {
+                settingsScreen3.Click();
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_4) {
+                settingsScreen4.Click();
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_5) {
+                settingsScreen5.Click();
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_6) {
+                settings6Response = settingsScreen6.Click();
+                if (settings6Response == SETTINGS_SCREEN_6_RESPONSE_EDIT) {
+                    menuActive = true;
+                } else {
+                    menuActive = false;
+                }
+                updateNeeded = true;
+            } else if (mode == MODE_SETTINGS_SCREEN_7) {
+                settings7Response = settingsScreen7.Click();
+                if (settings7Response == SETTINGS_SCREEN_7_RESPONSE_EDIT) {
+                    menuActive = true;
+                } else {
+                    menuActive = false;
+                }
+                updateNeeded = true;*/
+            } else if (mode == MODE_PATCH_SCREEN) {
+                // Send the click to the patch screen and then handle the response.
+                patchResponse = patchScreen.Click();
+                if (patchResponse == PATCH_SCREEN_RESPONSE_EDIT) {
+                    menuActive = true;
+                } else if (patchResponse == PATCH_SCREEN_RESPONSE_LOAD) {
                     menuActive = true;
                     selectScreen.saving = false;
-                    selectScreen.fromPlay = true;
+                    selectScreen.fromPlay = false;
+                    selectScreen.currentPage = SELECT_PAGE_BANKS;
+                    selectScreen.selection = 3;
+                    mode = MODE_SELECT_SCREEN;
+                } else if (patchResponse == PATCH_SCREEN_RESPONSE_SAVE) {
+                    menuActive = true;
+                    selectScreen.saving = true;
+                    selectScreen.fromPlay = false;
                     if (patch->GetLiveMode()) {
                         selectScreen.bankNumber = 0;
                         selectScreen.patchNumber = 0;
@@ -177,152 +239,45 @@ namespace kiwi_synth
                         selectScreen.currentPage = SELECT_PAGE_BANK_PATCHES;
                     }
                     mode = MODE_SELECT_SCREEN;
-                    updateNeeded = true;
-                    break;
-                
-                case MODE_SETTINGS_SCREEN_1:
-                    settingsScreen1.Click();
-                    updateNeeded = true;
-                    break;
+                } else if (patchResponse == PATCH_SCREEN_RESPONSE_PLAY) {
+                    menuActive = false;
+                    mode = MODE_PLAY;
+                } else { // patchResponse == PATCH_SCREEN_RESPONSE_NOEDIT
+                    menuActive = false;
+                }
+                updateNeeded = true;
+            } else if (mode == MODE_SELECT_SCREEN) {
+                // Send the click to the patch select screen and then handle the response.
+                selectResponse = selectScreen.Click();
+                if (selectResponse == SELECT_SCREEN_RESPONSE_PLAY) {
+                    prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
+                    menuActive = false;
+                    mode = MODE_PLAY;
+                } else if (selectResponse == SELECT_SCREEN_RESPONSE_CANCEL) {
+                    menuActive = false;
+                    mode = MODE_PATCH_SCREEN;
+                }
+                updateNeeded = true;
+            } else if (mode == MODE_SYSTEM_SCREEN) {
+                systemResponse = systemScreen.Click();
 
-                case MODE_SETTINGS_SCREEN_2:
-                    settingsScreen2.Click();
+                if (systemResponse == SYSTEM_SCREEN_RESPONSE_EDIT) {
+                    menuActive = true;
                     updateNeeded = true;
-                    break;
-
-                case MODE_SETTINGS_SCREEN_3:
-                    settingsScreen3.Click();
+                } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_NOEDIT) {
+                    menuActive = false;
                     updateNeeded = true;
-                    break;
-
-                case MODE_SETTINGS_SCREEN_4:
-                    settingsScreen4.Click();
+                } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_PANIC) {
+                    menuActive = false;
+                    kiwiSynth->Panic();
+                    mode = MODE_PLAY;
                     updateNeeded = true;
-                    break;
-
-                case MODE_SETTINGS_SCREEN_5:
-                    settingsScreen5.Click();
-                    updateNeeded = true;
-                    break;
-
-                case MODE_SETTINGS_SCREEN_6:
-                    settings6Response = settingsScreen6.Click();
-                    switch (settings6Response) {
-                        case SETTINGS_SCREEN_6_RESPONSE_EDIT:
-                            menuActive = true;
-                            break;
-                        default:
-                        case SETTINGS_SCREEN_6_RESPONSE_NOEDIT:
-                            menuActive = false;
-                            break;
-                    }
-                    updateNeeded = true;
-                    break;
-
-                case MODE_SETTINGS_SCREEN_7:
-                    settings7Response = settingsScreen7.Click();
-                    switch (settings7Response) {
-                        case SETTINGS_SCREEN_7_RESPONSE_EDIT:
-                            menuActive = true;
-                            break;
-                        default:
-                        case SETTINGS_SCREEN_7_RESPONSE_NOEDIT:
-                            menuActive = false;
-                            break;
-                    }
-                    updateNeeded = true;
-                    break;
-
-                case MODE_PATCH_SCREEN:
-                    // Send the click to the patch screen and then handle the response.
-                    patchResponse = patchScreen.Click();
-                    switch (patchResponse) {
-                        case PATCH_SCREEN_RESPONSE_EDIT:
-                            menuActive = true;
-                            break;
-                        default:
-                        case PATCH_SCREEN_RESPONSE_NOEDIT:
-                            menuActive = false;
-                            break;
-                        case PATCH_SCREEN_RESPONSE_LOAD:
-                            menuActive = true;
-                            selectScreen.saving = false;
-                            selectScreen.fromPlay = false;
-                            selectScreen.currentPage = SELECT_PAGE_BANKS;
-                            selectScreen.selection = 3;
-                            mode = MODE_SELECT_SCREEN;
-                            break;
-                        case PATCH_SCREEN_RESPONSE_SAVE:
-                            menuActive = true;
-                            selectScreen.saving = true;
-                            selectScreen.fromPlay = false;
-                            if (patch->GetLiveMode()) {
-                                selectScreen.bankNumber = 0;
-                                selectScreen.patchNumber = 0;
-                                selectScreen.selection = 3;
-                                selectScreen.currentPage = SELECT_PAGE_BANKS;
-                            } else {
-                                selectScreen.bankNumber = patch->GetBankNumber();
-                                selectScreen.patchNumber = patch->GetPatchNumber() & ~7;
-                                selectScreen.selection = patch->GetPatchNumber() % 8 + 3;
-                                selectScreen.currentPage = SELECT_PAGE_BANK_PATCHES;
-                            }
-                            mode = MODE_SELECT_SCREEN;
-                            break;
-                        case PATCH_SCREEN_RESPONSE_PLAY:
-                            menuActive = false;
-                            mode = MODE_PLAY;
-                            break;
-                    }
-                    updateNeeded = true;
-                    break;
-
-                case MODE_SELECT_SCREEN:
-                    // Send the click to the patch select screen and then handle the response.
-                    selectResponse = selectScreen.Click();
-                    switch (selectResponse) {
-                        default:
-                        case SELECT_SCREEN_RESPONSE_CANCEL:
-                            menuActive = false;
-                            mode = MODE_PATCH_SCREEN;
-                            break;
-                        case SELECT_SCREEN_RESPONSE_REFRESH:
-                            break;
-                        case SELECT_SCREEN_RESPONSE_PLAY:
-                            prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
-                            menuActive = false;
-                            mode = MODE_PLAY;
-                            break;
-                    }
-                    updateNeeded = true;
-                    break;
-
-                case MODE_SYSTEM_SCREEN:
-                    systemResponse = systemScreen.Click();
-
-                    switch (systemResponse)  {
-                        case SYSTEM_SCREEN_RESPONSE_EDIT:
-                            menuActive = true;
-                            updateNeeded = true;
-                            break;
-                        case SYSTEM_SCREEN_RESPONSE_NOEDIT:
-                            menuActive = false;
-                            updateNeeded = true;
-                            break;
-                        case SYSTEM_SCREEN_RESPONSE_PANIC:
-                            menuActive = false;
-                            kiwiSynth->Panic();
-                            mode = MODE_PLAY;
-                            updateNeeded = true;
-                            break;
-                        case SYSTEM_SCREEN_RESPONSE_UPDATE:
-                            // Enter bootloader mode to listen for a bios update
-                            mode = MODE_BOOTLOADER;
-                            Update(); // Update now instead of using updateNeeded because the next line will halt program execution
-                            System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
-                            break;
-                    }
-                    break;
+                } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_UPDATE) {
+                    // Enter bootloader mode to listen for a bios update
+                    mode = MODE_BOOTLOADER;
+                    Update(); // Update now instead of using updateNeeded because the next line will halt program execution
+                    System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
+                }
             }
         }
 
@@ -351,7 +306,10 @@ namespace kiwi_synth
             default:
                 playScreen.Display();
                 break;
-            case MODE_SETTINGS_SCREEN_1:
+            case MODE_INT_VALUE_SCREEN:
+                intValueScreen.Display();
+                break;
+            /*case MODE_SETTINGS_SCREEN_1:
                 settingsScreen1.Display();
                 break;
             case MODE_SETTINGS_SCREEN_2:
@@ -371,7 +329,7 @@ namespace kiwi_synth
                 break;
             case MODE_SETTINGS_SCREEN_7:
                 settingsScreen7.Display();
-                break;
+                break;*/
             case MODE_PATCH_SCREEN:
                 patchScreen.Display();
                 break;

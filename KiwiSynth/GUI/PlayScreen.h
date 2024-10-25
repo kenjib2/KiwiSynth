@@ -26,7 +26,7 @@ namespace kiwi_synth
             void Display();
 
         private:
-            char buffer[256];
+            char buffer[32];
             Patch* patch;
             KiwiDisplay* display;
     };

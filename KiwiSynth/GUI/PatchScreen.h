@@ -59,8 +59,8 @@ namespace kiwi_synth
             PatchScreenResponse Click();
 
         private:
-            char buffer[41];
-            char value[32];
+            char buffer[32];
+            char value[24];
             char nameEditBuffer[MAX_PATCH_NAME_LENGTH + 1];
             KiwiDisplay* display;
             Patch* patch;

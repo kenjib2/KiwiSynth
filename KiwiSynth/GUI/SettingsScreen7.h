@@ -49,7 +49,7 @@ namespace kiwi_synth
             SettingsScreen7Response Click();
 
         private:
-            char buffer[256];
+            char buffer[64];
             KiwiDisplay* display;
             Patch* patch;
             SettingsScreen7Selection selected;

@@ -74,7 +74,7 @@ namespace kiwi_synth
             SelectScreenResponse Click();
 
         private:
-            char buffer[41];
+            char buffer[32];
             int numSelections;
             KiwiSynth* kiwiSynth;
             KiwiDisplay* display;

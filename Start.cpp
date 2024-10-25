@@ -130,11 +130,13 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	//uint16_t counter = 0;
+	uint16_t counter = 0;
     while(1)
 	{
-		kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
-		kiwiSynth.UpdateSettings();
+		if (counter % 2) {
+			kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
+			kiwiSynth.UpdateSettings();
+		}
 
 		#ifdef __CPU_LOAD__
 		if (!display.mode) {
@@ -142,13 +144,10 @@ int main(void)
 		}
 		#endif // __CPU_LOAD__
 
-		display.HandleInput();
-		/*if (counter == 255) {
-			if (display.mode) {
-				display.Update();
-			}
+		if (counter == 31) {
+			display.HandleInput();
 		}
 		counter++;
-		counter &= 0b011111111;*/
+		counter &= 0b000011111;
 	}
 }

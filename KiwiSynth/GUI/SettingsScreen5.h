@@ -29,7 +29,7 @@ namespace kiwi_synth
             void Click();
 
         private:
-            char buffer[256];
+            char buffer[32];
             KiwiDisplay* display;
             Patch* patch;
             int voiceNumber;
