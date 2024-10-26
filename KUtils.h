@@ -3,6 +3,7 @@
 
 // Compiler options
 //#define __CPU_LOAD__ // Monitor performance in GUI
+#define __SETTINGS_SCREENS__
 #define EXTRA_PRECISION // Higher precision fastCos and fastSin
 
 #include "daisy_seed.h"

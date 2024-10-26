@@ -26,13 +26,15 @@ namespace kiwi_synth
         selectScreen.Init(&display, kiwiSynth);
         systemScreen.Init(&display, performance);
         intValueScreen.Init(&display, patch);
-        /*settingsScreen1.Init(&display, patch);
-        settingsScreen2.Init(&display, patch);
-        settingsScreen3.Init(&display, patch);
-        settingsScreen4.Init(&display, patch);
-        settingsScreen5.Init(&display, patch);
-        settingsScreen6.Init(&display, patch);
-        settingsScreen7.Init(&display, patch);*/
+        #ifdef __SETTINGS_SCREENS__
+            settingsScreen1.Init(&display, patch);
+            settingsScreen2.Init(&display, patch);
+            settingsScreen3.Init(&display, patch);
+            settingsScreen4.Init(&display, patch);
+            settingsScreen5.Init(&display, patch);
+            settingsScreen6.Init(&display, patch);
+            settingsScreen7.Init(&display, patch);
+        #endif
 
         KiwiDisplay::Config cfg;
         cfg.driver_config.transport_config.i2c_config.periph         = displayConfig->periph;
@@ -105,20 +107,22 @@ namespace kiwi_synth
                         intValueScreen.Decrement();
                     }
                     updateNeeded = true;
-                /*} else if (mode == MODE_SETTINGS_SCREEN_6) {
-                    if (direction == 1) {
-                        settingsScreen6.Increment();
-                    } else if (direction == -1) {
-                        settingsScreen6.Decrement();
-                    }
-                    updateNeeded = true;
-                } else if (mode == MODE_SETTINGS_SCREEN_7) {
-                    if (direction == 1) {
-                        settingsScreen7.Increment();
-                    } else if (direction == -1) {
-                        settingsScreen7.Decrement();
-                    }
-                    updateNeeded = true;*/
+                #ifdef __SETTINGS_SCREENS__
+                    } else if (mode == MODE_SETTINGS_SCREEN_6) {
+                        if (direction == 1) {
+                            settingsScreen6.Increment();
+                        } else if (direction == -1) {
+                            settingsScreen6.Decrement();
+                        }
+                        updateNeeded = true;
+                    } else if (mode == MODE_SETTINGS_SCREEN_7) {
+                        if (direction == 1) {
+                            settingsScreen7.Increment();
+                        } else if (direction == -1) {
+                            settingsScreen7.Decrement();
+                        }
+                        updateNeeded = true;
+                #endif
                 } else if (mode == MODE_SELECT_SCREEN) {
                     if (direction == 1) {
                         selectScreen.Increment();
@@ -151,8 +155,10 @@ namespace kiwi_synth
             SelectScreenResponse selectResponse;
             IntScreenResponse intResponse;
             SystemScreenResponse systemResponse;
-            SettingsScreen6Response settings6Response;
-            //SettingsScreen7Response settings7Response;
+            #ifdef __SETTINGS_SCREENS__
+                SettingsScreen6Response settings6Response;
+                SettingsScreen7Response settings7Response;
+            #endif
 
             if (__builtin_expect(mode == MODE_PLAY, 1)) {
                 // From play mode we want to load patches, starting positioned at the current patch for convenience.
@@ -180,37 +186,39 @@ namespace kiwi_synth
                     menuActive = false;
                 } // mode == INT_SCREEN_RESPONSE_NOEDIT
                 updateNeeded = true;
-            /*} else if (mode == MODE_SETTINGS_SCREEN_1) {
-                settingsScreen1.Click();
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_2) {
-                settingsScreen2.Click();
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_3) {
-                settingsScreen3.Click();
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_4) {
-                settingsScreen4.Click();
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_5) {
-                settingsScreen5.Click();
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_6) {
-                settings6Response = settingsScreen6.Click();
-                if (settings6Response == SETTINGS_SCREEN_6_RESPONSE_EDIT) {
-                    menuActive = true;
-                } else {
-                    menuActive = false;
-                }
-                updateNeeded = true;
-            } else if (mode == MODE_SETTINGS_SCREEN_7) {
-                settings7Response = settingsScreen7.Click();
-                if (settings7Response == SETTINGS_SCREEN_7_RESPONSE_EDIT) {
-                    menuActive = true;
-                } else {
-                    menuActive = false;
-                }
-                updateNeeded = true;*/
+            #ifdef __SETTINGS_SCREENS__
+                } else if (mode == MODE_SETTINGS_SCREEN_1) {
+                    settingsScreen1.Click();
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_2) {
+                    settingsScreen2.Click();
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_3) {
+                    settingsScreen3.Click();
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_4) {
+                    settingsScreen4.Click();
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_5) {
+                    settingsScreen5.Click();
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_6) {
+                    settings6Response = settingsScreen6.Click();
+                    if (settings6Response == SETTINGS_SCREEN_6_RESPONSE_EDIT) {
+                        menuActive = true;
+                    } else {
+                        menuActive = false;
+                    }
+                    updateNeeded = true;
+                } else if (mode == MODE_SETTINGS_SCREEN_7) {
+                    settings7Response = settingsScreen7.Click();
+                    if (settings7Response == SETTINGS_SCREEN_7_RESPONSE_EDIT) {
+                        menuActive = true;
+                    } else {
+                        menuActive = false;
+                    }
+                    updateNeeded = true;
+            #endif
             } else if (mode == MODE_PATCH_SCREEN) {
                 // Send the click to the patch screen and then handle the response.
                 patchResponse = patchScreen.Click();
@@ -309,27 +317,29 @@ namespace kiwi_synth
             case MODE_INT_VALUE_SCREEN:
                 intValueScreen.Display();
                 break;
-            /*case MODE_SETTINGS_SCREEN_1:
-                settingsScreen1.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_2:
-                settingsScreen2.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_3:
-                settingsScreen3.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_4:
-                settingsScreen4.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_5:
-                settingsScreen5.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_6:
-                settingsScreen6.Display();
-                break;
-            case MODE_SETTINGS_SCREEN_7:
-                settingsScreen7.Display();
-                break;*/
+            #ifdef __SETTINGS_SCREENS__
+                case MODE_SETTINGS_SCREEN_1:
+                    settingsScreen1.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_2:
+                    settingsScreen2.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_3:
+                    settingsScreen3.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_4:
+                    settingsScreen4.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_5:
+                    settingsScreen5.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_6:
+                    settingsScreen6.Display();
+                    break;
+                case MODE_SETTINGS_SCREEN_7:
+                    settingsScreen7.Display();
+                    break;
+            #endif
             case MODE_PATCH_SCREEN:
                 patchScreen.Display();
                 break;

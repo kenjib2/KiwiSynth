@@ -31,14 +31,14 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
+ * On initial start up osc 2 & 3 don't play if turned on but do play if you turn them off and back on.
  * Paraphonic layered 3 "voice" mode.
- * Polyphonic PM synth pops. Where can we optimize more?
- * Can't play 3 osc with chorus anymore??? Optimize! This started with the settings screen re-do
- * Resonance and SHToFCut and FX 1-3 knobs jump around alot -- needs a smoothing cap?
+ * Resonance and SHToFCut and FX 1-3 knobs jump around alot -- needs a smoothing cap or pulldown or something?
  * Inverted amplitude envelope clicks when starting and stopping
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and filter type wraparound at max and min?
  * Menu to change system-wide default mods and patch mod settings 5-8
+ * Removing IntScreen causes major performance problems -- ???
  * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
  * Gate and Duck effects based on input
@@ -48,7 +48,7 @@ using namespace kiwi_synth;
  * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
  * Save and load patches via Sysex
- * Patch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
+ * Pitch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
  * Layered patches are either not saving or not loading correctly. setting2 seems to not be playing with the expected settings. If you load twice it works.
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
@@ -130,13 +130,12 @@ int main(void)
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
 
-	uint16_t counter = 0;
+	uint16_t counter1 = 0;
+	uint16_t counter2 = 0;
     while(1)
 	{
-		if (counter % 2) {
-			kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
-			kiwiSynth.UpdateSettings();
-		}
+		kiwiSynth.ProcessInputs(); // Note that if the GPIO interrupt is not high, we will give the multiplexer time to change channels in ProcessInputs for the GPIO.
+		kiwiSynth.UpdateSettings();
 
 		#ifdef __CPU_LOAD__
 		if (!display.mode) {
@@ -144,10 +143,15 @@ int main(void)
 		}
 		#endif // __CPU_LOAD__
 
-		if (counter == 31) {
+		if (counter1 == 15) {
 			display.HandleInput();
+			if (display.mode && counter2 == 15) {
+				display.Update(); // Update to capture live control changes on the settings screens
+			}
+			counter2++;
+			counter2 &= 0b000001111;
 		}
-		counter++;
-		counter &= 0b000011111;
+		counter1++;
+		counter1 &= 0b000011111;
 	}
 }

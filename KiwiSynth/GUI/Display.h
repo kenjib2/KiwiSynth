@@ -12,13 +12,15 @@
 #include "SelectScreen.h"
 #include "SystemScreen.h"
 #include "IntValueScreen.h"
-/*#include "SettingsScreen1.h"
-#include "SettingsScreen2.h"
-#include "SettingsScreen3.h"
-#include "SettingsScreen4.h"
-#include "SettingsScreen5.h"*/
-#include "SettingsScreen6.h"
-//#include "SettingsScreen7.h"
+#ifdef __SETTINGS_SCREENS__
+    #include "SettingsScreen1.h"
+    #include "SettingsScreen2.h"
+    #include "SettingsScreen3.h"
+    #include "SettingsScreen4.h"
+    #include "SettingsScreen5.h"
+    #include "SettingsScreen6.h"
+    #include "SettingsScreen7.h"
+#endif
 
 using namespace daisy;
 using namespace daisy::seed;
@@ -70,16 +72,22 @@ namespace kiwi_synth
         MODE_PLAY = 0,
         MODE_PATCH_SCREEN,
         MODE_INT_VALUE_SCREEN,
-        /*MODE_SETTINGS_SCREEN_1,
-        MODE_SETTINGS_SCREEN_2,
-        MODE_SETTINGS_SCREEN_3,
-        MODE_SETTINGS_SCREEN_4,
-        MODE_SETTINGS_SCREEN_5,
-        MODE_SETTINGS_SCREEN_6,
-        MODE_SETTINGS_SCREEN_7,*/
+        #ifdef __SETTINGS_SCREENS__
+            MODE_SETTINGS_SCREEN_1,
+            MODE_SETTINGS_SCREEN_2,
+            MODE_SETTINGS_SCREEN_3,
+            MODE_SETTINGS_SCREEN_4,
+            MODE_SETTINGS_SCREEN_5,
+            MODE_SETTINGS_SCREEN_6,
+            MODE_SETTINGS_SCREEN_7,
+        #endif
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
-    const int DISPLAY_MODE_OPTIONS = 4; //10; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    #ifdef __SETTINGS_SCREENS__
+        const int DISPLAY_MODE_OPTIONS = 11; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    #else
+        const int DISPLAY_MODE_OPTIONS = 4; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+    #endif
 
     /*
      * The display class is the main controller for the synth GUI. It handles input, manages which
@@ -116,13 +124,15 @@ namespace kiwi_synth
             SelectScreen selectScreen;
             SystemScreen systemScreen;
             IntValueScreen intValueScreen;
-            /*SettingsScreen1 settingsScreen1;
-            SettingsScreen2 settingsScreen2;
-            SettingsScreen3 settingsScreen3;
-            SettingsScreen4 settingsScreen4;
-            SettingsScreen5 settingsScreen5;
-            SettingsScreen6 settingsScreen6;
-            SettingsScreen7 settingsScreen7;*/
+            #ifdef __SETTINGS_SCREENS__
+                SettingsScreen1 settingsScreen1;
+                SettingsScreen2 settingsScreen2;
+                SettingsScreen3 settingsScreen3;
+                SettingsScreen4 settingsScreen4;
+                SettingsScreen5 settingsScreen5;
+                SettingsScreen6 settingsScreen6;
+                SettingsScreen7 settingsScreen7;
+            #endif
 
             bool HandleEncoder();
             bool HandleClick();
