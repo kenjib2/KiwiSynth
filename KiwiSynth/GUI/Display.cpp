@@ -100,13 +100,13 @@ namespace kiwi_synth
                         patchScreen.Decrement();
                     }
                     updateNeeded = true;
-                } else if (mode == MODE_INT_VALUE_SCREEN) {
+                /*} else if (mode == MODE_INT_VALUE_SCREEN) {
                     if (direction == 1) {
                         intValueScreen.Increment();
                     } else if (direction == -1) {
                         intValueScreen.Decrement();
                     }
-                    updateNeeded = true;
+                    updateNeeded = true;*/
                 #ifdef __SETTINGS_SCREENS__
                     } else if (mode == MODE_SETTINGS_SCREEN_6) {
                         if (direction == 1) {
@@ -153,7 +153,7 @@ namespace kiwi_synth
         if (__builtin_expect(prevGuiButton && !guiButton, 0)) {
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
-            IntScreenResponse intResponse;
+            //IntScreenResponse intResponse;
             SystemScreenResponse systemResponse;
             #ifdef __SETTINGS_SCREENS__
                 SettingsScreen6Response settings6Response;
@@ -178,14 +178,14 @@ namespace kiwi_synth
                 }
                 mode = MODE_SELECT_SCREEN;
                 updateNeeded = true;
-            } else if (mode == MODE_INT_VALUE_SCREEN) {
+            /*} else if (mode == MODE_INT_VALUE_SCREEN) {
                 intResponse = intValueScreen.Click();
                 if (intResponse == INT_SCREEN_RESPONSE_EDIT) {
                     menuActive = true;
                 } else {
                     menuActive = false;
                 } // mode == INT_SCREEN_RESPONSE_NOEDIT
-                updateNeeded = true;
+                updateNeeded = true;*/
             #ifdef __SETTINGS_SCREENS__
                 } else if (mode == MODE_SETTINGS_SCREEN_1) {
                     settingsScreen1.Click();
@@ -311,7 +311,6 @@ namespace kiwi_synth
         // Pass on updating message to the relevant screen
         switch (mode) {
             case MODE_PLAY:
-            default:
                 playScreen.Display();
                 break;
             case MODE_INT_VALUE_SCREEN:

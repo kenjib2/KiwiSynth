@@ -31,34 +31,37 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * On initial start up osc 2 & 3 don't play if turned on but do play if you turn them off and back on.
- * Paraphonic layered 3 "voice" mode.
- * Resonance and SHToFCut and FX 1-3 knobs jump around alot -- needs a smoothing cap or pulldown or something?
+ * On initial start up osc 2 & 3 don't play if turned on but do play if you turn them off and back on. Maybe only when flashing BIOS?
  * Inverted amplitude envelope clicks when starting and stopping
+ * Menu to change system-wide default mods and patch mod settings 5-8
+ * Save and load patches via Sysex
+ * External audio in
+ * Gate and Duck effects based on input
+ * Pitch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
+ * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
+ * Appegiator? Sequencer?
+ * Ping Pong Delay
+ * L/R Output noise: It is from the OLED: It pretty much needs its own whole power section: own regulator, 100uF+ filter caps, and an RLC filter if you can. 
+ * Headphone out noise
+ * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
+ *
+ * Paraphonic layered 3 "voice" mode.
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
  * Should some encoders like voice mode, waveform, and filter type wraparound at max and min?
- * Menu to change system-wide default mods and patch mod settings 5-8
  * Removing IntScreen causes major performance problems -- ???
  * Is something still popping faintly with note steal & retrigger?
  * Can we make click only show up on the very lowest attack and decay settings somehow?
- * Gate and Duck effects based on input
  * Can we move any global or class vars to local stack vars?
  * Can we convert any ops into bitwise ops?
  * Can we absorb and optimize any more Daisy source?
  * Can we get the buffer lower
  * Can we implement portamento in paraphonic mode?
- * Save and load patches via Sysex
- * Pitch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
  * Layered patches are either not saving or not loading correctly. setting2 seems to not be playing with the expected settings. If you load twice it works.
- * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
- * Appegiator? Sequencer?
  * For type vectors for PatchHeader lists I can't sort more than just by name. It crashes for some reason.
  * Can we make the data structures a little smaller without losing performance?
  * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. Oscillator.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
- * External audio in
  * FX Modes: Ensemble-Phaser. Sonic Annihilator.
  * Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
- * Ping Pong Delay
  * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
  * ABS distortion like X-a(X*ABS(X))
  * Pre-filter vs output distortion
@@ -66,11 +69,7 @@ using namespace kiwi_synth;
  * New mod destination that is just Noise to amplifer Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the filter somehow?
  * Performance %s are off if we increase above a 256 buffer
- * L/R Output noise
- * Headphone out noise
- * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
  * Going out of GUI mode sometimes triggers note on(s)
- * Can we optimize more to get the audio buffer size lower?
  */
 
 // Patch idea -- very slow square LFO with super short PW. Have it trigger on short PW first, then "blip" up/down to the note. Chip-tunesy
@@ -81,6 +80,7 @@ Display display;
 const int AUDIO_BLOCK_SIZE = 384;
 Performance performance;
 CpuLoadMeter load;
+bool audioRunning;
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
@@ -90,13 +90,7 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	load.OnBlockStart();
 	#endif // __CPU_LOAD__
 
-	if (__builtin_expect(display.mode, 0)) {
-		kiwiSynth.AllNotesOff();
-		kiwiSynth.ClearMidi();
-		memset(out, 0, sizeof(float) * size * 2);
-	} else {
-		kiwiSynth.Process(out, size);
-	}
+	kiwiSynth.Process(out, size);
 
 	#ifdef __CPU_LOAD__
 	load.OnBlockEnd();
@@ -129,6 +123,7 @@ int main(void)
     //Start reading ADC values
     hw.adc.Start(); // The start up will hang for @20 seconds if this is attempted before creating KiwiSynth (and initializing pins)
 	hw.StartAudio(AudioCallback);
+	audioRunning = true;
 
 	uint16_t counter1 = 0;
 	uint16_t counter2 = 0;
@@ -145,6 +140,17 @@ int main(void)
 
 		if (counter1 == 15) {
 			display.HandleInput();
+
+			if (display.mode && audioRunning) {
+				hw.StopAudio();
+				audioRunning = false;
+			} else if (!display.mode && !audioRunning) {
+				kiwiSynth.AllNotesOff();
+				kiwiSynth.ClearMidi();
+				hw.StartAudio(AudioCallback);
+				audioRunning = true;
+			}
+
 			if (display.mode && counter2 == 15) {
 				display.Update(); // Update to capture live control changes on the settings screens
 			}

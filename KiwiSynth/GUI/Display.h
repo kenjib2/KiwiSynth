@@ -67,11 +67,11 @@ namespace kiwi_synth
      * can only be entered when selected from other screens.
      */
     typedef enum {
+        MODE_INT_VALUE_SCREEN = -3, // Moved here so it doesn't show up when cycling screens. We can only hide it. If we delete performance craters.
         MODE_BOOTLOADER = -2,
         MODE_SELECT_SCREEN = -1,
         MODE_PLAY = 0,
         MODE_PATCH_SCREEN,
-        MODE_INT_VALUE_SCREEN,
         #ifdef __SETTINGS_SCREENS__
             MODE_SETTINGS_SCREEN_1,
             MODE_SETTINGS_SCREEN_2,
@@ -84,7 +84,7 @@ namespace kiwi_synth
         MODE_SYSTEM_SCREEN,
     } DisplayMode;
     #ifdef __SETTINGS_SCREENS__
-        const int DISPLAY_MODE_OPTIONS = 11; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
+        const int DISPLAY_MODE_OPTIONS = 10; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
     #else
         const int DISPLAY_MODE_OPTIONS = 4; // Not including MODE_SELECT_SCREEN or MODE_BOOTLOADER
     #endif
