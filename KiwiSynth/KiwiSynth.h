@@ -57,7 +57,7 @@ namespace kiwi_synth
             void Init(DaisySeed* hw, float sampleRate);
             void LoadPatchBanks();
 
-            void ProcessInputs();
+            void ProcessInputs(bool forceGeRead = false);
             void ConfigureMultiPots(DaisySeed* hw);
             void ConfigureGpioExpansion();
 

@@ -76,7 +76,7 @@ namespace kiwi_synth
              * Checks to see if a read has been requested by the interrupt trigger. If so, read and update all GPIO pin values.
              * Returns true if there was a read and false if not.
              */
-            bool Process();
+            bool Process(bool forceRead = false);
             /*
              * Clears all interrupt flags.
              */

@@ -50,10 +50,10 @@ namespace kiwi_synth
         }
     }
 
-    bool GpioExpansion::Process()
+    bool GpioExpansion::Process(bool forceRead)
     {
         bool interrupted = interrupt.Read();
-        if (interrupted) {
+        if (interrupted || forceRead) {
             uint16_t nextValues;
 
             // Read all mcps and write to pinValues

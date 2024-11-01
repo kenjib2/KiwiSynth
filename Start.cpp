@@ -31,7 +31,6 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * On initial start up osc 2 & 3 don't play if turned on but do play if you turn them off and back on. Maybe only when flashing BIOS?
  * Inverted amplitude envelope clicks when starting and stopping
  * Menu to change system-wide default mods and patch mod settings 5-8
  * Save and load patches via Sysex
@@ -111,7 +110,7 @@ int main(void)
 	#endif // __CPU_LOAD__
 	display.Init(&kiwiSynth, &performance);
 
-	kiwiSynth.ProcessInputs();
+	kiwiSynth.ProcessInputs(true);
 	if (kiwiSynth.BootLoaderRequested())
 	{
 		display.mode = MODE_BOOTLOADER;
