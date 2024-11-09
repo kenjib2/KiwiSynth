@@ -12,6 +12,7 @@
 #include "VoiceBank.h"
 #include "Effects/EffectsEngine.h"
 #include "Patch/Storage.h"
+#include "Patch/SysexManager.h"
 #include "Patch/PatchHeader.h"
 
 using namespace daisy;
@@ -32,6 +33,7 @@ namespace kiwi_synth
             MultiPots multiPots;
             GpioExpansion ge;
             Storage storage;
+            SysexManager sysexManager;
             int numVoices;
             int midiChannel;
 	        GPIO gpioMidiActivity;
@@ -72,6 +74,7 @@ namespace kiwi_synth
             bool BootLoaderRequested();
             void LoadPatch(int bankNumber, int patchNumber);
             void SavePatch(int bankNumber, int patchNumber);
+            void SendSysex();
             void UpdateSettings();
             void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
             void AllNotesOff();

@@ -275,6 +275,14 @@ namespace kiwi_synth
                 } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_NOEDIT) {
                     menuActive = false;
                     updateNeeded = true;
+                } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_SYSEX_SEND) {
+                    systemScreen.DisplaySending();
+                    kiwiSynth->SendSysex();
+                    menuActive = false;
+                    updateNeeded = true;
+                } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_SYSEX_READ) {
+                    menuActive = false;
+                    updateNeeded = true;
                 } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_PANIC) {
                     menuActive = false;
                     kiwiSynth->Panic();

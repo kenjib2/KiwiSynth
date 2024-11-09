@@ -24,6 +24,7 @@ namespace kiwi_synth
         LoadPatchBanks();
 
         InitMidi();
+        sysexManager.Init(&midi);
     }
 
     void KiwiSynth::LoadPatchBanks() {
@@ -278,6 +279,11 @@ namespace kiwi_synth
 
         storage.SavePatch(&patch, bankNumber, patchNumber);
         patch.SetLiveMode(false, bankNumber, patchNumber);
+    }
+
+    void KiwiSynth::SendSysex()
+    {
+        sysexManager.Send(&patch);
     }
 
     void KiwiSynth::UpdateSettings()

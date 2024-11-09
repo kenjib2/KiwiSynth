@@ -28,9 +28,17 @@ namespace kiwi_synth
             display->WriteString(buffer, Font_6x8, true);
     	#endif // __CPU_LOAD__
 
-        display->SetCursor(0, 46);
+        display->SetCursor(0, 32);
         sprintf(buffer, "Panic!!!");
         display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_PANIC);
+
+        display->SetCursor(0, 40);
+        sprintf(buffer, "Sysex Send");
+        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_SEND);
+
+        display->SetCursor(0, 48);
+        sprintf(buffer, "Sysex Read");
+        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_READ);
 
         display->SetCursor(0, 56);
         sprintf(buffer, "Flash BIOS");
@@ -41,6 +49,17 @@ namespace kiwi_synth
             sprintf(buffer, "<--");
             display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_RETURN);
         }
+
+        display->Update();
+    }
+
+    void SystemScreen::DisplaySending()
+    {
+        display->Fill(false);
+
+        display->SetCursor(0, 0);
+        sprintf(buffer, "Sending Sysex...");
+        display->WriteString(buffer, Font_6x8, true);
 
         display->Update();
     }
@@ -56,7 +75,7 @@ namespace kiwi_synth
     SystemScreenResponse SystemScreen::Click() {
         switch (selected) {
             case SYSTEM_SCREEN_NONE:
-                selected = SYSTEM_SCREEN_UPDATE;
+                selected = SYSTEM_SCREEN_PANIC;
                 return SYSTEM_SCREEN_RESPONSE_EDIT;
 
             case SYSTEM_SCREEN_UPDATE:
@@ -65,6 +84,14 @@ namespace kiwi_synth
             case SYSTEM_SCREEN_PANIC:
                 selected = SYSTEM_SCREEN_NONE;
                 return SYSTEM_SCREEN_RESPONSE_PANIC;
+
+            case SYSTEM_SCREEN_SYSEX_SEND:
+                selected = SYSTEM_SCREEN_NONE;
+                return SYSTEM_SCREEN_RESPONSE_SYSEX_SEND;
+
+            case SYSTEM_SCREEN_SYSEX_READ:
+                selected = SYSTEM_SCREEN_NONE;
+                return SYSTEM_SCREEN_RESPONSE_SYSEX_READ;
 
             default:
             case SYSTEM_SCREEN_RETURN:

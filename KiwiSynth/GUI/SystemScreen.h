@@ -16,16 +16,20 @@ namespace kiwi_synth
     {
         SYSTEM_SCREEN_NONE = -1,
         SYSTEM_SCREEN_PANIC,
+        SYSTEM_SCREEN_SYSEX_SEND,
+        SYSTEM_SCREEN_SYSEX_READ,
         SYSTEM_SCREEN_UPDATE,
         SYSTEM_SCREEN_RETURN
     };
-    const static int SYSTEM_SCREEN_OPTIONS = 3;
+    const static int SYSTEM_SCREEN_OPTIONS = 5;
 
     enum SystemScreenResponse
     {
         SYSTEM_SCREEN_RESPONSE_EDIT,
         SYSTEM_SCREEN_RESPONSE_NOEDIT,
         SYSTEM_SCREEN_RESPONSE_PANIC,
+        SYSTEM_SCREEN_RESPONSE_SYSEX_SEND,
+        SYSTEM_SCREEN_RESPONSE_SYSEX_READ,
         SYSTEM_SCREEN_RESPONSE_UPDATE
     };
 
@@ -45,6 +49,7 @@ namespace kiwi_synth
              * Displays performance info and allows for BIOS update.
              */
             void Display();
+            void DisplaySending();
             void Increment();
             void Decrement();
             SystemScreenResponse Click();
