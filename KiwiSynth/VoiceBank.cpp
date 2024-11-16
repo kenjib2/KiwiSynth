@@ -107,8 +107,10 @@ namespace kiwi_synth
                 voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_PARALLEL;
                 voices[1].pmMode = PM_MODE_PARALLEL;
+                voices[2].pmMode = PM_MODE_PARALLEL;
             } else if (voiceMode == VOICE_MODE_PM_SER) {
                 numVoices = 3;
                 voices[0].ParaphonicMode(false);
@@ -124,11 +126,14 @@ namespace kiwi_synth
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_SERIAL;
                 voices[1].pmMode = PM_MODE_SERIAL;
-            } else {
+                voices[2].pmMode = PM_MODE_SERIAL;
+            } else { // VOICE_MODE_POLYPHONIC
                 numVoices = 3;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
