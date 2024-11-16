@@ -14,6 +14,7 @@ https://opensource.org/licenses/MIT.
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
+#include "../../KUtils.h"
 
 /** @file chorus.h */
 
@@ -67,7 +68,9 @@ class KiwiChorusEngine
   private:
     float                    sample_rate_;
     static constexpr int32_t kDelayLength
-        = 2400; // 50 ms at 48kHz = .05 * 48000
+        = intSampleRate / 20; 
+        // 50 ms at 32kHz = .05 * 32000
+        // 50 ms at 48kHz = .05 * 48000
 
     //triangle lfos
     float lfo_phase_;

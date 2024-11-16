@@ -50,6 +50,7 @@ namespace kiwi_synth
              */
             void Display();
             void DisplaySending();
+            void DisplayReceiving();
             void Increment();
             void Decrement();
             SystemScreenResponse Click();

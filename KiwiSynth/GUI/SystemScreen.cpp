@@ -37,7 +37,7 @@ namespace kiwi_synth
         display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_SEND);
 
         display->SetCursor(0, 48);
-        sprintf(buffer, "Sysex Read");
+        sprintf(buffer, "Sysex Receive");
         display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_READ);
 
         display->SetCursor(0, 56);
@@ -60,6 +60,25 @@ namespace kiwi_synth
         display->SetCursor(0, 0);
         sprintf(buffer, "Sending Sysex...");
         display->WriteString(buffer, Font_6x8, true);
+
+        display->Update();
+    }
+
+    void SystemScreen::DisplayReceiving()
+    {
+        display->Fill(false);
+
+        display->SetCursor(0, 0);
+        sprintf(buffer, "Ready for Sysex");
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 10);
+        sprintf(buffer, "Listening...");
+        display->WriteString(buffer, Font_6x8, true);
+
+        display->SetCursor(0, 56);
+        sprintf(buffer, "Cancel");
+        display->WriteString(buffer, Font_6x8, false);
 
         display->Update();
     }

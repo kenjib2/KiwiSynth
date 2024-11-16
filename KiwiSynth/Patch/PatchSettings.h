@@ -11,6 +11,7 @@
 #include "../Controls/IControlListener.h"
 #include "PatchTypes.h"
 #include "SavedPatch.h"
+#include "../../KUtils.h"
 
 using namespace daisy;
 using namespace daisy::seed;

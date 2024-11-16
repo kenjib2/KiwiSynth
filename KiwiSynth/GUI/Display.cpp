@@ -281,7 +281,10 @@ namespace kiwi_synth
                     menuActive = false;
                     updateNeeded = true;
                 } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_SYSEX_READ) {
+                    systemScreen.DisplayReceiving();
+                    kiwiSynth->ReceiveSysex();
                     menuActive = false;
+                    mode = MODE_PLAY;
                     updateNeeded = true;
                 } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_PANIC) {
                     menuActive = false;

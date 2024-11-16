@@ -38,6 +38,7 @@ namespace kiwi_synth
             void Init(MidiUartHandler* midi);
 
             void Send(Patch* patch);
+            void Receive(Patch* patch, MidiUartHandler* midi, GpioExpansion* ge);
     };
 } // namespace kiwi_synth
 

@@ -2,6 +2,7 @@
 #define __KIWI_SYNTH_KIWI_PHASER__
 
 #include "../Modules/KiwiTriangle.h"
+#include "../../KUtils.h"
 
 /* 
 Date: Mon, 24 Aug 1998 07:02:40 -0700
@@ -57,7 +58,8 @@ Ross B.
 namespace kiwi_synth
 {
 
-    #define SR (48000.f)  //sample rate
+    //#define SR (48000.f)  //sample rate
+    //#define SR (32000.f)  //sample rate
     #define F_PI (3.14159f)
 
     class KiwiPhaser{
@@ -68,19 +70,19 @@ namespace kiwi_synth
             , _depth( 1.f )
             , _zm1( 0.f )
         {
-            lfo.Init(SR);
+            lfo.Init(floatSampleRate);
             lfo.SetAmp(0.5f);
             Range( 440.f, 1600.f );
             Rate( .5f );
         }
 
         void Range( float fMin, float fMax ){ // Hz
-            _dmin = fMin / (SR/2.f);
-            _dmax = fMax / (SR/2.f);
+            _dmin = fMin / (floatSampleRate/2.f);
+            _dmax = fMax / (floatSampleRate/2.f);
         }
 
         void Rate( float rate ){ // cps
-            _lfoInc = 2.f * F_PI * (rate / SR);
+            _lfoInc = 2.f * F_PI * (rate / floatSampleRate);
             lfo.SetFreq(rate);
         }
 

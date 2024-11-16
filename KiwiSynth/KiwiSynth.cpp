@@ -286,6 +286,11 @@ namespace kiwi_synth
         sysexManager.Send(&patch);
     }
 
+    void KiwiSynth::ReceiveSysex()
+    {
+        sysexManager.Receive(&patch, &midi, &ge);
+    }
+
     void KiwiSynth::UpdateSettings()
     {
         voiceBank.UpdateSettings();

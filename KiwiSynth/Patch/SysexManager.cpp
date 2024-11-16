@@ -35,6 +35,28 @@ namespace kiwi_synth
         midi->SendMessage(&sysexChar, 1);
     }
 
+    void SysexManager::Receive(Patch* patch, MidiUartHandler* midi, GpioExpansion* ge) {
+        while(1) {
+            midi->Listen();
+            while(midi->HasEvents())
+            {
+                MidiEvent event = midi->PopEvent();
+                if (event.type == SystemCommon && event.sc_type == SystemExclusive) {
+                    SystemExclusiveEvent sysexEvent = event.AsSystemExclusive();
+                    for (int i = 0; i < sysexEvent.length; i++) {
+                        uint8_t nextVal = sysexEvent.data[i];
+                    }
+                    return;
+                }
+            }
+            ge->Process();
+            if (patch->voice1Settings->getBoolValue(GEN_SELECT_BUTTON)) {
+                return;
+            }
+            System::Delay(5);
+        }
+    }
+
     int SysexManager::BuildBuffer(SavedPatch* savedPatch) {
         int position = 0;
 

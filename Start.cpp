@@ -76,7 +76,7 @@ using namespace kiwi_synth;
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 384;
+const int AUDIO_BLOCK_SIZE = 64;
 Performance performance;
 CpuLoadMeter load;
 bool audioRunning;
@@ -101,7 +101,8 @@ int main(void)
 {
 	hw.Init(true); // true boosts it to 480MHz clock speed. Default would be 400MHz
 	hw.SetAudioBlockSize(AUDIO_BLOCK_SIZE); // number of samples handled per callback
-	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
+	//hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
+	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_32KHZ);
 
 	kiwiSynth.Init(&hw, hw.AudioSampleRate());
 	#ifdef __CPU_LOAD__

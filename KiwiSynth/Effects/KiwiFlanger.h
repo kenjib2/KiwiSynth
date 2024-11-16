@@ -14,6 +14,7 @@ https://opensource.org/licenses/MIT.
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
+#include "../../KUtils.h"
 
 /** @file KiwiFlanger.h */
 
@@ -64,7 +65,9 @@ class KiwiFlanger : public IEffect
 
   private:
     float                    sample_rate_;
-    static constexpr int32_t kDelayLength = 960; // 20 ms at 48kHz = .02 * 48000
+    // 20 ms at 32kHz = .02 * 32000
+    // 20 ms at 48kHz = .02 * 48000
+    static constexpr int32_t kDelayLength = intSampleRate / 50;
 
     float feedback_;
 
