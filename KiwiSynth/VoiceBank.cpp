@@ -44,14 +44,18 @@ namespace kiwi_synth
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_OFF;
                 voices[1].pmMode = PM_MODE_OFF;
+                voices[2].pmMode = PM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_PARA) {
                 numVoices = 2;
                 voices[0].ParaphonicMode(true);
                 voices[1].ParaphonicMode(true);
+                voices[2].ParaphonicMode(true);
                 for (int i = 0; i < 6; i++) {
                     paraOscPlaying[i] = false;
                     paraOscNotes[i] = -128;
@@ -59,48 +63,63 @@ namespace kiwi_synth
                 }
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_OFF;
                 voices[1].pmMode = PM_MODE_OFF;
+                voices[2].pmMode = PM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_HSYNC) {
-                numVoices = 2;
+                numVoices = 3;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = true;
                 voices[1].hardSync = true;
+                voices[2].hardSync = true;
                 voices[0].pmMode = PM_MODE_OFF;
                 voices[1].pmMode = PM_MODE_OFF;
+                voices[2].pmMode = PM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_HSYNC_MONO) {
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = true;
                 voices[1].hardSync = true;
+                voices[2].hardSync = true;
                 voices[0].pmMode = PM_MODE_OFF;
                 voices[1].pmMode = PM_MODE_OFF;
+                voices[2].pmMode = PM_MODE_OFF;
             } else if (voiceMode == VOICE_MODE_PM_PARA) {
-                numVoices = 2;
+                numVoices = 3;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_PARALLEL;
                 voices[1].pmMode = PM_MODE_PARALLEL;
+                voices[2].pmMode = PM_MODE_PARALLEL;
             } else if (voiceMode == VOICE_MODE_PM_PARA_MONO) {
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
                 voices[0].pmMode = PM_MODE_PARALLEL;
                 voices[1].pmMode = PM_MODE_PARALLEL;
             } else if (voiceMode == VOICE_MODE_PM_SER) {
-                numVoices = 2;
+                numVoices = 3;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_SERIAL;
                 voices[1].pmMode = PM_MODE_SERIAL;
+                voices[2].pmMode = PM_MODE_SERIAL;
             } else if (voiceMode == VOICE_MODE_PM_SER_MONO) {
                 numVoices = 1;
                 voices[0].ParaphonicMode(false);
@@ -110,19 +129,23 @@ namespace kiwi_synth
                 voices[0].pmMode = PM_MODE_SERIAL;
                 voices[1].pmMode = PM_MODE_SERIAL;
             } else {
-                numVoices = 2;
+                numVoices = 3;
                 voices[0].ParaphonicMode(false);
                 voices[1].ParaphonicMode(false);
+                voices[2].ParaphonicMode(false);
                 voices[0].hardSync = false;
                 voices[1].hardSync = false;
+                voices[2].hardSync = false;
                 voices[0].pmMode = PM_MODE_OFF;
                 voices[1].pmMode = PM_MODE_OFF;
+                voices[2].pmMode = PM_MODE_OFF;
             }
 
             patch->SetVoiceMode((VoiceMode)voiceMode);
         }
         voices[0].UpdateSettings(patch->voice1Settings);
         voices[1].UpdateSettings(patch->voice2Settings);
+        voices[2].UpdateSettings(patch->voice1Settings);
 
         UpdateModulations();
     }
@@ -171,6 +194,18 @@ namespace kiwi_synth
                 1)) {
             voices[1].sampleAndHoldAvailable = sampleAndHoldInputAvailable;
             voices[1].Process(nextVoice, patch->voice2Settings, modulations[1], systemModulations, numVoices);
+            sample[0] += nextVoice[0];
+            sample[1] += nextVoice[1];
+        }
+
+        if (
+                voiceMode == VOICE_MODE_HSYNC ||
+                voiceMode == VOICE_MODE_PM_PARA ||
+                voiceMode == VOICE_MODE_PM_SER ||
+                voiceMode == VOICE_MODE_POLY
+            ) {
+            voices[2].sampleAndHoldAvailable = sampleAndHoldInputAvailable;
+            voices[2].Process(nextVoice, patch->voice1Settings, modulations[0], systemModulations, numVoices);
             sample[0] += nextVoice[0];
             sample[1] += nextVoice[1];
         }
@@ -591,12 +626,14 @@ namespace kiwi_synth
         }
 
         // Else if both available, take the voice that was previously closest in pitch to help with portamento.
-        if (voices[0].IsAvailable() && voices[1].IsAvailable()) {
-            if (std::abs(midiNote - voices[0].currentMidiNote) < std::abs(midiNote - voices[1].currentMidiNote)) {
-                return &voices[0];
-            } else {
-                return &voices[1];
+        if (voices[0].IsAvailable() && voices[1].IsAvailable() && voices[2].IsAvailable()) {
+            int closestVoice = 0;
+            for (int i = 1; i < numVoices; i++) {
+                if (std::abs(midiNote - voices[i].currentMidiNote) < std::abs(midiNote - voices[closestVoice].currentMidiNote)) {
+                    closestVoice = i;
+                }
             }
+            return &voices[closestVoice];
         }
         for (size_t i = 0; i < numVoices; i++) {
             if (voices[i].IsAvailable() && voices[i].currentMidiNote == midiNote) {
