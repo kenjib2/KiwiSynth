@@ -11,49 +11,42 @@ namespace kiwi_synth
 
     void PlayScreen::Display()
     {
-        //char value[32];
+        char value[32];
 
         display->Fill(false);
 
-        display->SetCursor(0, 0);
-        if (patch->GetLiveMode()) {
-    	    sprintf(buffer, "Live Mode");
-        } else {
-            char name[MAX_PATCH_NAME_LENGTH + 1];
-            patch->GetName(name);
-            sprintf(buffer, "%c.%03d %s", 'A' + patch->GetBankNumber(), patch->GetPatchNumber() + 1, name);
-        }
-        display->WriteString(buffer, Font_6x8, true);
-
-        // The amount of audio interference seems to be dependent on how much pixels are enabled on the screen.
-        // If we can fix the interference we can bring back this more attractive display format.
-	    /*sprintf(buffer, "Kiwi Synth");
+	    sprintf(buffer, " Kiwi Synth");
         display->SetCursor(0, 0);
         display->WriteString(buffer, Font_11x18, true);
 
-        display->SetCursor(0, 22);
-	    sprintf(buffer, "Version 1.0");
+        display->SetCursor(0, 18);
+	    sprintf(buffer, "     Version 1.0");
         display->WriteString(buffer, Font_6x8, true);
 
         if (patch->GetLiveMode()) {
             display->SetCursor(0, 36);
-    	    sprintf(buffer, "Live Mode");
+    	    sprintf(buffer, "      Live Mode");
             display->WriteString(buffer, Font_6x8, true);
         } else {
-            display->SetCursor(0, 36);
+            display->SetCursor(0, 30);
             patch->GetName(value);
             sprintf(buffer, "%c.%03d %s", 'A' + patch->GetBankNumber(), patch->GetPatchNumber() + 1, value);
             display->WriteString(buffer, Font_6x8, true);
 
-            display->SetCursor(0, 44);
-            GetPatchType(value); // Needs to be implemented similar to PatchScreen.cpp
+            display->SetCursor(0, 38);
+            EnumToText::GetPatchType(value, patch->GetPatchType());
             sprintf(buffer, "Type: %s", value);
+            display->WriteString(buffer, Font_6x8, true);
+
+            display->SetCursor(0, 46);
+            EnumToText::GetVoiceMode(value, (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES));
+            sprintf(buffer, "Voices: %s", value);
             display->WriteString(buffer, Font_6x8, true);
         }
 
         display->SetCursor(36, 56);
 	    sprintf(buffer, "Bombastic Audio");
-        display->WriteString(buffer, Font_6x8, true);*/
+        display->WriteString(buffer, Font_6x8, true);
 
         display->Update();
     }

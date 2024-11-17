@@ -6,6 +6,7 @@
 
 #include "../Controls/KiwiMcp23017.h"
 #include "../Patch/Patch.h"
+#include "EnumToText.h"
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 

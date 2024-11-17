@@ -31,18 +31,18 @@ using namespace kiwi_synth;
 /*
  * TO DO
  * 
- * Inverted amplitude envelope clicks when starting and stopping
+ * Since changing to 3 notes sometimes voices don't process NoteOff and keep playing
+ * Since changing to 3 notes sometimes voices don't start
+ * Load patches via Sysex
  * Menu to change system-wide default mods and patch mod settings 5-8
- * Save and load patches via Sysex
+ * Inverted amplitude envelope clicks when starting and stopping
  * External audio in
  * Gate and Duck effects based on input
  * Pitch detection - BACF, CMSIS, Yin Algorithm, Cycfi https://www.cycfi.com/2024/09/pitch-perfect-enhanced-pitch-detection-techniques-part-1/
  * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
  * Appegiator? Sequencer?
  * Ping Pong Delay
- * L/R Output noise: It is from the OLED: It pretty much needs its own whole power section: own regulator, 100uF+ filter caps, and an RLC filter if you can. 
- * Headphone out noise
- * More text on display interferes with audio -- see DisplayWelcome. It is independent of the volume knob. Probably the main source of noise.
+ * L/R Output noise: High pitched whine. It is there subtly on headphones too.
  *
  * Paraphonic layered 3 "voice" mode.
  * Separate FX 1 and FX 2 into separate settings? Can add a delay mode so you can swap out normal delay for ping-pong etc.
@@ -68,7 +68,6 @@ using namespace kiwi_synth;
  * New mod destination that is just Noise to amplifer Level (constant noise outside of envelope)
  * Can dust noise optionally bypass the filter somehow?
  * Performance %s are off if we increase above a 256 buffer
- * Going out of GUI mode sometimes triggers note on(s)
  */
 
 // Patch idea -- very slow square LFO with super short PW. Have it trigger on short PW first, then "blip" up/down to the note. Chip-tunesy
