@@ -10,7 +10,7 @@ OPT = -O2
 TARGET = HardwareTest
 
 # Sources
-CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Modules/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp) $(wildcard KiwiSynth/GUI/*.cpp) $(wildcard KiwiSynth/Effects/*.cpp) $(wildcard KiwiSynth/Effects/Zita/*.cpp)
+CPP_SOURCES = $(wildcard *.cpp) $(wildcard KiwiSynth/*.cpp) $(wildcard KiwiSynth/Util/*.cpp) $(wildcard KiwiSynth/Modules/*.cpp) $(wildcard KiwiSynth/Controls/*.cpp) $(wildcard KiwiSynth/Patch/*.cpp) $(wildcard KiwiSynth/GUI/*.cpp) $(wildcard KiwiSynth/Effects/*.cpp) $(wildcard KiwiSynth/Effects/Zita/*.cpp)
 
 # Library Locations
 LIBDAISY_DIR = ../../libDaisy/

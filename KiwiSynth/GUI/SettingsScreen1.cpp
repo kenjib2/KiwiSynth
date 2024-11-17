@@ -18,11 +18,11 @@ namespace kiwisynth
         PatchSettings* settings;
         VoiceMode voiceMode;
 
-        voiceMode = (VoiceMode)patch->voice1Settings->getIntValue(OSC_VOICES);
+        voiceMode = (VoiceMode)patch->voice1Settings_->getIntValue(OSC_VOICES);
         if (voiceNumber == 0 || (voiceMode != VOICE_MODE_MULTI && voiceMode != VOICE_MODE_SPLIT)) {
-            settings = patch->voice1Settings;
+            settings = patch->voice1Settings_;
         } else {
-            settings = patch->voice2Settings;
+            settings = patch->voice2Settings_;
         }
 
         display->Fill(false);

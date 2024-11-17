@@ -39,13 +39,19 @@
 #ifndef INFS_MOOGLADDER_H
 #define INFS_MOOGLADDER_H
 
+
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "daisysp.h"
 #ifdef __cplusplus
 
+
+
 namespace infrasonic
 {
+
+
 
 class MoogLadder
 {
@@ -65,6 +71,8 @@ class MoogLadder
         /** Process mono buffer in place */
         void ProcessInPlace(float *buf, size_t size);
 
+
+
         /** 
             Sets the cutoff frequency or half-way point of the filter.
             Arguments
@@ -76,6 +84,8 @@ class MoogLadder
             compute_coeffs(freq);
         }
 
+
+
         /** 
             Sets the resonance of the filter.
             @param res Range from 0 - 1.8, self-oscillates at highest values.
@@ -86,6 +96,8 @@ class MoogLadder
             res = daisysp::fclamp(res, 0.0f, kMaxResonance);
             K_ = 4.0f * res;
         }
+
+
 
     private:
         static const uint8_t kInterpolation = 2;
@@ -104,9 +116,20 @@ class MoogLadder
         float pbg_;
         float oldinput_;
 
-        inline float LPF(float s, int i);
         void compute_coeffs(float fc);
+
+
+
+        inline float LPF(float s, int i)
+        {
+            float ft = s * (1.0f/1.3f) + (0.3f/1.3f) * z0_[i] - z1_[i];
+            ft = ft * alpha_ + z1_[i];
+            z1_[i] = ft;
+            z0_[i] = s;
+            return ft;
+        }
 };
+
 
 
 } // namespace infrasonic

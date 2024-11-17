@@ -11,14 +11,22 @@ https://opensource.org/licenses/MIT.
 #pragma once
 #ifndef __KIWI_SYNTH_KIWI_PBSQUARE_H__
 #define __KIWI_SYNTH_KIWI_PBSQUARE_H__
+
+
+
 #include <stdint.h>
 #include "Utility/dsp.h"
 #ifdef __cplusplus
+
+
 
 using namespace daisysp;
 
 namespace kiwisynth
 {
+
+
+
 /** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
 */
 class KiwiPBSquare
@@ -26,6 +34,12 @@ class KiwiPBSquare
   public:
     KiwiPBSquare() {}
     ~KiwiPBSquare() {}
+    
+    /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
+    */
+    float Process();
+
+
 
     /** Initializes the Oscillator
 
@@ -48,6 +62,8 @@ class KiwiPBSquare
         eoc_       = true;
     }
 
+
+
     /** Changes the frequency of the Oscillator, and recalculates phase increment.
     */
     inline void SetFreq(const float f)
@@ -56,16 +72,19 @@ class KiwiPBSquare
         phase_inc_ = CalcPhaseInc(f);
         phase_inc_recip_ = 1.0f / phase_inc_;
     }
+
+
+
     /** Sets the amplitude of the waveform.
     */
     inline void SetAmp(const float a) { amp_ = a; }
+
+
+
     /** Sets the pulse width for WAVE_SQUARE and WAVE_POLYBLEP_SQUARE (range 0 - 1)
      */
     inline void SetPw(const float pw) { pw_ = fclamp(pw, 0.0f, 1.0f); }
 
-    /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
-    */
-    float Process();
     /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
      * The phaseMod parameter can be used to modulate the phase for PM synthesis.
      */

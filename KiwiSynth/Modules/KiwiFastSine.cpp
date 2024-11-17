@@ -1,52 +1,54 @@
 #include "KiwiFastSine.h"
 
 
-namespace kiwisynth
+
+using namespace kiwisynth;
+
+
+
+float KiwiFastSine::Process()
 {
+    float out;
 
-    float KiwiFastSine::Process()
+    out = fastCos(phase_ * TWOPI_F);
+
+    phase_ += phase_inc_;
+    if(phase_ > 1.0f)
     {
-        float out;
-
-        out = fastCos(phase_ * TWOPI_F);
-
-        phase_ += phase_inc_;
-        if(phase_ > 1.0f)
-        {
-            phase_ -= 1.0f;
-            eoc_ = true;
-        }
-        else
-        {
-            eoc_ = false;
-        }
-
-        return out * amp_;
+        phase_ -= 1.0f;
+        eoc_ = true;
+    }
+    else
+    {
+        eoc_ = false;
     }
 
-    float KiwiFastSine::Process(float phaseMod)
+    return out * amp_;
+}
+
+
+
+float KiwiFastSine::Process(float phaseMod)
+{
+    float out;
+    float calculatedPhase = phase_ + phaseMod;
+    if(calculatedPhase > 1.0f)
     {
-        float out;
-        float calculatedPhase = phase_ + phaseMod;
-        if(calculatedPhase > 1.0f)
-        {
-            calculatedPhase -= 1.0f;
-        }
-
-        out = fastCos(calculatedPhase * TWOPI_F);
-
-        phase_ += phase_inc_;
-        if(phase_ > 1.0f)
-        {
-            phase_ -= 1.0f;
-            eoc_ = true;
-        }
-        else
-        {
-            eoc_ = false;
-        }
-
-        return out * amp_;
+        calculatedPhase -= 1.0f;
     }
 
-} // namespace kiwisynth
+    out = fastCos(calculatedPhase * TWOPI_F);
+
+    phase_ += phase_inc_;
+    if(phase_ > 1.0f)
+    {
+        phase_ -= 1.0f;
+        eoc_ = true;
+    }
+    else
+    {
+        eoc_ = false;
+    }
+
+    return out * amp_;
+}

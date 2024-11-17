@@ -67,7 +67,7 @@ class KiwiFlanger : public IEffect
     float                    sample_rate_;
     // 20 ms at 32kHz = .02 * 32000
     // 20 ms at 48kHz = .02 * 48000
-    static constexpr int32_t kDelayLength = intSampleRate / 50;
+    static constexpr int32_t kDelayLength = SAMPLE_RATE_INT / 50;
 
     float feedback_;
 

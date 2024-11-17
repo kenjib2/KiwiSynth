@@ -68,7 +68,7 @@ class KiwiChorusEngine
   private:
     float                    sample_rate_;
     static constexpr int32_t kDelayLength
-        = intSampleRate / 20; 
+        = SAMPLE_RATE_INT / 20; 
         // 50 ms at 32kHz = .05 * 32000
         // 50 ms at 48kHz = .05 * 48000
 

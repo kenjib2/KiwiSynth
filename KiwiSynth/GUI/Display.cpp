@@ -18,7 +18,7 @@ namespace kiwisynth
         guiButton = false;
         mode = MODE_PLAY;
         menuActive = false;
-        prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT);
+        prevSelectValue = patch->voice1Settings_->getIntValue(GEN_SELECT);
 
         playScreen.Init(&display, patch);
         bootloaderScreen.Init(&display);
@@ -63,7 +63,7 @@ namespace kiwisynth
         bool updateNeeded = false;
 
         // Handle encoder rotations: Figure out if it changed. -1 is counterclockwise, 1 is clockwise, and 0 is no movement.
-        int newValue = patch->voice1Settings->getIntValue(GEN_SELECT);
+        int newValue = patch->voice1Settings_->getIntValue(GEN_SELECT);
         int direction = 0;
         if (__builtin_expect(newValue != prevSelectValue, 0)) {
             if ((newValue > prevSelectValue || (newValue == -128 && prevSelectValue == 127))
@@ -149,7 +149,7 @@ namespace kiwisynth
 
         // Handle encoder button clicks
         bool prevGuiButton = guiButton;
-        guiButton = patch->voice1Settings->getBoolValue(GEN_SELECT_BUTTON);
+        guiButton = patch->voice1Settings_->getBoolValue(GEN_SELECT_BUTTON);
         if (__builtin_expect(prevGuiButton && !guiButton, 0)) {
             PatchScreenResponse patchResponse;
             SelectScreenResponse selectResponse;
@@ -258,7 +258,7 @@ namespace kiwisynth
                 // Send the click to the patch select screen and then handle the response.
                 selectResponse = selectScreen.Click();
                 if (selectResponse == SELECT_SCREEN_RESPONSE_PLAY) {
-                    prevSelectValue = patch->voice1Settings->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
+                    prevSelectValue = patch->voice1Settings_->getIntValue(GEN_SELECT); // To prevent buggy screen scrolling after load
                     menuActive = false;
                     mode = MODE_PLAY;
                 } else if (selectResponse == SELECT_SCREEN_RESPONSE_CANCEL) {
@@ -305,14 +305,14 @@ namespace kiwisynth
 
     int Display::GetSelectValue(int numElements)
     {
-        int8_t value = patch->voice1Settings->getIntValue(GEN_SELECT);
+        int8_t value = patch->voice1Settings_->getIntValue(GEN_SELECT);
         if (value < 0) {
             value += numElements;
         } else {
             value %= numElements;
         }
 
-        patch->voice1Settings->setValue(GEN_SELECT, value);
+        patch->voice1Settings_->setValue(GEN_SELECT, value);
 
         return value;
     }

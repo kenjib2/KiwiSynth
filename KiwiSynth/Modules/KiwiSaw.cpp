@@ -1,27 +1,27 @@
 #include "KiwiSaw.h"
 
 
-namespace kiwisynth
+
+using namespace kiwisynth;
+
+
+
+float KiwiSaw::Process()
 {
+    float out;
 
-    float KiwiSaw::Process()
+    out = -1.0f * (((phase_ * 2.0f)) - 1.0f);
+
+    phase_ += phase_inc_;
+    if(phase_ > 1.0f)
     {
-        float out;
-
-        out = -1.0f * (((phase_ * 2.0f)) - 1.0f);
-
-        phase_ += phase_inc_;
-        if(phase_ > 1.0f)
-        {
-            phase_ -= 1.0f;
-            eoc_ = true;
-        }
-        else
-        {
-            eoc_ = false;
-        }
-
-        return out * amp_;
+        phase_ -= 1.0f;
+        eoc_ = true;
+    }
+    else
+    {
+        eoc_ = false;
     }
 
-} // namespace kiwisynth
+    return out * amp_;
+}

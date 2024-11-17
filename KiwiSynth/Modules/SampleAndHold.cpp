@@ -1,16 +1,17 @@
 #include "SampleAndHold.h"
 
-namespace kiwisynth
+
+
+using namespace kiwisynth;
+
+
+
+void SampleAndHold::Init(float sampleRate)
 {
+    minimumRate_ = sampleRate / 1000; // 1 ms
+    maximumRate_ = sampleRate; // 1 sec
 
-    void SampleAndHold::Init(float sampleRate)
-    {
-        SAMPLE_AND_HOLD_MINIMUM_RATE = sampleRate / 1000; // 1 ms
-        SAMPLE_AND_HOLD_MAXIMUM_RATE = sampleRate; // 1 sec
-
-        rate = SAMPLE_AND_HOLD_MINIMUM_RATE * 100;
-        counter = 0;
-        currentSample = 0.0f;
-    }
-
-} // namespace kiwisynth
+    rate_ = minimumRate_ * 100;
+    counter_ = 0;
+    currentSample_ = 0.0f;
+}

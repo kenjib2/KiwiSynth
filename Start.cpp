@@ -6,16 +6,21 @@
 #include "KiwiSynth/Controls/GpioExpansion.h"
 #include "KiwiSynth/GUI/Display.h"
 
+
+
 using namespace daisy;
 using namespace kiwisynth;
+
+
 
 DaisySeed hw;
 KiwiSynth kiwiSynth;
 Display display;
-const int AUDIO_BLOCK_SIZE = 64;
 Performance performance;
 CpuLoadMeter load;
 bool audioRunning;
+
+
 
 void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
                    AudioHandle::InterleavingOutputBuffer out,
@@ -31,6 +36,8 @@ void AudioCallback(AudioHandle::InterleavingInputBuffer  in,
 	load.OnBlockEnd();
 	#endif // __CPU_LOAD__
 }
+
+
 
 int main(void)
 {

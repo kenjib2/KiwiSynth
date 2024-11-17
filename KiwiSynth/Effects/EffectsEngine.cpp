@@ -28,19 +28,19 @@ namespace kiwisynth
 
     void EffectsEngine::UpdateSettings()
     {
-        float reverbLevel = patch->voice1Settings->getFloatValue(PatchSetting::FX_REVERB);
+        float reverbLevel = patch->voice1Settings_->getFloatValue(PatchSetting::FX_REVERB);
         if (reverbLevel > 0.002f) {
             reverb.set_opmix(reverbLevel);
         } else {
             reverb.set_opmix(0.0f);
         }
 
-        distortion.SetGain(patch->voice1Settings->getFloatValueLogLookup(PatchSetting::FX_1));
-        distortion.SetLevel(patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.25f));
+        distortion.SetGain(patch->voice1Settings_->getFloatValueLogLookup(PatchSetting::FX_1));
+        distortion.SetLevel(patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_2, 0.02f, 0.25f));
 
-        float bitcrushFactor = patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_3, 0.0f, 0.8f);
-        float downsampleFactor = patch->voice1Settings->getFloatValue(PatchSetting::FX_4);
-        float decimatorLevel = patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_5, 0.5f, 1.0f);
+        float bitcrushFactor = patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_3, 0.0f, 0.8f);
+        float downsampleFactor = patch->voice1Settings_->getFloatValue(PatchSetting::FX_4);
+        float decimatorLevel = patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_5, 0.5f, 1.0f);
         decimatorL.SetBitcrushFactor(bitcrushFactor);
         decimatorR.SetBitcrushFactor(bitcrushFactor);
         decimatorL.SetDownsampleFactor(downsampleFactor);
@@ -48,10 +48,10 @@ namespace kiwisynth
         decimatorL.SetLevel(decimatorLevel);
         decimatorR.SetLevel(decimatorLevel);
 
-        float freq = patch->voice1Settings->getFloatValueLogLookup(PatchSetting::MOD_1_DEPTH);   // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
-        float feedback = patch->voice1Settings->getFloatValue(PatchSetting::FX_2) * 0.9f;
+        float freq = patch->voice1Settings_->getFloatValueLogLookup(PatchSetting::MOD_1_DEPTH);   // Using MOD_1_DEPTH as a hacky fill in for alternate FX_1 value
+        float feedback = patch->voice1Settings_->getFloatValue(PatchSetting::FX_2) * 0.9f;
         float chorusDepth = feedback;
-        float phaserDepth = patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_2, 0.2f, 1.0f);
+        float phaserDepth = patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_2, 0.2f, 1.0f);
 
         chorusL.SetLfoFreq(freq);
         chorusR.SetLfoFreq(freq * 0.95f);
@@ -70,11 +70,11 @@ namespace kiwisynth
         flangerL.SetFeedback(feedback);
         flangerR.SetFeedback(feedback);
 
-        float delayLevel = patch->voice1Settings->getFloatValue(PatchSetting::FX_3);
+        float delayLevel = patch->voice1Settings_->getFloatValue(PatchSetting::FX_3);
         delay.SetLevel(delayLevel);
-        int delaySamples = (int)patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES);
+        int delaySamples = (int)patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_4, MIN_DELAY_SAMPLES, MAX_DELAY_SAMPLES);
         delay.SetDelaySamples(delaySamples);
-        float delayFeedback = patch->voice1Settings->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f);
+        float delayFeedback = patch->voice1Settings_->getFloatValueLinear(PatchSetting::FX_5, 0.0f, 0.9f);
         delay.SetFeedback(delayFeedback);
 
         effectsMode = patch->GetEffectsMode();

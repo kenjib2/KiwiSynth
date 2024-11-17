@@ -17,7 +17,7 @@ namespace kiwisynth
         PatchSettings* settings;
 
         // Effects settings always come from voice1Settings
-        settings = patch->voice1Settings;
+        settings = patch->voice1Settings_;
 
         display->Fill(false);
 

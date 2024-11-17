@@ -11,16 +11,24 @@ https://opensource.org/licenses/MIT.
 #pragma once
 #ifndef __KIWI_SYNTH_KIWI_TRIANGLE_H__
 #define __KIWI_SYNTH_KIWI_TRIANGLE_H__
+
+
+
 #include <stdint.h>
 #include "Utility/dsp.h"
 #ifdef __cplusplus
+
+
 
 using namespace daisysp;
 
 namespace kiwisynth
 {
+
+
+
 /** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
-*/
+ */
 class KiwiTriangle
 {
   public:

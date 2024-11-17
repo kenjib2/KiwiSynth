@@ -1,15 +1,80 @@
 # KiwiSynth
-The Kiwi Synthesizer code
+The Kiwi Synthesizer is a synthesizer with the following features:
+
+* Stereo output with balance control, including balance modulation for panning effects
+* OLED screen with GUI
+* Support for MIDI input, including mod wheel, pitch bend, aftertouch, sustain, and expression implementations
+* Knob-per-function hardware support for a virtual-analog live experience
+* Eight banks with 128 preset slots per bank for a total of 1024 available patch slots
+* Instrument and line in inputs (not yet implemented, but eventually for gating, ducking, pitch-tracking, FX processing, etc. modes)
+
+* Three voice polyphony with mono mode
+* Six oscillator paraphonic mode (expansion to 9 oscillator to be implemented)
+* Mono split and layered multi-timbral modes
+* Subtractive synthesis
+* Phase modulation synthesis: PM synthesis is very similar to, and often called, FM Synthesis. The DX7 used PM, for example
+
+* Three oscillators per voice
+* Multiple shapeable waveforms selectable for each oscillator, creating an infinite range of timbrality
+    * Polyblep square wave with pulse width
+    * Polyblep sawtooth with limiting: Boosts and clips the waveform, creating a sound similar to moving from sawtooth to square wave
+    * Triangle wave with wave folding
+    * Sawtooth <---> triangle shaping
+    * Sawtooth with variable notch
+    * Sine wave folding
+    * Sawtooth wave folding
+* Modulation of all waveform shaping modes, including pulse width modulation
+* Oscillator hard sync
+* White and dust noise
+* Portamento
+
+* A filter per voice with multiple modes, including:
+    * Ladder filter
+    * Low pass filter
+    * High pass filter
+    * Notch filter
+    * Peak filter
+    * One pole lowpass filter
+    * One pole highpass filter
+
+* Two LFOs with all of the selectable waveforms listed above plus a ramp waveform, all with the same shaping options
+* LFO retrigger on note on, including control of initial phase
+* Two ASDR envelopes with reverse phase mode
+* Sample and Hold
+* A four part patch modulation matrix (expansion to 8 to be implemented)
+* Four system-wide default modulations for MIDI controllers
+
+* An effects engine, including:
+    * Distortion and Delay
+    * Stereo chorus and Delay
+    * Phaser and Delay
+    * Flanger and Delay
+    * Distortion and Decimator (aka Bitcrusher)
+* Stereo reverb with the following modes:
+    * Room
+    * Hall
+    * Chamber
+    * Cathedral
+    * Bloom
+    * Bright
 
 We will be mostly following these style guidelines:
 https://geosoft.no/development/cppstyle.html
 
 Code imported from other projects might not follow this same standard.
 
+HOWEVER please note that due to this project pushing the limits of the Daisy Seed's capabilities, there are many instances
+where algorithms are implemented in what would traditionally be considered bad form. Most of these instances are done this
+way to micro-manage performance and complete the audio processing using the fewest number of instructions after compilation.
+Fixing what looks like bad form should be done cautiously and with knowledge of how it will effect the compilation of the
+code.
+
 TO DO
 * Since changing to 3 notes sometimes voices don't process NoteOff and keep playing
 * Since changing to 3 notes sometimes voices don't start
+* CC messages for bank and patch changes
 * Load patches via Sysex
+* Change six osc paraphonic to nine osc
 * Menu to change system-wide default mods and patch mod settings 5-8
 * Inverted amplitude envelope clicks when starting and stopping
 * External audio in
@@ -19,6 +84,9 @@ TO DO
 * Appegiator? Sequencer?
 * Ping Pong Delay
 * L/R Output noise: High pitched whine. It is there subtly on headphones too.
+* When the voice mode is changed, can we push a display update to the play screen and show the change?
+* Clean up too many global variables
+* Clean up public class members if compiler can avoid extra steps for getters/setters
 
 MAYBE TO DO
 * Paraphonic layered 3 "voice" mode.

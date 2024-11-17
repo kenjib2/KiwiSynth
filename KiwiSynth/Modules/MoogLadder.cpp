@@ -24,7 +24,10 @@
 #include "moogladder.h"
 
 
+
 using namespace infrasonic;
+
+
 
 static inline float fast_tanh(float x)
 {
@@ -33,6 +36,8 @@ static inline float fast_tanh(float x)
     float x2 = x * x;
     return x * (27.0f + x2) / (27.0f + 9.0f * x2);
 }
+
+
 
 void MoogLadder::Init(float sample_rate)
 {
@@ -48,6 +53,8 @@ void MoogLadder::Init(float sample_rate)
     SetFreq(5000.f);
     SetRes(0.2f);
 }
+
+
 
 float MoogLadder::Process(const float input)
 {
@@ -68,6 +75,8 @@ float MoogLadder::Process(const float input)
     oldinput_ = input;
     return total;
 }
+
+
 
 void MoogLadder::ProcessInPlace(float *buf, size_t size)
 {
@@ -115,14 +124,7 @@ void MoogLadder::ProcessInPlace(float *buf, size_t size)
     }
 }
 
-float MoogLadder::LPF(float s, int i)
-{
-    float ft = s * (1.0f/1.3f) + (0.3f/1.3f) * z0_[i] - z1_[i];
-    ft = ft * alpha_ + z1_[i];
-    z1_[i] = ft;
-    z0_[i] = s;
-    return ft;
-}
+
 
 void MoogLadder::compute_coeffs(float freq)
 {

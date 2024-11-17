@@ -18,7 +18,7 @@ namespace kiwisynth
         PatchSettings* settings;
 
         // Modulation settings always come from voice1Settings
-        settings = patch->voice1Settings;
+        settings = patch->voice1Settings_;
 
         display->Fill(false);
 
@@ -35,7 +35,7 @@ namespace kiwisynth
         display->SetCursor(0, 8);
         intVal1 = std::fabs(settings->getFloatValue(MOD_1_DEPTH) * 1000);
         modSign = ' ';
-        if (settings->modSigns[0] < 0.0f) {
+        if (settings->modSigns_[0] < 0.0f) {
             modSign = '-';
         }
         sprintf(buffer, "Depth1 %c%3d", modSign, intVal1);
@@ -54,7 +54,7 @@ namespace kiwisynth
         display->SetCursor(0, 24);
         intVal1 = std::fabs(settings->getFloatValue(MOD_2_DEPTH) * 1000);
         modSign = ' ';
-        if (settings->modSigns[1] < 0.0f) {
+        if (settings->modSigns_[1] < 0.0f) {
             modSign = '-';
         }
         sprintf(buffer, "Depth2 %c%3d", modSign, intVal1);
@@ -73,7 +73,7 @@ namespace kiwisynth
         display->SetCursor(0, 40);
         intVal1 = std::fabs(settings->getFloatValue(MOD_3_DEPTH) * 1000);
         modSign = ' ';
-        if (settings->modSigns[2] < 0.0f) {
+        if (settings->modSigns_[2] < 0.0f) {
             modSign = '-';
         }
         sprintf(buffer, "Depth3 %c%3d", modSign, intVal1);
@@ -92,7 +92,7 @@ namespace kiwisynth
         display->SetCursor(0, 56);
         intVal1 = std::fabs(settings->getFloatValue(MOD_4_DEPTH) * 1000);
         modSign = ' ';
-        if (settings->modSigns[3] < 0.0f) {
+        if (settings->modSigns_[3] < 0.0f) {
             modSign = '-';
         }
         sprintf(buffer, "Depth4 %c%3d", modSign, intVal1);
@@ -122,19 +122,19 @@ namespace kiwisynth
                 return SETTINGS_SCREEN_6_RESPONSE_EDIT;
 
             case SETTINGS_SCREEN_6_SRC1:
-                patch->voice1Settings->modSigns[0] *= -1.0f;
+                patch->voice1Settings_->modSigns_[0] *= -1.0f;
                 return SETTINGS_SCREEN_6_RESPONSE_EDIT;
 
             case SETTINGS_SCREEN_6_SRC2:
-                patch->voice1Settings->modSigns[1] *= -1.0f;
+                patch->voice1Settings_->modSigns_[1] *= -1.0f;
                 return SETTINGS_SCREEN_6_RESPONSE_EDIT;
 
             case SETTINGS_SCREEN_6_SRC3:
-                patch->voice1Settings->modSigns[2] *= -1.0f;
+                patch->voice1Settings_->modSigns_[2] *= -1.0f;
                 return SETTINGS_SCREEN_6_RESPONSE_EDIT;
 
             case SETTINGS_SCREEN_6_SRC4:
-                patch->voice1Settings->modSigns[3] *= -1.0f;
+                patch->voice1Settings_->modSigns_[3] *= -1.0f;
                 return SETTINGS_SCREEN_6_RESPONSE_EDIT;
 
             default:

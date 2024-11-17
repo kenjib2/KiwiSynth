@@ -70,19 +70,19 @@ namespace kiwisynth
             , _depth( 1.f )
             , _zm1( 0.f )
         {
-            lfo.Init(floatSampleRate);
+            lfo.Init(SAMPLE_RATE_FLOAT);
             lfo.SetAmp(0.5f);
             Range( 440.f, 1600.f );
             Rate( .5f );
         }
 
         void Range( float fMin, float fMax ){ // Hz
-            _dmin = fMin / (floatSampleRate/2.f);
-            _dmax = fMax / (floatSampleRate/2.f);
+            _dmin = fMin / (SAMPLE_RATE_FLOAT/2.f);
+            _dmax = fMax / (SAMPLE_RATE_FLOAT/2.f);
         }
 
         void Rate( float rate ){ // cps
-            _lfoInc = 2.f * F_PI * (rate / floatSampleRate);
+            _lfoInc = 2.f * F_PI * (rate / SAMPLE_RATE_FLOAT);
             lfo.SetFreq(rate);
         }
 

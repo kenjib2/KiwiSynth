@@ -2,17 +2,25 @@
 #define __KIWI_SYNTH_FILTER_H__
 
 
+
 #include "daisysp.h"
 #include "../Patch/PatchSettings.h"
 #include "MoogLadder.h"
 #include "KiwiSvf.h"
 
+
+
 using namespace daisysp;
 
 namespace kiwisynth
 {
+
+
+
     static const float      FLT_MIN_FREQUENCY = 100.0f;
     static const float      FLT_MAX_FREQUENCY = 15000.0f;
+
+
 
     /*
      * The filter module for the Kiwi Synth. Multiple filter types are provided.
@@ -20,13 +28,13 @@ namespace kiwisynth
     class Filter
     {
         private:
-            bool                    noteTriggered;
-            float                   frequency;
-            float                   resonance;
-            FilterType              filterType;
-            infrasonic::MoogLadder  filter;
-            OnePole                 opFilter;
-            KiwiSvf                 svFilter;
+            bool                    isNoteTriggered_;
+            float                   frequency_;
+            float                   resonance_;
+            FilterType              filterType_;
+            infrasonic::MoogLadder  filter_;
+            OnePole                 opFilter_;
+            KiwiSvf                 svFilter_;
 
         public:
             Filter() {}
@@ -44,6 +52,8 @@ namespace kiwisynth
              */
             void Process(float* sample, PatchSettings* patchSettings, float trackingMod, int currentMidiNote, float mod, float resMod);
     };
+
+
 
 } // namespace kiwisynth
 #endif // __KIWI_SYNTH_FILTER_H__

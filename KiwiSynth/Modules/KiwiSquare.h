@@ -11,14 +11,24 @@ https://opensource.org/licenses/MIT.
 #pragma once
 #ifndef __KIWI_SYNTH_KIWI_SQUARE_H__
 #define __KIWI_SYNTH_KIWI_SQUARE_H__
+
+
+
 #include <stdint.h>
 #include "Utility/dsp.h"
 #ifdef __cplusplus
 
+
+
 using namespace daisysp;
+
+
 
 namespace kiwisynth
 {
+
+
+
 /** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
 */
 class KiwiSquare
@@ -26,6 +36,12 @@ class KiwiSquare
   public:
     KiwiSquare() {}
     ~KiwiSquare() {}
+
+    /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
+    */
+    float Process();
+
+
 
     /** Initializes the Oscillator
 
@@ -48,6 +64,8 @@ class KiwiSquare
         eoc_       = true;
     }
 
+
+
     /** Changes the frequency of the Oscillator, and recalculates phase increment.
     */
     inline void SetFreq(const float f)
@@ -55,35 +73,56 @@ class KiwiSquare
         freq_      = f;
         phase_inc_ = CalcPhaseInc(f);
     }
+
+
+
     /** Sets the amplitude of the waveform.
     */
     inline void SetAmp(const float a) { amp_ = a; }
+
+
+
     /** Sets the pulse width for WAVE_SQUARE and WAVE_POLYBLEP_SQUARE (range 0 - 1)
      */
     inline void SetPw(const float pw) { pw_ = fclamp(pw, 0.0f, 1.0f); }
 
-    /** Processes the waveform to be generated, returning one sample. This should be called once per sample period.
-    */
-    float Process();
+
+
     /** Resets the phase to the input argument. If no argumeNt is present, it will reset phase to 0.0;
     */
     inline void Reset(float _phase = 0.0f) { phase_ = _phase; }
+
+
+
     /** Returns true if cycle is at end of cycle. Set during call to Process.
     */
     inline bool IsEOC() { return eoc_; }
+
+
+
     /** Returns the ratio of phase to frequency to generate a unit of time passed since the last phase crossing.
      */
     inline float GetPhaseRatio() { return phase_ / freq_; }
+
+
+
     /** Sets the phase based on a given phase ratio.
      */
     inline void HardSync(float phaseRatio) { phase_ = phaseRatio * freq_; }
 
+
+
   private:
-    inline float   CalcPhaseInc(float f) { return f * sr_recip_; }
     float   amp_, freq_, pw_;
     float   sr_, sr_recip_, phase_, phase_inc_;
     bool    eoc_;
+
+
+
+    inline float   CalcPhaseInc(float f) { return f * sr_recip_; }
 };
+
+
 
 } // namespace kiwisynth
 #endif

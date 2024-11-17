@@ -9,15 +9,21 @@ https://opensource.org/licenses/MIT.
 #ifndef __KIWI_SYNTH_KIWI_DUST_H__
 #define __KIWI_SYNTH_KIWI_DUST_H__
 
+
+
 #include "Utility/dsp.h"
 #include "../Util/KUtils.h"
-
 /** @file KiwiDust.h */
+
+
 
 using namespace daisysp;
 
 namespace kiwisynth
 {
+
+
+
 /**  
        @brief Dust Module
        @author Ported by Ben Sergentanis 
@@ -28,7 +34,6 @@ namespace kiwisynth
        Original code written by Emilie Gillet in 2016. \n
 
 */
-
 // Modified from the DaisySP version to use xorshift32 rng
 class KiwiDust
 {
@@ -36,10 +41,14 @@ class KiwiDust
     KiwiDust() {}
     ~KiwiDust() {}
 
+
+
     void Init() {
         SetDensity(.5f);
         rng = new xorshiftPRNG(rand());
     }
+
+
 
     inline float Process()
     {
@@ -51,6 +60,8 @@ class KiwiDust
         return 0.0f;
     }
 
+
+
     void SetDensity(float density)
     {
         density_ = fclamp(density, 0.f, 1.f);
@@ -58,12 +69,16 @@ class KiwiDust
         inv_density_ = 1.0f / density_;
     }
 
+
+
   private:
     xorshiftPRNG*          rng;
     float                  density_;
     float                  inv_density_;
-    static constexpr float kRandFrac = 1.f / MAX_XORSHIFT_VALUE;
+    static constexpr float kRandFrac = 1.f / xorshiftPRNG::MAX_XORSHIFT_VALUE;
 };
+
+
 
 } // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_DUST_H__
