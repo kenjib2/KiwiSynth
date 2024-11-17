@@ -1,7 +1,8 @@
 #include "VoiceBank.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void VoiceBank::Init(uint8_t maxVoices, uint8_t numOscillators, Patch* patch, float sampleRate) {
         modulations = new Modulation*[2];
         modulations[0] = new Modulation[NUM_MODULATIONS];
@@ -744,4 +745,4 @@ namespace kiwi_synth
         return 0;
     }
 
-}
+} // namespace kiwisynth

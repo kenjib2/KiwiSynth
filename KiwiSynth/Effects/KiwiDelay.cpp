@@ -1,6 +1,6 @@
 #include "KiwiDelay.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     float DSY_SDRAM_BSS delayLine[2][MAX_DELAY_SAMPLES];
 
@@ -30,4 +30,4 @@ namespace kiwi_synth
         input[0] = input[0] + readL * level;
         input[1] = input[1] + readR * level;
     }
-}
+} // namespace kiwisynth

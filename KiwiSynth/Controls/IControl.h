@@ -4,7 +4,7 @@
 
 #include "IControlListener.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     class IControl
     {
@@ -18,7 +18,7 @@ namespace kiwi_synth
              */
             virtual void RegisterControlListener(IControlListener* controlListener);
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_ICONTROL_H__

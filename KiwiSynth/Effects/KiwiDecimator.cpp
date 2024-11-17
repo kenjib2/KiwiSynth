@@ -1,6 +1,6 @@
 #include "KiwiDecimator.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
 void KiwiDecimator::Init()
@@ -47,4 +47,4 @@ float KiwiDecimator::Process(float input)
     return bitcrushed_ * level_;
 }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

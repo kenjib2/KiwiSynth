@@ -1,7 +1,7 @@
 #include "KiwiTriangle.h"
 
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     float KiwiTriangle::Process()
@@ -51,4 +51,4 @@ namespace kiwi_synth
         return out * amp_;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

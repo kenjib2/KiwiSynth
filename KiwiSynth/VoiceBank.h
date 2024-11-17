@@ -10,8 +10,9 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     const static int OSC_TRIGGER_SAMPLES = 1024;
 
     class VoiceBank
@@ -51,7 +52,6 @@ namespace kiwi_synth
             void NoteOff(uint8_t note, uint8_t velocity);
             void AllNotesOff();
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_VOICE_BANK_H__

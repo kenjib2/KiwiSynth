@@ -4,7 +4,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
 void KiwiFlanger::Init(float sample_rate, int bufferNumber)
@@ -85,4 +85,4 @@ float KiwiFlanger::ProcessLfo()
     return lfo_phase_ * lfo_amp_;
 }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

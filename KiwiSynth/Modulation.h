@@ -3,14 +3,16 @@
 
 #include "Patch/PatchTypes.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     class Modulation {
         public:
             ModulationDestination destination;
             ModulationSource source;
             float depth;
     };
-}
+
+} // namespace kiwisynth
 
 #endif // __KIWI_SYNTH_MODULATION__

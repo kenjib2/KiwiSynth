@@ -1,6 +1,6 @@
 #include "SettingsScreen5.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void SettingsScreen5::Init(KiwiDisplay* display, Patch* patch)
@@ -83,4 +83,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

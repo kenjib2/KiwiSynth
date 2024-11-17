@@ -2,7 +2,7 @@
 #define __KIWI_SYNTH_ICONTROL_LISTENER_H__
 
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * This interface is used to notify the listener when the synth controls are updated. When analog values
@@ -26,7 +26,7 @@ namespace kiwi_synth
              */
             virtual void controlGpioUpdate(int controlNumber);
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_ICONTROL_LISTENER_H__

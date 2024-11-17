@@ -2,7 +2,7 @@
 #define __KIWI_SYNTH_KIWI_PHASER__
 
 #include "../Modules/KiwiTriangle.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 
 /* 
 Date: Mon, 24 Aug 1998 07:02:40 -0700
@@ -55,7 +55,7 @@ Ross B.
 */
 // Modified by Kenji Baugham to use a cheaper triangle LFO instead of sine
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     //#define SR (48000.f)  //sample rate
@@ -150,5 +150,5 @@ namespace kiwi_synth
         float _zm1;
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_PHASER__

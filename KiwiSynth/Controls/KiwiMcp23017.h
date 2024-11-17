@@ -5,7 +5,7 @@
 
 using namespace daisy;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     // Adapted from https://github.com/blemasle/arduino-mcp23017
 
@@ -482,4 +482,5 @@ namespace kiwi_synth
     };
 
     using KiwiMcp23017 = KiwiMcp23X17<KiwiMcp23017Transport>;
-}
+
+} // namespace kiwisynth

@@ -6,7 +6,7 @@
 
 #include "daisy_seed.h"
 
-#include "../KUtils.h"
+#include "Util/KUtils.h"
 #include "Controls/MultiPots.h"
 #include "Patch/Patch.h"
 #include "VoiceBank.h"
@@ -18,7 +18,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     static const int MIDI_LED_DURATION = 20;
     static const int MULTIPLEX_CHANNEL_DELAY = 550;
@@ -81,7 +81,7 @@ namespace kiwi_synth
             void AllNotesOff();
             void TestOutput(DaisySeed* hw);
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_H__

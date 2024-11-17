@@ -14,11 +14,11 @@ https://opensource.org/licenses/MIT.
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 
 /** @file KiwiFlanger.h */
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /** @brief Flanging Audio Effect 
  *
@@ -82,6 +82,6 @@ class KiwiFlanger : public IEffect
 
     float ProcessLfo();
 };
-} //namespace kiwi_synth
+} //namespace kiwisynth
 #endif
 #endif // __KIWI_SYNTH_KIWI_FLANGER_H__

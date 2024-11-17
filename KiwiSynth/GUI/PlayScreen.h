@@ -10,7 +10,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * The audio loop is only active when the display is showing the play screen. It will
@@ -31,7 +31,7 @@ namespace kiwi_synth
             Patch* patch;
             KiwiDisplay* display;
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_PLAY_SCREEN_H__

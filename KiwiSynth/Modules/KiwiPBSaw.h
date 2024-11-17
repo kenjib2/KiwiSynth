@@ -17,7 +17,7 @@ https://opensource.org/licenses/MIT.
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
 */
@@ -86,6 +86,6 @@ class KiwiPBSaw
     bool    eoc_;
 };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif
 #endif // __KIWI_SYNTH_KIWI_PBSAW_H__

@@ -10,7 +10,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     class Patch
     {
@@ -78,5 +78,5 @@ namespace kiwi_synth
             void SwapLayers();
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_PATCH_H__

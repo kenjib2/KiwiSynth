@@ -5,7 +5,7 @@
 
 #include "PatchTypes.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {      
 
     struct PatchHeader
@@ -17,5 +17,5 @@ namespace kiwi_synth
         char                    name[MAX_PATCH_NAME_LENGTH + 1];
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_PATCH_HEADER_H__

@@ -12,7 +12,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * The Kiwi Synth oscillator module provides a wide range of tonal texture. The following waveforms are supported:
@@ -81,7 +81,6 @@ namespace kiwi_synth
              */
             void HardSync(float phaseRatio);
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_OSCILLATOR_H__

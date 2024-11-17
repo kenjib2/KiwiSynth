@@ -13,7 +13,7 @@ https://opensource.org/licenses/MIT.
 #include "IEffect.h"
 #ifdef __cplusplus
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /** Performs downsampling and bitcrush effects
 */
@@ -92,6 +92,7 @@ class KiwiDecimator : public IEffect
     bool          smooth_crushing_;
     float         bit_overflow_;
 };
-} // namespace daisysp
+
+} // namespace kiwisynth
 #endif
 #endif // __KIWI_SYNTH_DECIMATOR_H__

@@ -10,7 +10,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const static int NUM_MPS = 3;
     const static int NUM_CHANNELS = 16;
@@ -117,7 +117,7 @@ namespace kiwi_synth
             float GetDirectValue(int potNumber);
     }; // class MultiPots
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_MULTIPOTS_H__

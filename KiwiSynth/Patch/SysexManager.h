@@ -8,8 +8,9 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     static const int KIWI_SYSEX_BUFFER_SIZE = 8192;
 
     union FloatConvert
@@ -40,6 +41,6 @@ namespace kiwi_synth
             void Send(Patch* patch);
             void Receive(Patch* patch, MidiUartHandler* midi, GpioExpansion* ge);
     };
-} // namespace kiwi_synth
 
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_SYSEX_MANAGER_H__

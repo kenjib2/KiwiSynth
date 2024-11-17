@@ -13,8 +13,9 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     static const float      LFO_MIN_FREQUENCY = 0.1f;
     static const float      LFO_MAX_FREQUENCY = 20.0f;
     
@@ -66,6 +67,6 @@ namespace kiwi_synth
              */
             inline void NoteOn() { if (noteOnReset) { squareOsc.Reset(phase); sawOsc.Reset(phase); rampOsc.Reset(phase); triangleOsc.Reset(phase); } }
     };
-}
 
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_LFO_H__

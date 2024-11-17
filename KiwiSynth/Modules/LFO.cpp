@@ -1,7 +1,8 @@
 #include "LFO.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void LFO::Init(float sampleRate, uint8_t lfoNumber)
     {
         this->lfoNumber = lfoNumber;
@@ -99,4 +100,4 @@ namespace kiwi_synth
         *sample = waveSample;
     }
 
-}
+} // namespace kiwisynth

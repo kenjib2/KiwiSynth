@@ -5,7 +5,7 @@
 
 #include "IEffect.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const float ATAN_DEBOUNCE_THRESHOLD = 5.1f;
 
@@ -36,5 +36,5 @@ namespace kiwi_synth
             inline void SetLevel(float level) { this->level = level; }
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_DISTORTION_H__

@@ -10,7 +10,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     enum SelectScreenPage
@@ -80,5 +80,5 @@ namespace kiwi_synth
             KiwiDisplay* display;
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_SELECT_SCREEN_H__

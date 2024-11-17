@@ -9,7 +9,7 @@
 
 using namespace daisy;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const static uint32_t QSPI_BASE_ADDRESS = 0x90100000;
     const static uint32_t PATCHES_BASE_ADDRESS = QSPI_BASE_ADDRESS;
@@ -54,5 +54,5 @@ namespace kiwi_synth
 
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_STORAGE_H__

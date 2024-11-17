@@ -1,6 +1,6 @@
 #include "GpioExpansion.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     void GpioExpansion::Init()
     {
@@ -31,8 +31,8 @@ namespace kiwi_synth
                 pullupsPortA = (gpioExpansionConfig->pullupMap[i] & 0b1111111100000000) >> 8;
                 pullupsPortB = gpioExpansionConfig->pullupMap[i] & 0b0000000011111111;
             }
-            mcp.PortMode(kiwi_synth::MCPPort::A, 0xFF, pullupsPortA, 0x00); // All pins are inputs
-            mcp.PortMode(kiwi_synth::MCPPort::B, 0xFF, pullupsPortB, 0x00); // All pins are inputs
+            mcp.PortMode(kiwisynth::MCPPort::A, 0xFF, pullupsPortA, 0x00); // All pins are inputs
+            mcp.PortMode(kiwisynth::MCPPort::B, 0xFF, pullupsPortB, 0x00); // All pins are inputs
 
             uint8_t interruptsPortA = 0xFF;
             uint8_t interruptsPortB = 0xFF;
@@ -40,9 +40,9 @@ namespace kiwi_synth
                 interruptsPortA = (gpioExpansionConfig->activeMap[i] & 0b1111111100000000) >> 8;
                 interruptsPortB = gpioExpansionConfig->activeMap[i] & 0b0000000011111111;
             }
-            mcp.interruptMode(kiwi_synth::MCP23017InterruptMode::Or);
-            mcp.interrupt(kiwi_synth::MCPPort::A, kiwi_synth::CHANGE, interruptsPortA);
-            mcp.interrupt(kiwi_synth::MCPPort::B, kiwi_synth::CHANGE, interruptsPortB);
+            mcp.interruptMode(kiwisynth::MCP23017InterruptMode::Or);
+            mcp.interrupt(kiwisynth::MCPPort::A, kiwisynth::CHANGE, interruptsPortA);
+            mcp.interrupt(kiwisynth::MCPPort::B, kiwisynth::CHANGE, interruptsPortB);
 
             mcps.push_back(mcp);
 
@@ -85,4 +85,4 @@ namespace kiwi_synth
         return interrupted;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

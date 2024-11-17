@@ -4,7 +4,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 //ChorusEngine stuff
 void KiwiChorusEngine::Init(float sample_rate, int bufferNumber)
@@ -134,4 +134,4 @@ void KiwiChorus::SetFeedback(float feedback)
     engines_[0].SetFeedback(feedback);
     engines_[1].SetFeedback(feedback);
 }
-} // namespace kiwi_synth
+} // namespace kiwisynth

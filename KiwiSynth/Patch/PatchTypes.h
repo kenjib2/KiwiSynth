@@ -1,7 +1,7 @@
 #ifndef __KIWI_SYNTH_PATCH_TYPES_H__
 #define __KIWI_SYNTH_PATCH_TYPES_H__
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const static int MAX_PATCH_NAME_LENGTH = 15;
     const static int NUM_MOD_SOURCES = 15; // Including NONE
@@ -337,5 +337,5 @@ namespace kiwi_synth
         //DST_FX_REVERB
     } ModulationDestination; // 37 destinations not including None
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_PATCH_TYPES_H__

@@ -1,6 +1,6 @@
 #include "Patch.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     void Patch::Init(MultiPots* multiPots, GpioExpansion* ge)
     {
@@ -125,4 +125,4 @@ namespace kiwi_synth
        }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

@@ -14,11 +14,11 @@ https://opensource.org/licenses/MIT.
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 
 /** @file chorus.h */
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /**  
     @brief Single Chorus engine. Used in Chorus.
@@ -141,6 +141,6 @@ class KiwiChorus : public IEffect
 
     float sig_;
 };
-} //namespace kiwi_synth
+} //namespace kiwisynth
 #endif // __cplusplus
 #endif // __KIWI_SYNTH_KIWI_CHORUS_H__

@@ -1,6 +1,6 @@
 #include "PatchScreen.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void PatchScreen::Init(KiwiDisplay* display, Patch* patch)
@@ -242,4 +242,4 @@ namespace kiwi_synth
         return PATCH_SCREEN_RESPONSE_EDIT;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

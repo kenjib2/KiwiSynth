@@ -8,7 +8,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     
     /*
@@ -82,7 +82,6 @@ namespace kiwi_synth
                 }
             }
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_ENVELOPE_H__

@@ -9,7 +9,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     // These are all possible selected menu items on this screen.
     enum IntScreenSelection
@@ -61,5 +61,5 @@ namespace kiwi_synth
 
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_INT_VALUE_SCREEN_H__

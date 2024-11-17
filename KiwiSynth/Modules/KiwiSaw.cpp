@@ -1,7 +1,7 @@
 #include "KiwiSaw.h"
 
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     float KiwiSaw::Process()
@@ -24,4 +24,4 @@ namespace kiwi_synth
         return out * amp_;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

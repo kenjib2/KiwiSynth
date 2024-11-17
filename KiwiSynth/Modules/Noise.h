@@ -8,7 +8,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * The synth noise module.
@@ -63,7 +63,6 @@ namespace kiwi_synth
              */
             inline float GetLastSample() { return lastSample; }
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_NOISE_H__

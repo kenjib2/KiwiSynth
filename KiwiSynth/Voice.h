@@ -17,8 +17,9 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     const static float VOICE_ATTENTUATION_CONSTANT = 0.25f;
     const static int NOTE_TRIGGER_SAMPLES = 72;
     
@@ -96,7 +97,6 @@ namespace kiwi_synth
             }
 
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_VOICE_H__

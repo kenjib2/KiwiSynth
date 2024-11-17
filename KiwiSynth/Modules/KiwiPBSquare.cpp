@@ -1,7 +1,7 @@
 #include "KiwiPBSquare.h"
 
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     static inline float Polyblep(float phase_inc, float phase_inc_recip, float t);
@@ -79,4 +79,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

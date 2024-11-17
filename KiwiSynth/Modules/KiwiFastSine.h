@@ -13,12 +13,12 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_FAST_SINE_H__
 #include <stdint.h>
 #include "Utility/dsp.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 #ifdef __cplusplus
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
 */
@@ -86,6 +86,6 @@ class KiwiFastSine
     bool    eoc_;
 };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif
 #endif // __KIWI_SYNTH_KIWI_FAST_SINE_H__

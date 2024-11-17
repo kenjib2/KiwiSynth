@@ -9,7 +9,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     /*
@@ -35,7 +35,7 @@ namespace kiwi_synth
             int voiceNumber;
 
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_SETTINGS_SCREEN_4_H__

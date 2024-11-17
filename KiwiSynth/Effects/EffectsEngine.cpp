@@ -1,6 +1,6 @@
 #include "EffectsEngine.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const float FREQ_DEBOUNCE_THRESHOLD = 0.05f;
 
@@ -195,4 +195,4 @@ namespace kiwi_synth
         sample[1] = yr;
     }
 
-}
+} // namespace kiwisynth

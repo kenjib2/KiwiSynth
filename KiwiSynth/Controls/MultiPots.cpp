@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "MultiPots.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     float mpValueBuffer[NUM_MPS][NUM_CHANNELS];
     float directValueBuffer[NUM_DIRECT_POTS];
@@ -80,4 +80,4 @@ namespace kiwi_synth
         controlListener->controlMpUpdate(currentPot);
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

@@ -12,7 +12,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
    /*
     * Used to initialize a GpioExpansion object.
@@ -88,6 +88,6 @@ namespace kiwi_synth
 
     }; // class MultiPots
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 #endif // __KIWI_SYNTH_GPIO_EXPANSION_H__

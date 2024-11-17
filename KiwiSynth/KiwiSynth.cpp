@@ -1,6 +1,6 @@
 #include "KiwiSynth.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     int patchHeaderSort(PatchHeader* a, PatchHeader* b) {
         return strcasecmp(a->name, b->name) < 0;
@@ -297,4 +297,4 @@ namespace kiwi_synth
         effectsEngine.UpdateSettings();
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

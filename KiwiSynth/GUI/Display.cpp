@@ -1,6 +1,6 @@
 #include "Display.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void Display::Init(KiwiSynth* kiwiSynth, Performance* performance)
@@ -365,4 +365,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

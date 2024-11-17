@@ -1,7 +1,8 @@
 #include "Oscillator.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void Oscillator::Init(float sampleRate, uint8_t oscNumber)
     {
         this->oscNumber = oscNumber;
@@ -218,4 +219,4 @@ namespace kiwi_synth
         }
     }
 
-}
+} // namespace kiwisynth

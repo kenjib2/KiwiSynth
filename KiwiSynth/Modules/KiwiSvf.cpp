@@ -4,7 +4,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     void KiwiSvf::Init(float sample_rate)
     {
@@ -104,4 +104,4 @@ namespace kiwi_synth
         drive_     = pre_drive_ * res_;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

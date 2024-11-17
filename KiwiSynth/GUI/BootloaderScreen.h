@@ -8,7 +8,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * Simple message to be displayed when the Kiwi Synth reboots into update mode so that the bios
@@ -27,7 +27,7 @@ namespace kiwi_synth
             char buffer[32];
             KiwiDisplay* display;
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_BOOTLOADER_SCREEN_H__

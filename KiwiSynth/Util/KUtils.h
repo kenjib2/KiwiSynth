@@ -3,13 +3,15 @@
 
 // Compiler options
 #define __CPU_LOAD__ // Monitor performance in GUI
-#define __SETTINGS_SCREENS__
 #define EXTRA_PRECISION // Higher precision fastCos and fastSin
 
 #include "daisy_seed.h"
 #include "daisysp.h"
 
 using namespace daisy;
+
+namespace kiwisynth
+{
 
 const static int intSampleRate = 32000;
 const static float floatSampleRate = 32000.f;
@@ -116,4 +118,5 @@ class Performance {
       
 };
 
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_KUTILS_H__

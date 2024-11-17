@@ -7,8 +7,9 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     /*
      * The Kiwi Synth sample and hold module.
      */
@@ -44,7 +45,6 @@ namespace kiwi_synth
                 *sample = currentSample;
             }
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_SAMPLE_AND_HOLD_H__

@@ -1,6 +1,6 @@
 #include "Envelope.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     void Envelope::Init(float sampleRate, uint8_t envNumber)
     {
@@ -66,4 +66,5 @@ namespace kiwi_synth
             }
         }
     }
-}
+
+} // namespace kiwisynth

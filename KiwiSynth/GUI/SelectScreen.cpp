@@ -1,6 +1,6 @@
 #include "SelectScreen.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     void SelectScreen::Init(KiwiDisplay* display, KiwiSynth* kiwiSynth) {
         this->kiwiSynth = kiwiSynth;
@@ -274,4 +274,4 @@ namespace kiwi_synth
         return SELECT_SCREEN_RESPONSE_REFRESH;
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

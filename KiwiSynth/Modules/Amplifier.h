@@ -7,7 +7,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const static float AMP_ATTENTUATION_CONSTANT = 0.30f;
     
@@ -34,7 +34,6 @@ namespace kiwi_synth
              */
             void Process(float* sample, PatchSettings* patchSettings, float env1Mod, float mod);
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_AMPLIFIER_H__

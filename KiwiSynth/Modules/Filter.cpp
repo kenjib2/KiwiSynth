@@ -1,7 +1,8 @@
 #include "Filter.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void Filter::Init(float sampleRate)
     {
         filter.Init(sampleRate);
@@ -76,4 +77,5 @@ namespace kiwi_synth
 
         *sample = output;
     }
-} // namespace kiwi_synth
+
+} // namespace kiwisynth

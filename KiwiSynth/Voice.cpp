@@ -1,7 +1,8 @@
 #include "Voice.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void Voice::Init(int numOscillators, float sampleRate, int voiceNumber)
     {
         this->voiceNumber = voiceNumber;
@@ -276,4 +277,4 @@ namespace kiwi_synth
         env2.NoteOff();
     }
 
-}
+} // namespace kiwisynth

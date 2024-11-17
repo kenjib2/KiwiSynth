@@ -1,6 +1,6 @@
 #include "PlayScreen.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void PlayScreen::Init(KiwiDisplay* display, Patch* patch)
@@ -50,4 +50,4 @@ namespace kiwi_synth
 
         display->Update();
     }
-} // namespace kiwi_synth
+} // namespace kiwisynth

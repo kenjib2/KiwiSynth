@@ -4,7 +4,7 @@
 #include "daisy_seed.h"
 #include "../Patch/PatchTypes.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     class EnumToText
@@ -74,5 +74,5 @@ namespace kiwi_synth
             static void GetReverbModePadded(char* buffer, ReverbMode reverbMode);
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_ENUM_TO_TEXT_H__

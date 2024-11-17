@@ -1,7 +1,8 @@
 #include "Noise.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     void Noise::Init(float sampleRate)
     {
         isOn = true;
@@ -22,4 +23,4 @@ namespace kiwi_synth
         level = patchSettings->getFloatValue(PatchSetting::OSC_NOISE_LEVEL);
     }
 
-}
+} // namespace kiwisynth

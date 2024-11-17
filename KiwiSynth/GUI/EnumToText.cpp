@@ -1,6 +1,6 @@
 #include "EnumToText.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void EnumToText::GetWaveformTwoChar(char* buffer, Waveform waveform) {
@@ -633,4 +633,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

@@ -15,7 +15,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     /*
@@ -62,6 +62,6 @@ namespace kiwi_synth
              */
             void Process(float* sample);
     };
-}
 
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_EFFECTS_ENGINE_H__

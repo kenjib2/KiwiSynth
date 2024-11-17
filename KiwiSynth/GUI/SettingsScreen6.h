@@ -9,7 +9,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     // These are all possible selected menu items on this screen.
     enum SettingsScreen6Selection
@@ -56,7 +56,7 @@ namespace kiwi_synth
             SettingsScreen6Selection selected;
 
     };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __KIWI_SYNTH_SETTINGS_SCREEN_6_H__

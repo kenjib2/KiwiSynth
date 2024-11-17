@@ -1,6 +1,6 @@
 #include "SystemScreen.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void SystemScreen::Init(KiwiDisplay* display, Performance* performance)
@@ -119,4 +119,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

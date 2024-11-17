@@ -1,6 +1,6 @@
 #include "Storage.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void Storage::Init(QSPIHandle qspi) {
@@ -84,4 +84,4 @@ namespace kiwi_synth
         WritePatchGroup(bankNumber, patchGroup, patchGroupData);
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

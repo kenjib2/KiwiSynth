@@ -3,7 +3,7 @@
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     // -------------------- BEGIN INITIALIZE STATIC ARRAYS --------------------
     static int8_t* genMaxIntValues() {
@@ -621,4 +621,4 @@ namespace kiwi_synth
         }
     }
 
-} // namespace kiwi_synth
+} // namespace kiwisynth

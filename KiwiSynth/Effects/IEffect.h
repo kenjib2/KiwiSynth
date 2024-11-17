@@ -1,7 +1,7 @@
 #ifndef __KIWI_SYNTH_IEFFECT_H__
 #define __KIWI_SYNTH_IEFFECT_H__
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     /*
      * An interface that offers the Process function that all effects use. IEffects are mono. The left and right
@@ -20,5 +20,5 @@ namespace kiwi_synth
             virtual float Process(float in);
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_IEFFECT_H__

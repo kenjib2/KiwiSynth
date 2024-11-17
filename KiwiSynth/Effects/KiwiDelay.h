@@ -3,7 +3,7 @@
 
 #include "daisy_seed.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     const int MAX_DELAY_SAMPLES =   0b10000000000000000; // 65536
     const int DELAY_POINTER_MASK =  0b01111111111111111;
@@ -38,7 +38,6 @@ namespace kiwi_synth
             inline void SetLevel(float level) { this->level = level; }
             inline void SetFeedback(float feedback) { this->feedback = feedback; }
     };
-}
 
-
+}// namespace kiwisynth
 #endif // __KIWI_SYNTH_EFFECTS_ENGINE_H__

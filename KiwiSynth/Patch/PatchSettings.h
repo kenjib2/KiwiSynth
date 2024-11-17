@@ -11,12 +11,12 @@
 #include "../Controls/IControlListener.h"
 #include "PatchTypes.h"
 #include "SavedPatch.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 
 using namespace daisy;
 using namespace daisy::seed;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     /*
@@ -188,7 +188,7 @@ namespace kiwi_synth
              */
             inline bool getBoolValue(PatchSetting setting) { return boolValues[setting]; }
     }; // class PatchSettings
-} // namespace kiwi_synth
+} // namespace kiwisynth
 
 
 #endif // __PATCH_SETTINGS_H__

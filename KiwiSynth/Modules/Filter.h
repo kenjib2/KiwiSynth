@@ -9,7 +9,7 @@
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     static const float      FLT_MIN_FREQUENCY = 100.0f;
     static const float      FLT_MAX_FREQUENCY = 15000.0f;
@@ -44,7 +44,6 @@ namespace kiwi_synth
              */
             void Process(float* sample, PatchSettings* patchSettings, float trackingMod, int currentMidiNote, float mod, float resMod);
     };
-}
 
-
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_FILTER_H__

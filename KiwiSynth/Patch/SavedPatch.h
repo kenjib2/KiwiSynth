@@ -3,7 +3,7 @@
 
 #include "PatchTypes.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     const static int NUM_PATCH_BANKS = 8;
@@ -28,5 +28,5 @@ namespace kiwi_synth
         bool voice2BoolValues[NUM_PATCH_SETTINGS_SAVED];
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_SAVED_PATCH_H__

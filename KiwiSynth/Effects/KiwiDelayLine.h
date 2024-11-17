@@ -13,7 +13,7 @@ https://opensource.org/licenses/MIT.
 #include <stdint.h>
 #include "daisy_seed.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
 static const int DELAY_LINE_BUFFER_SIZE = 4096; // This must always be an exponent of 2
@@ -106,5 +106,5 @@ class KiwiDelayLine
     size_t delay_;
     float* line_;
 };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_DELAY_LINE_H__

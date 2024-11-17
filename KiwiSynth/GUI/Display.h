@@ -5,7 +5,7 @@
 #include "dev/oled_ssd130x.h"
 
 #include "../KiwiSynth.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 #include "PlayScreen.h"
 #include "BootloaderScreen.h"
 #include "PatchScreen.h"
@@ -26,7 +26,7 @@ using namespace daisy;
 using namespace daisy::seed;
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
    /*
     * Used to initialize a MultiPots object.
@@ -142,5 +142,5 @@ namespace kiwi_synth
             int GetSelectValue(int numElements);
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_DISPLAY_H__

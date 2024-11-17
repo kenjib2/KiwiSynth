@@ -10,10 +10,10 @@ https://opensource.org/licenses/MIT.
 #ifndef __KIWI_SYNTH_KIWI_SVF_H__
 #define __KIWI_SYNTH_KIWI_SVF_H__
 
-#include "../../KUtils.h"
-#include "../../PowFast.h"
+#include "../Util/KUtils.h"
+#include "../Util/PowFast.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /**      Double Sampled, Stable State Variable Filter
 
@@ -92,5 +92,5 @@ class KiwiSvf
     float pre_drive_, fc_max_;
     PowFast*                 powFast;
 };
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_SVF_H__

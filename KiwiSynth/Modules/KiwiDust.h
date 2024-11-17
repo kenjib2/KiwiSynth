@@ -10,13 +10,13 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_DUST_H__
 
 #include "Utility/dsp.h"
-#include "../../KUtils.h"
+#include "../Util/KUtils.h"
 
 /** @file KiwiDust.h */
 
 using namespace daisysp;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 /**  
        @brief Dust Module
@@ -64,5 +64,6 @@ class KiwiDust
     float                  inv_density_;
     static constexpr float kRandFrac = 1.f / MAX_XORSHIFT_VALUE;
 };
-} // namespace daisysp
+
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_DUST_H__

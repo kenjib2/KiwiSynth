@@ -9,7 +9,7 @@
 
 using KiwiDisplay = OledDisplay<SSD130xI2c128x64Driver>;
 
-namespace kiwi_synth
+namespace kiwisynth
 {
     // These are all possible selected menu items on this screen.
     enum PatchScreenSelection
@@ -69,5 +69,5 @@ namespace kiwi_synth
             bool editingSplitNote; // Used for editing the split note value
     };
 
-} // namespace kiwi_synth
+} // namespace kiwisynth
 #endif // __KIWI_SYNTH_PATCH_SCREEN_H__

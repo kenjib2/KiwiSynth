@@ -1,6 +1,6 @@
 #include "BootloaderScreen.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
 
     void BootloaderScreen::Init(KiwiDisplay* display)
@@ -18,4 +18,4 @@ namespace kiwi_synth
 
         display->Update();
     }
-} // namespace kiwi_synth
+} // namespace kiwisynth

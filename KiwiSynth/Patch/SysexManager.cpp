@@ -1,7 +1,8 @@
 #include "SysexManager.h"
 
-namespace kiwi_synth
+namespace kiwisynth
 {
+
     uint8_t DSY_SDRAM_BSS sysexBuffer[KIWI_SYSEX_BUFFER_SIZE];
 
     void SysexManager::Init(MidiUartHandler* midi) {
@@ -155,4 +156,4 @@ namespace kiwi_synth
         }
     }
 
-}
+} // namespace kiwisynth
