@@ -3,165 +3,165 @@
 namespace kiwisynth
 {
     void SelectScreen::Init(KiwiDisplay* display, KiwiSynth* kiwiSynth) {
-        this->kiwiSynth = kiwiSynth;
-        this->display = display;
-        saving = false;
-        selection = 3;
-        numSelections = 35;
-        currentPage = SELECT_PAGE_BANKS;
+        kiwiSynth_ = kiwiSynth;
+        display_ = display;
+        saving_ = false;
+        selection_ = 3;
+        numSelections_ = 35;
+        currentPage_ = SELECT_PAGE_BANKS;
     }
 
     void SelectScreen::Display() {
         char value[22];
 
-        display->Fill(false);
-        switch (currentPage) {
+        display_->Fill(false);
+        switch (currentPage_) {
             default:
             case SELECT_PAGE_TYPES:
-                numSelections = 16;
+                numSelections_ = 16;
 
-                display->SetCursor(0, 0);
-                display->WriteString("Lead", Font_6x8, selection != 3);
-                display->SetCursor(0, 8);
-                display->WriteString("Pad", Font_6x8, selection != 4);
-                display->SetCursor(0, 16);
-                display->WriteString("Synth", Font_6x8, selection != 5);
-                display->SetCursor(0, 24);
-                display->WriteString("Drone", Font_6x8, selection != 6);
-                display->SetCursor(0, 32);
-                display->WriteString("Bass", Font_6x8, selection != 7);
-                display->SetCursor(0, 40);
-                display->WriteString("Pluck", Font_6x8, selection != 8);
-                display->SetCursor(0, 48);
-                display->WriteString("Key", Font_6x8, selection != 9);
-                display->SetCursor(0, 56);
-                display->WriteString("Brass", Font_6x8, selection != 10);
-                display->SetCursor(66, 0);
-                display->WriteString("String", Font_6x8, selection != 11);
-                display->SetCursor(66, 8);
-                display->WriteString("Arp", Font_6x8, selection != 12);
-                display->SetCursor(66, 16);
-                display->WriteString("Percussion", Font_6x8, selection != 13);
-                display->SetCursor(66, 24);
-                display->WriteString("Effect", Font_6x8, selection != 14);
-                display->SetCursor(66, 32);
-                display->WriteString("Other", Font_6x8, selection != 15);
+                display_->SetCursor(0, 0);
+                display_->WriteString("Lead", Font_6x8, selection_ != 3);
+                display_->SetCursor(0, 8);
+                display_->WriteString("Pad", Font_6x8, selection_ != 4);
+                display_->SetCursor(0, 16);
+                display_->WriteString("Synth", Font_6x8, selection_ != 5);
+                display_->SetCursor(0, 24);
+                display_->WriteString("Drone", Font_6x8, selection_ != 6);
+                display_->SetCursor(0, 32);
+                display_->WriteString("Bass", Font_6x8, selection_ != 7);
+                display_->SetCursor(0, 40);
+                display_->WriteString("Pluck", Font_6x8, selection_ != 8);
+                display_->SetCursor(0, 48);
+                display_->WriteString("Key", Font_6x8, selection_ != 9);
+                display_->SetCursor(0, 56);
+                display_->WriteString("Brass", Font_6x8, selection_ != 10);
+                display_->SetCursor(66, 0);
+                display_->WriteString("String", Font_6x8, selection_ != 11);
+                display_->SetCursor(66, 8);
+                display_->WriteString("Arp", Font_6x8, selection_ != 12);
+                display_->SetCursor(66, 16);
+                display_->WriteString("Percussion", Font_6x8, selection_ != 13);
+                display_->SetCursor(66, 24);
+                display_->WriteString("Effect", Font_6x8, selection_ != 14);
+                display_->SetCursor(66, 32);
+                display_->WriteString("Other", Font_6x8, selection_ != 15);
 
-                display->SetCursor(120, 0);
-                display->WriteString("^", Font_6x8, selection != 0);
-                display->SetCursor(120, 28);
-                display->WriteString("X", Font_6x8, selection != 1);
-                display->SetCursor(120, 56);
-                display->WriteString("v", Font_6x8, selection != 2);
+                display_->SetCursor(120, 0);
+                display_->WriteString("^", Font_6x8, selection_ != 0);
+                display_->SetCursor(120, 28);
+                display_->WriteString("X", Font_6x8, selection_ != 1);
+                display_->SetCursor(120, 56);
+                display_->WriteString("v", Font_6x8, selection_ != 2);
                 break;
 
             case SELECT_PAGE_BANKS:
-                numSelections = 35;
+                numSelections_ = 35;
 
                 for (int i = 0; i < 8; i++) {
-                    display->SetCursor(0, i * 8);
-                    sprintf(buffer, "%c: ", 'A' + i);
-                    display->WriteString(buffer, Font_6x8, true);
+                    display_->SetCursor(0, i * 8);
+                    sprintf(buffer_, "%c: ", 'A' + i);
+                    display_->WriteString(buffer_, Font_6x8, true);
 
                     for (int j = 0; j < 4; j++) {
-                        display->SetCursor(18 + j * 4 * 6, i * 8);
-                        sprintf(buffer, "%03d", (j) * 32 + 1);
-                        display->WriteString(buffer, Font_6x8, selection != 4 * i + j + 3);
+                        display_->SetCursor(18 + j * 4 * 6, i * 8);
+                        sprintf(buffer_, "%03d", (j) * 32 + 1);
+                        display_->WriteString(buffer_, Font_6x8, selection_ != 4 * i + j + 3);
                     }
                 }
 
-                if (!saving) {
-                    display->SetCursor(120, 0);
-                    display->WriteString("^", Font_6x8, selection != 0);
+                if (!saving_) {
+                    display_->SetCursor(120, 0);
+                    display_->WriteString("^", Font_6x8, selection_ != 0);
                 }
-                display->SetCursor(120, 28);
-                display->WriteString("X", Font_6x8, selection != 1);
-                if (!saving) {
-                    display->SetCursor(120, 56);
-                    display->WriteString("v", Font_6x8, selection != 2);
+                display_->SetCursor(120, 28);
+                display_->WriteString("X", Font_6x8, selection_ != 1);
+                if (!saving_) {
+                    display_->SetCursor(120, 56);
+                    display_->WriteString("v", Font_6x8, selection_ != 2);
                 }
                 break;
 
             case SELECT_PAGE_BANK_PATCHES:
-                numSelections = 11;
+                numSelections_ = 11;
 
                 for (int i = 0; i < 8; i++) {
-                    display->SetCursor(0, i * 8);
-                    sprintf(buffer, "%c.%03d %s", 'A' + bankNumber, patchNumber + i + 1, kiwiSynth->patchBanks[bankNumber][patchNumber + i].name);
-                    display->WriteString(buffer, Font_6x8, i + 3 != selection);
+                    display_->SetCursor(0, i * 8);
+                    sprintf(buffer_, "%c.%03d %s", 'A' + bankNumber_, patchNumber_ + i + 1, kiwiSynth_->patchBanks[bankNumber_][patchNumber_ + i].name);
+                    display_->WriteString(buffer_, Font_6x8, i + 3 != selection_);
                 }
 
-                display->SetCursor(120, 0);
-                display->WriteString("^", Font_6x8, selection != 0);
-                display->SetCursor(120, 28);
-                display->WriteString("X", Font_6x8, selection != 1);
-                display->SetCursor(120, 56);
-                display->WriteString("v", Font_6x8, selection != 2);
+                display_->SetCursor(120, 0);
+                display_->WriteString("^", Font_6x8, selection_ != 0);
+                display_->SetCursor(120, 28);
+                display_->WriteString("X", Font_6x8, selection_ != 1);
+                display_->SetCursor(120, 56);
+                display_->WriteString("v", Font_6x8, selection_ != 2);
                 break;
 
             case SELECT_PAGE_TYPE_PATCHES:
-                numSelections = 3 + std::min(patchTypeMax - (patchTypePage * 8), 8);
+                numSelections_ = 3 + std::min(patchTypeMax_ - (patchTypePage_ * 8), 8);
 
-                for (int i = 0; i < numSelections - 3; i++) {
-                    display->SetCursor(0, i * 8);
-                    sprintf(buffer, "%c.%03d %s",
-                        'A' + kiwiSynth->patchTypes[patchType][i + patchTypePage * 8]->bankNumber,
-                        kiwiSynth->patchTypes[patchType][i + patchTypePage * 8]->patchNumber + 1,
-                        kiwiSynth->patchTypes[patchType][i + patchTypePage * 8]->name);
-                    display->WriteString(buffer, Font_6x8, i + 3 != selection);
+                for (int i = 0; i < numSelections_ - 3; i++) {
+                    display_->SetCursor(0, i * 8);
+                    sprintf(buffer_, "%c.%03d %s",
+                        'A' + kiwiSynth_->patchTypes[patchType_][i + patchTypePage_ * 8]->bankNumber,
+                        kiwiSynth_->patchTypes[patchType_][i + patchTypePage_ * 8]->patchNumber + 1,
+                        kiwiSynth_->patchTypes[patchType_][i + patchTypePage_ * 8]->name);
+                    display_->WriteString(buffer_, Font_6x8, i + 3 != selection_);
                 }
 
-                display->SetCursor(120, 0);
-                display->WriteString("^", Font_6x8, selection != 0);
-                display->SetCursor(120, 28);
-                display->WriteString("X", Font_6x8, selection != 1);
-                display->SetCursor(120, 56);
-                display->WriteString("v", Font_6x8, selection != 2);
+                display_->SetCursor(120, 0);
+                display_->WriteString("^", Font_6x8, selection_ != 0);
+                display_->SetCursor(120, 28);
+                display_->WriteString("X", Font_6x8, selection_ != 1);
+                display_->SetCursor(120, 56);
+                display_->WriteString("v", Font_6x8, selection_ != 2);
                 break;
 
             case SELECT_PAGE_SAVE_CONFIRM:
-                numSelections = 2;
+                numSelections_ = 2;
 
-                display->SetCursor(0, 0);
-                sprintf(buffer, "Overwrite patch?");
-                display->WriteString(buffer, Font_6x8, true);
+                display_->SetCursor(0, 0);
+                sprintf(buffer_, "Overwrite patch?");
+                display_->WriteString(buffer_, Font_6x8, true);
 
-                display->SetCursor(0, 8);
-                sprintf(buffer, "Data will be lost.");
-                display->WriteString(buffer, Font_6x8, true);
+                display_->SetCursor(0, 8);
+                sprintf(buffer_, "Data will be lost.");
+                display_->WriteString(buffer_, Font_6x8, true);
 
-                display->SetCursor(0, 24);
-                sprintf(buffer, "%c.%03d %s", 'A' + saveBank, savePatch + 1, kiwiSynth->patchBanks[saveBank][savePatch].name);
-                display->WriteString(buffer, Font_6x8, true);
+                display_->SetCursor(0, 24);
+                sprintf(buffer_, "%c.%03d %s", 'A' + saveBank_, savePatch_ + 1, kiwiSynth_->patchBanks[saveBank_][savePatch_].name);
+                display_->WriteString(buffer_, Font_6x8, true);
 
-                display->SetCursor(0, 32);
-                EnumToText::GetPatchType(value, kiwiSynth->patchBanks[saveBank][savePatch].type);
-                sprintf(buffer, "Type: %s", value);
-                display->WriteString(buffer, Font_6x8, true);
+                display_->SetCursor(0, 32);
+                EnumToText::GetPatchType(value, kiwiSynth_->patchBanks[saveBank_][savePatch_].type);
+                sprintf(buffer_, "Type: %s", value);
+                display_->WriteString(buffer_, Font_6x8, true);
 
-                display->SetCursor(0, 48);
-                sprintf(buffer, "Yes");
-                display->WriteString(buffer, Font_6x8, selection != 0);
+                display_->SetCursor(0, 48);
+                sprintf(buffer_, "Yes");
+                display_->WriteString(buffer_, Font_6x8, selection_ != 0);
 
-                display->SetCursor(66, 48);
-                sprintf(buffer, "No");
-                display->WriteString(buffer, Font_6x8, selection != 1);
+                display_->SetCursor(66, 48);
+                sprintf(buffer_, "No");
+                display_->WriteString(buffer_, Font_6x8, selection_ != 1);
                 break;
         }
-        display->Update();
+        display_->Update();
     }
 
     void SelectScreen::Increment() {
-        selection = (selection + 1) % numSelections;
-        if (saving && currentPage == SELECT_PAGE_BANKS && (selection == 0 || selection == 2)) {
+        selection_ = (selection_ + 1) % numSelections_;
+        if (saving_ && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
             // We can't page up and down when saving on bank selection because we don't want the type screen
             Increment();
         }
    }
 
     void SelectScreen::Decrement() {
-        selection = (selection - 1 + numSelections) % numSelections;
-        if (saving && currentPage == SELECT_PAGE_BANKS && (selection == 0 || selection == 2)) {
+        selection_ = (selection_ - 1 + numSelections_) % numSelections_;
+        if (saving_ && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
             // We can't page up and down when saving on bank selection because we don't want the type screen
             Decrement();
         }
@@ -169,102 +169,102 @@ namespace kiwisynth
 
     SelectScreenResponse SelectScreen::Click() {
         // Handling cancel for all pages/screens
-        if (selection == 1) {
-            if (currentPage == SELECT_PAGE_TYPE_PATCHES ) {
-                currentPage = SELECT_PAGE_TYPES;
+        if (selection_ == 1) {
+            if (currentPage_ == SELECT_PAGE_TYPE_PATCHES ) {
+                currentPage_ = SELECT_PAGE_TYPES;
                 return SELECT_SCREEN_RESPONSE_REFRESH;
-            } else if (currentPage ==  SELECT_PAGE_BANK_PATCHES) {
-                bankNumber = 0;
-                patchNumber = 0;
-                currentPage = SELECT_PAGE_BANKS;
+            } else if (currentPage_ ==  SELECT_PAGE_BANK_PATCHES) {
+                bankNumber_ = 0;
+                patchNumber_ = 0;
+                currentPage_ = SELECT_PAGE_BANKS;
                 return SELECT_SCREEN_RESPONSE_REFRESH;
-            } else if (fromPlay) {
+            } else if (fromPlay_) {
                 return SELECT_SCREEN_RESPONSE_PLAY;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;
             }
 
         // Page down from bank/type screen
-        } else if (selection == 0 && currentPage >= 0) {
-            currentPage = (SelectScreenPage)((currentPage + 1) % maxSelectScreenPage);
+        } else if (selection_ == 0 && currentPage_ >= 0) {
+            currentPage_ = (SelectScreenPage)((currentPage_ + 1) % maxSelectScreenPage);
 
         // Page up from bank/type screen
-        } else if (selection == 2 && currentPage >= 0) {
-            currentPage = (SelectScreenPage)((currentPage - 1  + maxSelectScreenPage) % maxSelectScreenPage);
+        } else if (selection_ == 2 && currentPage_ >= 0) {
+            currentPage_ = (SelectScreenPage)((currentPage_ - 1  + maxSelectScreenPage) % maxSelectScreenPage);
 
         // Patch group selected from Bank select page
-        } else if (currentPage == SELECT_PAGE_BANKS) {
-            bankNumber = (selection - 3) / 4;
-            patchNumber = (selection - 3) % 4 * 32;
-            selection = 3;
-            currentPage = SELECT_PAGE_BANK_PATCHES;
+        } else if (currentPage_ == SELECT_PAGE_BANKS) {
+            bankNumber_ = (selection_ - 3) / 4;
+            patchNumber_ = (selection_ - 3) % 4 * 32;
+            selection_ = 3;
+            currentPage_ = SELECT_PAGE_BANK_PATCHES;
 
         // Patch type selected from type select page
-        } else if (currentPage == SELECT_PAGE_TYPES) {
-            patchType = (PatchType)(selection - 3);
-            patchTypePage = 0;
-            patchTypeMax = kiwiSynth->patchTypes[patchType].size();
-            selection = 3;
-            currentPage = SELECT_PAGE_TYPE_PATCHES;
+        } else if (currentPage_ == SELECT_PAGE_TYPES) {
+            patchType_ = (PatchType)(selection_ - 3);
+            patchTypePage_ = 0;
+            patchTypeMax_ = kiwiSynth_->patchTypes[patchType_].size();
+            selection_ = 3;
+            currentPage_ = SELECT_PAGE_TYPE_PATCHES;
 
-        } else if (currentPage == SELECT_PAGE_BANK_PATCHES) {
-            if (selection == 0) {
-                patchNumber = patchNumber - 8;
-                if (patchNumber < 0) {
-                    patchNumber = 120;
-                    bankNumber = (bankNumber - 1 + NUM_PATCH_BANKS) % NUM_PATCH_BANKS;
+        } else if (currentPage_ == SELECT_PAGE_BANK_PATCHES) {
+            if (selection_ == 0) {
+                patchNumber_ = patchNumber_ - 8;
+                if (patchNumber_ < 0) {
+                    patchNumber_ = 120;
+                    bankNumber_ = (bankNumber_ - 1 + NUM_PATCH_BANKS) % NUM_PATCH_BANKS;
                 }
 
-            } else if (selection == 2) {
-                patchNumber = patchNumber + 8;
-                if (patchNumber > 120) {
-                    patchNumber = 0;
-                    bankNumber = (bankNumber + 1) % NUM_PATCH_BANKS;
+            } else if (selection_ == 2) {
+                patchNumber_ = patchNumber_ + 8;
+                if (patchNumber_ > 120) {
+                    patchNumber_ = 0;
+                    bankNumber_ = (bankNumber_ + 1) % NUM_PATCH_BANKS;
                 }
 
-            } else if (!saving) {
-                kiwiSynth->LoadPatch(bankNumber, patchNumber + selection - 3);
+            } else if (!saving_) {
+                kiwiSynth_->LoadPatch(bankNumber_, patchNumber_ + selection_ - 3);
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
-            } else if (saving) {
-                saveBank = bankNumber;
-                savePatch = patchNumber + selection - 3;
-                selection = 0;
-                currentPage = SELECT_PAGE_SAVE_CONFIRM;
+            } else if (saving_) {
+                saveBank_ = bankNumber_;
+                savePatch_ = patchNumber_ + selection_ - 3;
+                selection_ = 0;
+                currentPage_ = SELECT_PAGE_SAVE_CONFIRM;
             }
 
-        } else if (currentPage == SELECT_PAGE_TYPE_PATCHES) {
-            if (selection == 0) {
-                patchTypePage = patchTypePage - 1;
-                if (patchTypePage < 0) {
-                    patchTypePage = (patchTypeMax - 1) / 8;
+        } else if (currentPage_ == SELECT_PAGE_TYPE_PATCHES) {
+            if (selection_ == 0) {
+                patchTypePage_ = patchTypePage_ - 1;
+                if (patchTypePage_ < 0) {
+                    patchTypePage_ = (patchTypeMax_ - 1) / 8;
                 }
 
-            } else if (selection == 2) {
-                patchTypePage = patchTypePage + 1;
-                if (patchTypePage > (patchTypeMax - 1) / 8) {
-                    patchTypePage = 0;
+            } else if (selection_ == 2) {
+                patchTypePage_ = patchTypePage_ + 1;
+                if (patchTypePage_ > (patchTypeMax_ - 1) / 8) {
+                    patchTypePage_ = 0;
                 }
 
-            } else if (!saving) {
-                bankNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->bankNumber;
-                patchNumber = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->patchNumber;
-                kiwiSynth->LoadPatch(bankNumber, patchNumber);
+            } else if (!saving_) {
+                bankNumber_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->bankNumber;
+                patchNumber_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->patchNumber;
+                kiwiSynth_->LoadPatch(bankNumber_, patchNumber_);
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
-            } else if (saving) {
-                saveBank = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->bankNumber;
-                savePatch = kiwiSynth->patchTypes[patchType][selection - 3 + patchTypePage * 8]->patchNumber;
-                selection = 0;
-                currentPage = SELECT_PAGE_SAVE_CONFIRM;
+            } else if (saving_) {
+                saveBank_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->bankNumber;
+                savePatch_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->patchNumber;
+                selection_ = 0;
+                currentPage_ = SELECT_PAGE_SAVE_CONFIRM;
             }
-        } else if (currentPage == SELECT_PAGE_SAVE_CONFIRM) {
-            if (selection == 0) {
+        } else if (currentPage_ == SELECT_PAGE_SAVE_CONFIRM) {
+            if (selection_ == 0) {
                 // If the patch we are saving was an initialized patch, set it to type other by default.
-                if (kiwiSynth->patch.GetPatchType() == PATCH_INIT) {
-                    kiwiSynth->patch.SetPatchType(PATCH_OTHER);
+                if (kiwiSynth_->patch.GetPatchType() == PATCH_INIT) {
+                    kiwiSynth_->patch.SetPatchType(PATCH_OTHER);
                 }
-                kiwiSynth->SavePatch(saveBank, savePatch);
+                kiwiSynth_->SavePatch(saveBank_, savePatch_);
                 return SELECT_SCREEN_RESPONSE_PLAY;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;

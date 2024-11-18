@@ -2,10 +2,13 @@
 #include "KiwiChorus.h"
 #include <math.h>
 
-using namespace daisysp;
 
-namespace kiwisynth
-{
+
+using namespace daisysp;
+using namespace kiwisynth;
+
+
+
 //ChorusEngine stuff
 void KiwiChorusEngine::Init(float sample_rate, int bufferNumber)
 {
@@ -21,6 +24,8 @@ void KiwiChorusEngine::Init(float sample_rate, int bufferNumber)
     SetLfoDepth(.9f);
 }
 
+
+
 float KiwiChorusEngine::Process(float in)
 {
     float lfo_sig = ProcessLfo();
@@ -32,11 +37,15 @@ float KiwiChorusEngine::Process(float in)
     return (in + out) * .5f; //equal mix
 }
 
+
+
 void KiwiChorusEngine::SetLfoDepth(float depth)
 {
     depth    = daisysp::fclamp(depth, 0.f, .93f);
     lfo_amp_ = depth * delay_;
 }
+
+
 
 void KiwiChorusEngine::SetLfoFreq(float freq)
 {
@@ -45,11 +54,15 @@ void KiwiChorusEngine::SetLfoFreq(float freq)
     lfo_freq_ = daisysp::fclamp(freq, -.25f, .25f); //clip at +/- .125 * sr
 }
 
+
+
 void KiwiChorusEngine::SetDelay(float delay)
 {
     delay = (.1f + delay * 7.9f); //.1 to 8 ms
     SetDelayMs(delay);
 }
+
+
 
 void KiwiChorusEngine::SetDelayMs(float ms)
 {
@@ -59,10 +72,14 @@ void KiwiChorusEngine::SetDelayMs(float ms)
     lfo_amp_ = daisysp::fmin(lfo_amp_, delay_); //clip this if needed
 }
 
+
+
 void KiwiChorusEngine::SetFeedback(float feedback)
 {
     feedback_ = daisysp::fclamp(feedback, 0.f, 1.f);
 }
+
+
 
 float KiwiChorusEngine::ProcessLfo()
 {
@@ -83,6 +100,8 @@ float KiwiChorusEngine::ProcessLfo()
     return lfo_phase_ * lfo_amp_;
 }
 
+
+
 //Chorus Stuff
 void KiwiChorus::Init(float sample_rate, int bufferNumber)
 {
@@ -92,6 +111,8 @@ void KiwiChorus::Init(float sample_rate, int bufferNumber)
     gain_frac_ = .5f;
     sig_ = 0.f;
 }
+
+
 
 float KiwiChorus::Process(float in)
 {
@@ -105,11 +126,15 @@ float KiwiChorus::Process(float in)
     return sig_;
 }
 
+
+
 void KiwiChorus::SetLfoDepth(float depth)
 {
     engines_[0].SetLfoDepth(depth);
     engines_[1].SetLfoDepth(depth);
 }
+
+
 
 void KiwiChorus::SetLfoFreq(float freq)
 {
@@ -117,11 +142,15 @@ void KiwiChorus::SetLfoFreq(float freq)
     engines_[1].SetLfoFreq(freq);
 }
 
+
+
 void KiwiChorus::SetDelay(float delay)
 {
     engines_[0].SetDelay(delay);
     engines_[1].SetDelay(delay);
 }
+
+
 
 void KiwiChorus::SetDelayMs(float ms)
 {
@@ -129,9 +158,10 @@ void KiwiChorus::SetDelayMs(float ms)
     engines_[1].SetDelayMs(ms);
 }
 
+
+
 void KiwiChorus::SetFeedback(float feedback)
 {
     engines_[0].SetFeedback(feedback);
     engines_[1].SetFeedback(feedback);
 }
-} // namespace kiwisynth

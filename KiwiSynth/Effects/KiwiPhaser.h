@@ -1,8 +1,12 @@
 #ifndef __KIWI_SYNTH_KIWI_PHASER__
 #define __KIWI_SYNTH_KIWI_PHASER__
 
+
+
 #include "../Modules/KiwiTriangle.h"
 #include "../Util/KUtils.h"
+
+
 
 /* 
 Date: Mon, 24 Aug 1998 07:02:40 -0700
@@ -54,15 +58,18 @@ Ross B.
 
 */
 // Modified by Kenji Baugham to use a cheaper triangle LFO instead of sine
-
 namespace kiwisynth
 {
 
-    //#define SR (48000.f)  //sample rate
-    //#define SR (32000.f)  //sample rate
-    #define F_PI (3.14159f)
 
-    class KiwiPhaser{
+
+//#define SR (48000.f)  //sample rate
+//#define SR (32000.f)  //sample rate
+#define F_PI (3.14159f)
+
+
+
+class KiwiPhaser{
     public:
         KiwiPhaser()  //initialise to some usefull defaults...
             : _fb( .7f )
@@ -70,33 +77,43 @@ namespace kiwisynth
             , _depth( 1.f )
             , _zm1( 0.f )
         {
-            lfo.Init(SAMPLE_RATE_FLOAT);
-            lfo.SetAmp(0.5f);
+            _lfo.Init(SAMPLE_RATE_FLOAT);
+            _lfo.SetAmp(0.5f);
             Range( 440.f, 1600.f );
             Rate( .5f );
         }
+
+
 
         void Range( float fMin, float fMax ){ // Hz
             _dmin = fMin / (SAMPLE_RATE_FLOAT/2.f);
             _dmax = fMax / (SAMPLE_RATE_FLOAT/2.f);
         }
 
+
+
         void Rate( float rate ){ // cps
             _lfoInc = 2.f * F_PI * (rate / SAMPLE_RATE_FLOAT);
-            lfo.SetFreq(rate);
+            _lfo.SetFreq(rate);
         }
+
+
 
         void Feedback( float fb ){ // 0 -> <1.
             _fb = fb;
         }
 
+
+
         void Depth( float depth ){  // 0 -> 1.
             _depth = depth;
         }
 
+
+
         float Process( float inSamp ){
             //calculate and update phaser sweep lfo...
-            float d  = _dmin + (_dmax-_dmin) * (lfo.Process() + 0.5f);
+            float d  = _dmin + (_dmax-_dmin) * (_lfo.Process() + 0.5f);
             _lfoPhase += _lfoInc;
             if( _lfoPhase >= F_PI * 2.f )
                 _lfoPhase -= F_PI * 2.f;
@@ -116,30 +133,39 @@ namespace kiwisynth
 
             return inSamp + y * _depth;
         }
+
+
     private:
         class AllpassDelay{
-        public:
-            AllpassDelay()
-                : _a1( 0.f )
-                , _zm1( 0.f )
-                {}
+            public:
+                AllpassDelay()
+                    : _a1( 0.f )
+                    , _zm1( 0.f )
+                    {}
 
-            void Delay( float delay ){ //sample delay time
-                _a1 = (1.f - delay) / (1.f + delay);
-            }
 
-            float Update( float inSamp ){
-                float y = inSamp * -_a1 + _zm1;
-                _zm1 = y * _a1 + inSamp;
 
-                return y;
-            }
-        private:
-            float _a1, _zm1;
+                void Delay( float delay ){ //sample delay time
+                    _a1 = (1.f - delay) / (1.f + delay);
+                }
+
+
+
+                float Update( float inSamp ){
+                    float y = inSamp * -_a1 + _zm1;
+                    _zm1 = y * _a1 + inSamp;
+
+                    return y;
+                }
+
+
+
+            private:
+                float _a1, _zm1;
         };
 
         AllpassDelay _alps[6];
-        KiwiTriangle lfo;
+        KiwiTriangle _lfo;
 
         float _dmin, _dmax; //range
         float _fb; //feedback
@@ -148,7 +174,9 @@ namespace kiwisynth
         float _depth;
 
         float _zm1;
-    };
+};
+
+
 
 } // namespace kiwisynth
 #endif // __KIWI_SYNTH_KIWI_PHASER__

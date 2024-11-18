@@ -1,122 +1,135 @@
 #include "SystemScreen.h"
 
-namespace kiwisynth
+
+
+using namespace kiwisynth;
+
+
+
+void SystemScreen::Init(KiwiDisplay* display, Performance* performance)
 {
+    display_ = display;
+    performance_ = performance;
+    selected_ = SYSTEM_SCREEN_NONE;
+}
 
-    void SystemScreen::Init(KiwiDisplay* display, Performance* performance)
-    {
-        this->display = display;
-        this->performance = performance;
-        selected = SYSTEM_SCREEN_NONE;
+
+
+void SystemScreen::Display()
+{
+    display_->Fill(false);
+
+    display_->SetCursor(0, 0);
+    sprintf(buffer_, "System Version: 1.0");
+    display_->WriteString(buffer_, Font_6x8, true);
+
+    #ifdef __CPU_LOAD__
+        display_->SetCursor(0, 12);
+        sprintf(buffer_, "Reads/Second: %d", performance_->ReadsPerSec());
+        display_->WriteString(buffer_, Font_6x8, true);
+
+        display_->SetCursor(0, 24);
+        sprintf(buffer_, "CPU Max: %d  Avg: %d", (int)(performance_->Max() * 100), (int)(performance_->Avg() * 100));
+        display_->WriteString(buffer_, Font_6x8, true);
+    #endif // __CPU_LOAD__
+
+    display_->SetCursor(0, 32);
+    sprintf(buffer_, "Panic!!!");
+    display_->WriteString(buffer_, Font_6x8, selected_ != SYSTEM_SCREEN_PANIC);
+
+    display_->SetCursor(0, 40);
+    sprintf(buffer_, "Sysex Send");
+    display_->WriteString(buffer_, Font_6x8, selected_ != SYSTEM_SCREEN_SYSEX_SEND);
+
+    display_->SetCursor(0, 48);
+    sprintf(buffer_, "Sysex Receive");
+    display_->WriteString(buffer_, Font_6x8, selected_ != SYSTEM_SCREEN_SYSEX_READ);
+
+    display_->SetCursor(0, 56);
+    sprintf(buffer_, "Flash BIOS");
+    display_->WriteString(buffer_, Font_6x8, selected_ != SYSTEM_SCREEN_UPDATE);
+
+    if (selected_ != SYSTEM_SCREEN_NONE) {
+        display_->SetCursor(108, 56);
+        sprintf(buffer_, "<--");
+        display_->WriteString(buffer_, Font_6x8, selected_ != SYSTEM_SCREEN_RETURN);
     }
 
-    void SystemScreen::Display()
-    {
-        display->Fill(false);
+    display_->Update();
+}
 
-        display->SetCursor(0, 0);
-        sprintf(buffer, "System Version: 1.0");
-        display->WriteString(buffer, Font_6x8, true);
 
-	    #ifdef __CPU_LOAD__
-            display->SetCursor(0, 12);
-            sprintf(buffer, "Reads/Second: %d", performance->ReadsPerSec());
-            display->WriteString(buffer, Font_6x8, true);
 
-            display->SetCursor(0, 24);
-            sprintf(buffer, "CPU Max: %d  Avg: %d", (int)(performance->Max() * 100), (int)(performance->Avg() * 100));
-            display->WriteString(buffer, Font_6x8, true);
-    	#endif // __CPU_LOAD__
+void SystemScreen::DisplaySending()
+{
+    display_->Fill(false);
 
-        display->SetCursor(0, 32);
-        sprintf(buffer, "Panic!!!");
-        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_PANIC);
+    display_->SetCursor(0, 0);
+    sprintf(buffer_, "Sending Sysex...");
+    display_->WriteString(buffer_, Font_6x8, true);
 
-        display->SetCursor(0, 40);
-        sprintf(buffer, "Sysex Send");
-        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_SEND);
+    display_->Update();
+}
 
-        display->SetCursor(0, 48);
-        sprintf(buffer, "Sysex Receive");
-        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_SYSEX_READ);
 
-        display->SetCursor(0, 56);
-        sprintf(buffer, "Flash BIOS");
-        display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_UPDATE);
 
-        if (selected != SYSTEM_SCREEN_NONE) {
-            display->SetCursor(108, 56);
-            sprintf(buffer, "<--");
-            display->WriteString(buffer, Font_6x8, selected != SYSTEM_SCREEN_RETURN);
-        }
+void SystemScreen::DisplayReceiving()
+{
+    display_->Fill(false);
 
-        display->Update();
+    display_->SetCursor(0, 0);
+    sprintf(buffer_, "Ready for Sysex");
+    display_->WriteString(buffer_, Font_6x8, true);
+
+    display_->SetCursor(0, 10);
+    sprintf(buffer_, "Listening...");
+    display_->WriteString(buffer_, Font_6x8, true);
+
+    display_->SetCursor(0, 56);
+    sprintf(buffer_, "Cancel");
+    display_->WriteString(buffer_, Font_6x8, false);
+
+    display_->Update();
+}
+
+
+
+void SystemScreen::Increment() {
+    selected_ = (SystemScreenSelection)((selected_ + 1) % SYSTEM_SCREEN_OPTIONS);
+}
+
+
+
+void SystemScreen::Decrement() {
+    selected_ = (SystemScreenSelection)((selected_ - 1 + SYSTEM_SCREEN_OPTIONS) % SYSTEM_SCREEN_OPTIONS);
+}
+
+
+
+SystemScreenResponse SystemScreen::Click() {
+    switch (selected_) {
+        case SYSTEM_SCREEN_NONE:
+            selected_ = SYSTEM_SCREEN_PANIC;
+            return SYSTEM_SCREEN_RESPONSE_EDIT;
+
+        case SYSTEM_SCREEN_UPDATE:
+            return SYSTEM_SCREEN_RESPONSE_UPDATE;
+
+        case SYSTEM_SCREEN_PANIC:
+            selected_ = SYSTEM_SCREEN_NONE;
+            return SYSTEM_SCREEN_RESPONSE_PANIC;
+
+        case SYSTEM_SCREEN_SYSEX_SEND:
+            selected_ = SYSTEM_SCREEN_NONE;
+            return SYSTEM_SCREEN_RESPONSE_SYSEX_SEND;
+
+        case SYSTEM_SCREEN_SYSEX_READ:
+            selected_ = SYSTEM_SCREEN_NONE;
+            return SYSTEM_SCREEN_RESPONSE_SYSEX_READ;
+
+        default:
+        case SYSTEM_SCREEN_RETURN:
+            selected_ = SYSTEM_SCREEN_NONE;
+            return SYSTEM_SCREEN_RESPONSE_NOEDIT;
     }
-
-    void SystemScreen::DisplaySending()
-    {
-        display->Fill(false);
-
-        display->SetCursor(0, 0);
-        sprintf(buffer, "Sending Sysex...");
-        display->WriteString(buffer, Font_6x8, true);
-
-        display->Update();
-    }
-
-    void SystemScreen::DisplayReceiving()
-    {
-        display->Fill(false);
-
-        display->SetCursor(0, 0);
-        sprintf(buffer, "Ready for Sysex");
-        display->WriteString(buffer, Font_6x8, true);
-
-        display->SetCursor(0, 10);
-        sprintf(buffer, "Listening...");
-        display->WriteString(buffer, Font_6x8, true);
-
-        display->SetCursor(0, 56);
-        sprintf(buffer, "Cancel");
-        display->WriteString(buffer, Font_6x8, false);
-
-        display->Update();
-    }
-
-    void SystemScreen::Increment() {
-        selected = (SystemScreenSelection)((selected + 1) % SYSTEM_SCREEN_OPTIONS);
-    }
-
-    void SystemScreen::Decrement() {
-        selected = (SystemScreenSelection)((selected - 1 + SYSTEM_SCREEN_OPTIONS) % SYSTEM_SCREEN_OPTIONS);
-    }
-
-    SystemScreenResponse SystemScreen::Click() {
-        switch (selected) {
-            case SYSTEM_SCREEN_NONE:
-                selected = SYSTEM_SCREEN_PANIC;
-                return SYSTEM_SCREEN_RESPONSE_EDIT;
-
-            case SYSTEM_SCREEN_UPDATE:
-                return SYSTEM_SCREEN_RESPONSE_UPDATE;
-
-            case SYSTEM_SCREEN_PANIC:
-                selected = SYSTEM_SCREEN_NONE;
-                return SYSTEM_SCREEN_RESPONSE_PANIC;
-
-            case SYSTEM_SCREEN_SYSEX_SEND:
-                selected = SYSTEM_SCREEN_NONE;
-                return SYSTEM_SCREEN_RESPONSE_SYSEX_SEND;
-
-            case SYSTEM_SCREEN_SYSEX_READ:
-                selected = SYSTEM_SCREEN_NONE;
-                return SYSTEM_SCREEN_RESPONSE_SYSEX_READ;
-
-            default:
-            case SYSTEM_SCREEN_RETURN:
-                selected = SYSTEM_SCREEN_NONE;
-                return SYSTEM_SCREEN_RESPONSE_NOEDIT;
-        }
-    }
-
-} // namespace kiwisynth
+}

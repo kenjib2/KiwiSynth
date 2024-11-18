@@ -11,15 +11,22 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_FLANGER_H__
 #ifdef __cplusplus
 
+
+
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
 #include "../Util/KUtils.h"
 
+
+
 /** @file KiwiFlanger.h */
 
 namespace kiwisynth
 {
+
+
+
 /** @brief Flanging Audio Effect 
  *
  * Generates a modulating phase shifted copy of a signal, and recombines
@@ -67,7 +74,7 @@ class KiwiFlanger : public IEffect
     float                    sample_rate_;
     // 20 ms at 32kHz = .02 * 32000
     // 20 ms at 48kHz = .02 * 48000
-    static constexpr int32_t kDelayLength = SAMPLE_RATE_INT / 50;
+    static constexpr int32_t kDelayLength_ = SAMPLE_RATE_INT / 50;
 
     float feedback_;
 
@@ -82,6 +89,9 @@ class KiwiFlanger : public IEffect
 
     float ProcessLfo();
 };
+
+
+
 } //namespace kiwisynth
 #endif
 #endif // __KIWI_SYNTH_KIWI_FLANGER_H__

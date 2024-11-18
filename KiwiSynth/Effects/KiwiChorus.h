@@ -11,15 +11,21 @@ https://opensource.org/licenses/MIT.
 #define __KIWI_SYNTH_KIWI_CHORUS_H__
 #ifdef __cplusplus
 
+
+
 #include <stdint.h>
 #include "IEffect.h"
 #include "KiwiDelayLine.h"
 #include "../Util/KUtils.h"
-
 /** @file chorus.h */
+
+
 
 namespace kiwisynth
 {
+
+
+
 /**  
     @brief Single Chorus engine. Used in Chorus.
     @author Ben Sergentanis
@@ -67,7 +73,7 @@ class KiwiChorusEngine
 
   private:
     float                    sample_rate_;
-    static constexpr int32_t kDelayLength
+    static constexpr int32_t kDelayLength_
         = SAMPLE_RATE_INT / 20; 
         // 50 ms at 32kHz = .05 * 32000
         // 50 ms at 48kHz = .05 * 48000
@@ -85,6 +91,8 @@ class KiwiChorusEngine
 
     float ProcessLfo();
 };
+
+
 
 //wraps up all of the chorus engines
 /**  
@@ -141,6 +149,9 @@ class KiwiChorus : public IEffect
 
     float sig_;
 };
+
+
+
 } //namespace kiwisynth
 #endif // __cplusplus
 #endif // __KIWI_SYNTH_KIWI_CHORUS_H__

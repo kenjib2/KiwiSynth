@@ -2,10 +2,12 @@
 #include "KiwiFlanger.h"
 #include <math.h>
 
-using namespace daisysp;
 
-namespace kiwisynth
-{
+
+using namespace daisysp;
+using namespace kiwisynth;
+
+
 
 void KiwiFlanger::Init(float sample_rate, int bufferNumber)
 {
@@ -22,6 +24,8 @@ void KiwiFlanger::Init(float sample_rate, int bufferNumber)
     SetLfoDepth(.9);
 }
 
+
+
 float KiwiFlanger::Process(float in)
 {
     float lfo_sig = ProcessLfo();
@@ -33,17 +37,23 @@ float KiwiFlanger::Process(float in)
     return (in + out) * .7f; //equal mix
 }
 
+
+
 void KiwiFlanger::SetFeedback(float feedback)
 {
     feedback_ = fclamp(feedback, 0.f, 1.f);
     feedback_ *= .97f;
 }
 
+
+
 void KiwiFlanger::SetLfoDepth(float depth)
 {
     depth    = fclamp(depth, 0.f, .93f);
     lfo_amp_ = depth * delay_;
 }
+
+
 
 void KiwiFlanger::SetLfoFreq(float freq)
 {
@@ -52,11 +62,15 @@ void KiwiFlanger::SetLfoFreq(float freq)
     lfo_freq_ = fclamp(freq, -.25f, .25f); //clip at +/- .125 * sr
 }
 
+
+
 void KiwiFlanger::SetDelay(float delay)
 {
     delay = (.1f + delay * 6.9); //.1 to 7 ms
     SetDelayMs(delay);
 }
+
+
 
 void KiwiFlanger::SetDelayMs(float ms)
 {
@@ -65,6 +79,8 @@ void KiwiFlanger::SetDelayMs(float ms)
 
     lfo_amp_ = daisysp::fmin(lfo_amp_, delay_); //clip this if needed
 }
+
+
 
 float KiwiFlanger::ProcessLfo()
 {
@@ -84,5 +100,3 @@ float KiwiFlanger::ProcessLfo()
 
     return lfo_phase_ * lfo_amp_;
 }
-
-} // namespace kiwisynth

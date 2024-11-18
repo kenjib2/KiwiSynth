@@ -1,21 +1,25 @@
 #include "BootloaderScreen.h"
 
-namespace kiwisynth
+
+
+using namespace kiwisynth;
+
+
+
+void BootloaderScreen::Init(KiwiDisplay* display)
 {
+    display_ = display;
+}
 
-    void BootloaderScreen::Init(KiwiDisplay* display)
-    {
-        this->display = display;
-    }
 
-    void BootloaderScreen::Display()
-    {
-        display->Fill(false);
 
-		sprintf(buffer, "Ready for Update...");
-        display->SetCursor(0, 0);
-        display->WriteString(buffer, Font_6x8, true);
+void BootloaderScreen::Display()
+{
+    display_->Fill(false);
 
-        display->Update();
-    }
-} // namespace kiwisynth
+    sprintf(buffer_, "Ready for Update...");
+    display_->SetCursor(0, 0);
+    display_->WriteString(buffer_, Font_6x8, true);
+
+    display_->Update();
+}

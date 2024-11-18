@@ -55,7 +55,7 @@ int main(void)
 	kiwiSynth.ProcessInputs(true);
 	if (kiwiSynth.BootLoaderRequested())
 	{
-		display.mode = MODE_BOOTLOADER;
+		display.mode_ = MODE_BOOTLOADER;
 		display.Update();
 		System::ResetToBootloader(daisy::System::BootloaderMode::DAISY_INFINITE_TIMEOUT);
 	}
@@ -74,7 +74,7 @@ int main(void)
 		kiwiSynth.UpdateSettings();
 
 		#ifdef __CPU_LOAD__
-		if (!display.mode) {
+		if (!display.mode_) {
 			performance.Update();
 		}
 		#endif // __CPU_LOAD__
@@ -82,17 +82,17 @@ int main(void)
 		if (counter1 == 15) {
 			display.HandleInput();
 
-			if (display.mode && audioRunning) {
+			if (display.mode_ && audioRunning) {
 				hw.StopAudio();
 				audioRunning = false;
-			} else if (!display.mode && !audioRunning) {
+			} else if (!display.mode_ && !audioRunning) {
 				kiwiSynth.AllNotesOff();
 				kiwiSynth.ClearMidi();
 				hw.StartAudio(AudioCallback);
 				audioRunning = true;
 			}
 
-			if (display.mode && counter2 == 15) {
+			if (display.mode_ && counter2 == 15) {
 				display.Update(); // Update to capture live control changes on the settings screens
 			}
 			counter2++;

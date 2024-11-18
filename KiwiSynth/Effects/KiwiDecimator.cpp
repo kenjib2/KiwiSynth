@@ -1,7 +1,10 @@
 #include "KiwiDecimator.h"
 
-namespace kiwisynth
-{
+
+
+using namespace kiwisynth;
+
+
 
 void KiwiDecimator::Init()
 {
@@ -15,6 +18,8 @@ void KiwiDecimator::Init()
     bit_overflow_      = 1.0f;
     level_             = 1.0f;
 }
+
+
 
 float KiwiDecimator::Process(float input)
 {
@@ -46,5 +51,3 @@ float KiwiDecimator::Process(float input)
 
     return bitcrushed_ * level_;
 }
-
-} // namespace kiwisynth
