@@ -109,7 +109,7 @@ void KiwiSynth::InitMidi()
 
 void KiwiSynth::SetMidiChannel(int midiChannel)
 {
-    this->midiChannel_ = midiChannel;
+    midiChannel_ = midiChannel;
 }
 
 

@@ -168,7 +168,7 @@ void PatchSettings::Copy(SavedPatch* savedPatch, int voiceNumber)
 
 void PatchSettings::SetModSigns() {
     for (int i = 0; i < 8; i++) {
-        if (this->floatValues_[MOD_1_DEPTH + i] >= 0.0f) {
+        if (floatValues_[MOD_1_DEPTH + i] >= 0.0f) {
             modSigns_[i] = 1.0f;
         } else {
             modSigns_[i] = -1.0f;
@@ -643,7 +643,7 @@ void PatchSettings::DefaultSettings()
 
 
 void PatchSettings::SetControlsLive(bool isLive) {
-    this->isLive_ = isLive;
+    isLive_ = isLive;
     if (isLive) {
         memset(boolValuesProtected_, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);
         memset(floatValuesProtected_, 0, sizeof(int8_t) * NUM_PATCH_SETTINGS);

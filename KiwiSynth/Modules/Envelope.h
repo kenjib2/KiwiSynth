@@ -93,7 +93,7 @@ namespace kiwisynth
              */
             inline void SetQuickRelease(bool quickRelease)
             {
-                this->isQuickRelease_ = quickRelease;
+                isQuickRelease_ = quickRelease;
                 if (quickRelease) {
                     env_.SetReleaseTime(0.0015f);
                 } else {

@@ -96,7 +96,7 @@ class xorshiftPRNG {
 class Performance {
     public:
         void Init(CpuLoadMeter* load) {
-            this->load = load;
+            load = load;
          
             avg = 0.0;
             max = 0.0;

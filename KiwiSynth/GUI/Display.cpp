@@ -17,9 +17,9 @@ void Display::Init(KiwiSynth* kiwiSynth, Performance* performance)
 
 void Display::Init(DisplayConfig *displayConfig, KiwiSynth* kiwiSynth, Performance* performance)
 {
-    this->kiwiSynth_ = kiwiSynth;
+    kiwiSynth_ = kiwiSynth;
     patch_ = &(kiwiSynth->patch);
-    this->performance_ = performance;
+    performance_ = performance;
     guiButton_ = false;
     mode_ = MODE_PLAY;
     menuActive_ = false;

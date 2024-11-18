@@ -44,14 +44,14 @@ namespace kiwisynth
             /*
              * Sets the pre-distortion gain, which will determine the amount of clipping.
              */
-            inline void SetGain(float gain) { this->gain_ = gain; }
+            inline void SetGain(float gain) { gain_ = gain; }
 
 
 
             /*
              * An output level to account for changes in perceived/RMS volume due to increased gain.
              */
-            inline void SetLevel(float level) { this->level_ = level; }
+            inline void SetLevel(float level) { level_ = level; }
     };
 
 

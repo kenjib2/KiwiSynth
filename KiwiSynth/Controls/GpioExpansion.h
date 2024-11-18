@@ -93,7 +93,7 @@ class GpioExpansion : public IControl
 
 
 
-        inline void RegisterControlListener(IControlListener* controlListener) { this->controlListener_ = controlListener; }
+        inline void RegisterControlListener(IControlListener* controlListener) { controlListener_ = controlListener; }
 
 
 
