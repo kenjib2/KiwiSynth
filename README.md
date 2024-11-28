@@ -70,8 +70,6 @@ Fixing what looks like bad form should be done cautiously and with knowledge of 
 code.
 
 TO DO
-* Since changing to 3 notes sometimes voices don't process NoteOff and keep playing
-* Since changing to 3 notes sometimes voices don't start
 * Expression system mod is disabled until the jack is fixed. VoiceBank.cpp line 384+
 * CC messages for bank and patch changes
 * Load patches via Sysex
@@ -84,6 +82,7 @@ TO DO
 * Song mode: String together patches in a certain order. How to switch to next one though? ...but how to go backward and forward through the list?
 * Appegiator? Sequencer?
 * Ping Pong Delay
+* Reverse Delay
 * L/R Output noise: High pitched whine. It is there subtly on headphones too.
 * When the voice mode is changed, can we push a display update to the play screen and show the change?
 * Clean up too many global variables
@@ -106,7 +105,7 @@ MAYBE TO DO
 * Can we make the data structures a little smaller without losing performance?
 * This used to only be in UpdateSettings instead of Process. It caused a note blip because the note change delayed. Is there a way to make this an option again? It sounded cool. Oscillator.cpp line 53: playingNote = midiNote + octave + interval + fineTune + masterTune;
 * FX Modes: Ensemble-Phaser. Sonic Annihilator.
-* Delay: Reverse, modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
+* Delay: Modulation, pitch shift when changing delay time (alter read/write speed instead of pointer position)
 * Chebyshev distortion like (4t^3-3t)+(2t^2-1)+t+1
 * ABS distortion like X-a(X*ABS(X))
 * Pre-filter vs output distortion

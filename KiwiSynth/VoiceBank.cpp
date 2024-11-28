@@ -574,7 +574,7 @@ void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
             for (size_t i = 0; i < voices_.size(); i++) {
                 if (!voices_[i].IsAvailable()) {
                     numVoicesPlaying++;
-                    if (voices_[i].isNoteTriggered_ && voices_[i].triggerNote_ == note) {
+                    if (voices_[i].triggerNote_ == note) {
                         voiceFound = i;
                     }
                 }
@@ -583,15 +583,21 @@ void VoiceBank::NoteOff(uint8_t note, uint8_t velocity)
             if (voiceFound == -1) {
                 // We didn't find the voice. There is no note to stop.
             } else if (numVoicesPlaying == maxVoices_ && playingNotes_.size() > maxVoices_) {
-                int otherNote = voices_[voiceFound ? 0 : 1].triggerNote_;
+                std::vector<int> otherNotes;
+                for (int i = 0; i < numVoices_; i++) {
+                    if (i != voiceFound) {
+                        otherNotes.push_back(voices_[i].triggerNote_);
+                    }
+                }
 
                 // Go backward through the vector to find the last note that isn't playing
                 for (size_t i = 0; i < playingNotes_.size(); i++) {
-                    if (playingNotes_[i] != note && playingNotes_[i] != otherNote) {
+                    if (playingNotes_[i] != note && count(otherNotes.begin(), otherNotes.end(), playingNotes_[i]) == 0) {
                         // We have found it. Switch to that note
                         voices_[voiceFound].NoteOn(playingNotes_[i], velocity, false);
                     }
                 }
+
             } else {
                 // There are no extra notes on the stack. Just stop the note normally.
                 voices_[voiceFound] .NoteOff(note, velocity);
