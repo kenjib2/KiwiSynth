@@ -72,6 +72,7 @@ code.
 TO DO
 * Since changing to 3 notes sometimes voices don't process NoteOff and keep playing
 * Since changing to 3 notes sometimes voices don't start
+* Expression system mod is disabled until the jack is fixed. VoiceBank.cpp line 384+
 * CC messages for bank and patch changes
 * Load patches via Sysex
 * Change six osc paraphonic to nine osc

@@ -381,7 +381,7 @@ void VoiceBank::UpdateModulations() {
         systemModulations_[4].destination_ = DST_NONE;
     }
 
-    systemModulations_[5].source_ = SRC_EXPRESSION;
+/*    systemModulations_[5].source_ = SRC_EXPRESSION;
     systemModulations_[5].depth_ = 0.5f;
     if (modulations_[0][MODS_MOD_MATRIX_1].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_2].source_ != SRC_EXPRESSION &&
@@ -390,11 +390,11 @@ void VoiceBank::UpdateModulations() {
             modulations_[0][MODS_MOD_MATRIX_5].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_6].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_7].source_ != SRC_EXPRESSION &&
-            modulations_[0][MODS_MOD_MATRIX_8].source_ != SRC_EXPRESSION*/) {
+            modulations_[0][MODS_MOD_MATRIX_8].source_ != SRC_EXPRESSION*//*) {
         systemModulations_[5].destination_ = DST_FLT_CUTOFF;
     } else {
         systemModulations_[5].destination_ = DST_NONE;
-    }
+    }*/
 
     if (modulations_[0][MODS_MOD_MATRIX_1].destination_ == DST_SH_IN ||
             modulations_[0][MODS_MOD_MATRIX_2].destination_ == DST_SH_IN ||
@@ -632,9 +632,6 @@ void VoiceBank::AllNotesOff()
 
 Voice* VoiceBank::RequestVoice(uint8_t midiNote)
 {
-    uint8_t highestIndex = 0;
-    uint8_t highestNote = 0;
-
     // First if that note is already playing, retrigger it to preserve envelope/lfo position.
     for (uint8_t i = 0; i < numVoices_; i++) {
         if (!voices_[i].IsAvailable() && voices_[i].currentMidiNote_ == midiNote) {
@@ -642,27 +639,18 @@ Voice* VoiceBank::RequestVoice(uint8_t midiNote)
         }
     }
 
-    // Else play an available note if it was previously the same note to preserve portamento.
-    for (size_t i = 0; i < numVoices_; i++) {
-        if (voices_[i].IsAvailable() && voices_[i].currentMidiNote_ == midiNote) {
-            return &voices_[i];
+    // Else take the available voice that was previously closest in pitch to help with portamento.
+    int closestVoice = -1;
+    int closestDistance = 128;
+    for (int i = 0; i < numVoices_; i++) {
+        int nextDistance = std::abs(midiNote - voices_[i].currentMidiNote_);
+        if (nextDistance < closestDistance && voices_[i].IsAvailable() && !voices_[i].IsReleasing()) {
+            closestVoice = i;
+            closestDistance = nextDistance;
         }
     }
-
-    // Else if both available, take the voice that was previously closest in pitch to help with portamento.
-    if (voices_[0].IsAvailable() && voices_[1].IsAvailable() && voices_[2].IsAvailable()) {
-        int closestVoice = 0;
-        for (int i = 1; i < numVoices_; i++) {
-            if (std::abs(midiNote - voices_[i].currentMidiNote_) < std::abs(midiNote - voices_[closestVoice].currentMidiNote_)) {
-                closestVoice = i;
-            }
-        }
+    if (closestVoice > -1) {
         return &voices_[closestVoice];
-    }
-    for (size_t i = 0; i < numVoices_; i++) {
-        if (voices_[i].IsAvailable() && voices_[i].currentMidiNote_ == midiNote) {
-            return &voices_[i];
-        }
     }
 
     // Else return first available voice.
@@ -678,6 +666,9 @@ Voice* VoiceBank::RequestVoice(uint8_t midiNote)
             return &voices_[i];
         }
     }
+
+    uint8_t highestIndex = 0;
+    uint8_t highestNote = 0;
 
     // Else return first releasing voice.
     for (size_t i = 0; i < numVoices_; i++) {
@@ -695,6 +686,43 @@ Voice* VoiceBank::RequestVoice(uint8_t midiNote)
 
     // Return the highest note.
     return &(voices_[highestIndex]); 
+
+    /*
+    // All voices are used, so steal a note that is neither the highest nor lowest
+    uint8_t highestIndex = 0;
+    uint8_t highestNote = 0;
+    uint8_t lowestIndex = 0;
+    uint8_t lowestNote = 127;
+    for (int i = 0; i < 6; i++) {
+        // Find the highest
+        if (paraOscNotes_[i] > highestNote) {
+            highestNote = paraOscNotes_[i];
+            highestIndex = i;
+        }
+        // Find the lowest
+        if (paraOscNotes_[i] < lowestNote) {
+            lowestNote = paraOscNotes_[i];
+            lowestIndex = i;
+        }
+    }
+    // Find a note to return/replace
+    if (delta0 < delta3) {
+        for (int i = 0; i < 6; i++) {
+            if (i != highestIndex && i != lowestIndex) {
+                return i;
+            }
+        }
+    } else {
+        for (int i = 5; i >= 0; i--) {
+            if (i != highestIndex && i != lowestIndex) {
+                return i;
+            }
+        }
+    }
+
+    // We should never reach this point since there are six oscillators and only 2 highest/lowest
+    return 0;
+    */
 }
 
 
