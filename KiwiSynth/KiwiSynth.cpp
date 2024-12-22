@@ -92,7 +92,7 @@ void KiwiSynth::ConfigureGpioExpansion()
 
 void KiwiSynth::InitMidi()
 {
-    MidiUartHandler::Config midi_config;
+    KiwiMidiUartHandler::Config midi_config;
     midi_config.transport_config.tx = D13;
     midi_config.transport_config.rx = D14;
     midi_.Init(midi_config);
@@ -152,7 +152,7 @@ void KiwiSynth::ProcessMidi()
     midi_.Listen();
     while(midi_.HasEvents())
     {
-        MidiEvent event = midi_.PopEvent();
+        KiwiMidiEvent event = midi_.PopEvent();
         HandleMidiMessage(&event);
     }
 
@@ -183,7 +183,7 @@ void KiwiSynth::ProcessInputs(bool forceGeRead)
 
 
 
-void KiwiSynth::HandleMidiMessage(MidiEvent* midiEvent)
+void KiwiSynth::HandleMidiMessage(KiwiMidiEvent* midiEvent)
 {
     if (midiChannel_ == midiEvent->channel) {
         NoteOnEvent on;
@@ -282,9 +282,9 @@ void KiwiSynth::LoadPatch(int bankNumber, int patchNumber)
 {
     patch.SetLiveMode(false, bankNumber, patchNumber);
     SavedPatch savedPatch = storage_.LoadPatch(bankNumber, patchNumber);
-    patch.Load(savedPatch);
+    patch.ReadFromSavedPatch(savedPatch);
     voiceBank_.UpdateSettings();
-    patch.Load(savedPatch);     // For some reason multitimbral voice modes require loading/updating the patch twice.
+    patch.ReadFromSavedPatch(savedPatch);     // For some reason multitimbral voice modes require loading/updating the patch twice.
     voiceBank_.UpdateSettings(); // I need to debug this properly but for now it's working via this workaround.
     effectsEngine_.UpdateSettings();
 }
@@ -313,22 +313,29 @@ void KiwiSynth::SavePatch(int bankNumber, int patchNumber)
     patchTypes[patchHeader.type].push_back(&patchBanks[bankNumber][patchNumber]);
     std::sort( patchTypes[patchHeader.type].begin(), patchTypes[patchHeader.type].end(), patchHeaderSort );
 
-    storage_.SavePatch(&patch, bankNumber, patchNumber);
+    SavedPatch savedPatch;
+    patch.WriteToSavedPatch(&savedPatch);
+    storage_.SavePatch(&savedPatch, bankNumber, patchNumber);
     patch.SetLiveMode(false, bankNumber, patchNumber);
 }
 
 
 
-void KiwiSynth::SendSysex()
+void KiwiSynth::SendSysex(int bankNumber, int patchNumber)
 {
-    sysexManager_.Send(&patch);
+    SavedPatch savedPatch = storage_.LoadPatch(bankNumber, patchNumber);
+    sysexManager_.Send(&savedPatch);
 }
 
 
 
-void KiwiSynth::ReceiveSysex()
+void KiwiSynth::ReceiveSysex(int bankNumber, int patchNumber)
 {
-    sysexManager_.Receive(&patch, &ge_);
+    SavedPatch savedPatch;
+    if (sysexManager_.Receive(&savedPatch, &patch, &ge_)) {
+        storage_.SavePatch(&savedPatch, bankNumber, patchNumber);
+        LoadPatch(bankNumber, patchNumber);
+    }
 }
 
 

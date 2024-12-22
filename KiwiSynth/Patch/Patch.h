@@ -45,8 +45,8 @@ class Patch
         void Init(MultiPots* multiPots, GpioExpansion* ge);
 
         void DefaultSettings();
-        void Load(SavedPatch savedPatch);
-        void Save(SavedPatch* savedPatch);
+        void ReadFromSavedPatch(SavedPatch savedPatch);
+        void WriteToSavedPatch(SavedPatch* savedPatch);
         void GetPatchHeader(PatchHeader* patchHeader);
         void SwapLayers();
 

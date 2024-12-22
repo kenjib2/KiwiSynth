@@ -31,11 +31,23 @@ enum SelectScreenPage
 };
 const static int maxSelectScreenPage = 2;
 
+enum SelectScreenMode
+{
+    SELECT_MODE_SAVE,
+    SELECT_MODE_LOAD,
+    SELECT_MODE_LOAD_FROM_PLAY,
+    SELECT_MODE_SYSEX_SEND,
+    SELECT_MODE_SYSEX_RECEIVE
+};
+
 enum SelectScreenResponse
 {
     SELECT_SCREEN_RESPONSE_CANCEL,
     SELECT_SCREEN_RESPONSE_REFRESH,
-    SELECT_SCREEN_RESPONSE_PLAY
+    SELECT_SCREEN_RESPONSE_CANCEL_SYSTEM,
+    SELECT_SCREEN_RESPONSE_PLAY,
+    SELECT_SCREEN_RESPONSE_SYSEX_SEND,
+    SELECT_SCREEN_RESPONSE_SYSEX_RECEIVE
 };
 
 
@@ -53,8 +65,7 @@ class SelectScreen
         KiwiDisplay* display_;
 
     public:
-        bool saving_;
-        bool fromPlay_;
+        SelectScreenMode selectMode_;
         int selection_;
         int bankNumber_;
         int patchNumber_;

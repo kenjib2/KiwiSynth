@@ -20,8 +20,8 @@ void Storage::InitializeIfNeeded() {
         SavedPatch patchGroup[2];
         Patch patch;
         patch.DefaultSettings();
-        patch.Save(&patchGroup[0]);
-        patch.Save(&patchGroup[1]);
+        patch.WriteToSavedPatch(&patchGroup[0]);
+        patch.WriteToSavedPatch(&patchGroup[1]);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 64; j++) {
                 WritePatchGroup(i, j, patchGroup);
@@ -77,13 +77,13 @@ void Storage::LoadPatch(SavedPatch* savedPatch, int bankNumber, int patchNumber)
 
 
 // Patches are always saved in pairs, so we have to load the corresponding partner and then save both patches together.
-void Storage::SavePatch(Patch* patch, int bankNumber, int patchNumber) {
+void Storage::SavePatch(SavedPatch* savedPatch, int bankNumber, int patchNumber) {
     int patchGroup = patchNumber / 2;
     SavedPatch patchGroupData[2];
 
     if (patchNumber % 2 == 0) {
         // Save the first patch
-        patch->Save(patchGroupData);
+        memcpy(patchGroupData, savedPatch, sizeof(SavedPatch));
 
         // Copy the existing second patch
         void* readPtr = qspi_.GetData(PATCHES_BASE_ADDRESS + bankNumber * BANK_SIZE + (patchNumber + 1) * PATCH_SIZE);
@@ -95,7 +95,7 @@ void Storage::SavePatch(Patch* patch, int bankNumber, int patchNumber) {
         memcpy(patchGroupData, readPtr, sizeof(SavedPatch));
 
         // Save the second patch
-        patch->Save(patchGroupData + 1);
+        memcpy(patchGroupData + 1, savedPatch, sizeof(SavedPatch));
     }
 
     WritePatchGroup(bankNumber, patchGroup, patchGroupData);

@@ -10,11 +10,12 @@
 
 #include "Util/KUtils.h"
 #include "Controls/MultiPots.h"
+#include "Controls/KiwiMidi.h"
 #include "Patch/Patch.h"
 #include "VoiceBank.h"
 #include "Effects/EffectsEngine.h"
 #include "Patch/Storage.h"
-#include "Patch/SysexManager.h"
+#include "Controls/SysexManager.h"
 #include "Patch/PatchHeader.h"
 
 
@@ -49,12 +50,12 @@ class KiwiSynth
         int midiCounter_ = 0;
         bool isMidiLedOn_ = false;
         bool isMidiLedNeeded_ = false;
-        MidiUartHandler midi_;
+        KiwiMidiUartHandler midi_;
         VoiceBank voiceBank_;
         EffectsEngine effectsEngine_;
 
         void ProcessMidi();
-        void HandleMidiMessage(MidiEvent* midiEvent);
+        void HandleMidiMessage(KiwiMidiEvent* midiEvent);
 
     public:
         Patch patch;
@@ -81,8 +82,8 @@ class KiwiSynth
         void LoadPatchBanks();
         void LoadPatch(int bankNumber, int patchNumber);
         void SavePatch(int bankNumber, int patchNumber);
-        void ReceiveSysex();
-        void SendSysex();
+        void ReceiveSysex(int bankNumber, int patchNumber);
+        void SendSysex(int bankNumber, int patchNumber);
         void UpdateSettings();
         void Process(AudioHandle::InterleavingOutputBuffer out, size_t size);
         void AllNotesOff();

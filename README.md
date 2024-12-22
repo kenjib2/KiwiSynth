@@ -70,9 +70,9 @@ Fixing what looks like bad form should be done cautiously and with knowledge of 
 code.
 
 TO DO
+* Sysex load and save need to go straight from/to saved patches
 * Expression system mod is disabled until the jack is fixed. VoiceBank.cpp line 384+
 * CC messages for bank and patch changes
-* Load patches via Sysex
 * Change six osc paraphonic to nine osc
 * Menu to change system-wide default mods and patch mod settings 5-8
 * Inverted amplitude envelope clicks when starting and stopping

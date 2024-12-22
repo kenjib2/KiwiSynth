@@ -58,7 +58,7 @@ class Storage
         void Init(QSPIHandle qspi);
         void LoadPatch(SavedPatch* savedPatch, int bankNumber, int patchNumber);
         SavedPatch LoadPatch(int bankNumber, int patchNumber);
-        void SavePatch(Patch* patch, int bankNumber, int patchNumber);
+        void SavePatch(SavedPatch* savedPatch, int bankNumber, int patchNumber);
 
 };
 

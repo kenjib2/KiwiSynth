@@ -386,7 +386,7 @@ void VoiceBank::UpdateModulations() {
     if (modulations_[0][MODS_MOD_MATRIX_1].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_2].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_3].source_ != SRC_EXPRESSION &&
-            modulations_[0][MODS_MOD_MATRIX_4].source_ != SRC_EXPRESSION /*&&
+            modulations_[0][MODS_MOD_MATRIX_4].source_ != SRC_EXPRESSION *//*&&
             modulations_[0][MODS_MOD_MATRIX_5].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_6].source_ != SRC_EXPRESSION &&
             modulations_[0][MODS_MOD_MATRIX_7].source_ != SRC_EXPRESSION &&

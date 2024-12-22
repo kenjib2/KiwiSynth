@@ -147,6 +147,8 @@ class Display
 
     public:
         DisplayMode mode_;
+        int bankNumber_;
+        int patchNumber_;
 
         Display(){}
         virtual ~Display(){}

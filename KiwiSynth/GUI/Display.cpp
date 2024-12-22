@@ -174,8 +174,7 @@ bool Display::HandleClick() {
         if (__builtin_expect(mode_ == MODE_PLAY, 1)) {
             // From play mode we want to load patches, starting positioned at the current patch for convenience.
             menuActive_ = true;
-            selectScreen_.saving_ = false;
-            selectScreen_.fromPlay_ = true;
+            selectScreen_.selectMode_  = SELECT_MODE_LOAD_FROM_PLAY;
             if (patch_->GetLiveMode()) {
                 selectScreen_.bankNumber_ = 0;
                 selectScreen_.patchNumber_ = 0;
@@ -237,15 +236,13 @@ bool Display::HandleClick() {
                 menuActive_ = true;
             } else if (patchResponse == PATCH_SCREEN_RESPONSE_LOAD) {
                 menuActive_ = true;
-                selectScreen_.saving_ = false;
-                selectScreen_.fromPlay_ = false;
+                selectScreen_.selectMode_  = SELECT_MODE_LOAD;
                 selectScreen_.currentPage_ = SELECT_PAGE_BANKS;
                 selectScreen_.selection_ = 3;
                 mode_ = MODE_SELECT_SCREEN;
             } else if (patchResponse == PATCH_SCREEN_RESPONSE_SAVE) {
                 menuActive_ = true;
-                selectScreen_.saving_ = true;
-                selectScreen_.fromPlay_ = false;
+                selectScreen_.selectMode_  = SELECT_MODE_SAVE;
                 if (patch_->GetLiveMode()) {
                     selectScreen_.bankNumber_ = 0;
                     selectScreen_.patchNumber_ = 0;
@@ -275,6 +272,21 @@ bool Display::HandleClick() {
             } else if (selectResponse == SELECT_SCREEN_RESPONSE_CANCEL) {
                 menuActive_ = false;
                 mode_ = MODE_PATCH_SCREEN;
+            } else if (selectResponse == SELECT_SCREEN_RESPONSE_CANCEL_SYSTEM) {
+                menuActive_ = false;
+                mode_ = MODE_SYSTEM_SCREEN;
+            } else if (selectResponse == SELECT_SCREEN_RESPONSE_SYSEX_SEND) {
+                systemScreen_.DisplaySending();
+                kiwiSynth_->SendSysex(selectScreen_.saveBank_, selectScreen_.savePatch_);
+                menuActive_ = false;
+                mode_ = MODE_PLAY;
+                updateNeeded = true;
+            } else if (selectResponse == SELECT_SCREEN_RESPONSE_SYSEX_RECEIVE) {
+                systemScreen_.DisplayReceiving();
+                kiwiSynth_->ReceiveSysex(selectScreen_.saveBank_, selectScreen_.savePatch_);
+                menuActive_ = false;
+                mode_ = MODE_PLAY;
+                updateNeeded = true;
             }
             updateNeeded = true;
         } else if (mode_ == MODE_SYSTEM_SCREEN) {
@@ -287,15 +299,36 @@ bool Display::HandleClick() {
                 menuActive_ = false;
                 updateNeeded = true;
             } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_SYSEX_SEND) {
-                systemScreen_.DisplaySending();
-                kiwiSynth_->SendSysex();
-                menuActive_ = false;
+                menuActive_ = true;
+                selectScreen_.selectMode_ = SELECT_MODE_SYSEX_SEND;
+                if (patch_->GetLiveMode()) {
+                    selectScreen_.bankNumber_ = 0;
+                    selectScreen_.patchNumber_ = 0;
+                    selectScreen_.selection_ = 3;
+                    selectScreen_.currentPage_ = SELECT_PAGE_BANKS;
+                } else {
+                    selectScreen_.bankNumber_ = patch_->GetBankNumber();
+                    selectScreen_.patchNumber_ = patch_->GetPatchNumber() & ~7;
+                    selectScreen_.selection_ = patch_->GetPatchNumber() % 8 + 3;
+                    selectScreen_.currentPage_ = SELECT_PAGE_BANK_PATCHES;
+                }
+                mode_ = MODE_SELECT_SCREEN;
                 updateNeeded = true;
             } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_SYSEX_READ) {
-                systemScreen_.DisplayReceiving();
-                kiwiSynth_->ReceiveSysex();
-                menuActive_ = false;
-                mode_ = MODE_PLAY;
+                menuActive_ = true;
+                selectScreen_.selectMode_ = SELECT_MODE_SYSEX_RECEIVE;
+                if (patch_->GetLiveMode()) {
+                    selectScreen_.bankNumber_ = 0;
+                    selectScreen_.patchNumber_ = 0;
+                    selectScreen_.selection_ = 3;
+                    selectScreen_.currentPage_ = SELECT_PAGE_BANKS;
+                } else {
+                    selectScreen_.bankNumber_ = patch_->GetBankNumber();
+                    selectScreen_.patchNumber_ = patch_->GetPatchNumber() & ~7;
+                    selectScreen_.selection_ = patch_->GetPatchNumber() % 8 + 3;
+                    selectScreen_.currentPage_ = SELECT_PAGE_BANK_PATCHES;
+                }
+                mode_ = MODE_SELECT_SCREEN;
                 updateNeeded = true;
             } else if (systemResponse == SYSTEM_SCREEN_RESPONSE_PANIC) {
                 menuActive_ = false;

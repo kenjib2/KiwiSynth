@@ -86,7 +86,7 @@ void Patch::SetLiveMode(bool isLive, int bankNumber, int patchNumber) {
 
 
 
-void Patch::Load(SavedPatch savedPatch) {
+void Patch::ReadFromSavedPatch(SavedPatch savedPatch) {
     voiceMode_ = savedPatch.voiceMode;
     if (voiceMode_ == VOICE_MODE_MULTI || voiceMode_ == VOICE_MODE_SPLIT) {
         voice2Settings_ = &settings2_;
@@ -105,7 +105,7 @@ void Patch::Load(SavedPatch savedPatch) {
 
 
 
-void Patch::Save(SavedPatch* savedPatch) {
+void Patch::WriteToSavedPatch(SavedPatch* savedPatch) {
     savedPatch->voiceMode = voiceMode_;
     savedPatch->splitNote = splitNote_;
     strcpy(savedPatch->name, name_);

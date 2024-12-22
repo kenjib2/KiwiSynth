@@ -5,7 +5,7 @@ namespace kiwisynth
     void SelectScreen::Init(KiwiDisplay* display, KiwiSynth* kiwiSynth) {
         kiwiSynth_ = kiwiSynth;
         display_ = display;
-        saving_ = false;
+        selectMode_ = SELECT_MODE_LOAD;
         selection_ = 3;
         numSelections_ = 35;
         currentPage_ = SELECT_PAGE_BANKS;
@@ -70,13 +70,13 @@ namespace kiwisynth
                     }
                 }
 
-                if (!saving_) {
+                if (selectMode_ != SELECT_MODE_SAVE) {
                     display_->SetCursor(120, 0);
                     display_->WriteString("^", Font_6x8, selection_ != 0);
                 }
                 display_->SetCursor(120, 28);
                 display_->WriteString("X", Font_6x8, selection_ != 1);
-                if (!saving_) {
+                if (selectMode_ != SELECT_MODE_SAVE) {
                     display_->SetCursor(120, 56);
                     display_->WriteString("v", Font_6x8, selection_ != 2);
                 }
@@ -153,7 +153,7 @@ namespace kiwisynth
 
     void SelectScreen::Increment() {
         selection_ = (selection_ + 1) % numSelections_;
-        if (saving_ && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
+        if (selectMode_ == SELECT_MODE_SAVE && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
             // We can't page up and down when saving on bank selection because we don't want the type screen
             Increment();
         }
@@ -161,7 +161,7 @@ namespace kiwisynth
 
     void SelectScreen::Decrement() {
         selection_ = (selection_ - 1 + numSelections_) % numSelections_;
-        if (saving_ && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
+        if (selectMode_ == SELECT_MODE_SAVE && currentPage_ == SELECT_PAGE_BANKS && (selection_ == 0 || selection_ == 2)) {
             // We can't page up and down when saving on bank selection because we don't want the type screen
             Decrement();
         }
@@ -178,8 +178,10 @@ namespace kiwisynth
                 patchNumber_ = 0;
                 currentPage_ = SELECT_PAGE_BANKS;
                 return SELECT_SCREEN_RESPONSE_REFRESH;
-            } else if (fromPlay_) {
+            } else if (selectMode_ == SELECT_MODE_LOAD_FROM_PLAY) {
                 return SELECT_SCREEN_RESPONSE_PLAY;
+            } else if (selectMode_ == SELECT_MODE_SYSEX_RECEIVE || selectMode_ == SELECT_MODE_SYSEX_SEND) {
+                return SELECT_SCREEN_RESPONSE_CANCEL_SYSTEM;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;
             }
@@ -222,11 +224,20 @@ namespace kiwisynth
                     bankNumber_ = (bankNumber_ + 1) % NUM_PATCH_BANKS;
                 }
 
-            } else if (!saving_) {
+            } else if (selectMode_ == SELECT_MODE_LOAD || selectMode_ == SELECT_MODE_LOAD_FROM_PLAY) {
                 kiwiSynth_->LoadPatch(bankNumber_, patchNumber_ + selection_ - 3);
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
-            } else if (saving_) {
+            } else if (selectMode_ == SELECT_MODE_SAVE) {
+                saveBank_ = bankNumber_;
+                savePatch_ = patchNumber_ + selection_ - 3;
+                selection_ = 0;
+                currentPage_ = SELECT_PAGE_SAVE_CONFIRM;
+            } else if (selectMode_ == SELECT_MODE_SYSEX_SEND) {
+                saveBank_ = bankNumber_;
+                savePatch_ = patchNumber_ + selection_ - 3;
+                return SELECT_SCREEN_RESPONSE_SYSEX_SEND;
+            } else if (selectMode_ == SELECT_MODE_SYSEX_RECEIVE) {
                 saveBank_ = bankNumber_;
                 savePatch_ = patchNumber_ + selection_ - 3;
                 selection_ = 0;
@@ -246,13 +257,13 @@ namespace kiwisynth
                     patchTypePage_ = 0;
                 }
 
-            } else if (!saving_) {
+            } else if (selectMode_ == SELECT_MODE_LOAD || selectMode_ == SELECT_MODE_LOAD_FROM_PLAY) {
                 bankNumber_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->bankNumber;
                 patchNumber_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->patchNumber;
                 kiwiSynth_->LoadPatch(bankNumber_, patchNumber_);
                 return SELECT_SCREEN_RESPONSE_PLAY;
 
-            } else if (saving_) {
+            } else if (selectMode_ == SELECT_MODE_SAVE) {
                 saveBank_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->bankNumber;
                 savePatch_ = kiwiSynth_->patchTypes[patchType_][selection_ - 3 + patchTypePage_ * 8]->patchNumber;
                 selection_ = 0;
@@ -260,12 +271,16 @@ namespace kiwisynth
             }
         } else if (currentPage_ == SELECT_PAGE_SAVE_CONFIRM) {
             if (selection_ == 0) {
-                // If the patch we are saving was an initialized patch, set it to type other by default.
-                if (kiwiSynth_->patch.GetPatchType() == PATCH_INIT) {
-                    kiwiSynth_->patch.SetPatchType(PATCH_OTHER);
+                if (selectMode_ == SELECT_MODE_SAVE) {
+                    // If the patch we are saving was an initialized patch, set it to type other by default.
+                    if (kiwiSynth_->patch.GetPatchType() == PATCH_INIT) {
+                        kiwiSynth_->patch.SetPatchType(PATCH_OTHER);
+                    }
+                    kiwiSynth_->SavePatch(saveBank_, savePatch_);
+                    return SELECT_SCREEN_RESPONSE_PLAY;
+                } else if (selectMode_ == SELECT_MODE_SYSEX_RECEIVE) {
+                    return SELECT_SCREEN_RESPONSE_SYSEX_RECEIVE;
                 }
-                kiwiSynth_->SavePatch(saveBank_, savePatch_);
-                return SELECT_SCREEN_RESPONSE_PLAY;
             } else {
                 return SELECT_SCREEN_RESPONSE_CANCEL;
             }
